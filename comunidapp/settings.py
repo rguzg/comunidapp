@@ -56,7 +56,7 @@ ROOT_URLCONF = 'comunidapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': os.path.join(BASE_DIR, 'Templates'),
+        'DIRS': [os.path.join(BASE_DIR, 'Templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,3 +124,6 @@ STATIC_ROOT = 'staticfiles'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
 
 AUTH_USER_MODEL = 'Users.User'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'

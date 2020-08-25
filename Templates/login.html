@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidapp - Inicio de sesión</title>
+</head>
+<body>
+    Comunidapp
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }} 
+        <input type="submit" name="sumbit" value="Iniciar sesión">
+    </form>
+    
+</body>
+</html>
