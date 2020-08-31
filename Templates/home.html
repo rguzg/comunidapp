@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunidapp</title>
 </head>
+
 <body>
 
     Bienvenido {{request.user.get_full_name}}
@@ -16,7 +18,12 @@
     Mis datos personales
 
     Mis articulos académicos
-    
-    
+
+    <a href="{% url 'profile' pk=request.user.id %}">
+        <button>Mi perfil</button>
+    </a>
+
+
 </body>
+
 </html>
