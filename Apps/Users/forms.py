@@ -1,10 +1,44 @@
-from django.forms import ModelForm
-from Apps.Users.models import User
+from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
+from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User
+from django.contrib.auth.forms import AuthenticationForm
+from django.forms.widgets import PasswordInput, TextInput
 
-class UserForm(ModelForm):
-    def __init__(self, *args, **kargs):
-        super(UserForm, self).__init__(*args, **kargs)
 
+class UserActualizadoForm(forms.Form):
+    generos = [
+        ('H', 'Hombre'),
+        ('M', 'Mujer')
+    ]
+
+    grados = [
+        ('L', 'Licenciatura'),
+        ('M', 'Maestría'),
+        ('D', 'Doctorado')
+    ]
+
+    email = forms.EmailField(required=True)
+    clave = forms.IntegerField(required=True, max_value=5, min_value=1)
+    sexo = forms.ChoiceField(required=True, choices=generos)
+    nacimiento = forms.DateField(required=True, widget=forms.DateInput)
+    foto = forms.ImageField(required=True)
+    grado = forms.ChoiceField(required=True, choices=grados)
+    contratacion = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    facultades = forms.ModelMultipleChoiceField(
+        queryset=Facultad.objects.all())
+    niveles = forms.ModelMultipleChoiceField(queryset=Nivel.objects.all())
+    investigaciones = forms.ModelMultipleChoiceField(
+        queryset=LineaInvestigacion.objects.all())
+        
+
+
+class AuthenticationForm(AuthenticationForm):
     class Meta:
-         model = User
-         fields = '__all__'
+        model = User
+        fields = ['username','password']
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget = forms.TextInput(attrs={'placeholder': 'Correo electrónico'})
+        self.fields['username'].label = False
+        self.fields['password'].widget = forms.PasswordInput(attrs={'placeholder':'Contraseña'}) 
+        self.fields['password'].label = False

@@ -1,0 +1,46 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body, html{
+    width: 100%;
+    height: 100%;
+}
+
+.container-logo{
+    height: 15% !important;
+}
+
+.main{
+    height: 100%;
+    width: 100%;
+    background: #FAFAFA;
+}
+
+.font-logo{
+    color: grey;
+}
+
+.form-border{
+    -webkit-box-shadow: 3px 7px 28px -4px rgba(0,0,0,0.5);
+    -moz-box-shadow: 3px 7px 28px -4px rgba(0,0,0,0.5);
+    box-shadow: 3px 7px 28px -4px rgba(0,0,0,0.5);
+}
+
+.error{
+    color:red;
+}
+
+.btn-submit{
+    background-color: #25D3A2 !important;
+    color: white !important;
+    border: none;
+}
+
+.form-line{
+    text-decoration: none;
+    border: none;
+    border-bottom: 2px solid blue;
+    margin: 1px;
+}

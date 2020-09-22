@@ -1,53 +1,160 @@
-from django.shortcuts import render
-from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import TemplateView
-from django.views.generic.edit import UpdateView
-from .forms import UserForm
-from .models import User
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import render, redirect
+import json
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import PasswordChangeForm
+from django.views import View
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import UpdateView, FormView
+from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato
+from .forms import UserActualizadoForm, AuthenticationForm
+import ast
+
+# CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
 
 
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
+    authentication_form = AuthenticationForm
+
+# CBV para el HTML de Home (todavia sin definir)
 
 
-class Home(TemplateView):
+class Home(ListView):
     template_name = 'home.html'
-
-
-class Profile(UpdateView):
+    paginate_by = 20
     model = User
-    fields = ['clave', 'first_name', 'last_name', 'email', 'sexo', 'nacimiento',
-              'foto',  'contratacion', 'grado', 'facultades', 'niveles', 'investigaciones']
+
+class Perfil(DetailView):
+    model = User
+    template_name = 'perfil-detail.html'
+
+# CBV para el HTML donde se muestra el perfil del usuari
+
+
+class Profile(FormView):
+    form_class = UserActualizadoForm
     template_name = 'my_profile.html'
-    template_name_suffix = '_update_form'
-    success_url = "/profile/1"
+    success_url = '/'
+
+    def form_valid(self, form):
+        """
+        Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
+        """
+        data = {}
+        if form.has_changed():
+            for field in form.changed_data:
+                data[field] = str(form.cleaned_data[field])
+
+        print(data)
+        update, created = UserActualizado.objects.get_or_create(
+            user=self.request.user)
+        if(update.estado == 'P'):
+            form.add_error(
+                None, 'Ya cuentas con una peticion de actualizacion. Espera a que se Apruebe o Rechace')
+            return super().form_invalid(form)
+
+        update.cambios = data
+        update.estado = 'P'
+        update.save()
+        return super().form_valid(form)
+
+    def get_initial(self):
+        """
+        Regresando la informacion del usuario al formulario,
+        ya que no es un ModelForm
+        """
+        initial = super().get_initial()
+        initial['email'] = self.request.user.email
+        initial['clave'] = self.request.user.clave
+        initial['sexo'] = self.request.user.sexo
+        initial['nacimiento'] = self.request.user.nacimiento
+        initial['foto'] = self.request.user.foto
+        initial['grado'] = self.request.user.grado
+        initial['contratacion'] = self.request.user.contratacion
+        initial['niveles'] = [
+            nivel for nivel in Nivel.objects.all().values_list('id', flat=True)]
+        initial['facultades'] = [
+            facu for facu in Facultad.objects.all().values_list('id', flat=True)]
+        initial['investigaciones'] = [
+            inve for inve in LineaInvestigacion.objects.all().values_list('id', flat=True)]
+        return initial
+
+# CBV para la funcionalidad de Logout
 
 
 class CustomLogout(LogoutView):
     next_page = 'login'
 
+# CBV para la funcionalidad de cambiar la contraseña
 
-def CustomResetPassword(request):
-    form = PasswordChangeForm(user=request.user)
-    if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+
+class CustomResetPassword(View):
+    form_class = PasswordChangeForm
+    template_name = 'password.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(
+            user=request.user
+        )
+        return render(request, 'password.html', {
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
             messages.success(request, 'Contraseña cambiada correctamente')
-            return render(request, 'password.html', {
-                'form': form
-            })
-        else:
-            return render(request, 'password.html', {
-                'form': form
-            })
-    else:
-        form = PasswordChangeForm(user=request.user)
+
         return render(request, 'password.html', {
-            'form': form,
+            'form': form
         })
+
+
+class UpdatedUsers(ListView):
+    model = UserActualizado
+    paginate_by = 10
+    template_name = 'updates.html'
+
+    def post(self, request, *args, **kwargs):
+        idUserActualizado = request.POST['id']
+        query = UserActualizado.objects.get(id=idUserActualizado)
+        cambios = query.cambios.replace("\'", "\"")
+        cambios = json.loads(cambios)
+        
+
+        user = User.objects.get(id=query.user.id)
+
+        for attr, value in cambios.items():
+            if attr == 'contratacion':
+                value = Contrato.objects.get(tipo=value)
+                print(value)
+            # if attr == 'facultades':
+            if attr == 'niveles':
+                print("si")
+                # user.niveles.clear()
+                print(*value)
+                print(ast.literal_eval(value))
+                user.niveles.add(*value)
+
+            # if value == 'investigaciones':
+            # setattr(user, attr, value)
+            print(attr, ': ', value)
+        user.save()
+
+        # query.estado = 'A'
+        # query.cambios = '{}'
+        # query.save()
+
+        return redirect('updates')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['now'] = timezone.now()
+        # import ast
+        # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
+        return context

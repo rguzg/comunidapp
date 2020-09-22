@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+# CUERPO ACADEMICO: FK - 18 DIGITOS LETRAS Y NUMEROS, INACTIVO/ACTIVO, PUBLICO/PRIVADO
+
 def image_user(instance, filename):
     return '{0}/{1}'.format('images_users', instance.username)
 
@@ -25,6 +27,8 @@ class User(AbstractUser):
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
     foto = models.ImageField(upload_to=image_user)
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
+    cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
+    publico = models.BooleanField(default=False)
     contratacion = models.ForeignKey('Contrato', on_delete=models.CASCADE, blank=False, null=True, verbose_name = 'Tipo de contrato')
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
@@ -62,6 +66,7 @@ class Contrato(models.Model):
 
 # Lineas de investigacion e interes del maestro
 class LineaInvestigacion(models.Model):
+
     nombre = models.CharField(max_length=100, unique=True, blank=False, null=False)
 
     class Meta:
@@ -69,4 +74,20 @@ class LineaInvestigacion(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class UserActualizado(models.Model):
+
+    class Meta:
+        ordering=['-id']
         
+    estados  = [
+        ('P', 'Pendiente'),
+        ('A', 'Aprobado'),
+        ('R', 'Rechazado')
+    ]
+
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    cambios = models.CharField(max_length=1000, null=True, blank=True)
+    estado = models.CharField(max_length=1, null=False, blank=True, choices=estados, default='P')
+    fecha = models.DateTimeField(auto_now=True, auto_now_add=False)
+    motivo = models.CharField(max_length=1000, null=True, blank=True)

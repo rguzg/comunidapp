@@ -19,9 +19,18 @@
 
     Mis articulos académicos
 
-    <a href="{% url 'profile' pk=request.user.id %}">
+    <a href="{% url 'profile' %}">
         <button>Mi perfil</button>
     </a>
+
+    <ul>
+        {% for user in object_list %}
+        <a href="{% url 'profile-detail' pk=user.id %}">
+            {{user.get_full_name}}
+        </a>
+        {% endfor %}
+    </ul>
+    
 
 
 </body>

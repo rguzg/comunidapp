@@ -6,3 +6,9 @@ Pipfile
 Media/images_users/
 
 Pipfile.lock
+
+Apps/comunidad/__pycache__/
+
+Apps/Users/__pycache__/
+
+comunidapp/__pycache__/

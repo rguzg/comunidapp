@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import User, Facultad, Nivel, Contrato, LineaInvestigacion
+from .models import User, Facultad, Nivel, Contrato, LineaInvestigacion, UserActualizado
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,3 +15,4 @@ admin.site.register(Facultad)
 admin.site.register(Nivel)
 admin.site.register(Contrato)
 admin.site.register(LineaInvestigacion)
+admin.site.register(UserActualizado)

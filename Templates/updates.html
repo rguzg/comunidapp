@@ -1,0 +1,27 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizaciones</title>
+</head>
+<body>
+    <h1>Peticiones de actualizacion de perfil</h1>
+    <ul>
+        {% for actualizacion in object_list %}
+        <form action="{% url 'updates' %}" method="POST">
+            {% csrf_token  %}
+            {{actualizacion}}
+            <li>De: {{actualizacion.user}}</li>
+            <li>{{actualizacion.cambios}}</li>
+            <!-- <input type="text" value="{{actualizacion.cambios}}"> -->
+            <input type="hidden" value="{{actualizacion.id}}" name="id">
+            <input type="submit" value="Actualizar">
+        </form>
+        {% endfor %}
+    </ul>
+
+</body>
+
+</html>
