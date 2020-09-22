@@ -41,6 +41,10 @@ body, html{
     color:red;
 }
 
+.bg-blue{
+    background-color: #00DDA4;
+}
+
 .btn-submit{
     background-color: #25D3A2 !important;
     color: white !important;

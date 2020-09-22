@@ -12,28 +12,23 @@ from .forms import UserActualizadoForm, AuthenticationForm
 import ast
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
-
-
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm
 
 # CBV para el HTML de Home (todavia sin definir)
-
-
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
     model = User
 
+# CBV para el HTML del detalle de cada usuario 
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
 
-# CBV para el HTML donde se muestra el perfil del usuari
-
-
+# CBV para el HTML donde se muestra el perfil del usuario
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
@@ -53,7 +48,7 @@ class Profile(FormView):
             user=self.request.user)
         if(update.estado == 'P'):
             form.add_error(
-                None, 'Ya cuentas con una peticion de actualizacion. Espera a que se Apruebe o Rechace')
+                None, 'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace.')
             return super().form_invalid(form)
 
         update.cambios = data
@@ -83,14 +78,10 @@ class Profile(FormView):
         return initial
 
 # CBV para la funcionalidad de Logout
-
-
 class CustomLogout(LogoutView):
     next_page = 'login'
 
 # CBV para la funcionalidad de cambiar la contraseña
-
-
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -114,11 +105,15 @@ class CustomResetPassword(View):
             'form': form
         })
 
-
+# CBV para aprobar o rechazar peticion de cambio de perfil
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
     template_name = 'updates.html'
+    ordering = ['-created']
+
+    def get_queryset(self):
+        return UserActualizado.objects.filter(estado='P')
 
     def post(self, request, *args, **kwargs):
         idUserActualizado = request.POST['id']
@@ -132,23 +127,22 @@ class UpdatedUsers(ListView):
         for attr, value in cambios.items():
             if attr == 'contratacion':
                 value = Contrato.objects.get(tipo=value)
-                print(value)
             # if attr == 'facultades':
-            if attr == 'niveles':
-                print("si")
-                # user.niveles.clear()
-                print(*value)
-                print(ast.literal_eval(value))
-                user.niveles.add(*value)
+            # if attr == 'niveles':
+            #     print("si")
+            #     # user.niveles.clear()
+            #     print(*value)
+            #     print(ast.literal_eval(value))
+            #     user.niveles.add(*value)
 
             # if value == 'investigaciones':
-            # setattr(user, attr, value)
-            print(attr, ': ', value)
+            setattr(user, attr, value)
+            # print(attr, ': ', value)
         user.save()
 
-        # query.estado = 'A'
-        # query.cambios = '{}'
-        # query.save()
+        query.estado = 'A'
+        query.cambios = '{}'
+        query.save()
 
         return redirect('updates')
 

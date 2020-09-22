@@ -88,6 +88,7 @@ class UserActualizado(models.Model):
 
     user = models.OneToOneField('User', on_delete=models.CASCADE)
     cambios = models.CharField(max_length=1000, null=True, blank=True)
-    estado = models.CharField(max_length=1, null=False, blank=True, choices=estados, default='P')
+    estado = models.CharField(max_length=1, null=False, blank=True, choices=estados)
     fecha = models.DateTimeField(auto_now=True, auto_now_add=False)
     motivo = models.CharField(max_length=1000, null=True, blank=True)
+    created = models.DateTimeField(auto_now=True, auto_now_add=False)

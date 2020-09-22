@@ -25,20 +25,32 @@ class UserActualizadoForm(forms.Form):
     grado = forms.ChoiceField(required=True, choices=grados)
     contratacion = forms.ModelChoiceField(queryset=Contrato.objects.all())
     facultades = forms.ModelMultipleChoiceField(
-        queryset=Facultad.objects.all())
-    niveles = forms.ModelMultipleChoiceField(queryset=Nivel.objects.all())
+        queryset=Facultad.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+
+    )
+    niveles = forms.ModelMultipleChoiceField(
+        queryset=Nivel.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+
+    )
     investigaciones = forms.ModelMultipleChoiceField(
-        queryset=LineaInvestigacion.objects.all())
-        
+        queryset=LineaInvestigacion.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+
+    )
 
 
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
-        fields = ['username','password']
+        fields = ['username', 'password']
+
     def __init__(self, *args, **kwargs):
         super(AuthenticationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget = forms.TextInput(attrs={'placeholder': 'Correo electrónico'})
+        self.fields['username'].widget = forms.TextInput(
+            attrs={'placeholder': 'Correo electrónico'})
         self.fields['username'].label = False
-        self.fields['password'].widget = forms.PasswordInput(attrs={'placeholder':'Contraseña'}) 
+        self.fields['password'].widget = forms.PasswordInput(
+            attrs={'placeholder': 'Contraseña'})
         self.fields['password'].label = False

@@ -1,38 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'navbar.html' %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunidapp</title>
-</head>
+<div class="container-fluid">
+    <h1 class="display-4">Bienvenido {{request.user.get_full_name}}</h1>
 
-<body>
-
-    Bienvenido {{request.user.get_full_name}}
-
-    <a href="{% url 'logout' %}">
-        <button>Cerrar sesion</button>
-    </a>
-
-    Mis datos personales
-
-    Mis articulos académicos
-
-    <a href="{% url 'profile' %}">
-        <button>Mi perfil</button>
-    </a>
-
+    <h6>Estos son los usuarios en la plataforma:</h6>
     <ul>
         {% for user in object_list %}
-        <a href="{% url 'profile-detail' pk=user.id %}">
-            {{user.get_full_name}}
-        </a>
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="{{ user.foto.url }}" style="height: auto; width: 100px;" alt="">
+                </div>
+                <div class="col-10">
+                    <a href="{% url 'profile-detail' pk=user.id %}">
+                        {{user.get_full_name}}
+                    </a>
+                </div>
+            </div>
+
+        </div>
         {% endfor %}
     </ul>
-    
+
+</div>
 
 
-</body>
 
-</html>
+
+
+{% endblock %}

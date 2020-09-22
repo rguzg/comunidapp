@@ -1,21 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi perfil</title>
-</head>
-<body>
-    <h1>Mi perfil</h1>
-    <p>Recuerda que para cambiar tus datos deberas solicitar aprobacion del administrador</p>
-    <a href="{% url 'password' %}">Cambio de contraseña</a>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update" />
-    </form>
-    <a href="{% url 'logout' %}">
-        <button>Cerrar sesion</button>
-    </a>
-</body>
-</html>
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <h1>Mi perfil - Datos actuales</h1>
+    <p>Recuerda que para cambiar tus datos deberas solicitar aprobacion del administrador <small>(El administrador aprobara o rechazara los cambios)</small></p>
+    <a href="{% url 'password' %}">Cambiar contraseña</a>
+
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field.errors }}
+                {{ hidden_field }}
+            {% endfor %}
+
+
+            {% for field in form.visible_fields %}
+            
+                {{ field.errors }}
+                {{ field.label }}
+                {{ field|addclass:'form-line p-0 w-100 mt-2 mb-2' }}
+                <br>
+            {% endfor %}
+            <input type="submit" value="Solicitar cambios" />
+        </form>
+    </div>
+</div>
+{% endblock %}

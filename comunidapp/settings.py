@@ -118,6 +118,7 @@ STATIC_ROOT = 'staticfiles'
 
 # Carpeta donde se suben las fotos de los profesosres
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
+MEDIA_URL = '/Media/'
 
 # Cambiando el modelo predeterminado de Django
 AUTH_USER_MODEL = 'Users.User'
