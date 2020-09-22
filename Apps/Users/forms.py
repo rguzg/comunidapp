@@ -6,6 +6,8 @@ from django.forms.widgets import PasswordInput, TextInput
 
 
 class UserActualizadoForm(forms.Form):
+    error_css_class = "error"
+
     generos = [
         ('H', 'Hombre'),
         ('M', 'Mujer')
