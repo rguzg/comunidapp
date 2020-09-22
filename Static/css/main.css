@@ -1,12 +1,17 @@
 *{
     margin: 0px;
     padding: 0px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body, html{
     width: 100%;
     height: 100%;
+    
+
+
 }
+ 
 
 .container-logo{
     height: 15% !important;
@@ -28,6 +33,10 @@ body, html{
     box-shadow: 3px 7px 28px -4px rgba(0,0,0,0.5);
 }
 
+.container a{
+    color: #25D3A2;
+}
+
 .error{
     color:red;
 }
@@ -41,6 +50,6 @@ body, html{
 .form-line{
     text-decoration: none;
     border: none;
-    border-bottom: 2px solid blue;
-    margin: 1px;
+    border-bottom: 2px solid #25D3A2;
+
 }
