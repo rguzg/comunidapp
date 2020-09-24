@@ -1,0 +1,34 @@
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <h1>Peticiones de actualización</h1>
+
+    {% if object_list %}
+    {% else %}
+    <h6>Por el momento no existen peticion de actualización</h1>
+        {% endif %}
+
+        <ul class="list-group list-group-flush">
+            {% for actualizacion in object_list %}
+            <form action="{% url 'updates' %}" method="POST">
+                {% csrf_token  %}
+
+                <li class="list-group-item">Peticion de <b>{{actualizacion.user}}</b></li>
+                <li class="list-group-item">Actualizaciones: {{actualizacion.cambios}}</li>
+                <input type="hidden" value="{{actualizacion.id}}" name="id">
+                <li class="list-group-item">
+                    <input class="btn btn-sm btn-outline-dark" type="submit" value="Rechazar">
+                    <input class="btn btn-sm btn-submit" type="submit" value="Aprobar">
+                </li>
+            </form>
+            <br>
+            {% endfor %}
+        </ul>
+
+</div>
+
+
+
+{% endblock %}

@@ -1,18 +1,66 @@
+{% load static %}
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comunidapp - Inicio de sesión</title>
-</head>
-<body>
-    Comunidapp
+{% include 'head.html' %}
 
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }} 
-        <input type="submit" name="sumbit" value="Iniciar sesión">
-    </form>
-    
+<body>
+    <div class="container-fluid h-100 d-flex flex-column justify-content-center align-items-center">
+
+        <!-- Contenedor de todo -->
+        <div class="container form-border" style="width: 85%;">
+
+            <!-- Contenedor del logo -->
+            <div class="row">
+                <div class="container">
+                    <div class="container mt-3 mb-3" style="height: 50px !important;">
+                        <div class="row h-100">
+                            <div class="col-3 m-0 p-1 h-100 d-flex flex-column justify-content-center">
+                                <img src="{% static 'img/logo.png' %}" class="img-fluid w-100" alt="Comunidapp logo">
+                            </div>
+                            <div class="col-9 m-0 p-0 h-100">
+                                <div
+                                    class="container-fluid h-100 -100 m-0 p-0 d-flex flex-column align-items-start justify-content-center">
+                                    <p class="my-auto font-weight-bold font-logo" style="font-size: 7vw;">Comunidapp</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor del formulario -->
+            <div class="container-fluid p-0 mb-3">
+                <div class="container p-0">
+                    <p class="font-weight-bold" style="font-size: 6vw;">Inicio de sesión</p>
+                </div>
+
+                <form method="POST" class="container p-0 m-0">
+                    {% csrf_token %}
+                    <div class="form-group p-0 m-0">
+                        {{ form.non_field_errors }}
+
+                        {% for hidden_field in form.hidden_fields %}
+                        {{ hidden_field.errors }}
+                        {{ hidden_field }}
+                        {% endfor %}
+
+                        {% for field in form.visible_fields %}
+                        {{ field.errors }}
+                        {{ field|addclass:'form-line p-0 w-100 mt-2 mb-2' }}
+                        {% endfor %}
+                        <div class="container m-0 p-0">
+                            <p class="text-left font-weight-light" style="font-size: 3.5vw;">¿No tienes cuenta? <a
+                                    href="" class="">Solicitala</a></p>
+                        </div>
+                        <div class="container p-0 d-flex flex-column align-items-end">
+                            <input class="btn btn-sm btn-submit" type="submit" name="sumbit" value="¡Vamos!">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

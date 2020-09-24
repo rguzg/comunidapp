@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Apps.comunidad',
-    'Apps.Users'
+    'Apps.Users',
 ]
 
 MIDDLEWARE = [
@@ -105,25 +105,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'es-mx'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# Configuracion de archivos estaticos (case-sensitive)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Static')]
 STATIC_ROOT = 'staticfiles'
 
+# Carpeta donde se suben las fotos de los profesosres
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')
+MEDIA_URL = '/Media/'
 
+# Cambiando el modelo predeterminado de Django
 AUTH_USER_MODEL = 'Users.User'
 
+# Necesario para el LoginViw y login_required
+LOGIN_URL ='login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
