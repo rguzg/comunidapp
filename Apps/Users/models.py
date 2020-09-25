@@ -1,21 +1,56 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-# CUERPO ACADEMICO: FK - 18 DIGITOS LETRAS Y NUMEROS, INACTIVO/ACTIVO, PUBLICO/PRIVADO
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
+from .validators import isalphavalidator
 
 def image_user(instance, filename):
     return '{0}/{1}'.format('images_users', instance.username)
+
+def comprobantes(instance, filename):
+    return '{0}/{1}'.format('comprobantes', instance.username)
+
+def resumenes(instance, filename):
+    return '{0}/{1}'.format('resumenes', instance.username)
+
+grados = [
+    ('L', 'Licenciatura'),
+    ('M', 'Maestría'),
+    ('D', 'Doctorado')
+]
+
+estados = [
+    ('P', 'Publicado'),
+    ('A', 'Aceptado')
+]
+
+propositos = [
+    ('AT', 'Asimilación tecnológica'),
+    ('CT', 'Creación de desarrollo tecnológico'),
+    ('DI', 'Difusión'),
+    ('GC', 'Generación de conocimiento'),
+    ('IA', 'Investigación aplicada'),
+    ('TT', 'Transferencia de tecnología')
+]
+
+estados = [
+    ('P', 'Publicado'),
+    ('A', 'Aceptado')
+]
+
+propositos = [
+    ('AT', 'Asimilación tecnológica'),
+    ('CT', 'Creación de desarrollo tecnológico'),
+    ('DI', 'Difusión'),
+    ('GC', 'Generación de conocimiento'),
+    ('IA', 'Investigación aplicada'),
+    ('TT', 'Transferencia de tecnología')
+]
 
 class User(AbstractUser):
     generos  = [
         ('H', 'Hombre'),
         ('M', 'Mujer')
-    ]
-
-    grados = [
-        ('L', 'Licenciatura'),
-        ('M', 'Maestría'),
-        ('D', 'Doctorado')
     ]
 
     class Meta:
@@ -92,3 +127,177 @@ class UserActualizado(models.Model):
     fecha = models.DateTimeField(auto_now=True, auto_now_add=False)
     motivo = models.CharField(max_length=1000, null=True, blank=True)
     created = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+class Autor(models.Model):
+    first_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
+    last_name = models.CharField(max_length=255, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    def clean(self):
+        if self.user is None:
+            if self.first_name is None or self.last_name is None:
+                raise ValidationError('Debes seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
+
+        if len(self.first_name)<=3:
+            raise ValidationError('El nombre debe ser mayor a 3 caracteres')
+
+        if len(self.last_name)<=3:
+            raise ValidationError('El apellido debe ser mayor a 3 caracteres')
+
+        
+
+
+    def __str__(self):
+        if self.user is not None:
+            if self.user.get_full_name() is "":
+                return "{0}".format(self.user.username)
+            else:
+                return "{0}".format(self.user.get_full_name())
+        else:
+            return "{0} {1}".format(self.first_name, self.last_name)
+            
+
+
+class Alumno(models.Model):
+    expediente = models.PositiveIntegerField(validators=[
+            MaxValueValidator(111111),
+            MinValueValidator(999999)
+        ])
+
+class PalabrasClave(models.Model):
+    palabra = models.CharField(max_length=50, null=False, blank=False)
+
+class Pais(models.Model):
+    pais = models.CharField(max_length=50, null=False, blank=False)
+
+class Estado(models.Model):
+    nombre = models.CharField(max_length=30)
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+
+class Ciudad(models.Model):
+    nombre = models.CharField(max_length=50)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+
+class Revista(models.Model):
+    revista = models.CharField(max_length=300, null=False, blank=False)
+
+class Editorial(models.Model):
+    editorial = models.CharField(max_length=300, null=False, blank=False)
+
+class Institucion(models.Model):
+    nombre = models.CharField(max_length=100)
+
+class Articulo(models.Model):
+    categorias = [
+        ('ARB', 'Arbitradro'),
+        ('IND', 'INDIZADO'),
+        ('JCR', 'INDIZADO JCR'),
+        ('SCP', 'SCOPUS')
+    ]
+
+    categoria = models.CharField(max_length=3, choices=categorias, null=False, blank=False)
+    primer_autor = models.ForeignKey(Autor, related_name='primer_autor_articulo', on_delete=models.CASCADE)
+    primer_coladorador = models.ForeignKey(Autor, related_name='primer_colaborador_articulo',on_delete=models.CASCADE)
+    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_articulo',on_delete=models.CASCADE)
+    palabras_clave = models.ManyToManyField(PalabrasClave)
+    titulo = models.CharField(max_length=300, null=False, blank=False)
+    descripcion = models.CharField(max_length=350, null=False, blank=False)
+    estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+    revista = models.ForeignKey(Revista, on_delete=models.CASCADE)
+    editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    isnn = models.BigIntegerField()
+    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    url = models.URLField(max_length=300, null=True, blank=True)
+    pagina_inicio = models.PositiveIntegerField()
+    pagina_fin = models.PositiveIntegerField()
+    volumen = models.PositiveIntegerField(null=True, blank=False)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    indice_revista = models.PositiveIntegerField(null=True, blank=True)
+    doi = models.URLField(max_length=100, null=True, blank=True)
+
+class CapituloLibro(models.Model):
+    tipos = [
+        ('L', 'Libro'),
+        ('C', 'Capitulo')
+    ]
+    primer_autor = models.ForeignKey(Autor, related_name='primer_autor_capitulo', on_delete=models.CASCADE)
+    primer_coautor = models.ForeignKey(Autor, related_name='primer_coautor_libro',on_delete=models.CASCADE)
+    segundo_coautor = models.ForeignKey(Autor, related_name='segundo_coautor_libro',on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=1, choices=tipos)
+    titulo = models.CharField(max_length=150)
+    palabras_clave = models.ManyToManyField(PalabrasClave)
+    estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+    editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    edicion = models.PositiveIntegerField()
+    tiraje = models.PositiveIntegerField()
+    isbn = models.CharField(max_length=15)
+    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    proposito = models.CharField(max_length=3, choices=propositos)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+
+class Patente(models.Model):
+    autores = models.ManyToManyField(Autor)
+    titulo = models.CharField(max_length=300, null=False, blank=False)
+    descripcion = models.CharField(max_length=350, null=False, blank=False)
+    uso = models.CharField(max_length=255)
+    registro = models.CharField(max_length=255)
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    comprobante = models.FileField(upload_to=comprobantes)
+    proposito = models.CharField(max_length=2, choices=propositos)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    
+class Congreso(models.Model):
+    primer_autor = models.ForeignKey(Autor, related_name='primer_autor_congreso', on_delete=models.CASCADE)
+    primer_colaborador = models.ForeignKey(Autor, related_name='primer_colaborador_congreso',on_delete=models.CASCADE)
+    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_congreso',on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=300, null=False, blank=False)
+    congreso = models.CharField(max_length=300, null=False, blank=False)
+    estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
+    pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    ciudad = models.ForeignKey(Ciudad, on_delete=models.CASCADE)
+    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    presentacion = models.DateField(auto_now=False, auto_now_add=False)
+    proposito = models.CharField(max_length=2, choices=propositos)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    palabras_clave = models.ManyToManyField(PalabrasClave)
+
+class Investigacion(models.Model):
+
+    tipos_financiamiento = [
+        ('I', 'Interno'),
+        ('E', 'Externo')
+    ]
+    tipos_proyecto = [
+        ('I','Investigación'),
+        ('V', 'Vinculación')
+    ]
+    tipo_proyecto = models.CharField(max_length=1, choices=tipos_proyecto)
+    titulo = models.CharField(max_length=300, null=False, blank=False)
+    financiamiento = models.BooleanField(null=False, blank=False)
+    tipo_financiamiento = models.CharField(max_length=1, choices=tipos_financiamiento, null=True, blank=True)
+    inicio = models.DateField(auto_now=False, auto_now_add=False)
+    fin = models.DateField(auto_now=False, auto_now_add=False)
+    responsable = models.ForeignKey(Autor, related_name='responsable_investigacion', on_delete=models.CASCADE)
+    primer_colaborador = models.ForeignKey(Autor, related_name='primer_colaborador_investigacion',on_delete=models.CASCADE)
+    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_investigacion',on_delete=models.CASCADE)
+    primer_alumno = models.ForeignKey(Alumno, related_name='primer_alumno_investigacion', on_delete=models.CASCADE)
+    segundo_alumno = models.ForeignKey(Alumno, related_name='segundo_alumno_investigacion', on_delete=models.CASCADE)
+    tercer_alumno = models.ForeignKey(Alumno,related_name='tercer_alumno_investigacion', on_delete=models.CASCADE)
+    resumen = models.FileField(upload_to=resumenes)
+    palabras_clave = models.ManyToManyField(PalabrasClave)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
+
+class Tesis(models.Model):
+    titulo = models.CharField(max_length=300, null=False, blank=False)
+    grado = models.CharField(max_length=1, choices=grados)
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
+    inicio = models.DateField(auto_now=False, auto_now_add=False)
+    fin = models.DateField(auto_now=False, auto_now_add=False)
+    profesor = models.ForeignKey(User, on_delete=models.CASCADE)
+    lineas_investigacion = models.ManyToManyField(LineaInvestigacion)

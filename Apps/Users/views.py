@@ -8,27 +8,39 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato
-from .forms import UserActualizadoForm, AuthenticationForm
+from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm
 import ast
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
+
+
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm
 
 # CBV para el HTML de Home (todavia sin definir)
+
+
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
     model = User
 
-# CBV para el HTML del detalle de cada usuario 
+    # def get_queryset(self):
+    #     queryset = User.objects.filter(is_superuser=False)
+    #     return queryset
+
+# CBV para el HTML del detalle de cada usuario
+
+
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
 
 # CBV para el HTML donde se muestra el perfil del usuario
+
+
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
@@ -78,10 +90,14 @@ class Profile(FormView):
         return initial
 
 # CBV para la funcionalidad de Logout
+
+
 class CustomLogout(LogoutView):
     next_page = 'login'
 
 # CBV para la funcionalidad de cambiar la contraseña
+
+
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -106,6 +122,8 @@ class CustomResetPassword(View):
         })
 
 # CBV para aprobar o rechazar peticion de cambio de perfil
+
+
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
@@ -120,7 +138,6 @@ class UpdatedUsers(ListView):
         query = UserActualizado.objects.get(id=idUserActualizado)
         cambios = query.cambios.replace("\'", "\"")
         cambios = json.loads(cambios)
-        
 
         user = User.objects.get(id=query.user.id)
 
@@ -151,4 +168,19 @@ class UpdatedUsers(ListView):
         # context['now'] = timezone.now()
         # import ast
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
+        return context
+
+
+class AddProduct(TemplateView):
+    template_name = "add-product.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AddProduct, self).get_context_data(**kwargs)
+        context['ArticuloForm'] = ArticuloForm(prefix='ArticuloForm')
+        context['CapituloLibroForm'] = CapituloLibroForm(prefix='CapituloLibro')
+        context['PatenteForm'] = PatenteForm(prefix='PatenteForm')
+        context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
+        context['InvestigacionForm'] = InvestigacionForm(prefix='InvestigacionForm')
+        context['TesisForm'] = TesisForm(prefix='TesisForm')
+        context['title'] = 'Hola'
         return context
