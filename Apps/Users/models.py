@@ -55,6 +55,7 @@ class User(AbstractUser):
 
     class Meta:
         verbose_name_plural = 'Usuarios'
+        ordering = ['id']
 
     email = models.EmailField(unique=True, blank=True, null=True)
     clave = models.PositiveIntegerField(unique=True, blank=False, null=True, verbose_name = 'Clave de empleado')
