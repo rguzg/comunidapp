@@ -166,7 +166,7 @@ class PalabrasClave(models.Model):
     palabra = models.CharField(max_length=50, null=False, blank=False)
 
 class Pais(models.Model):
-    pais = models.CharField(max_length=50, null=False, blank=False)
+    nombre = models.CharField(max_length=50, null=False, blank=False)
 
 class Estado(models.Model):
     nombre = models.CharField(max_length=30)

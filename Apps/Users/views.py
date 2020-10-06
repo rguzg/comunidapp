@@ -7,9 +7,11 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
-from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato
+from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais
 from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm
 import ast
+import pandas as pd
+import csv
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
 
@@ -177,24 +179,43 @@ class AddProduct(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AddProduct, self).get_context_data(**kwargs)
         context['ArticuloForm'] = ArticuloForm(prefix='ArticuloForm')
-        context['CapituloLibroForm'] = CapituloLibroForm(prefix='CapituloLibro')
+        context['CapituloLibroForm'] = CapituloLibroForm(
+            prefix='CapituloLibro')
         context['PatenteForm'] = PatenteForm(prefix='PatenteForm')
         context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
-        context['InvestigacionForm'] = InvestigacionForm(prefix='InvestigacionForm')
+        context['InvestigacionForm'] = InvestigacionForm(
+            prefix='InvestigacionForm')
         context['TesisForm'] = TesisForm(prefix='TesisForm')
         context['title'] = 'Agrega un producto'
         return context
 
+
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
-        return render(request, "autor_form.html", {"form" : form})
+        return render(request, "autor_form.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = AutorForm(request.POST)
         if form.is_valid():
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-primer_autor");</script>' % (instance.pk, instance))
-        return render(request, "autor_form.html", {"form" : form})
+        return render(request, "autor_form.html", {"form": form})
 
-    
+
+# def paises(request):
+#     import csv
+#     from django.db import transaction
+#     list2 = []
+#     with open("/home/urimeba/Downloads/paises.csv", "r", newline="") as f:
+#         csv_reader = csv.reader(f, delimiter=",")
+#         for row in csv_reader:
+#                 print(row[0])
+#                 list2.append(row[0])
+
+#     # for p in list2:
+#     #     print(p)
+#     with transaction.atomic():
+#         for pais in list2:
+#             Pais.objects.create(nombre=pais)
+#     return HttpResponse('Hey')

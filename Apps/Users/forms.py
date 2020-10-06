@@ -91,9 +91,6 @@ class AutorForm(ModelForm):
         if autor_existente == 0:
             raise ValidationError('Un autor con los mismos datos ya existe. Eligelo o verifica tus datos')
 
-
-
-
 class CapituloLibroForm(ModelForm):
     class Meta:
         model = CapituloLibro
