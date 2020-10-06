@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 import json
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato
-from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm
+from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm
 import ast
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
@@ -182,5 +182,21 @@ class AddProduct(TemplateView):
         context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
         context['InvestigacionForm'] = InvestigacionForm(prefix='InvestigacionForm')
         context['TesisForm'] = TesisForm(prefix='TesisForm')
-        context['title'] = 'Hola'
+        context['title'] = 'Agrega un producto'
         return context
+
+class AutorCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        print('HOLA')
+        form = AutorForm(request.POST)
+        return render(request, "autor_form.html", {"form" : form})
+
+    def post(self, request, *args, **kwargs):
+        print('hola')
+        form = AutorForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-primer_autor");</script>' % (instance.pk, instance))
+        return render(request, "autor_form.html", {"form" : form})
+
+    
