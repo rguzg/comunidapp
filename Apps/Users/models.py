@@ -156,6 +156,7 @@ class Autor(models.Model):
             
 
 
+
 class Alumno(models.Model):
     expediente = models.PositiveIntegerField(validators=[
             MaxValueValidator(111111),
@@ -163,10 +164,16 @@ class Alumno(models.Model):
         ])
 
 class PalabrasClave(models.Model):
-    palabra = models.CharField(max_length=50, null=False, blank=False)
+    nombre = models.CharField(max_length=50, null=False, blank=False, unique=True)
+
+    def __str__(self):
+        return self.nombre
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return self.nombre
 
 class Estado(models.Model):
     nombre = models.CharField(max_length=30)
@@ -177,10 +184,16 @@ class Ciudad(models.Model):
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
 
 class Revista(models.Model):
-    nombre = models.CharField(max_length=300, null=False, blank=False)
+    nombre = models.CharField(max_length=254, null=False, blank=False, unique=True)
 
+    def __str__(self):
+        return self.nombre
+    
 class Editorial(models.Model):
-    editorial = models.CharField(max_length=300, null=False, blank=False)
+    nombre = models.CharField(max_length=254, null=False, blank=False, unique=True)
+
+    def __str__(self):
+        return self.nombre
 
 class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
@@ -211,6 +224,7 @@ class Articulo(models.Model):
     pagina_fin = models.PositiveIntegerField()
     volumen = models.PositiveIntegerField(null=True, blank=False)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    #Verificar que INDEZADO este seleccionado
     indice_revista = models.PositiveIntegerField(null=True, blank=True)
     doi = models.URLField(max_length=100, null=True, blank=True)
 

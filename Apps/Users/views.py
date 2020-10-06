@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais
-from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm
+from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm
 import ast
 import pandas as pd
 import csv
@@ -193,26 +193,38 @@ class AddProduct(TemplateView):
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
-        return render(request, "autor_form.html", {"form": form})
+        return render(request, "form_autor.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = AutorForm(request.POST)
         if form.is_valid():
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-primer_autor");</script>' % (instance.pk, instance))
-        return render(request, "autor_form.html", {"form": form})
+        return render(request, "form_autor.html", {"form": form})
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = RevistaForm()
-        return render(request, "revista_form.html", {"form": form})
+        return render(request, "form_revista.html", {"form": form})
 
     def post(self, request, *args, **kwargs):
         form = RevistaForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            return HttpResponse('<script>opener.closePopupRevista(window, "%s", "%s", "id_ArticuloForm-revista");</script>' % (instance.pk, instance))
-        return render(request, "revista_form.html", {"form": form})
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-revista");</script>' % (instance.pk, instance))
+        return render(request, "form_revista.html", {"form": form})
+
+class EditorialCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = EditorialForm()
+        return render(request, "form_editorial.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = EditorialForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-editorial");</script>' % (instance.pk, instance))
+        return render(request, "form_editorial.html", {"form": form})
 
 # def paises(request):
 #     import csv

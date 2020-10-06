@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User, Articulo,  CapituloLibro, Patente, Congreso, Investigacion, Tesis, Autor, Revista
+from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User, Articulo,  CapituloLibro, Patente, Congreso, Investigacion, Tesis, Autor, Revista, Editorial
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from django.core.exceptions import ValidationError
@@ -82,6 +82,11 @@ class ArticuloForm(ModelForm):
     class Meta:
         model = Articulo
         fields = '__all__'
+
+class EditorialForm(ModelForm):
+    class Meta:
+        model = Editorial
+        fields = '__all__' 
 
 class CapituloLibroForm(ModelForm):
     class Meta:
