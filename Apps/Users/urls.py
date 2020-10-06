@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^author/create', views.AutorCreatePopup.as_view(), name = "AuthorCreate"),
     url(r'^revista/create', views.RevistaCreatePopup.as_view(), name = "RevistaCreate"),
     url(r'^editorial/create', views.EditorialCreatePopup.as_view(), name = "EditorialCreate"),
+    url(r'^palabras/create', views.PalabrasCreatePopup.as_view(), name = "PalabrasCreate"),
 ]

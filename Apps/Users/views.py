@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais
-from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm
+from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm
 import ast
 import pandas as pd
 import csv
@@ -225,6 +225,19 @@ class EditorialCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-editorial");</script>' % (instance.pk, instance))
         return render(request, "form_editorial.html", {"form": form})
+
+
+class PalabrasCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = PalabrasForm()
+        return render(request, "form_palabras.html", {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = PalabrasForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-palabras_clave");</script>' % (instance.pk, instance))
+        return render(request, "form_palabras.html", {"form": form})
 
 # def paises(request):
 #     import csv
