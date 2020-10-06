@@ -42,7 +42,7 @@
                     {{ field.errors }}
                     {{ field.label_tag }}
                     {{ field }}
-                    {% if field.name == "primer_autor" %}
+                    {% if field.name == "primer_autor" or field.name == "primer_coladorador" or field.name == "segundo_colaborador" %}
                         <a href="javascript:void(0);" data-url="author/create" id="add_author" onclick="return showAddPopup(this);">
                             <img src="{% static 'img/add.png' %}" alt="">
                         </a>
