@@ -1,0 +1,13 @@
+{% include 'head.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<div class="container">
+    <h1>Agregar una revista</h1>
+    <form method='POST' enctype="multipart/form-data" novalidate id="author-form">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+{% endblock %}

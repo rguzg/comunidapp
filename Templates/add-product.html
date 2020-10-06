@@ -47,6 +47,14 @@
                             <img src="{% static 'img/add.png' %}" alt="">
                         </a>
                     {% endif %}
+
+
+                    {% if field.name == "revista" %}
+                        <a href="javascript:void(0);" data-url="revista/create" id="add_revista" onclick="return showAddPopupRevista(this);">
+                            <img src="{% static 'img/add.png' %}" alt="">
+                        </a>
+                    {% endif %}
+
                 </p>
                 {% endfor %}
                 <input type="submit" name="" id="" value="Enviar">

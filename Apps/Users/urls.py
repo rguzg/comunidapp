@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-product', login_required(views.AddProduct.as_view()), name="add-product"),
     path('<slug:pk>/', login_required(views.Perfil.as_view()), name='profile-detail'),
     url(r'^author/create', views.AutorCreatePopup.as_view(), name = "AuthorCreate"),
+    url(r'^revista/create', views.RevistaCreatePopup.as_view(), name = "RevistaCreate"),
 ]

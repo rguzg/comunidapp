@@ -177,7 +177,7 @@ class Ciudad(models.Model):
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
 
 class Revista(models.Model):
-    revista = models.CharField(max_length=300, null=False, blank=False)
+    nombre = models.CharField(max_length=300, null=False, blank=False)
 
 class Editorial(models.Model):
     editorial = models.CharField(max_length=300, null=False, blank=False)
