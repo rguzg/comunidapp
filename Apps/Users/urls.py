@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
 from . import views
 
@@ -11,4 +12,5 @@ urlpatterns = [
     path('password', login_required(views.CustomResetPassword.as_view()), name="password"),
     path('add-product', login_required(views.AddProduct.as_view()), name="add-product"),
     path('<slug:pk>/', login_required(views.Perfil.as_view()), name='profile-detail'),
+    url(r'^author/create', views.AutorCreatePopup.as_view(), name = "AuthorCreate"),
 ]

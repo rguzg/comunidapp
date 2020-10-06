@@ -1,9 +1,9 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
+from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User, Articulo,  CapituloLibro, Patente, Congreso, Investigacion, Tesis, Autor
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
-
+from django.utils.safestring import mark_safe
 
 class UserActualizadoForm(forms.Form):
     error_css_class = "error"
@@ -66,36 +66,47 @@ class ArticuloForm(ModelForm):
     def clean(self):
         cleaned_data = super(ArticuloForm, self).clean()
 
-         # Values may be None if the fields did not pass previous validations.
+        # Values may be None if the fields did not pass previous validations.
         # if field_1 is not None and field_2 is not None and field_3 is not None:
-            # If fields have values, perform validation:
-            # if not field_3 == field_1 + field_2:
-                # Use None as the first parameter to make it a non-field error.
-                # If you feel is related to a field, use this field's name.
-                # self.add_error(None, ValidationError('field_3 must be equal to the sum of field_1 and filed_2'))
+        # If fields have values, perform validation:
+        # if not field_3 == field_1 + field_2:
+        # Use None as the first parameter to make it a non-field error.
+        # If you feel is related to a field, use this field's name.
+        # self.add_error(None, ValidationError('field_3 must be equal to the sum of field_1 and filed_2'))
 
         # Required only if Django version < 1.7 :
         return cleaned_data
+
+
+class AutorForm(ModelForm):
+    class Meta:
+        model = Autor
+        fields = ['first_name', 'last_name']
+
 
 class CapituloLibroForm(ModelForm):
     class Meta:
         model = CapituloLibro
         fields = '__all__'
 
+
 class PatenteForm(ModelForm):
     class Meta:
         model = Patente
         fields = '__all__'
+
 
 class CongresoForm(ModelForm):
     class Meta:
         model = Congreso
         fields = '__all__'
 
+
 class InvestigacionForm(ModelForm):
     class Meta:
         model = Investigacion
         fields = '__all__'
+
 
 class TesisForm(ModelForm):
     class Meta:

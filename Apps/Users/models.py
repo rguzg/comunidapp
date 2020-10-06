@@ -145,17 +145,14 @@ class Autor(models.Model):
         if len(self.last_name)<=3:
             raise ValidationError('El apellido debe ser mayor a 3 caracteres')
 
-        
-
-
     def __str__(self):
         if self.user is not None:
             if self.user.get_full_name() is "":
                 return "{0}".format(self.user.username)
             else:
                 return "{0}".format(self.user.get_full_name())
-        else:
-            return "{0} {1}".format(self.first_name, self.last_name)
+        
+        return "{0} {1}".format(self.first_name, self.last_name)
             
 
 
@@ -191,8 +188,8 @@ class Institucion(models.Model):
 class Articulo(models.Model):
     categorias = [
         ('ARB', 'Arbitradro'),
-        ('IND', 'INDIZADO'),
-        ('JCR', 'INDIZADO JCR'),
+        ('IND', 'Indizado'),
+        ('JCR', 'Indizado JCR'),
         ('SCP', 'SCOPUS')
     ]
 
