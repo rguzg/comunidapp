@@ -131,7 +131,7 @@ class UserActualizado(models.Model):
 
 class Autor(models.Model):
     first_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
-    last_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def clean(self):

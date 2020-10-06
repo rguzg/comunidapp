@@ -187,12 +187,10 @@ class AddProduct(TemplateView):
 
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        print('HOLA')
-        form = AutorForm(request.POST)
+        form = AutorForm()
         return render(request, "autor_form.html", {"form" : form})
 
     def post(self, request, *args, **kwargs):
-        print('hola')
         form = AutorForm(request.POST)
         if form.is_valid():
             instance = form.save()
