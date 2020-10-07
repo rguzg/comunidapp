@@ -154,9 +154,6 @@ class Autor(models.Model):
         
         return "{0} {1}".format(self.first_name, self.last_name)
             
-
-
-
 class Alumno(models.Model):
     expediente = models.PositiveIntegerField(validators=[
             MaxValueValidator(111111),
@@ -198,6 +195,10 @@ class Editorial(models.Model):
 class Institucion(models.Model):
     nombre = models.CharField(max_length=100)
 
+
+
+
+
 class Articulo(models.Model):
     categorias = [
         ('ARB', 'Arbitradro'),
@@ -222,11 +223,11 @@ class Articulo(models.Model):
     url = models.URLField(max_length=300, null=True, blank=True)
     pagina_inicio = models.PositiveIntegerField()
     pagina_fin = models.PositiveIntegerField()
-    volumen = models.PositiveIntegerField(null=True, blank=False)
+    volumen = models.PositiveIntegerField(null=True, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     #Verificar que INDEZADO este seleccionado
-    indice_revista = models.PositiveIntegerField(null=True, blank=True)
     doi = models.URLField(max_length=100, null=True, blank=True)
+    indice_revista = models.PositiveIntegerField(null=True, blank=True)
 
 class CapituloLibro(models.Model):
     tipos = [
