@@ -6,24 +6,20 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import UpdateView, FormView
-from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais
+from django.views.generic.edit import UpdateView, FormView, CreateView
+from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais, Articulo
 from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm
 import ast
-import pandas as pd
-import csv
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
-
-
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm
 
-# CBV para el HTML de Home (todavia sin definir)
-
-
+# CBV para el HTML de Home
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
@@ -34,15 +30,11 @@ class Home(ListView):
     #     return queryset
 
 # CBV para el HTML del detalle de cada usuario
-
-
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
 
 # CBV para el HTML donde se muestra el perfil del usuario
-
-
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
@@ -92,14 +84,10 @@ class Profile(FormView):
         return initial
 
 # CBV para la funcionalidad de Logout
-
-
 class CustomLogout(LogoutView):
     next_page = 'login'
 
 # CBV para la funcionalidad de cambiar la contraseña
-
-
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -124,8 +112,6 @@ class CustomResetPassword(View):
         })
 
 # CBV para aprobar o rechazar peticion de cambio de perfil
-
-
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
@@ -172,23 +158,50 @@ class UpdatedUsers(ListView):
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
 
+class AddArticulo(SuccessMessageMixin, CreateView):
+    template_name = 'add-articulo.html'
+    form_class = ArticuloForm
+    success_url = '/new/article'
+    success_message = 'Articulo creado correctamente'
 
-class AddProduct(TemplateView):
-    template_name = "add-product.html"
 
-    def get_context_data(self, **kwargs):
-        context = super(AddProduct, self).get_context_data(**kwargs)
-        context['ArticuloForm'] = ArticuloForm(prefix='ArticuloForm')
-        context['CapituloLibroForm'] = CapituloLibroForm(
-            prefix='CapituloLibro')
-        context['PatenteForm'] = PatenteForm(prefix='PatenteForm')
-        context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
-        context['InvestigacionForm'] = InvestigacionForm(
-            prefix='InvestigacionForm')
-        context['TesisForm'] = TesisForm(prefix='TesisForm')
-        context['title'] = 'Agrega un producto'
-        return context
+# class AddProduct(TemplateView):
+    # template_name = "add-product.html"
 
+    # def get_context_data(self, **kwargs):
+    #     context = super(AddProduct, self).get_context_data(**kwargs)
+    #     context['ArticuloForm'] = ArticuloForm(prefix='ArticuloForm')
+    #     context['CapituloLibroForm'] = CapituloLibroForm(prefix='CapituloLibro')
+    #     context['PatenteForm'] = PatenteForm(prefix='PatenteForm')
+    #     context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
+    #     context['InvestigacionForm'] = InvestigacionForm(prefix='InvestigacionForm')
+    #     context['TesisForm'] = TesisForm(prefix='TesisForm')
+    #     context['title'] = 'Agrega un producto'
+
+    #     # post = self.request.POST.copy()
+    #     invalid_articulo = self.request.session['invalid_articulo']
+    #     print('Si esta entrando')
+    #     if(invalid_articulo):
+    #         print('Formulario incorrecto')
+    #         context['ArticuloForm'] = ArticuloForm(invalid_articulo, prefix='ArticuloForm')
+    #     return context
+
+# class AddArticulo(View):
+#     def post(self, request, *args, **kwargs):
+#         form = ArticuloForm(request.POST, prefix='ArticuloForm')
+#         # print(form)
+#         if form.is_valid():
+#             instance = form.save()
+#             # return render('add-product')
+#         else:
+#             print(form.errors)
+#             request.session['invalid_articulo'] = form
+#             print(request.session['invalid_articulo'])
+#         # return render(request, "add-product.html", {"form": form})
+#         return redirect('add-product')
+        
+
+    
 
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
@@ -226,7 +239,6 @@ class EditorialCreatePopup(View):
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-editorial");</script>' % (instance.pk, instance))
         return render(request, "form_editorial.html", {"form": form})
 
-
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = PalabrasForm()
@@ -255,3 +267,4 @@ class PalabrasCreatePopup(View):
 #         for pais in list2:
 #             Pais.objects.create(nombre=pais)
 #     return HttpResponse('Hey')
+

@@ -208,9 +208,9 @@ class Articulo(models.Model):
     ]
 
     categoria = models.CharField(max_length=3, choices=categorias, null=False, blank=False)
-    primer_autor = models.ForeignKey(Autor, related_name='primer_autor_articulo', on_delete=models.CASCADE)
-    primer_coladorador = models.ForeignKey(Autor, related_name='primer_colaborador_articulo',on_delete=models.CASCADE)
-    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_articulo',on_delete=models.CASCADE)
+    primer_autor = models.ForeignKey(Autor, related_name='primer_autor_articulo', on_delete=models.CASCADE, null=False, blank=False)
+    primer_colaborador = models.ForeignKey(Autor, related_name='primer_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
+    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
     palabras_clave = models.ManyToManyField(PalabrasClave)
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
@@ -219,13 +219,12 @@ class Articulo(models.Model):
     revista = models.ForeignKey(Revista, on_delete=models.CASCADE)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
     isnn = models.BigIntegerField()
-    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    publicacion = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     url = models.URLField(max_length=300, null=True, blank=True)
     pagina_inicio = models.PositiveIntegerField()
     pagina_fin = models.PositiveIntegerField()
     volumen = models.PositiveIntegerField(null=True, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    #Verificar que INDEZADO este seleccionado
     doi = models.URLField(max_length=100, null=True, blank=True)
     indice_revista = models.PositiveIntegerField(null=True, blank=True)
 

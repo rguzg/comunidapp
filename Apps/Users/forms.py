@@ -78,11 +78,6 @@ class RevistaForm(ModelForm):
         model = Revista
         fields = '__all__'
 
-class ArticuloForm(ModelForm):
-    class Meta:
-        model = Articulo
-        fields = '__all__'
-
 class EditorialForm(ModelForm):
     class Meta:
         model = Editorial
@@ -92,6 +87,59 @@ class PalabrasForm(ModelForm):
     class Meta:
         model = PalabrasClave
         fields = '__all__'
+
+
+
+class ArticuloForm(ModelForm):
+    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+    class Meta:
+        model = Articulo
+        fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super(ArticuloForm, self).clean()
+        print(cleaned_data)
+        primer_autor = cleaned_data.get('primer_autor')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+        segundo_colaborador = cleaned_data.get('segundo_colaborador')
+        if segundo_colaborador:
+            if not primer_colaborador:
+                raise ValidationError('No puedes tener un segundo colaborador sin un primer colaborador')
+                
+        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
+            raise ValidationError('El autor y los colaboradores no pueden ser la misma persona')
+
+        pagina_inicio = cleaned_data.get('pagina_inicio')
+        pagina_fin = cleaned_data.get('pagina_fin')
+        if pagina_fin < pagina_inicio:
+            raise ValidationError('La pagina de inicio no puede ser mayor a la pagina de fin')
+        
+        estado = cleaned_data.get('estado')
+        publicacion = cleaned_data.get('publicacion')
+        if estado == 'A':
+            if publicacion:
+                raise ValidationError('No puedes agregar una fecha de publicacion a un articulo no publicado')
+        else:
+            if not publicacion:
+                raise ValidationError('Debes agregar una fecha de publicacion')
+                
+        palabras_clave = cleaned_data.get('palabras_clave')
+        print(len(palabras_clave))
+        print(palabras_clave.count())
+        if palabras_clave.count() < 3:
+            raise ValidationError('Debes escoger al menos 3 palabras clave')
+
+        lineas_investigacion = cleaned_data.get('lineas_investigacion')
+        if lineas_investigacion.count() == 0:
+            raise ValidationError('Debes escoger al menos 1 linea de investigacion')
+        
+        categoria = cleaned_data.get('categoria')    
+        indice_revista = cleaned_data.get('indice_revista')
+        if categoria == 'IND' or categoria == 'JCR':
+            if not indice_revista: 
+                raise ValidationError('Los articulos INDIZADOS o JCR deben tener un indice de revista')
+       
+        return cleaned_data
 
 class CapituloLibroForm(ModelForm):
     class Meta:
