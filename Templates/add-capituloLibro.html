@@ -1,0 +1,72 @@
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h1>Agregar un Capitulo/Libro</h1>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    <div class="non-field-errors">
+        {% for err in form.non_field_errors %}
+        <p class="form-error">{{ err }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <form action="{% url 'AddCapituloLibro' %}" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            {{ field.errors }}
+            {{ field.label_tag }}
+
+            {% if field.name == 'publicacion' %}
+            {{ field|addclass:' datepicker' }}
+            {% else %}
+            {{ field|addclass:'' }}
+            {% endif %}
+
+            {% if field.name == "primer_autor" or field.name == "primer_coautor" or field.name == "segundo_coautor" %}
+            <a href="javascript:void(0);" data-url="author/create" id="add_author" onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "palabras_clave" %}
+            <a href="javascript:void(0);" data-url="palabras/create" id="add_palabras"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "revista" %}
+            <a href="javascript:void(0);" data-url="revista/create" id="add_revista"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "editorial" %}
+            <a href="javascript:void(0);" data-url="editorial/create" id="add_editorial"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        <input type="submit" name="" id="" value="Enviar">
+    </form>
+</div>
+
+
+{% endblock %}

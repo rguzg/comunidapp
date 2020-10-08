@@ -164,6 +164,12 @@ class AddArticulo(SuccessMessageMixin, CreateView):
     success_url = '/new/article'
     success_message = 'Articulo creado correctamente'
 
+class AddCapituloLibro(SuccessMessageMixin, CreateView):
+    template_name = 'add-capituloLibro.html'
+    form_class = CapituloLibroForm
+    success_url = '/new/bookChapter'
+    success_message = 'Libro/Capitulo creado correctamente'
+
 
 # class AddProduct(TemplateView):
     # template_name = "add-product.html"

@@ -238,6 +238,8 @@ class CapituloLibro(models.Model):
     segundo_coautor = models.ForeignKey(Autor, related_name='segundo_coautor_libro',on_delete=models.CASCADE)
     tipo = models.CharField(max_length=1, choices=tipos)
     titulo = models.CharField(max_length=150)
+    pagina_inicio = models.PositiveIntegerField(null=True, blank=True)
+    pagina_fin = models.PositiveIntegerField(null=True, blank=True)
     palabras_clave = models.ManyToManyField(PalabrasClave)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
