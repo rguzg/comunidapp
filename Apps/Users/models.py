@@ -3,12 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from .validators import isalphavalidator
+from django.core.validators import FileExtensionValidator
 
 def image_user(instance, filename):
     return '{0}/{1}'.format('images_users', instance.username)
 
 def comprobantes(instance, filename):
-    return '{0}/{1}'.format('comprobantes', instance.username)
+    return '{0}/{1}.{2}'.format('comprobantes', instance.registro, 'pdf')
 
 def resumenes(instance, filename):
     return '{0}/{1}'.format('resumenes', instance.username)
@@ -256,12 +257,13 @@ class Patente(models.Model):
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
     uso = models.CharField(max_length=255)
-    registro = models.CharField(max_length=255)
+    registro = models.CharField(max_length=25)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     publicacion = models.DateField(auto_now=False, auto_now_add=False)
-    comprobante = models.FileField(upload_to=comprobantes)
+    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF'])]  )
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+
     
 class Congreso(models.Model):
     primer_autor = models.ForeignKey(Autor, related_name='primer_autor_congreso', on_delete=models.CASCADE)
@@ -315,3 +317,4 @@ class Tesis(models.Model):
     fin = models.DateField(auto_now=False, auto_now_add=False)
     profesor = models.ForeignKey(User, on_delete=models.CASCADE)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+    palabras_clave = models.ManyToManyField(PalabrasClave)
