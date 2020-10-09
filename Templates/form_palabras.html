@@ -3,8 +3,8 @@
 {% load custom_tags %}
 {% block content %}
 <div class="container">
-    <h1>Agregar una palabra clave</h1>
-    <form method='POST' enctype="multipart/form-data" novalidate id="palabras-form">
+    <h1>{{title}}</h1>
+    <form method='POST' id="palabras-form">
         {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Submit"/>
