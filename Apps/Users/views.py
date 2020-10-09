@@ -170,6 +170,12 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
     success_url = '/new/bookChapter'
     success_message = 'Libro/Capitulo creado correctamente'
 
+class AddPatente(SuccessMessageMixin, CreateView):
+    template_name = 'add-patent.html'
+    form_class = PatenteForm
+    success_url = '/new/patent'
+    success_message = 'Patente creada correctamente'
+
 
 # class AddProduct(TemplateView):
     # template_name = "add-product.html"
