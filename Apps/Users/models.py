@@ -12,7 +12,7 @@ def comprobantes(instance, filename):
     return '{0}/{1}.{2}'.format('comprobantes', instance.registro, 'pdf')
 
 def resumenes(instance, filename):
-    return '{0}/{1}'.format('resumenes', instance.username)
+    return '{0}/{1}.{2}'.format('resumenes', instance.titulo, 'pdf')
 
 grados = [
     ('L', 'Licenciatura'),
@@ -156,9 +156,9 @@ class Autor(models.Model):
         return "{0} {1}".format(self.first_name, self.last_name)
             
 class Alumno(models.Model):
-    expediente = models.PositiveIntegerField(validators=[
-            MaxValueValidator(111111),
-            MinValueValidator(999999)
+    expediente = models.PositiveIntegerField(unique=True, validators=[
+            MaxValueValidator(999999),
+            MinValueValidator(111111)
         ])
 
 class PalabrasClave(models.Model):
@@ -194,7 +194,7 @@ class Editorial(models.Model):
         return self.nombre
 
 class Institucion(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique=True)
 
 
 
@@ -302,7 +302,7 @@ class Investigacion(models.Model):
     primer_alumno = models.ForeignKey(Alumno, related_name='primer_alumno_investigacion', on_delete=models.CASCADE)
     segundo_alumno = models.ForeignKey(Alumno, related_name='segundo_alumno_investigacion', on_delete=models.CASCADE)
     tercer_alumno = models.ForeignKey(Alumno,related_name='tercer_alumno_investigacion', on_delete=models.CASCADE)
-    resumen = models.FileField(upload_to=resumenes)
+    resumen = models.FileField(upload_to=resumenes, validators=[FileExtensionValidator(allowed_extensions=['PDF'])])
     palabras_clave = models.ManyToManyField(PalabrasClave)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Contrato, Facultad, Nivel, LineaInvestigacion, User, Articulo,  CapituloLibro, Patente, Congreso, Investigacion, Tesis, Autor, Revista, Editorial, PalabrasClave
+from .models import Contrato, Institucion, Facultad, Nivel, LineaInvestigacion, User, Articulo,  CapituloLibro, Patente, Congreso, Investigacion, Tesis, Autor, Revista, Editorial, PalabrasClave, Alumno
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from django.core.exceptions import ValidationError
@@ -94,6 +94,23 @@ class LineasForm(ModelForm):
         model = LineaInvestigacion
         fields = '__all__'
 
+class AlumnoForm(ModelForm):
+
+    class Meta:
+        model = Alumno
+        fields = '__all__'
+
+class InstitucionForm(ModelForm):
+    class Meta:
+        model = Institucion
+        fields = '__all__'
+
+
+
+
+"""
+Separacion de formularios POPUP y formularios estaticos
+"""
 
 class ArticuloForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
@@ -148,7 +165,6 @@ class ArticuloForm(ModelForm):
 
 class CapituloLibroForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
-    # pagina_i
     class Meta:
         model = CapituloLibro
         fields = '__all__'
@@ -258,9 +274,63 @@ class CongresoForm(ModelForm):
         return cleaned_data
 
 class InvestigacionForm(ModelForm):
+    inicio = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
+    fin = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
     class Meta:
         model = Investigacion
         fields = '__all__'
+
+    def clean(self):
+        cleaned_data = super(InvestigacionForm, self).clean()
+        financiamiento = cleaned_data.get('financiamiento')
+        tipo_financiamiento = cleaned_data.get('tipo_financiamiento')
+        if financiamiento:
+            if not tipo_financiamiento:
+                raise ValidationError('Debes escoger un tipo de financiamiento')
+        else:
+            if tipo_financiamiento:
+                raise ValidationError('No puedes escoger un tipo de financimiento si no tienes financiamiento')
+
+        primer_autor = cleaned_data.get('primer_autor')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+        segundo_colaborador = cleaned_data.get('segundo_colaborador')
+        
+        if segundo_colaborador:
+            if not primer_colaborador:
+                raise ValidationError('No puedes tener un segundo colaborador sin un primer colaborador')
+                
+        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
+            raise ValidationError('El autor y los colaboradores no pueden ser la misma persona')
+        
+        primer_alumno = cleaned_data.get('primer_alumno')
+        segundo_alumno = cleaned_data.get('segundo_alumno')
+        tercer_alumno = cleaned_data.get('tercer_alumno')
+        if primer_alumno == tercer_alumno or primer_alumno == segundo_alumno or tercer_alumno == segundo_alumno:
+            raise ValidationError('Los alumnos no pueden ser la misma persona')
+
+        
+                
+        palabras_clave = cleaned_data.get('palabras_clave')
+        if palabras_clave.count() < 3:
+            raise ValidationError('Debes escoger al menos 3 palabras clave')
+
+        lineas_investigacion = cleaned_data.get('lineas_investigacion')
+        if lineas_investigacion.count() == 0:
+            raise ValidationError('Debes escoger al menos 1 linea de investigacion')
+        
+        categoria = cleaned_data.get('categoria')    
+        indice_revista = cleaned_data.get('indice_revista')
+        if categoria == 'IND' or categoria == 'JCR':
+            if not indice_revista: 
+                raise ValidationError('Los articulos INDIZADOS o JCR deben tener un indice de revista')
+
+        inicio = cleaned_data.get('inicio')
+        fin = cleaned_data.get('fin')
+        if inicio and fin:
+            if inicio > fin:
+                raise ValidationError('La fecha de inicio no puede ser mayor a la fecha de fin')
+       
+        return cleaned_data
 
 class TesisForm(ModelForm):
     class Meta:

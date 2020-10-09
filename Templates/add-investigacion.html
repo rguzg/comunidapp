@@ -1,0 +1,87 @@
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h1>Agregar un Proyecto de Investigacion/Vinculacion</h1>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    <div class="non-field-errors">
+        {% for err in form.non_field_errors %}
+        <p class="form-error">{{ err }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <form action="{% url 'AddInvestigacion' %}" enctype="multipart/form-data" type method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        <div>
+            {{ field.errors }}
+            {{ field.label_tag }}
+
+            {% if field.name == 'inicio' or field.name == 'fin' %}
+            {{ field|addclass:' datepicker' }}
+            {% else %}
+            {{ field|addclass:'' }}
+            {% endif %}
+
+            {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" %}
+            <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_author" onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "primer_alumno" or field.name == "tercer_alumno" or field.name == "segundo_alumno" %}
+            <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno" onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "palabras_clave" %}
+            <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}}" id="add_palabras"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "institucion" %}
+            <a href="javascript:void(0);" data-url="{% url 'InvestigacionCreate' %}" id="add_institucion"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "editorial" %}
+            <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            {% if field.name == "lineas_investigacion" %}
+            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
+            
+
+        </div>
+        {% endfor %}
+        <input type="submit" name="" id="" value="Enviar">
+    </form>
+</div>
+
+
+{% endblock %}

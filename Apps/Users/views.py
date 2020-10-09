@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView, CreateView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais, Articulo
-from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm, LineasForm
+from .forms import InstitucionForm, UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm, LineasForm, AlumnoForm
 import ast
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -200,6 +200,12 @@ class AddCongreso(SuccessMessageMixin, CreateView):
     success_url = '/new/congress'
     success_message = 'Participacion en congreso registrada correctamente'
 
+class AddInvestigacion(SuccessMessageMixin, CreateView):
+    template_name = 'add-investigacion.html'
+    form_class = InvestigacionForm
+    success_url = '/new/investigation'
+    success_message = 'Proyecto de Investigacion/Vinculacion agregado'
+
 # class AddProduct(TemplateView):
     # template_name = "add-product.html"
 
@@ -251,6 +257,20 @@ class AutorCreatePopup(View):
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_primer_autor");</script>' % (instance.pk, instance))
         return render(request, "form_autor.html", {"form": form})
 
+class AlumnoCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = AlumnoForm()
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega un Alumno'
+            })
+
+    def post(self, request, *args, **kwargs):
+        form = AlumnoForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_primer_alumno");</script>' % (instance.pk, instance))
+        return render(request, "form_palabras.html", {"form": form})
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
@@ -314,6 +334,22 @@ class LineasCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_lineas_investigacion");</script>' % (instance.pk, instance))
         return render(request, "form_palabras.html", {"form": form})
+
+class InstitucionCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = InstitucionForm()
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega una Institucion'
+            })
+
+    def post(self, request, *args, **kwargs):
+        form = InstitucionForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_institucion");</script>' % (instance.pk, instance))
+        return render(request, "form_palabras.html", {"form": form})
+
 # def paises(request):
 #     import csv
 #     from django.db import transaction

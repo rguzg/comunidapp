@@ -19,9 +19,12 @@ urlpatterns = [
     path('new/chapterBook', login_required(views.AddCapituloLibro.as_view()), name="AddCapituloLibro"),
     path('new/patent', login_required(views.AddPatente.as_view()), name="AddPatente"),
     path('new/congress', login_required(views.AddCongreso.as_view()), name="AddCongreso"),
+    path('new/investigation', login_required(views.AddInvestigacion.as_view()), name="AddInvestigacion"),
     url(r'^author/create', views.AutorCreatePopup.as_view(), name = "AuthorCreate"),
     url(r'^revista/create', views.RevistaCreatePopup.as_view(), name = "RevistaCreate"),
     url(r'^editorial/create', views.EditorialCreatePopup.as_view(), name = "EditorialCreate"),
     url(r'^palabras/create', views.PalabrasCreatePopup.as_view(), name = "PalabrasCreate"),
     url(r'^lineas/create', views.LineasCreatePopup.as_view(), name = "LineasCreate"),
+    url(r'^alumno/create', views.AlumnoCreatePopup.as_view(), name = "AlumnoCreate"),
+    url(r'^investigacion/create', views.InstitucionCreatePopup.as_view(), name = "InvestigacionCreate"),
 ]
