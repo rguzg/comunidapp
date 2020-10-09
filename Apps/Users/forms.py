@@ -70,7 +70,8 @@ class AutorForm(ModelForm):
         first_name = cleaned_data.get('first_name')
         last_name = cleaned_data.get('last_name')
         autor_existente = Autor.objects.filter(first_name=first_name, last_name=last_name).count()
-        if autor_existente == 0:
+        print(autor_existente)
+        if autor_existente > 0:
             raise ValidationError('Un autor con los mismos datos ya existe. Eligelo o verifica tus datos')
 
 class RevistaForm(ModelForm):
@@ -88,6 +89,10 @@ class PalabrasForm(ModelForm):
         model = PalabrasClave
         fields = '__all__'
 
+class LineasForm(ModelForm):
+    class Meta:
+        model = LineaInvestigacion
+        fields = '__all__'
 
 
 class ArticuloForm(ModelForm):
@@ -207,12 +212,50 @@ class PatenteForm(ModelForm):
         model = Patente
         fields = '__all__'
 
-
-
 class CongresoForm(ModelForm):
+    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+    presentacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
     class Meta:
         model = Congreso
         fields = '__all__'
+
+    def clean(self):
+
+        cleaned_data = super(CongresoForm, self).clean()
+        # print(cleaned_data)
+        primer_autor = cleaned_data.get('primer_autor')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+        segundo_colaborador = cleaned_data.get('segundo_colaborador')
+        if segundo_colaborador:
+            if not primer_colaborador:
+                raise ValidationError('No puedes tener un segundo colaborador sin un primer colaborador')
+                
+        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
+            raise ValidationError('El autor y los colaboradores no pueden ser la misma persona')
+        
+        estado = cleaned_data.get('estado')
+        publicacion = cleaned_data.get('publicacion')
+        if estado == 'A':
+            if publicacion:
+                raise ValidationError('No puedes agregar una fecha de publicacion a un articulo no publicado')
+        else:
+            if not publicacion:
+                raise ValidationError('Debes agregar una fecha de publicacion')
+                
+        palabras_clave = cleaned_data.get('palabras_clave')
+        if palabras_clave.count() < 3:
+            raise ValidationError('Debes escoger al menos 3 palabras clave')
+
+        lineas_investigacion = cleaned_data.get('lineas_investigacion')
+        if lineas_investigacion.count() == 0:
+            raise ValidationError('Debes escoger al menos 1 linea de investigacion')
+
+        presentacion = cleaned_data.get('presentacion')
+        if presentacion and publicacion:
+            if presentacion > publicacion:
+                raise ValidationError('La fecha de presentacion no puede ser mayor a la fecha de publicacion')
+        
+        return cleaned_data
 
 class InvestigacionForm(ModelForm):
     class Meta:

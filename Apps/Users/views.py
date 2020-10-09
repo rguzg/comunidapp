@@ -8,18 +8,22 @@ from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView, CreateView
 from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais, Articulo
-from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm
+from .forms import UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm, LineasForm
 import ast
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
+
+
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm
 
 # CBV para el HTML de Home
+
+
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
@@ -30,11 +34,15 @@ class Home(ListView):
     #     return queryset
 
 # CBV para el HTML del detalle de cada usuario
+
+
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
 
 # CBV para el HTML donde se muestra el perfil del usuario
+
+
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
@@ -84,10 +92,14 @@ class Profile(FormView):
         return initial
 
 # CBV para la funcionalidad de Logout
+
+
 class CustomLogout(LogoutView):
     next_page = 'login'
 
 # CBV para la funcionalidad de cambiar la contraseña
+
+
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -112,6 +124,8 @@ class CustomResetPassword(View):
         })
 
 # CBV para aprobar o rechazar peticion de cambio de perfil
+
+
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
@@ -158,11 +172,13 @@ class UpdatedUsers(ListView):
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
 
+
 class AddArticulo(SuccessMessageMixin, CreateView):
     template_name = 'add-articulo.html'
     form_class = ArticuloForm
     success_url = '/new/article'
     success_message = 'Articulo creado correctamente'
+
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
     template_name = 'add-capituloLibro.html'
@@ -170,12 +186,19 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
     success_url = '/new/bookChapter'
     success_message = 'Libro/Capitulo creado correctamente'
 
+
 class AddPatente(SuccessMessageMixin, CreateView):
     template_name = 'add-patent.html'
     form_class = PatenteForm
     success_url = '/new/patent'
     success_message = 'Patente creada correctamente'
 
+
+class AddCongreso(SuccessMessageMixin, CreateView):
+    template_name = 'add-congress.html'
+    form_class = CongresoForm
+    success_url = '/new/congress'
+    success_message = 'Participacion en congreso registrada correctamente'
 
 # class AddProduct(TemplateView):
     # template_name = "add-product.html"
@@ -211,58 +234,86 @@ class AddPatente(SuccessMessageMixin, CreateView):
 #             print(request.session['invalid_articulo'])
 #         # return render(request, "add-product.html", {"form": form})
 #         return redirect('add-product')
-        
 
-    
 
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
-        return render(request, "form_autor.html", {"form": form})
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega un Autor externo'
+            })
 
     def post(self, request, *args, **kwargs):
         form = AutorForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-primer_autor");</script>' % (instance.pk, instance))
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_primer_autor");</script>' % (instance.pk, instance))
         return render(request, "form_autor.html", {"form": form})
+
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = RevistaForm()
-        return render(request, "form_revista.html", {"form": form})
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega una Revista'
+            })
 
     def post(self, request, *args, **kwargs):
         form = RevistaForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-revista");</script>' % (instance.pk, instance))
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_revista");</script>' % (instance.pk, instance))
         return render(request, "form_revista.html", {"form": form})
+
 
 class EditorialCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = EditorialForm()
-        return render(request, "form_editorial.html", {"form": form})
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega una Editorial'
+            })
 
     def post(self, request, *args, **kwargs):
         form = EditorialForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-editorial");</script>' % (instance.pk, instance))
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_editorial");</script>' % (instance.pk, instance))
         return render(request, "form_editorial.html", {"form": form})
+
 
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = PalabrasForm()
-        return render(request, "form_palabras.html", {"form": form})
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega una palabra clave'
+            })
 
     def post(self, request, *args, **kwargs):
         form = PalabrasForm(request.POST)
         if form.is_valid():
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_ArticuloForm-palabras_clave");</script>' % (instance.pk, instance))
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_palabras_clave");</script>' % (instance.pk, instance))
         return render(request, "form_palabras.html", {"form": form})
 
+
+class LineasCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = LineasForm()
+        return render(request, "form_palabras.html", {
+            "form": form, 
+            'title': 'Agrega una Linea de Investigacion'
+            })
+
+    def post(self, request, *args, **kwargs):
+        form = LineasForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_lineas_investigacion");</script>' % (instance.pk, instance))
+        return render(request, "form_palabras.html", {"form": form})
 # def paises(request):
 #     import csv
 #     from django.db import transaction
@@ -279,4 +330,3 @@ class PalabrasCreatePopup(View):
 #         for pais in list2:
 #             Pais.objects.create(nombre=pais)
 #     return HttpResponse('Hey')
-
