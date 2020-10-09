@@ -202,9 +202,12 @@ class CapituloLibroForm(ModelForm):
         return cleaned_data
 
 class PatenteForm(ModelForm):
+    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
     class Meta:
         model = Patente
         fields = '__all__'
+
+
 
 class CongresoForm(ModelForm):
     class Meta:
