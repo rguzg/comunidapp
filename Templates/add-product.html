@@ -50,28 +50,28 @@
                     {% endif %}
 
                 {% if field.name == "primer_autor" or field.name == "primer_coladorador" or field.name == "segundo_colaborador" %}
-                <a href="javascript:void(0);" data-url="author/create" id="add_author"
+                <a href="javascript:void(0);" data-url="/author/create" id="add_author"
                     onclick="return showAddPopup(this);">
                     <img src="{% static 'img/add.png' %}" alt="">
                 </a>
                 {% endif %}
 
                 {% if field.name == "palabras_clave" %}
-                <a href="javascript:void(0);" data-url="palabras/create" id="add_palabras"
+                <a href="javascript:void(0);" data-url="/palabras/create" id="add_palabras"
                     onclick="return showAddPopup(this);">
                     <img src="{% static 'img/add.png' %}" alt="">
                 </a>
                 {% endif %}
 
                 {% if field.name == "revista" %}
-                <a href="javascript:void(0);" data-url="revista/create" id="add_revista"
+                <a href="javascript:void(0);" data-url="/revista/create" id="add_revista"
                     onclick="return showAddPopup(this);">
                     <img src="{% static 'img/add.png' %}" alt="">
                 </a>
                 {% endif %}
 
                 {% if field.name == "editorial" %}
-                <a href="javascript:void(0);" data-url="editorial/create" id="add_editorial"
+                <a href="javascript:void(0);" data-url="/editorial/create" id="add_editorial"
                     onclick="return showAddPopup(this);">
                     <img src="{% static 'img/add.png' %}" alt="">
                 </a>
