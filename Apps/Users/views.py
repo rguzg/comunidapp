@@ -206,6 +206,13 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
     success_url = '/new/investigation'
     success_message = 'Proyecto de Investigacion/Vinculacion agregado'
 
+
+class AddTesis(SuccessMessageMixin, CreateView):
+    template_name = 'add-tesis.html'
+    form_class = TesisForm
+    success_url = '/new/tesis'
+    success_message = 'Direccion de tesis agregada'
+
 # class AddProduct(TemplateView):
     # template_name = "add-product.html"
 
