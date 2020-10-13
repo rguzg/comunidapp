@@ -1,52 +1,72 @@
-from django.shortcuts import render, redirect, HttpResponse
+import ast
 import json
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import PasswordChangeForm
-from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import UpdateView, FormView, CreateView
-from .models import User, UserActualizado, Nivel, Facultad, LineaInvestigacion, Contrato, Pais, Articulo
-from .forms import InstitucionForm, UserActualizadoForm, AuthenticationForm, ArticuloForm, CapituloLibroForm, PatenteForm, CongresoForm, InvestigacionForm, TesisForm, AutorForm, RevistaForm, EditorialForm, PalabrasForm, LineasForm, AlumnoForm
-import ast
-from django.contrib import messages
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import HttpResponse, redirect, render
+from django.views import View
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, FormView, UpdateView
+from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
+                    CapituloLibroForm, CongresoForm, EditorialForm,
+                    InstitucionForm, InvestigacionForm, LineasForm,
+                    PalabrasForm, PatenteForm, RevistaForm, TesisForm,
+                    UserActualizadoForm)
+from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
+                     Pais, User, UserActualizado)
 
+"""
+Clases para el manejo y administracion de sesiones y de usuarios
+"""
 # CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
-
-
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm
 
-# CBV para el HTML de Home
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Inicia sesión en Comunidapp'
+        return context
 
-
+# CBV para el HTML de Home (donde se listan los usuarios)
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
     model = User
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Comunidapp'
+        return context
+
     # def get_queryset(self):
     #     queryset = User.objects.filter(is_superuser=False)
     #     return queryset
 
-# CBV para el HTML del detalle de cada usuario
-
-
+# CBV para el perfil detallado de cada usuario
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
 
-# CBV para el HTML donde se muestra el perfil del usuario
+    def get_context_data(self, **kwargs):
+        context = super(Perfil, self).get_context_data(**kwargs)
+        user = super().get_object()
+        context['title'] = "Perfil de {0}".format(user.get_full_name())
+        return context
 
-
+# CBV para actualizar los datos del perfil del usuario
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
     success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(Profile, self).get_context_data(**kwargs)
+        context['title'] = "Actualización de mis datos"
+        return context
 
     def form_valid(self, form):
         """
@@ -92,14 +112,10 @@ class Profile(FormView):
         return initial
 
 # CBV para la funcionalidad de Logout
-
-
 class CustomLogout(LogoutView):
     next_page = 'login'
 
 # CBV para la funcionalidad de cambiar la contraseña
-
-
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -110,6 +126,7 @@ class CustomResetPassword(View):
         )
         return render(request, 'password.html', {
             'form': form,
+            'title': 'Cambio de contraseña'
         })
 
     def post(self, request, *args, **kwargs):
@@ -120,12 +137,11 @@ class CustomResetPassword(View):
             messages.success(request, 'Contraseña cambiada correctamente')
 
         return render(request, 'password.html', {
-            'form': form
+            'form': form,
+            'title': 'Cambio de contraseña'
         })
 
-# CBV para aprobar o rechazar peticion de cambio de perfil
-
-
+# CBV para aprobar o rechazar peticion de actualizaciones de perfil
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
@@ -166,46 +182,71 @@ class UpdatedUsers(ListView):
         return redirect('updates')
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['now'] = timezone.now()
+        context = super(UpdatedUsers, self).get_context_data(**kwargs)
+        context['title'] = 'Peticiones de actualización'
         # import ast
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
+        
 
 
+"""
+Clases para agregar productos
+"""
 class AddArticulo(SuccessMessageMixin, CreateView):
     template_name = 'add-articulo.html'
     form_class = ArticuloForm
-    success_url = '/new/article'
+    success_url = '/new/articulo'
     success_message = 'Articulo creado correctamente'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agrega un artículo'
+        return context
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
     template_name = 'add-capituloLibro.html'
     form_class = CapituloLibroForm
-    success_url = '/new/bookChapter'
+    success_url = '/new/libro'
     success_message = 'Libro/Capitulo creado correctamente'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agrega un libro o capitulo'
+        return context
 
 class AddPatente(SuccessMessageMixin, CreateView):
-    template_name = 'add-patent.html'
+    template_name = 'add-patente.html'
     form_class = PatenteForm
-    success_url = '/new/patent'
+    success_url = '/new/patente'
     success_message = 'Patente creada correctamente'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agrega una patente'
+        return context
 
 class AddCongreso(SuccessMessageMixin, CreateView):
-    template_name = 'add-congress.html'
+    template_name = 'add-congreso.html'
     form_class = CongresoForm
-    success_url = '/new/congress'
+    success_url = '/new/congreso'
     success_message = 'Participacion en congreso registrada correctamente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agrega un partición en congreso'
+        return context
 
 class AddInvestigacion(SuccessMessageMixin, CreateView):
     template_name = 'add-investigacion.html'
     form_class = InvestigacionForm
-    success_url = '/new/investigation'
+    success_url = '/new/investigacion'
     success_message = 'Proyecto de Investigacion/Vinculacion agregado'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Agrega un proyecto de investigación'
+        return context
 
 class AddTesis(SuccessMessageMixin, CreateView):
     template_name = 'add-tesis.html'
@@ -213,46 +254,26 @@ class AddTesis(SuccessMessageMixin, CreateView):
     success_url = '/new/tesis'
     success_message = 'Direccion de tesis agregada'
 
-# class AddProduct(TemplateView):
-    # template_name = "add-product.html"
-
-    # def get_context_data(self, **kwargs):
-    #     context = super(AddProduct, self).get_context_data(**kwargs)
-    #     context['ArticuloForm'] = ArticuloForm(prefix='ArticuloForm')
-    #     context['CapituloLibroForm'] = CapituloLibroForm(prefix='CapituloLibro')
-    #     context['PatenteForm'] = PatenteForm(prefix='PatenteForm')
-    #     context['CongresoForm'] = CongresoForm(prefix='CongresoForm')
-    #     context['InvestigacionForm'] = InvestigacionForm(prefix='InvestigacionForm')
-    #     context['TesisForm'] = TesisForm(prefix='TesisForm')
-    #     context['title'] = 'Agrega un producto'
-
-    #     # post = self.request.POST.copy()
-    #     invalid_articulo = self.request.session['invalid_articulo']
-    #     print('Si esta entrando')
-    #     if(invalid_articulo):
-    #         print('Formulario incorrecto')
-    #         context['ArticuloForm'] = ArticuloForm(invalid_articulo, prefix='ArticuloForm')
-    #     return context
-
-# class AddArticulo(View):
-#     def post(self, request, *args, **kwargs):
-#         form = ArticuloForm(request.POST, prefix='ArticuloForm')
-#         # print(form)
-#         if form.is_valid():
-#             instance = form.save()
-#             # return render('add-product')
-#         else:
-#             print(form.errors)
-#             request.session['invalid_articulo'] = form
-#             print(request.session['invalid_articulo'])
-#         # return render(request, "add-product.html", {"form": form})
-#         return redirect('add-product')
+    def get_initial(self):
+        initial = super(AddTesis, self).get_initial()
+        initial = initial.copy()
+        initial['profesor'] = self.request.user
+        return initial
 
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(AddTesis, self).get_context_data(*args,**kwargs)
+        context['title'] = 'Agrega una dirección de tesis'
+        return context
+
+
+"""
+Clases para la creacion de campos foraneos (aparecen como PopUp)
+"""
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega un Autor externo'
             })
@@ -260,14 +281,19 @@ class AutorCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = AutorForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_primer_autor");</script>' % (instance.pk, instance))
-        return render(request, "form_autor.html", {"form": form})
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form,
+            'title': 'Agrega un Autor externo'
+        })
 
 class AlumnoCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AlumnoForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega un Alumno'
             })
@@ -275,14 +301,19 @@ class AlumnoCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = AlumnoForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_primer_alumno");</script>' % (instance.pk, instance))
-        return render(request, "form_palabras.html", {"form": form})
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega un Alumno'
+            })
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = RevistaForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega una Revista'
             })
@@ -290,15 +321,19 @@ class RevistaCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = RevistaForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_revista");</script>' % (instance.pk, instance))
-        return render(request, "form_revista.html", {"form": form})
-
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega una Revista'
+            })
 
 class EditorialCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = EditorialForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega una Editorial'
             })
@@ -306,15 +341,19 @@ class EditorialCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = EditorialForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_editorial");</script>' % (instance.pk, instance))
-        return render(request, "form_editorial.html", {"form": form})
-
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega una Editorial'
+            })
 
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = PalabrasForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega una palabra clave'
             })
@@ -322,15 +361,19 @@ class PalabrasCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = PalabrasForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_palabras_clave");</script>' % (instance.pk, instance))
-        return render(request, "form_palabras.html", {"form": form})
-
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega una palabra clave'
+            })
 
 class LineasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = LineasForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega una Linea de Investigacion'
             })
@@ -338,14 +381,19 @@ class LineasCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = LineasForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_lineas_investigacion");</script>' % (instance.pk, instance))
-        return render(request, "form_palabras.html", {"form": form})
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega una Linea de Investigacion'
+            })
 
 class InstitucionCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = InstitucionForm()
-        return render(request, "form_palabras.html", {
+        return render(request, "popup_form.html", {
             "form": form, 
             'title': 'Agrega una Institucion'
             })
@@ -353,9 +401,14 @@ class InstitucionCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = InstitucionForm(request.POST)
         if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "id_institucion");</script>' % (instance.pk, instance))
-        return render(request, "form_palabras.html", {"form": form})
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "popup_form.html", {
+            "form": form, 
+            'title': 'Agrega una Institucion'
+            })
 
 # def paises(request):
 #     import csv
