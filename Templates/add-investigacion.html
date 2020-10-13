@@ -30,10 +30,12 @@
             {{ field.label_tag }}
 
             {% if field.name == 'inicio' or field.name == 'fin' %}
-            {{ field|addclass:' datepicker' }}
+            {{ field|addclass:'datepicker' }}
             {% else %}
-            {{ field|addclass:'' }}
+            {{ field }}
             {% endif %}
+
+
 
             {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" %}
             <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_author" onclick="return showAddPopup(this);">
@@ -55,7 +57,7 @@
             {% endif %}
 
             {% if field.name == "institucion" %}
-            <a href="javascript:void(0);" data-url="{% url 'InvestigacionCreate' %}" id="add_institucion"
+            <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
                 onclick="return showAddPopup(this);">
                 <img src="{% static 'img/add.png' %}" alt="">
             </a>
