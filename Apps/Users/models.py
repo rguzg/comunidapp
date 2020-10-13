@@ -4,50 +4,16 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from .validators import isalphavalidator
 from django.core.validators import FileExtensionValidator
-
-def image_user(instance, filename):
-    return '{0}/{1}'.format('images_users', instance.username)
-
-def comprobantes(instance, filename):
-    return '{0}/{1}.{2}'.format('comprobantes', instance.registro, 'pdf')
-
-def resumenes(instance, filename):
-    return '{0}/{1}.{2}'.format('resumenes', instance.titulo, 'pdf')
-
+"""
+Modelo del usuario
+"""
 grados = [
     ('L', 'Licenciatura'),
     ('M', 'Maestría'),
     ('D', 'Doctorado')
 ]
-
-estados = [
-    ('P', 'Publicado'),
-    ('A', 'Aceptado')
-]
-
-propositos = [
-    ('AT', 'Asimilación tecnológica'),
-    ('CT', 'Creación de desarrollo tecnológico'),
-    ('DI', 'Difusión'),
-    ('GC', 'Generación de conocimiento'),
-    ('IA', 'Investigación aplicada'),
-    ('TT', 'Transferencia de tecnología')
-]
-
-estados = [
-    ('P', 'Publicado'),
-    ('A', 'Aceptado')
-]
-
-propositos = [
-    ('AT', 'Asimilación tecnológica'),
-    ('CT', 'Creación de desarrollo tecnológico'),
-    ('DI', 'Difusión'),
-    ('GC', 'Generación de conocimiento'),
-    ('IA', 'Investigación aplicada'),
-    ('TT', 'Transferencia de tecnología')
-]
-
+def image_user(instance, filename):
+    return '{0}/{1}'.format('images_users', instance.username)
 class User(AbstractUser):
     generos  = [
         ('H', 'Hombre'),
@@ -71,11 +37,47 @@ class User(AbstractUser):
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
 
+
+
+
+"""
+Modelos auxiliares o de llaves foraneas
+"""
+
+estados = [
+    ('P', 'Publicado'),
+    ('A', 'Aceptado')
+]
+
+propositos = [
+    ('AT', 'Asimilación tecnológica'),
+    ('CT', 'Creación de desarrollo tecnológico'),
+    ('DI', 'Difusión'),
+    ('GC', 'Generación de conocimiento'),
+    ('IA', 'Investigación aplicada'),
+    ('TT', 'Transferencia de tecnología')
+]
+
+estados = [
+    ('P', 'Publicado'),
+    ('A', 'Aceptado')
+]
+
+propositos = [
+    ('AT', 'Asimilación tecnológica'),
+    ('CT', 'Creación de desarrollo tecnológico'),
+    ('DI', 'Difusión'),
+    ('GC', 'Generación de conocimiento'),
+    ('IA', 'Investigación aplicada'),
+    ('TT', 'Transferencia de tecnología')
+]
+
 # Facultad en la cual labora
 class Facultad(models.Model):
     nombre = models.CharField(max_length=70, unique=True, blank=False, null=False)
 
     class Meta:
+        verbose_name = 'Facultad'
         verbose_name_plural = 'Facultades'
 
     def __str__(self):
@@ -116,6 +118,8 @@ class UserActualizado(models.Model):
 
     class Meta:
         ordering=['-id']
+        verbose_name = 'Petición de actualización'
+        verbose_name_plural = 'Peticiones de actualización'
         
     estados  = [
         ('P', 'Pendiente'),
@@ -131,20 +135,16 @@ class UserActualizado(models.Model):
     created = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 class Autor(models.Model):
+
+    class Meta:
+        verbose_name = 'Autor'
+        verbose_name_plural = 'Autores'
+
     first_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
     last_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
-    def clean(self):
-        if self.user is None:
-            if self.first_name is None or self.last_name is None:
-                raise ValidationError('Debes seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
-
-        if len(self.first_name)<=3:
-            raise ValidationError('El nombre debe ser mayor a 3 caracteres')
-
-        if len(self.last_name)<=3:
-            raise ValidationError('El apellido debe ser mayor a 3 caracteres')
+    
 
     def __str__(self):
         if self.user is not None:
@@ -156,51 +156,101 @@ class Autor(models.Model):
         return "{0} {1}".format(self.first_name, self.last_name)
             
 class Alumno(models.Model):
+
+    class Meta:
+        verbose_name = 'Alumno'
+        verbose_name_plural = 'Alumnos'
+
     expediente = models.PositiveIntegerField(unique=True, validators=[
             MaxValueValidator(999999),
             MinValueValidator(111111)
         ])
 
+    def __str__(self):
+        return "{0}".format(self.expediente)
+
 class PalabrasClave(models.Model):
+
+    class Meta:
+        verbose_name = 'Palabra clave'
+        verbose_name_plural = ' Palabras clave'
+
     nombre = models.CharField(max_length=50, null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.nombre
 
 class Pais(models.Model):
+    class Meta:
+        verbose_name = 'País'
+        verbose_name_plural = 'Países'
+
     nombre = models.CharField(max_length=50, null=False, blank=False)
 
     def __str__(self):
         return self.nombre
 
 class Estado(models.Model):
+    class Meta:
+        verbose_name = 'Estado'
+        verbose_name_plural = 'Estados'
     nombre = models.CharField(max_length=30)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
 
 class Ciudad(models.Model):
+    class Meta:
+        verbose_name = 'Ciudad'
+        verbose_name_plural = 'Ciudades'
+
     nombre = models.CharField(max_length=50)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
 
 class Revista(models.Model):
+    class Meta:
+        verbose_name = 'Revista'
+        verbose_name_plural = 'Revistas'
+
     nombre = models.CharField(max_length=254, null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.nombre
     
 class Editorial(models.Model):
+    class Meta:
+        verbose_name = 'Editorial'
+        verbose_name_plural = 'Editoriales'
+
     nombre = models.CharField(max_length=254, null=False, blank=False, unique=True)
 
     def __str__(self):
         return self.nombre
 
 class Institucion(models.Model):
+    class Meta:
+        verbose_name = 'Institución'
+        verbose_name_plural = 'Instituciones'
     nombre = models.CharField(max_length=100, unique=True)
 
+    def __str__(self):
+        return self.nombre
 
 
 
+
+"""
+Modelos principales
+"""
+def comprobantes(instance, filename):
+    return '{0}/{1}.{2}'.format('comprobantes', instance.registro, 'pdf')
+
+def resumenes(instance, filename):
+    return '{0}/{1}.{2}'.format('resumenes', instance.titulo, 'pdf')
 
 class Articulo(models.Model):
+    class Meta:
+        verbose_name = 'Artículo'
+        verbose_name_plural = 'Artículos'
+
     categorias = [
         ('ARB', 'Arbitradro'),
         ('IND', 'Indizado'),
@@ -229,7 +279,15 @@ class Articulo(models.Model):
     doi = models.URLField(max_length=100, null=True, blank=True)
     indice_revista = models.PositiveIntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return 'Articulo: "{0}" '.format(self.titulo)
+
 class CapituloLibro(models.Model):
+    
+    class Meta:
+        verbose_name = 'Libro/Capítulo'
+        verbose_name_plural = 'Libros/Capítulo'
+
     tipos = [
         ('L', 'Libro'),
         ('C', 'Capitulo')
@@ -252,7 +310,16 @@ class CapituloLibro(models.Model):
     proposito = models.CharField(max_length=3, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 
+    def __str__(self):
+        if self.tipo == 'L':
+            return 'Libro: {0}'.format(self.titulo)
+        else:
+            return 'Capitulo: {0}'.format(self.titulo)
+
 class Patente(models.Model):
+    class Meta:
+        verbose_name = 'Patente'
+        verbose_name_plural = 'Patentes'
     autores = models.ManyToManyField(Autor)
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
@@ -265,6 +332,10 @@ class Patente(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 
 class Congreso(models.Model):
+    class Meta:
+        verbose_name = 'Congreso'
+        verbose_name_plural = 'Congresos'
+
     primer_autor = models.ForeignKey(Autor, related_name='primer_autor_congreso', on_delete=models.CASCADE)
     primer_colaborador = models.ForeignKey(Autor, related_name='primer_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
     segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
@@ -281,6 +352,9 @@ class Congreso(models.Model):
     palabras_clave = models.ManyToManyField(PalabrasClave)
 
 class Investigacion(models.Model):
+    class Meta:
+        verbose_name = 'Investigación'
+        verbose_name_plural = 'Investigaciones'
 
     tipos_financiamiento = [
         ('I', 'Interno'),
@@ -307,13 +381,18 @@ class Investigacion(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
+    
+
 class Tesis(models.Model):
+    class Meta:
+        verbose_name = 'Tesis'
+        verbose_name_plural = 'Tesis'
     titulo = models.CharField(max_length=300, null=False, blank=False)
     grado = models.CharField(max_length=1, choices=grados)
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
     inicio = models.DateField(auto_now=False, auto_now_add=False)
     fin = models.DateField(auto_now=False, auto_now_add=False)
-    profesor = models.ForeignKey(User, on_delete=models.CASCADE)
+    profesor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
