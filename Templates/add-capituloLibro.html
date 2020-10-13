@@ -55,6 +55,14 @@
             </a>
             {% endif %}
 
+
+            {% if field.name == "lineas_investigacion" %}
+            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                onclick="return showAddPopup(this);">
+                <img src="{% static 'img/add.png' %}" alt="">
+            </a>
+            {% endif %}
+
         </div>
         {% endfor %}
         <input type="submit" name="" id="" value="Enviar">
