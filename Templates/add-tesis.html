@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container">
-    <h1>Agregar un articulo</h1>
+    <h1>Agregar una direccion de tesis</h1>
 
     {% if messages %}
     <ul class="messages">
@@ -50,7 +50,7 @@
 
 
             {% if field.name == "institucion" %}
-            <a href="javascript:void(0);" data-url="{% url 'InvestigacionCreate' %}" id="add_institucion"
+            <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
                 onclick="return showAddPopup(this);">
                 <img src="{% static 'img/add.png' %}" alt="">
             </a>

@@ -22,11 +22,12 @@
     </div>
     {% endif %}
     
+    
     <form action="{% url 'AddArticulo' %}" method="POST">
         {% csrf_token %}
         {% for field in form %}
         <div>
-            {{ field.errors }}
+            <p>{{ field.errors }}</p>
             {{ field.label_tag }}
 
             {% if field.name == 'publicacion' %}
