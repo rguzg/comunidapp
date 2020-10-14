@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponse, redirect, render
 from django.views import View
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,

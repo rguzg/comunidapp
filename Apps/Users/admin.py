@@ -11,12 +11,6 @@ UserAdmin.fieldsets = UserAdmin.fieldsets = (
     (_('Important dates'), {'fields': ('last_login',)})
 )
 
-# class AutorAdmin(admin.ModelAdmin):
-#     list_display = ('first_name', 'last_name')
-
-#     def get_form(self, request, obj=None, **kwargs):
-
-
 admin.site.register(User, UserAdmin)
 admin.site.register(Facultad)
 admin.site.register(Nivel)

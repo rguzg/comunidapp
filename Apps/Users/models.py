@@ -38,12 +38,9 @@ class User(AbstractUser):
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
 
 
-
-
 """
 Modelos auxiliares o de llaves foraneas
 """
-
 estados = [
     ('P', 'Publicado'),
     ('A', 'Aceptado')
@@ -236,8 +233,6 @@ class Institucion(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
 
 
 """
