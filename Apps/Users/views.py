@@ -401,19 +401,3 @@ class InstitucionCreatePopup(View):
             'title': 'Agrega una Institucion'
             })
 
-# def paises(request):
-#     import csv
-#     from django.db import transaction
-#     list2 = []
-#     with open("/home/urimeba/Downloads/paises.csv", "r", newline="") as f:
-#         csv_reader = csv.reader(f, delimiter=",")
-#         for row in csv_reader:
-#                 print(row[0])
-#                 list2.append(row[0])
-
-#     # for p in list2:
-#     #     print(p)
-#     with transaction.atomic():
-#         for pais in list2:
-#             Pais.objects.create(nombre=pais)
-#     return HttpResponse('Hey')

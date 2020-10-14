@@ -4,9 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from . import views
 
 urlpatterns = [
-    # path('paises', views.paises, name='paises'),
-
-    # URLS para el funcionamiento de los usuarios
+    # URLS para el uso de los usuarios normales
     path('', views.CustomLogin.as_view(), name='login'),
     path('logout', login_required(views.CustomLogout.as_view()), name='logout'),
     path('home', login_required(views.Home.as_view()), name='home'),
