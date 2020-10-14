@@ -148,62 +148,73 @@ class CapituloLibroForm(ModelForm):
 
         isbn = cleaned_data.get('isbn')
         if len(isbn) > 15 and len(isbn) < 12:
-            raise ValidationError('El ISBN debe tener entre 12 y 15 caracteres')
+            # raise ValidationError('El ISBN debe tener entre 12 y 15 caracteres')
+            self.errors['ISBN'] = 'El ISBN debe tener entre 12 y 15 caracteres'
         
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
         if segundo_coautor:
             if not primer_coautor:
-                raise ValidationError(
-                    'No puedes tener un segundo coautor sin un primer coautor')
+                # raise ValidationError(
+                #     'No puedes tener un segundo coautor sin un primer coautor')
+                self.errors['segundo_coautor'] = 'No puedes tener un segundo coautor sin un primer coautor'
 
         if primer_autor == primer_coautor or primer_autor == segundo_coautor or primer_coautor == segundo_coautor:
-            raise ValidationError(
-                'El autor y los coautores no pueden ser la misma persona')
+            # raise ValidationError(
+            #     'El autor y los coautores no pueden ser la misma persona')
+            self.errors['primer_autor'] = 'El autor y los coautores no pueden ser la misma persona'
 
         tipo = cleaned_data.get('tipo')
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if tipo == 'L':
             if pagina_inicio or pagina_fin:
-                raise ValidationError(
-                    'Un libro no deberia tener pagina de inicio ni de fin')
+                # raise ValidationError(
+                #     'Un libro no deberia tener pagina de inicio ni de fin')
+                self.errors['pagina_inicio'] = 'Un libro no debería tener pagina de inicio ni de fin'
         else:
             if not pagina_inicio or not pagina_fin:
-                raise ValidationError(
-                    'El capitulo necesita una pagina de inicio y de fin')
+                # raise ValidationError(
+                    # 'El capitulo necesita una pagina de inicio y de fin')
+                self.errors['pagina_inicio'] = 'El capitulo necesita una pagina de inicio y de fin'
             if pagina_fin < pagina_inicio:
-                raise ValidationError(
-                    'La pagina de inicio no puede ser mayor a la pagina de fin')
+                # raise ValidationError(
+                #     'La pagina de inicio no puede ser mayor a la pagina de fin')
+                self.errors['pagina_inicio'] = 'La pagina de inicio no puede ser mayor a la pagina de fin'
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                raise ValidationError(
-                    'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                # raise ValidationError(
+                    # 'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                self.errors['publicacion'] = 'No puedes agregar una fecha de publicación a un articulo no publicado'
         else:
             if not publicacion:
-                raise ValidationError('Debes agregar una fecha de publicacion')
+                # raise ValidationError('Debes agregar una fecha de publicacion')
+                self.errors['publicacion'] = 'Debes agregar una fecha de publicación'
 
         palabras_clave = cleaned_data.get('palabras_clave')
         # print(len(palabras_clave))
         # print(palabras_clave.count())
         if palabras_clave.count() < 3:
-            raise ValidationError('Debes escoger al menos 3 palabras clave')
+            # raise ValidationError('Debes escoger al menos 3 palabras clave')
+            self.errors['palabras_clave'] = 'Debes escoger al menos 3 palabras clave'
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            raise ValidationError(
-                'Debes escoger al menos 1 linea de investigacion')
+            # raise ValidationError(
+                # 'Debes escoger al menos 1 linea de investigacion')
+            self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 línea de investigación'
 
         categoria = cleaned_data.get('categoria')
         indice_revista = cleaned_data.get('indice_revista')
         if categoria == 'IND' or categoria == 'JCR':
             if not indice_revista:
-                raise ValidationError(
-                    'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                # raise ValidationError(
+                    # 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                self.errors['indice_revista'] = 'Los articulos INDIZADOS o JCR deben tener un indice de revista'
 
         return cleaned_data
 

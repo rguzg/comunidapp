@@ -194,10 +194,10 @@ class UpdatedUsers(ListView):
 Clases para agregar productos
 """
 class AddArticulo(SuccessMessageMixin, CreateView):
-    template_name = 'add-articulo.html'
+    template_name = 'add-producto.html'
     form_class = ArticuloForm
     success_url = '/new/articulo'
-    success_message = 'Articulo creado correctamente'
+    success_message = 'Artículo creado correctamente'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -205,14 +205,14 @@ class AddArticulo(SuccessMessageMixin, CreateView):
         return context
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
-    template_name = 'add-capituloLibro.html'
+    template_name = 'add-producto.html'
     form_class = CapituloLibroForm
     success_url = '/new/libro'
-    success_message = 'Libro/Capitulo creado correctamente'
+    success_message = 'Libro/Capítulo creado correctamente'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega un libro o capitulo'
+        context['title'] = 'Agrega un libro o capítulo'
         return context
 
 class AddPatente(SuccessMessageMixin, CreateView):
