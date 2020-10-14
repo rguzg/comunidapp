@@ -398,31 +398,32 @@ class TesisForm(ModelForm):
     class Meta:
         model = Tesis
         fields = '__all__'
-        # exclude = ['profesor']
         widgets = {
             'profesor': forms.HiddenInput()
         }
     
 
     def clean(self):
-
         cleaned_data = super(TesisForm, self).clean()
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
         if inicio and fin:
             if inicio > fin:
-                raise ValidationError(
-                    'La fecha de inicio no puede ser mayor a la fecha de fin')
+                # raise ValidationError(
+                    # 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                self.errors['inicio'] = 'La fecha de inicio no puede ser mayor a la fecha de fin'
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            raise ValidationError('Debes escoger al menos 3 palabras clave')
+            # raise ValidationError('Debes escoger al menos 3 palabras clave')
+            self.errors['palabras_clave'] = 'Debes escoger al menos 3 palabras clave'
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            raise ValidationError(
-                'Debes escoger al menos 1 linea de investigacion')
+            # raise ValidationError(
+                # 'Debes escoger al menos 1 linea de investigacion')
+            self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         return cleaned_data
 

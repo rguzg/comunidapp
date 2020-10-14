@@ -384,12 +384,12 @@ class Investigacion(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
-    
-
 class Tesis(models.Model):
+    
     class Meta:
         verbose_name = 'Tesis'
         verbose_name_plural = 'Tesis'
+
     titulo = models.CharField(max_length=300, null=False, blank=False)
     grado = models.CharField(max_length=1, choices=grados)
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)

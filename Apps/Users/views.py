@@ -249,17 +249,16 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         return context
 
 class AddTesis(SuccessMessageMixin, CreateView):
-    template_name = 'add-tesis.html'
+    template_name = 'add-producto.html'
     form_class = TesisForm
     success_url = '/new/tesis'
-    success_message = 'Direccion de tesis agregada'
+    success_message = 'Dirección de tesis agregada'
 
     def get_initial(self):
         initial = super(AddTesis, self).get_initial()
         initial = initial.copy()
         initial['profesor'] = self.request.user
         return initial
-
 
     def get_context_data(self, *args, **kwargs):
         context = super(AddTesis, self).get_context_data(*args,**kwargs)
