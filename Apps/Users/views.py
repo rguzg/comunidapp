@@ -272,9 +272,9 @@ Clases para la creacion de campos foraneos (aparecen como PopUp)
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
-        return render(request, "popup_form.html", {
-            "form": form, 
-            'title': 'Agrega un Autor externo'
+        return render(request, 'add-externo.html', {
+            'form': form,
+            'title': 'Agrega un Autor o Colaborador externo'
             })
 
     def post(self, request, *args, **kwargs):
@@ -284,16 +284,16 @@ class AutorCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
-            "form": form,
-            'title': 'Agrega un Autor externo'
+        return render(request, 'add-externo.html', {
+            'form': form,
+            'title': 'Agrega un Autor/Colaborador externo'
         })
 
 class AlumnoCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AlumnoForm()
-        return render(request, "popup_form.html", {
-            "form": form, 
+        return render(request, 'add-externo.html', {
+            'form': form, 
             'title': 'Agrega un Alumno'
             })
 
@@ -304,15 +304,15 @@ class AlumnoCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
-            "form": form, 
+        return render(request, 'add-externo.html', {
+            'form': form, 
             'title': 'Agrega un Alumno'
             })
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = RevistaForm()
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Revista'
             })
@@ -324,7 +324,7 @@ class RevistaCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Revista'
             })
@@ -332,7 +332,7 @@ class RevistaCreatePopup(View):
 class EditorialCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = EditorialForm()
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Editorial'
             })
@@ -344,7 +344,7 @@ class EditorialCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Editorial'
             })
@@ -352,7 +352,7 @@ class EditorialCreatePopup(View):
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = PalabrasForm()
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una palabra clave'
             })
@@ -364,7 +364,7 @@ class PalabrasCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una palabra clave'
             })
@@ -372,7 +372,7 @@ class PalabrasCreatePopup(View):
 class LineasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = LineasForm()
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Linea de Investigacion'
             })
@@ -384,7 +384,7 @@ class LineasCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Linea de Investigacion'
             })
@@ -392,7 +392,7 @@ class LineasCreatePopup(View):
 class InstitucionCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = InstitucionForm()
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Institucion'
             })
@@ -404,7 +404,7 @@ class InstitucionCreatePopup(View):
             print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "popup_form.html", {
+        return render(request, "add-externo.html", {
             "form": form, 
             'title': 'Agrega una Institucion'
             })

@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
@@ -8,10 +9,14 @@ from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
                      LineaInvestigacion, Nivel, PalabrasClave, Patente,
                      Revista, Tesis, User)
 
+LONGITUD_NOMBRE_AUTOR = 1
+LONGITUD_APELLIDO_AUTOR = 1
 
 """
 CBV para los formularios de inicio de sesion y actualizacion de datos
 """
+
+
 class UserActualizadoForm(forms.Form):
     error_css_class = "error"
 
@@ -49,6 +54,7 @@ class UserActualizadoForm(forms.Form):
 
     )
 
+
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
@@ -67,6 +73,7 @@ class AuthenticationForm(AuthenticationForm):
 """
 CBV para los formularios estaticos
 """
+
 
 class ArticuloForm(ModelForm):
     error_css_class = 'error'
@@ -91,13 +98,12 @@ class ArticuloForm(ModelForm):
         if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
             #     'El autor y los colaboradores no pueden ser la misma persona')
             self.errors['primer_autor'] = 'El autor y los colaboradores no pueden ser la misma persona'
-            
 
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if pagina_fin < pagina_inicio:
             # raise ValidationErro]r(
-                # 'La pagina de inicio no puede ser mayor a la pagina de fin')
+            # 'La pagina de inicio no puede ser mayor a la pagina de fin')
             self.errors['pagina_inicio'] = 'La pagina de inicio no puede ser mayor a la pagina de fin'
 
         estado = cleaned_data.get('estado')
@@ -135,6 +141,7 @@ class ArticuloForm(ModelForm):
 
         return cleaned_data
 
+
 class CapituloLibroForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
 
@@ -150,7 +157,7 @@ class CapituloLibroForm(ModelForm):
         if len(isbn) > 15 and len(isbn) < 12:
             # raise ValidationError('El ISBN debe tener entre 12 y 15 caracteres')
             self.errors['ISBN'] = 'El ISBN debe tener entre 12 y 15 caracteres'
-        
+
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
@@ -176,7 +183,7 @@ class CapituloLibroForm(ModelForm):
         else:
             if not pagina_inicio or not pagina_fin:
                 # raise ValidationError(
-                    # 'El capitulo necesita una pagina de inicio y de fin')
+                # 'El capitulo necesita una pagina de inicio y de fin')
                 self.errors['pagina_inicio'] = 'El capitulo necesita una pagina de inicio y de fin'
             if pagina_fin < pagina_inicio:
                 # raise ValidationError(
@@ -188,7 +195,7 @@ class CapituloLibroForm(ModelForm):
         if estado == 'A':
             if publicacion:
                 # raise ValidationError(
-                    # 'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                # 'No puedes agregar una fecha de publicacion a un articulo no publicado')
                 self.errors['publicacion'] = 'No puedes agregar una fecha de publicación a un articulo no publicado'
         else:
             if not publicacion:
@@ -205,7 +212,7 @@ class CapituloLibroForm(ModelForm):
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
             # raise ValidationError(
-                # 'Debes escoger al menos 1 linea de investigacion')
+            # 'Debes escoger al menos 1 linea de investigacion')
             self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 línea de investigación'
 
         categoria = cleaned_data.get('categoria')
@@ -213,10 +220,11 @@ class CapituloLibroForm(ModelForm):
         if categoria == 'IND' or categoria == 'JCR':
             if not indice_revista:
                 # raise ValidationError(
-                    # 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                # 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
                 self.errors['indice_revista'] = 'Los articulos INDIZADOS o JCR deben tener un indice de revista'
 
         return cleaned_data
+
 
 class PatenteForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
@@ -224,6 +232,7 @@ class PatenteForm(ModelForm):
     class Meta:
         model = Patente
         fields = '__all__'
+
 
 class CongresoForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
@@ -271,14 +280,14 @@ class CongresoForm(ModelForm):
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
             # raise ValidationError(
-                # 'Debes escoger al menos 1 linea de investigacion')
+            # 'Debes escoger al menos 1 linea de investigacion')
             self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         presentacion = cleaned_data.get('presentacion')
         if presentacion and publicacion:
             if presentacion > publicacion:
                 # raise ValidationError(
-                    # 'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
+                # 'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
                 self.errors['presentacion'] = 'La fecha de presentacion no puede ser mayor a la fecha de publicacion'
 
         pais = cleaned_data.get('pais')
@@ -289,12 +298,9 @@ class CongresoForm(ModelForm):
             print(estadoP)
             if not estadoP:
                 self.errors['estadoP'] = 'Necesitas seleccionar un estado'
-                
-
-        
-        
 
         return cleaned_data
+
 
 class InvestigacionForm(ModelForm):
     inicio = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
@@ -316,7 +322,7 @@ class InvestigacionForm(ModelForm):
         else:
             if tipo_financiamiento:
                 # raise ValidationError(
-                    # 'No puedes escoger un tipo de financimiento si no tienes financiamiento')
+                # 'No puedes escoger un tipo de financimiento si no tienes financiamiento')
                 self.errors['tipo_financiamiento'] = 'No puedes escoger un tipo de financimiento si no tienes financiamiento'
 
         responsable = cleaned_data.get('responsable')
@@ -326,7 +332,7 @@ class InvestigacionForm(ModelForm):
         if segundo_colaborador:
             if not primer_colaborador:
                 # raise ValidationError(
-                    # 'No puedes tener un segundo colaborador sin un primer colaborador')
+                # 'No puedes tener un segundo colaborador sin un primer colaborador')
                 self.errors['primer_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
 
         if primer_colaborador:
@@ -335,22 +341,21 @@ class InvestigacionForm(ModelForm):
             if segundo_colaborador:
                 if primer_colaborador == segundo_colaborador:
                     self.errors['responsable'] = 'El responsable y los colaboradores no pueden ser la misma persona'
-                
+
                 if responsable == segundo_colaborador:
                     self.errors['responsable'] = 'El responsable y los colaboradores no pueden ser la misma persona'
 
         if segundo_colaborador:
             if not primer_colaborador:
                 self.errors['primer_colaborador'] = 'No puedes tener un segundo alumno sin un primer alumno'
-            
-        
+
         primer_alumno = cleaned_data.get('primer_alumno')
         segundo_alumno = cleaned_data.get('segundo_alumno')
         tercer_alumno = cleaned_data.get('tercer_alumno')
         if segundo_alumno:
             if not primer_alumno:
                 self.errors['segundo_alumno'] = 'No puedes tener un segundo alumno sin un primer alumno'
-        
+
         if tercer_alumno:
             if not segundo_alumno or not primer_alumno:
                 self.errors['tercer_alumno'] = 'No puedes tener un tercer alumno sin un primero ni segundo alumno'
@@ -358,7 +363,7 @@ class InvestigacionForm(ModelForm):
         if primer_alumno and segundo_alumno:
             if primer_alumno == segundo_alumno:
                 self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
-        
+
         if primer_alumno and tercer_alumno:
             if primer_alumno == tercer_alumno:
                 self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
@@ -366,8 +371,6 @@ class InvestigacionForm(ModelForm):
         if segundo_alumno and tercer_alumno:
             if segundo_alumno == tercer_alumno:
                 self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
-        
-                
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
@@ -377,7 +380,7 @@ class InvestigacionForm(ModelForm):
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
             # raise ValidationError(
-                # 'Debes escoger al menos 1 linea de investigacion')
+            # 'Debes escoger al menos 1 linea de investigacion')
             self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         inicio = cleaned_data.get('inicio')
@@ -385,11 +388,11 @@ class InvestigacionForm(ModelForm):
         if inicio and fin:
             if inicio > fin:
                 # raise ValidationError(
-                    # 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                # 'La fecha de inicio no puede ser mayor a la fecha de fin')
                 self.errors['inicio'] = 'La fecha de inicio no puede ser mayor a la fecha de fin'
-                
 
         return cleaned_data
+
 
 class TesisForm(ModelForm):
     inicio = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
@@ -401,7 +404,6 @@ class TesisForm(ModelForm):
         widgets = {
             'profesor': forms.HiddenInput()
         }
-    
 
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
@@ -411,7 +413,7 @@ class TesisForm(ModelForm):
         if inicio and fin:
             if inicio > fin:
                 # raise ValidationError(
-                    # 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                # 'La fecha de inicio no puede ser mayor a la fecha de fin')
                 self.errors['inicio'] = 'La fecha de inicio no puede ser mayor a la fecha de fin'
 
         palabras_clave = cleaned_data.get('palabras_clave')
@@ -422,19 +424,21 @@ class TesisForm(ModelForm):
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
             # raise ValidationError(
-                # 'Debes escoger al menos 1 linea de investigacion')
+            # 'Debes escoger al menos 1 linea de investigacion')
             self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         return cleaned_data
-
 
 
 """
 CBV para los formularios Popup
 """
 
+
 class AutorForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
     class Meta:
         model = Autor
         fields = ['first_name', 'last_name']
@@ -445,61 +449,101 @@ class AutorForm(ModelForm):
         last_name = cleaned_data.get('last_name')
         user = cleaned_data.get('user')
         autor_existente = Autor.objects.filter(
-            first_name=first_name, last_name=last_name).count()
-        print(autor_existente)
+            Q(first_name=first_name, last_name=last_name) |
+            Q(user__first_name=first_name, user__last_name=last_name)
+        ).count()
         if autor_existente > 0:
-            raise ValidationError(
-                'Un autor con los mismos datos ya existe. Eligelo o verifica tus datos')
+            self.errors['first_name'] = 'Un autor con los mismos datos ya existe. Elíjalo o verifique sus datos'
 
         if user is None:
             if first_name is None or last_name is None:
-                raise ValidationError('Debes seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
+                self.errors[
+                    'user'] = 'Debe seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)'
 
-        if len(first_name)<=3:
-            raise ValidationError('El nombre debe ser mayor a 3 caracteres')
+        if len(first_name) <= LONGITUD_NOMBRE_AUTOR:
+            self.errors['first_name'] = 'El nombre debe ser mayor a 1 carácter'
 
-        if len(last_name)<=3:
-            raise ValidationError('El apellido debe ser mayor a 3 caracteres')
+        if len(last_name) <= LONGITUD_APELLIDO_AUTOR:
+            self.errors['last_name'] = 'El apellido debe ser mayor a 1 carácter'
+
 
 class RevistaForm(ModelForm):
     id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
-    # id_field = forms.CharField(max_length=30, required=True)
-    
+
     class Meta:
         model = Revista
         fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una revista con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
 
 class EditorialForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
     # id_field = forms.CharField(max_length=30, required=True)
+
     class Meta:
         model = Editorial
         fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una editorial con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
 
 class PalabrasForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
     # id_field = forms.CharField(max_length=30, required=True)
+
     class Meta:
         model = PalabrasClave
         fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una palabra clave con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
 
 class LineasForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
     # id_field = forms.CharField(max_length=30, required=True)
+
     class Meta:
         model = LineaInvestigacion
         fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una línea de investigación con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
 
 class AlumnoForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
-    # id_field = forms.CharField(max_length=30, required=True)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
     class Meta:
         model = Alumno
         fields = '__all__'
 
+
 class InstitucionForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
     # id_field = forms.CharField(max_length=30, required=True)
+
     class Meta:
         model = Institucion
         fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una institución con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }

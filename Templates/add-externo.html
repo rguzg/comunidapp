@@ -1,0 +1,74 @@
+{% include 'navbar-external.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<div class="container">
+    <!-- Titulo del formulario -->
+    <div class="text-center mt-3">
+        <h2>{{title}}</h2>
+    </div>
+
+    {% if form.non_field_errors %}
+    <div class="non-field-errors">
+        {% for error in form.non_field_errors %}
+        <p class="form-error">
+            {{ error }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    <form method='POST' id="popup_form">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Corrigue los siguientes errores:</strong>
+            <ul>
+                {% for field in form %}
+                {% if field.errors %}
+                <li>
+                    <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% for field in form %}
+        <div class="form-group mb-4">
+
+            <!-- Mostrando el error especifico del campo -->
+            {% if field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.errors|escape}}</strong>
+            </div>
+            {% endif %}
+
+            {% if field.name != "id_field" %}
+                {{field.label}}
+            {% endif %}
+
+            {{field|addclass:'form-control'}}
+
+            
+
+            
+        </div>
+        {% endfor %}
+        <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+
+
+    </form>
+    <script>
+        window.onload = function () {
+            const id_field = localStorage.getItem('id_field');
+            const field = document.getElementById('id_id_field');
+            field.value = id_field;
+            console.log(id_field);
+        }
+    </script>
+</div>
+{% endblock %}
