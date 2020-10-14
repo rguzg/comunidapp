@@ -1,13 +1,20 @@
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
+
 function showEditPopup(url) {
     var win = window.open(url, "Edit",
         'height=500,width=800,resizable=yes,scrollbars=yes');
     return false;
 }
 
+
 function showAddPopup(triggeringLink) {
     const id = triggeringLink;
     // console.log(id.id);
-    const sibilingId = id.previousElementSibling.id;
+    const sibilingIdFull = id.parentElement.previousElementSibling.id;
+    const sibilingId = sibilingIdFull.split("--")[1]
     // console.log(sibilingId);
     const name = triggeringLink.id.replace(/^add_/, '');
     const href = triggeringLink.getAttribute('data-url');

@@ -252,7 +252,7 @@ class Articulo(models.Model):
         verbose_name_plural = 'Artículos'
 
     categorias = [
-        ('ARB', 'Arbitradro'),
+        ('ARB', 'Arbitrado'),
         ('IND', 'Indizado'),
         ('JCR', 'Indizado JCR'),
         ('SCP', 'SCOPUS')

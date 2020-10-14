@@ -69,6 +69,7 @@ CBV para los formularios estaticos
 """
 
 class ArticuloForm(ModelForm):
+    error_css_class = 'error'
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
 
     class Meta:
@@ -76,6 +77,7 @@ class ArticuloForm(ModelForm):
         fields = '__all__'
 
     def clean(self):
+        print('CLEANING ARTICULO FORM')
         cleaned_data = super(ArticuloForm, self).clean()
         # print(cleaned_data)
         primer_autor = cleaned_data.get('primer_autor')
@@ -83,47 +85,53 @@ class ArticuloForm(ModelForm):
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
         if segundo_colaborador:
             if not primer_colaborador:
-                self.errors['primer_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
-                # raise ValidationError(
-                #     'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.errors['segundo_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
+                self.errors['segundo_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
 
         if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            raise ValidationError(
-                'El autor y los colaboradores no pueden ser la misma persona')
+            #     'El autor y los colaboradores no pueden ser la misma persona')
+            self.errors['primer_autor'] = 'El autor y los colaboradores no pueden ser la misma persona'
+            
 
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if pagina_fin < pagina_inicio:
-            raise ValidationError(
-                'La pagina de inicio no puede ser mayor a la pagina de fin')
+            # raise ValidationErro]r(
+                # 'La pagina de inicio no puede ser mayor a la pagina de fin')
+            self.errors['pagina_inicio'] = 'La pagina de inicio no puede ser mayor a la pagina de fin'
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                raise ValidationError(
-                    'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                # raise ValidationError(
+                #     'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                self.errors['publicacion'] = 'No puedes agregar una fecha de publicacion a un articulo no publicado'
         else:
             if not publicacion:
-                raise ValidationError('Debes agregar una fecha de publicacion')
+                # raise ValidationError('Debes agregar una fecha de publicacion')
+                self.errors['publicacion'] = 'Debes agregar una fecha de publicacion'
 
         palabras_clave = cleaned_data.get('palabras_clave')
         print(len(palabras_clave))
         print(palabras_clave.count())
         if palabras_clave.count() < 3:
-            raise ValidationError('Debes escoger al menos 3 palabras clave')
+            # raise ValidationError('Debes escoger al menos 3 palabras clave')
+            self.errors['palabras_clave'] = 'Debes escoger al menos 3 palabras clave'
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            raise ValidationError(
-                'Debes escoger al menos 1 linea de investigacion')
+            # raise ValidationError(
+            #     'Debes escoger al menos 1 linea de investigacion')
+            self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         categoria = cleaned_data.get('categoria')
         indice_revista = cleaned_data.get('indice_revista')
         if categoria == 'IND' or categoria == 'JCR':
             if not indice_revista:
-                raise ValidationError(
-                    'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                # raise ValidationError(
+                #     'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                self.errors['indice_revista'] = 'Los articulos INDIZADOS o JCR deben tener un indice de revista'
 
         return cleaned_data
 
