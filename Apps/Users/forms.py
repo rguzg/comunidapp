@@ -225,7 +225,6 @@ class PatenteForm(ModelForm):
         model = Patente
         fields = '__all__'
 
-
 class CongresoForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
     presentacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
@@ -243,37 +242,57 @@ class CongresoForm(ModelForm):
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
         if segundo_colaborador:
             if not primer_colaborador:
-                raise ValidationError(
-                    'No puedes tener un segundo colaborador sin un primer colaborador')
+                # raise ValidationError(
+                #     'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.errors['segundo_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
 
         if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            raise ValidationError(
-                'El autor y los colaboradores no pueden ser la misma persona')
+            # raise ValidationError(
+            #     'El autor y los colaboradores no pueden ser la misma persona')
+            self.errors['primer_autor'] = 'El autor y los colaboradores no pueden ser la misma persona'
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                raise ValidationError(
-                    'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                # raise ValidationError(
+                #     'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                self.errors['publicacion'] = 'No puedes agregar una fecha de publicacion a un articulo no publicado'
         else:
             if not publicacion:
-                raise ValidationError('Debes agregar una fecha de publicacion')
+                # raise ValidationError('Debes agregar una fecha de publicacion')
+                self.errors['publicacion'] = 'Debes agregar una fecha de publicacion'
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            raise ValidationError('Debes escoger al menos 3 palabras clave')
+            # raise ValidationError('Debes escoger al menos 3 palabras clave')
+            self.errors['palabras_clave'] = 'Debes escoger al menos 3 palabras clave'
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            raise ValidationError(
-                'Debes escoger al menos 1 linea de investigacion')
+            # raise ValidationError(
+                # 'Debes escoger al menos 1 linea de investigacion')
+            self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         presentacion = cleaned_data.get('presentacion')
         if presentacion and publicacion:
             if presentacion > publicacion:
-                raise ValidationError(
-                    'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
+                # raise ValidationError(
+                    # 'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
+                self.errors['presentacion'] = 'La fecha de presentacion no puede ser mayor a la fecha de publicacion'
+
+        pais = cleaned_data.get('pais')
+        print(pais)
+        if str(pais) == 'México':
+            print("entro")
+            estadoP = cleaned_data.get('estadoP')
+            print(estadoP)
+            if not estadoP:
+                self.errors['estadoP'] = 'Necesitas seleccionar un estado'
+                
+
+        
+        
 
         return cleaned_data
 

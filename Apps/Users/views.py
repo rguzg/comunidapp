@@ -227,10 +227,10 @@ class AddPatente(SuccessMessageMixin, CreateView):
         return context
 
 class AddCongreso(SuccessMessageMixin, CreateView):
-    template_name = 'add-congreso.html'
+    template_name = 'add-producto.html'
     form_class = CongresoForm
     success_url = '/new/congreso'
-    success_message = 'Participacion en congreso registrada correctamente'
+    success_message = 'Participacion en congreso creada correctamente'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

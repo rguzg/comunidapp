@@ -197,6 +197,9 @@ class Estado(models.Model):
     nombre = models.CharField(max_length=30)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.nombre
+
 class Ciudad(models.Model):
     class Meta:
         verbose_name = 'Ciudad'

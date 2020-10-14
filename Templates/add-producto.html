@@ -66,7 +66,7 @@
             {% endif %}
             
             <!-- Si el campo es fecha, agrega la clase datepicker -->
-            {% if field.name == 'publicacion' %}
+            {% if field.name == 'publicacion' or field.name == 'presentacion' %}
                 {{ field.label_tag }}
                 {{ field|addclass:' datepicker form-control' }}
             {% else %}
