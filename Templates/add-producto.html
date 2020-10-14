@@ -56,7 +56,9 @@
             <!-- Mostrando el error especifico del campo -->
             {% if field.errors %}
                 <div class="alert alert-danger">
-                    <strong>{{field.errors|escape}}</strong>
+                    {% for error in field.errors %}
+                        <strong>{{error}}</strong>
+                    {% endfor %}
                 </div>
             {% endif %}
             
