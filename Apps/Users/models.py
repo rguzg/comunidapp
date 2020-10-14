@@ -306,7 +306,7 @@ class CapituloLibro(models.Model):
     edicion = models.PositiveIntegerField()
     tiraje = models.PositiveIntegerField()
     isbn = models.CharField(max_length=15)
-    publicacion = models.DateField(auto_now=False, auto_now_add=False)
+    publicacion = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     proposito = models.CharField(max_length=3, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 

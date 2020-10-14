@@ -30,7 +30,7 @@
     {% endif %}
     
     <!-- Formulario -->
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Mostrando errores de todos los campos -->
@@ -38,8 +38,17 @@
             <div class="alert alert-danger">
                 <strong>Corrigue los siguientes errores:</strong>
                 <ul>
-                    {% for key, value in form.errors.items %}  
+                    <!-- {% for key, value in form.errors.items %}  
+                        <li>Key: {{key}}. value: {{value}}</li>
                         <li><a href="#id_{{key}}">{{value}}</a></li>
+                    {% endfor %} -->
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li>
+                                <!-- {{ field.label }}: {{ field.errors|striptags }} -->
+                                <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
@@ -63,7 +72,7 @@
             {% else %}
                 {{ field.label_tag }}
 
-                {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" %}
+                {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
                     <div class="row">
                         <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
                         <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip" data-placement="top" title="Agrega un autor externo">
@@ -120,7 +129,7 @@
                 </div>
                 {% endif %}
 
-                {% if field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" %}
+                {% if field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" and field.name != "autores" %}
                     {{ field|addclass:'form-control' }}
                 {% endif %}
 

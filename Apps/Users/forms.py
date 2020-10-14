@@ -225,6 +225,7 @@ class PatenteForm(ModelForm):
         model = Patente
         fields = '__all__'
 
+
 class CongresoForm(ModelForm):
     publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
     presentacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)

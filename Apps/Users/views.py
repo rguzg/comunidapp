@@ -216,7 +216,7 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
         return context
 
 class AddPatente(SuccessMessageMixin, CreateView):
-    template_name = 'add-patente.html'
+    template_name = 'add-producto.html'
     form_class = PatenteForm
     success_url = '/new/patente'
     success_message = 'Patente creada correctamente'
