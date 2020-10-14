@@ -27,7 +27,7 @@ class UserActualizadoForm(forms.Form):
     ]
 
     email = forms.EmailField(required=True)
-    clave = forms.IntegerField(required=True, max_value=5, min_value=1)
+    clave = forms.IntegerField(required=True, max_value=999999, min_value=1)
     sexo = forms.ChoiceField(required=True, choices=generos)
     nacimiento = forms.DateField(required=True, widget=forms.DateInput)
     foto = forms.ImageField(required=True)
@@ -460,7 +460,6 @@ class AutorForm(ModelForm):
 
         if len(last_name)<=3:
             raise ValidationError('El apellido debe ser mayor a 3 caracteres')
-
 
 class RevistaForm(ModelForm):
     id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
