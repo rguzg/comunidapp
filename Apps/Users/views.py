@@ -238,7 +238,7 @@ class AddCongreso(SuccessMessageMixin, CreateView):
         return context
 
 class AddInvestigacion(SuccessMessageMixin, CreateView):
-    template_name = 'add-investigacion.html'
+    template_name = 'add-producto.html'
     form_class = InvestigacionForm
     success_url = '/new/investigacion'
     success_message = 'Proyecto de Investigacion/Vinculacion agregado'

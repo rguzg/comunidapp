@@ -310,54 +310,84 @@ class InvestigacionForm(ModelForm):
         tipo_financiamiento = cleaned_data.get('tipo_financiamiento')
         if financiamiento:
             if not tipo_financiamiento:
-                raise ValidationError(
-                    'Debes escoger un tipo de financiamiento')
+                # raise ValidationError(
+                #     'Debes escoger un tipo de financiamiento')
+                self.errors['tipo_financiamiento'] = 'Debes escoger un tipo de financiamiento'
         else:
             if tipo_financiamiento:
-                raise ValidationError(
-                    'No puedes escoger un tipo de financimiento si no tienes financiamiento')
+                # raise ValidationError(
+                    # 'No puedes escoger un tipo de financimiento si no tienes financiamiento')
+                self.errors['tipo_financiamiento'] = 'No puedes escoger un tipo de financimiento si no tienes financiamiento'
 
-        primer_autor = cleaned_data.get('primer_autor')
+        responsable = cleaned_data.get('responsable')
         primer_colaborador = cleaned_data.get('primer_colaborador')
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
 
         if segundo_colaborador:
             if not primer_colaborador:
-                raise ValidationError(
-                    'No puedes tener un segundo colaborador sin un primer colaborador')
+                # raise ValidationError(
+                    # 'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.errors['primer_colaborador'] = 'No puedes tener un segundo colaborador sin un primer colaborador'
 
-        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            raise ValidationError(
-                'El autor y los colaboradores no pueden ser la misma persona')
+        if primer_colaborador:
+            if responsable == primer_colaborador:
+                self.errors['responsable'] = 'El responsable y los colaboradores no pueden ser la misma persona'
+            if segundo_colaborador:
+                if primer_colaborador == segundo_colaborador:
+                    self.errors['responsable'] = 'El responsable y los colaboradores no pueden ser la misma persona'
+                
+                if responsable == segundo_colaborador:
+                    self.errors['responsable'] = 'El responsable y los colaboradores no pueden ser la misma persona'
 
+        if segundo_colaborador:
+            if not primer_colaborador:
+                self.errors['primer_colaborador'] = 'No puedes tener un segundo alumno sin un primer alumno'
+            
+        
         primer_alumno = cleaned_data.get('primer_alumno')
         segundo_alumno = cleaned_data.get('segundo_alumno')
         tercer_alumno = cleaned_data.get('tercer_alumno')
-        if primer_alumno == tercer_alumno or primer_alumno == segundo_alumno or tercer_alumno == segundo_alumno:
-            raise ValidationError('Los alumnos no pueden ser la misma persona')
+        if segundo_alumno:
+            if not primer_alumno:
+                self.errors['segundo_alumno'] = 'No puedes tener un segundo alumno sin un primer alumno'
+        
+        if tercer_alumno:
+            if not segundo_alumno or not primer_alumno:
+                self.errors['tercer_alumno'] = 'No puedes tener un tercer alumno sin un primero ni segundo alumno'
+
+        if primer_alumno and segundo_alumno:
+            if primer_alumno == segundo_alumno:
+                self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
+        
+        if primer_alumno and tercer_alumno:
+            if primer_alumno == tercer_alumno:
+                self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
+
+        if segundo_alumno and tercer_alumno:
+            if segundo_alumno == tercer_alumno:
+                self.errors['primer_alumno'] = 'Los alumnos no pueden ser la misma persona'
+        
+                
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            raise ValidationError('Debes escoger al menos 3 palabras clave')
+            # raise ValidationError('Debes escoger al menos 3 palabras clave')
+            self.errors['palabras_clave'] = 'Debes escoger al menos 3 palabras clave'
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            raise ValidationError(
-                'Debes escoger al menos 1 linea de investigacion')
-
-        categoria = cleaned_data.get('categoria')
-        indice_revista = cleaned_data.get('indice_revista')
-        if categoria == 'IND' or categoria == 'JCR':
-            if not indice_revista:
-                raise ValidationError(
-                    'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+            # raise ValidationError(
+                # 'Debes escoger al menos 1 linea de investigacion')
+            self.errors['lineas_investigacion'] = 'Debes escoger al menos 1 linea de investigacion'
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
         if inicio and fin:
             if inicio > fin:
-                raise ValidationError(
-                    'La fecha de inicio no puede ser mayor a la fecha de fin')
+                # raise ValidationError(
+                    # 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                self.errors['inicio'] = 'La fecha de inicio no puede ser mayor a la fecha de fin'
+                
 
         return cleaned_data
 
