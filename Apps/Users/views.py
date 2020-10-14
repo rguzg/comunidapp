@@ -189,7 +189,6 @@ class UpdatedUsers(ListView):
         return context
         
 
-
 """
 Clases para agregar productos
 """
@@ -281,7 +280,6 @@ class AutorCreatePopup(View):
         form = AutorForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
@@ -301,7 +299,6 @@ class AlumnoCreatePopup(View):
         form = AlumnoForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
@@ -321,7 +318,6 @@ class RevistaCreatePopup(View):
         form = RevistaForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -341,7 +337,6 @@ class EditorialCreatePopup(View):
         form = EditorialForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -361,7 +356,6 @@ class PalabrasCreatePopup(View):
         form = PalabrasForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -381,7 +375,6 @@ class LineasCreatePopup(View):
         form = LineasForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -401,7 +394,6 @@ class InstitucionCreatePopup(View):
         form = InstitucionForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
-            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
