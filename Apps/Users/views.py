@@ -201,6 +201,7 @@ class AddArticulo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un artículo'
+        context['producto'] = 'articulo'
         return context
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
@@ -212,6 +213,7 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un libro o capítulo'
+        context['producto'] = 'libro'
         return context
 
 class AddPatente(SuccessMessageMixin, CreateView):
@@ -223,6 +225,7 @@ class AddPatente(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega una patente'
+        context['producto'] = 'patente'
         return context
 
 class AddCongreso(SuccessMessageMixin, CreateView):
@@ -234,6 +237,7 @@ class AddCongreso(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un partición en congreso'
+        context['producto'] = 'congreso'
         return context
 
 class AddInvestigacion(SuccessMessageMixin, CreateView):
@@ -245,6 +249,7 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un proyecto de investigación'
+        context['producto'] = 'investigacion'
         return context
 
 class AddTesis(SuccessMessageMixin, CreateView):
@@ -262,6 +267,7 @@ class AddTesis(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AddTesis, self).get_context_data(*args,**kwargs)
         context['title'] = 'Agrega una dirección de tesis'
+        context['producto'] = 'tesis'
         return context
 
 
