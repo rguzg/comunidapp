@@ -71,11 +71,38 @@ CBV para los formularios estaticos
 """
 class ArticuloForm(ModelForm):
     error_css_class = 'error'
-    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=['%d-%m-%Y'], required=False)
 
     class Meta:
         model = Articulo
         fields = '__all__'
+        labels = {
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista'
+        }
+        help_texts = {
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isnn': '(Número Internacional Normalizado de Publicaciones Seriadas)',
+            'doi': 'Identificador de objeto digital'
+        }
+
+        
 
     def clean(self):
         cleaned_data = super(ArticuloForm, self).clean()
@@ -121,11 +148,41 @@ class ArticuloForm(ModelForm):
         return cleaned_data
 
 class CapituloLibroForm(ModelForm):
-    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=['%d-%m-%Y'], required=False)
 
     class Meta:
         model = CapituloLibro
         fields = '__all__'
+        labels = {
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista',
+            'edicion': 'Edición',
+            'isbn': 'ISBN',
+            'proposito': 'Propósito'
+        }
+
+        help_texts = {
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isbn': '(Número Estándar Internacional de Libros)',
+            'titulo': 'Del libro o capítulo',
+            'doi': 'Identificador de objeto digital'
+        }
 
     def clean(self):
 
@@ -183,19 +240,89 @@ class CapituloLibroForm(ModelForm):
         return cleaned_data
 
 class PatenteForm(ModelForm):
-    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
+    publicacion = forms.DateField(label="Fecha de publicación", input_formats=['%d-%m-%Y'], required=False)
 
     class Meta:
         model = Patente
         fields = '__all__'
+        labels = {
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista',
+            'edicion': 'Edición',
+            'isbn': 'ISBN',
+            'proposito': 'Propósito',
+            'registro': 'Número de patente'
+        }
+
+        help_texts = {
+            'autores': 'Selecciona uno o varios',
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isbn': '(Número Estándar Internacional de Libros)',
+            'doi': 'Identificador de objeto digital',
+            'registro': 'Numero de registro según el país',
+            'pais': 'País donde se registro la patente'
+        }
 
 class CongresoForm(ModelForm):
-    publicacion = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
-    presentacion = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
+    publicacion = forms.DateField(label='Fecha de publicación', input_formats=['%d-%m-%Y'], required=False)
+    presentacion = forms.DateField(label='Fecha de presentación',input_formats=['%d-%m-%Y'], required=True)
 
     class Meta:
         model = Congreso
         fields = '__all__'
+        labels = {
+            'primer_autor': 'Autor',
+            'estadoP': 'Estado',
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista',
+            'edicion': 'Edición',
+            'isbn': 'ISBN',
+            'proposito': 'Propósito',
+            'registro': 'Número de patente',
+        }
+
+        help_texts = {
+            'autores': 'Selecciona uno o varios',
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isbn': '(Número Estándar Internacional de Libros)',
+            'doi': 'Identificador de objeto digital',
+            'registro': 'Numero de registro según el país',
+            'pais': 'País donde se registro la patente',
+            'estadoP': 'Estados del pais. Solo disponibles para México',
+            'ciudad': 'Ciudades de estados. Solo disponibles para México',
+        }
 
     def clean(self):
 
@@ -241,12 +368,53 @@ class CongresoForm(ModelForm):
         return cleaned_data
 
 class InvestigacionForm(ModelForm):
-    inicio = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
-    fin = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
+    inicio = forms.DateField(label='Fecha de inicio', input_formats=['%d-%m-%Y'], required=True)
+    fin = forms.DateField(label='Fecha de fin', input_formats=['%d-%m-%Y'], required=True)
 
     class Meta:
         model = Investigacion
         fields = '__all__'
+        labels = {
+            'tipo_proyecto':'Tipo de proyecto',
+            'financiamiento':'¿Tuvó financiamiento?',
+            'tipo_financiamiento':'Tipo de financiamiento',
+            'primer_autor': 'Autor',
+            'estadoP': 'Estado',
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista',
+            'edicion': 'Edición',
+            'isbn': 'ISBN',
+            'proposito': 'Propósito',
+            'registro': 'Número de patente',
+        }
+
+        help_texts = {
+            'autores': 'Selecciona uno o varios',
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isbn': '(Número Estándar Internacional de Libros)',
+            'doi': 'Identificador de objeto digital',
+            'registro': 'Numero de registro según el país',
+            'pais': 'País donde se registro la patente',
+            'estadoP': 'Estados del pais. Solo disponibles para México',
+            'ciudad': 'Ciudades de estados. Solo disponibles para México',
+            'resumen': 'Archivo de máximo 25MB en formato PDF'
+        }
 
     def clean(self):
         cleaned_data = super(InvestigacionForm, self).clean()
@@ -321,14 +489,57 @@ class InvestigacionForm(ModelForm):
         return cleaned_data
 
 class TesisForm(ModelForm):
-    inicio = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
-    fin = forms.DateField(input_formats=['%d-%m-%Y'], required=True)
+    inicio = forms.DateField(label='Fecha de inicio', input_formats=['%d-%m-%Y'], required=True)
+    fin = forms.DateField(label='Fecha de fin', input_formats=['%d-%m-%Y'], required=True)
 
     class Meta:
         model = Tesis
         fields = '__all__'
         widgets = {
             'profesor': forms.HiddenInput()
+        }
+        labels = {
+            'tipo_proyecto':'Tipo de proyecto',
+            'institucion': 'Institución',
+            'profesor': None,
+            'financiamiento':'¿Tuvó financiamiento?',
+            'tipo_financiamiento':'Tipo de financiamiento',
+            'primer_autor': 'Autor',
+            'estadoP': 'Estado',
+            'categoria': 'Categoría',
+            'primer_autor': 'Autor',
+            'palabras_clave': 'Palabras clave',
+            'titulo': 'Título',
+            'descripcion': 'Descripción',
+            'pais': 'País',
+            'isnn': 'ISNN',
+            'url': 'Dirección URL',
+            'estado': 'Estado actual',
+            'pagina_inicio': 'De la página',
+            'pagina_fin': 'a la página',
+            'lineas_investigacion': 'Lineas de investigación',
+            'doi': 'DOI',
+            'indice_revista': 'Índice de registro de revista',
+            'edicion': 'Edición',
+            'isbn': 'ISBN',
+            'proposito': 'Propósito',
+            'registro': 'Número de patente',
+        }
+
+        help_texts = {
+            'autores': 'Selecciona uno o varios',
+            'indice_revista': 'Solo si es indizada',
+            'pagina_inicio': 'Solo si es Capítulo',
+            'pagina_fin': 'Solo si es Capítulo',
+            'palabras_clave': 'Mínimo tres',
+            'lineas_investigacion': 'Mínimo una',
+            'isbn': '(Número Estándar Internacional de Libros)',
+            'doi': 'Identificador de objeto digital',
+            'registro': 'Numero de registro según el país',
+            'pais': 'País donde se registro la patente',
+            'estadoP': 'Estados del pais. Solo disponibles para México',
+            'ciudad': 'Ciudades de estados. Solo disponibles para México',
+            'resumen': 'Archivo de máximo 25MB en formato PDF'
         }
 
     def clean(self):

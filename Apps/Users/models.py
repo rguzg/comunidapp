@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
-from .validators import isalphavalidator
+from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
 """
 Modelo del usuario
@@ -269,12 +269,12 @@ class Articulo(models.Model):
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
     isnn = models.BigIntegerField()
     publicacion = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
-    url = models.URLField(max_length=300, null=True, blank=True)
+    url = models.URLField(max_length=300, null=False, blank=False)
     pagina_inicio = models.PositiveIntegerField()
     pagina_fin = models.PositiveIntegerField()
     volumen = models.PositiveIntegerField(null=True, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    doi = models.URLField(max_length=100, null=True, blank=True)
+    doi = models.URLField(max_length=100, null=False, blank=False)
     indice_revista = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -315,9 +315,11 @@ class CapituloLibro(models.Model):
             return 'Capitulo: {0}'.format(self.titulo)
 
 class Patente(models.Model):
+
     class Meta:
         verbose_name = 'Patente'
         verbose_name_plural = 'Patentes'
+
     autores = models.ManyToManyField(Autor)
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
@@ -325,7 +327,7 @@ class Patente(models.Model):
     registro = models.CharField(max_length=25)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     publicacion = models.DateField(auto_now=False, auto_now_add=False)
-    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF'])]  )
+    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size]  )
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 

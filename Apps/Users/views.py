@@ -187,7 +187,7 @@ class UpdatedUsers(ListView):
         # import ast
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
-        
+
 
 """
 Clases para agregar productos

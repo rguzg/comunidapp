@@ -65,10 +65,20 @@
             <!-- Si el campo es fecha, agrega la clase datepicker -->
             {% if field.name == 'publicacion' or field.name == 'presentacion' or field.name == "inicio" or field.name == "fin"  %}
                 {{ field.label_tag }}
+
+                {% if field.help_text %}
+                    <small class="text-muted">({{ field.help_text }})</small>
+                {% endif %}
+                
                 {{ field|addclass:' datepicker form-control' }}
             {% else %}
-                {% if field.name != "tipo_financiamiento" %}
+            
+            <!-- Agregando los campos que no sean de tipo fecha -->
+                {% if field.name != "tipo_financiamiento" and field.name != 'profesor' %}
                     {{ field.label_tag }}
+                    {% if field.help_text %}
+                        <small class="text-muted">({{ field.help_text }})</small>
+                    {% endif %}
                 {% endif %}
 
                 {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
@@ -88,7 +98,7 @@
                         {{field}}
                     </div>
                     <div class="col">
-                        {{form.tipo_financiamiento.label}}
+                        {{form.tipo_financiamiento.label_tag}}
                         {{form.tipo_financiamiento|addclass:'form-control'}}
                     </div>
                 </div>
