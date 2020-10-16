@@ -13,7 +13,7 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
-                    UserActualizadoForm)
+                    UserActualizadoForm, UserCreationForm, ProfesorCreationForm)
 from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UserActualizado)
 
@@ -187,6 +187,47 @@ class UpdatedUsers(ListView):
         # import ast
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
+
+#CBV para creacion de usuarios administradores
+class AddAdminUsers(SuccessMessageMixin, CreateView):
+    template_name = 'users.html'
+    form_class = UserCreationForm
+    success_url = '/add/admin'
+    success_message = 'Usuario creado correctamente'
+
+    def get_initial(self):
+        initial = super(AddAdminUsers, self).get_initial()
+        initial = initial.copy()
+        initial['is_superuser'] = True
+        initial['is_staff'] = True
+        return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AddAdminUsers, self).get_context_data(*args,**kwargs)
+        context['title'] = 'Agrega un usuario Administrador'
+        context['producto'] = 'administrador'
+        return context
+
+#CBV para creacion de usuarios profesores
+class AddProfesorUsers(SuccessMessageMixin, CreateView):
+    template_name = 'users.html'
+    form_class = ProfesorCreationForm
+    success_url = '/add/profesor'
+    success_message = 'Profesor creado correctamente'
+
+    # Necesario poner el username y el email iguales
+
+    # def get_initial(self):
+    #     initial = super(AddProfesorUsers, self).get_initial()
+    #     initial = initial.copy()
+    #     return initial
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args,**kwargs)
+        context['title'] = 'Agrega un usuario Profesor'
+        context['producto'] = 'profesor'
+        return context
+    
 
 
 """

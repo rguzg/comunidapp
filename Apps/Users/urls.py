@@ -10,10 +10,12 @@ urlpatterns = [
     path('home', login_required(views.Home.as_view()), name='home'),
     path('profile', login_required(views.Profile.as_view()), name='profile'),
     path('password', login_required(views.CustomResetPassword.as_view()), name="password"),
-    path('<slug:pk>/', login_required(views.Perfil.as_view()), name='profile-detail'),
-
+    path('user/<slug:pk>/', login_required(views.Perfil.as_view()), name='profile-detail'),
+    
     #URLS para el uso del usuario Administrador
     path('updates', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.UpdatedUsers.as_view()), name='updates'),
+    path('add/admin', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.AddAdminUsers.as_view()), name='AddAdminUsers'),
+    path('add/profesor', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.AddProfesorUsers.as_view()), name='AddProfesorUsers'),
     
     #URLS para agregar nuevos productos
     path('new/articulo', login_required(views.AddArticulo.as_view()), name="AddArticulo"),

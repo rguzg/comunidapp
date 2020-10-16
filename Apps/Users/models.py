@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.exceptions import ValidationError
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
+
 """
 Modelo del usuario
 """
@@ -25,10 +25,13 @@ class User(AbstractUser):
         ordering = ['id']
 
     email = models.EmailField(unique=True, blank=True, null=True)
-    clave = models.PositiveIntegerField(unique=True, blank=False, null=True, verbose_name = 'Clave de empleado')
+    clave = models.PositiveIntegerField(unique=True, blank=False, null=True, verbose_name = 'Clave de empleado', validators=[
+            MaxValueValidator(999999),
+            MinValueValidator(1)
+        ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
-    nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=image_user)
+    nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name = 'Fecha de nacimiento')
+    foto = models.ImageField(upload_to=image_user, null=True, blank=True)
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(default=False)

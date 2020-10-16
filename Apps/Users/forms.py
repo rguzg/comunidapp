@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
 from django.forms.widgets import PasswordInput, TextInput
+from django.contrib.auth.forms import UserCreationForm
 from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
                      Contrato, Editorial, Facultad, Institucion, Investigacion,
                      LineaInvestigacion, Nivel, PalabrasClave, Patente,
@@ -11,9 +12,84 @@ from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
 LONGITUD_NOMBRE_AUTOR = 1
 LONGITUD_APELLIDO_AUTOR = 1
 
+
+
+class UserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password1', 'password2',
+                  'is_superuser', 'is_staff', 'email']
+        widgets = {
+            'is_superuser': forms.HiddenInput(),
+            'is_staff': forms.HiddenInput(),
+            'email': forms.HiddenInput()
+        }
+        help_texts = {
+            'username': None,
+            'password1': None,
+            'password2': None,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+        for fieldname in ['username', 'password1', 'password2', 'is_superuser', 'is_staff']:
+            self.fields[fieldname].help_text = None
+
+    def save(self, commit=True):
+        if self.instance.email == '':
+            self.instance.email = None
+        # self.instance.is_superuser = True
+        print(self.instance.is_superuser)
+        return super().save(commit)
+
+
+class ProfesorCreationForm(UserCreationForm):
+    nacimiento= forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+    
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'password1', 'password2', 'first_name', 'last_name',
+                  'clave', 'sexo', 'nacimiento', 'foto', 'facultades', 'contratacion', 'grado', 
+                  'investigaciones', 'niveles', 'cuerpoAcademico', 'is_superuser', 'is_staff', 'publico']
+        widgets = {
+            'is_superuser': forms.HiddenInput(),
+            'is_staff': forms.HiddenInput(),
+            'email': forms.HiddenInput(),
+            'first_name': forms.TextInput(attrs={'required':'True'}),
+            'last_name': forms.TextInput(attrs={'required':'True'}),
+            'username': forms.EmailInput(attrs={'required':'True'})
+        }
+        labels = {
+            'username': 'Correo electrónico',
+            'sexo': 'Género',
+            'investigaciones': 'Líneas de investigación',
+            'publico': '¿Perfil público?'
+        }
+        help_texts = {
+            'username': None,
+            'password1': None,
+            'password2': None,
+            'publico': 'Si activas esta opción, cualquier usuario de la plataforma podra ver tu información de contacto y tus productos'
+        }
+
+    def clean(self):
+        cleaned_data = super(ProfesorCreationForm, self).clean()
+        foto = cleaned_data.get('foto')
+        print(foto)
+
+        cleaned_data['email'] = cleaned_data['username']
+        email = cleaned_data.get('email')
+        username = cleaned_data.get('username')
+        print(email, username)
+
+        return cleaned_data
+
+
 """
 CBV para los formularios de inicio de sesion y actualizacion de datos
 """
+
+
 class UserActualizadoForm(forms.Form):
     error_css_class = "error"
 
@@ -51,6 +127,7 @@ class UserActualizadoForm(forms.Form):
 
     )
 
+
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
@@ -69,9 +146,12 @@ class AuthenticationForm(AuthenticationForm):
 """
 CBV para los formularios estaticos
 """
+
+
 class ArticuloForm(ModelForm):
     error_css_class = 'error'
-    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=['%d-%m-%Y'], required=False)
+    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
+                                  '%d-%m-%Y'], required=False)
 
     class Meta:
         model = Articulo
@@ -102,8 +182,6 @@ class ArticuloForm(ModelForm):
             'doi': 'Identificador de objeto digital'
         }
 
-        
-
     def clean(self):
         cleaned_data = super(ArticuloForm, self).clean()
         primer_autor = cleaned_data.get('primer_autor')
@@ -111,44 +189,55 @@ class ArticuloForm(ModelForm):
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
         if segundo_colaborador:
             if not primer_colaborador:
-                self.add_error('segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
-                self.add_error('segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.add_error(
+                    'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.add_error(
+                    'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
 
         if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            self.add_error('primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
+            self.add_error(
+                'primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
 
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if pagina_fin < pagina_inicio:
-            self.add_error('pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
+            self.add_error(
+                'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                self.add_error('publicacion', 'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                self.add_error(
+                    'publicacion', 'No puedes agregar una fecha de publicacion a un articulo no publicado')
         else:
             if not publicacion:
-                self.add_error('publicacion', 'Debes agregar una fecha de publicacion')
+                self.add_error(
+                    'publicacion', 'Debes agregar una fecha de publicacion')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            self.add_error('palabras_clave', 'Debes escoger al menos 3 palabras clave')
+            self.add_error('palabras_clave',
+                           'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            self.add_error('lineas_investigacion', 'Debes escoger al menos 1 linea de investigacion')
+            self.add_error('lineas_investigacion',
+                           'Debes escoger al menos 1 linea de investigacion')
 
         categoria = cleaned_data.get('categoria')
         indice_revista = cleaned_data.get('indice_revista')
         if categoria == 'IND' or categoria == 'JCR':
             if not indice_revista:
-                self.add_error('indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                self.add_error(
+                    'indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
 
         return cleaned_data
 
+
 class CapituloLibroForm(ModelForm):
-    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=['%d-%m-%Y'], required=False)
+    publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
+                                  '%d-%m-%Y'], required=False)
 
     class Meta:
         model = CapituloLibro
@@ -190,57 +279,70 @@ class CapituloLibroForm(ModelForm):
 
         isbn = cleaned_data.get('isbn')
         if len(isbn) > 15 and len(isbn) < 12:
-            self.add_error('ISBN', 'El ISBN debe tener entre 12 y 15 caracteres')
+            self.add_error(
+                'ISBN', 'El ISBN debe tener entre 12 y 15 caracteres')
 
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
         if segundo_coautor:
             if not primer_coautor:
-                self.add_error('segundo_coautor', 'No puedes tener un segundo coautor sin un primer coautor')
+                self.add_error(
+                    'segundo_coautor', 'No puedes tener un segundo coautor sin un primer coautor')
 
         if primer_autor == primer_coautor or primer_autor == segundo_coautor or primer_coautor == segundo_coautor:
-            self.add_error('primer_autor', 'El autor y los coautores no pueden ser la misma persona')
+            self.add_error(
+                'primer_autor', 'El autor y los coautores no pueden ser la misma persona')
 
         tipo = cleaned_data.get('tipo')
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if tipo == 'L':
             if pagina_inicio or pagina_fin:
-                self.add_error('pagina_inicio', 'Un libro no debería tener pagina de inicio ni de fin')
+                self.add_error(
+                    'pagina_inicio', 'Un libro no debería tener pagina de inicio ni de fin')
         else:
             if not pagina_inicio or not pagina_fin:
-                self.add_error('pagina_inicio', 'El capitulo necesita una pagina de inicio y de fin')
+                self.add_error(
+                    'pagina_inicio', 'El capitulo necesita una pagina de inicio y de fin')
             if pagina_fin < pagina_inicio:
-                self.add_error('pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
+                self.add_error(
+                    'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                self.add_error('publicacion', 'No puedes agregar una fecha de publicación a un articulo no publicado')
+                self.add_error(
+                    'publicacion', 'No puedes agregar una fecha de publicación a un articulo no publicado')
         else:
             if not publicacion:
-                self.add_error('publicacion', 'Debes agregar una fecha de publicación')
+                self.add_error(
+                    'publicacion', 'Debes agregar una fecha de publicación')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            self.add_error('palabras_clave', 'Debes escoger al menos 3 palabras clave')
+            self.add_error('palabras_clave',
+                           'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            self.add_error('lineas_investigacion', 'Debes escoger al menos 1 línea de investigación')
+            self.add_error('lineas_investigacion',
+                           'Debes escoger al menos 1 línea de investigación')
 
         categoria = cleaned_data.get('categoria')
         indice_revista = cleaned_data.get('indice_revista')
         if categoria == 'IND' or categoria == 'JCR':
             if not indice_revista:
-                self.add_error('indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
+                self.add_error(
+                    'indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
 
         return cleaned_data
 
+
 class PatenteForm(ModelForm):
-    publicacion = forms.DateField(label="Fecha de publicación", input_formats=['%d-%m-%Y'], required=False)
+    publicacion = forms.DateField(label="Fecha de publicación", input_formats=[
+                                  '%d-%m-%Y'], required=False)
 
     class Meta:
         model = Patente
@@ -279,9 +381,12 @@ class PatenteForm(ModelForm):
             'pais': 'País donde se registro la patente'
         }
 
+
 class CongresoForm(ModelForm):
-    publicacion = forms.DateField(label='Fecha de publicación', input_formats=['%d-%m-%Y'], required=False)
-    presentacion = forms.DateField(label='Fecha de presentación',input_formats=['%d-%m-%Y'], required=True)
+    publicacion = forms.DateField(label='Fecha de publicación', input_formats=[
+                                  '%d-%m-%Y'], required=False)
+    presentacion = forms.DateField(label='Fecha de presentación', input_formats=[
+                                   '%d-%m-%Y'], required=True)
 
     class Meta:
         model = Congreso
@@ -332,32 +437,39 @@ class CongresoForm(ModelForm):
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
         if segundo_colaborador:
             if not primer_colaborador:
-                self.add_error('segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.add_error(
+                    'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
 
         if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            self.add_error('primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
+            self.add_error(
+                'primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
         if estado == 'A':
             if publicacion:
-                self.add_error('publicacion', 'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                self.add_error(
+                    'publicacion', 'No puedes agregar una fecha de publicacion a un articulo no publicado')
         else:
             if not publicacion:
-                self.add_error('publicacion', 'Debes agregar una fecha de publicacion')
+                self.add_error(
+                    'publicacion', 'Debes agregar una fecha de publicacion')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            self.add_error('palabras_clave', 'Debes escoger al menos 3 palabras clave')
+            self.add_error('palabras_clave',
+                           'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            self.add_error('lineas_investigacion', 'Debes escoger al menos 1 linea de investigacion')
+            self.add_error('lineas_investigacion',
+                           'Debes escoger al menos 1 linea de investigacion')
 
         presentacion = cleaned_data.get('presentacion')
         if presentacion and publicacion:
             if presentacion > publicacion:
-                self.add_error('presentacion', 'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
+                self.add_error(
+                    'presentacion', 'La fecha de presentacion no puede ser mayor a la fecha de publicacion')
 
         pais = cleaned_data.get('pais')
         if str(pais) == 'México':
@@ -367,17 +479,20 @@ class CongresoForm(ModelForm):
 
         return cleaned_data
 
+
 class InvestigacionForm(ModelForm):
-    inicio = forms.DateField(label='Fecha de inicio', input_formats=['%d-%m-%Y'], required=True)
-    fin = forms.DateField(label='Fecha de fin', input_formats=['%d-%m-%Y'], required=True)
+    inicio = forms.DateField(label='Fecha de inicio', input_formats=[
+                             '%d-%m-%Y'], required=True)
+    fin = forms.DateField(label='Fecha de fin', input_formats=[
+                          '%d-%m-%Y'], required=True)
 
     class Meta:
         model = Investigacion
         fields = '__all__'
         labels = {
-            'tipo_proyecto':'Tipo de proyecto',
-            'financiamiento':'¿Tuvó financiamiento?',
-            'tipo_financiamiento':'Tipo de financiamiento',
+            'tipo_proyecto': 'Tipo de proyecto',
+            'financiamiento': '¿Tuvó financiamiento?',
+            'tipo_financiamiento': 'Tipo de financiamiento',
             'primer_autor': 'Autor',
             'estadoP': 'Estado',
             'categoria': 'Categoría',
@@ -422,10 +537,12 @@ class InvestigacionForm(ModelForm):
         tipo_financiamiento = cleaned_data.get('tipo_financiamiento')
         if financiamiento:
             if not tipo_financiamiento:
-                self.add_error('tipo_financiamiento', 'Debes escoger un tipo de financiamiento')
+                self.add_error('tipo_financiamiento',
+                               'Debes escoger un tipo de financiamiento')
         else:
             if tipo_financiamiento:
-                self.add_error('tipo_financiamiento', 'No puedes escoger un tipo de financimiento si no tienes financiamiento')
+                self.add_error(
+                    'tipo_financiamiento', 'No puedes escoger un tipo de financimiento si no tienes financiamiento')
 
         responsable = cleaned_data.get('responsable')
         primer_colaborador = cleaned_data.get('primer_colaborador')
@@ -433,64 +550,80 @@ class InvestigacionForm(ModelForm):
 
         if segundo_colaborador:
             if not primer_colaborador:
-                self.add_error('primer_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
+                self.add_error(
+                    'primer_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
 
         if primer_colaborador:
             if responsable == primer_colaborador:
-                self.add_error('responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
+                self.add_error(
+                    'responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
             if segundo_colaborador:
                 if primer_colaborador == segundo_colaborador:
-                    self.add_error('responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
+                    self.add_error(
+                        'responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
 
                 if responsable == segundo_colaborador:
-                    self.add_error('responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
+                    self.add_error(
+                        'responsable', 'El responsable y los colaboradores no pueden ser la misma persona')
 
         if segundo_colaborador:
             if not primer_colaborador:
-                self.add_error('primer_colaborador', 'No puedes tener un segundo alumno sin un primer alumno')
+                self.add_error(
+                    'primer_colaborador', 'No puedes tener un segundo alumno sin un primer alumno')
 
         primer_alumno = cleaned_data.get('primer_alumno')
         segundo_alumno = cleaned_data.get('segundo_alumno')
         tercer_alumno = cleaned_data.get('tercer_alumno')
         if segundo_alumno:
             if not primer_alumno:
-                self.add_error('segundo_alumno', 'No puedes tener un segundo alumno sin un primer alumno')
+                self.add_error(
+                    'segundo_alumno', 'No puedes tener un segundo alumno sin un primer alumno')
 
         if tercer_alumno:
             if not segundo_alumno or not primer_alumno:
-                self.add_error('tercer_alumno', 'No puedes tener un tercer alumno sin un primero ni segundo alumno')
+                self.add_error(
+                    'tercer_alumno', 'No puedes tener un tercer alumno sin un primero ni segundo alumno')
 
         if primer_alumno and segundo_alumno:
             if primer_alumno == segundo_alumno:
-                self.add_error('primer_alumno', 'Los alumnos no pueden ser la misma persona')
+                self.add_error('primer_alumno',
+                               'Los alumnos no pueden ser la misma persona')
 
         if primer_alumno and tercer_alumno:
             if primer_alumno == tercer_alumno:
-                self.add_error('primer_alumno', 'Los alumnos no pueden ser la misma persona')
+                self.add_error('primer_alumno',
+                               'Los alumnos no pueden ser la misma persona')
 
         if segundo_alumno and tercer_alumno:
             if segundo_alumno == tercer_alumno:
-                self.add_error('primer_alumno', 'Los alumnos no pueden ser la misma persona')
+                self.add_error('primer_alumno',
+                               'Los alumnos no pueden ser la misma persona')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            self.add_error('palabras_clave', 'Debes escoger al menos 3 palabras clave')
+            self.add_error('palabras_clave',
+                           'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            self.add_error('lineas_investigacion', 'Debes escoger al menos 1 linea de investigacion')
+            self.add_error('lineas_investigacion',
+                           'Debes escoger al menos 1 linea de investigacion')
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
         if inicio and fin:
             if inicio > fin:
-                self.add_error('inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                self.add_error(
+                    'inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
 
         return cleaned_data
 
+
 class TesisForm(ModelForm):
-    inicio = forms.DateField(label='Fecha de inicio', input_formats=['%d-%m-%Y'], required=True)
-    fin = forms.DateField(label='Fecha de fin', input_formats=['%d-%m-%Y'], required=True)
+    inicio = forms.DateField(label='Fecha de inicio', input_formats=[
+                             '%d-%m-%Y'], required=True)
+    fin = forms.DateField(label='Fecha de fin', input_formats=[
+                          '%d-%m-%Y'], required=True)
 
     class Meta:
         model = Tesis
@@ -499,11 +632,11 @@ class TesisForm(ModelForm):
             'profesor': forms.HiddenInput()
         }
         labels = {
-            'tipo_proyecto':'Tipo de proyecto',
+            'tipo_proyecto': 'Tipo de proyecto',
             'institucion': 'Institución',
             'profesor': None,
-            'financiamiento':'¿Tuvó financiamiento?',
-            'tipo_financiamiento':'Tipo de financiamiento',
+            'financiamiento': '¿Tuvó financiamiento?',
+            'tipo_financiamiento': 'Tipo de financiamiento',
             'primer_autor': 'Autor',
             'estadoP': 'Estado',
             'categoria': 'Categoría',
@@ -549,15 +682,18 @@ class TesisForm(ModelForm):
         fin = cleaned_data.get('fin')
         if inicio and fin:
             if inicio > fin:
-                self.add_error('inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
+                self.add_error(
+                    'inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
-            self.add_error('palabras_clave', 'Debes escoger al menos 3 palabras clave')
+            self.add_error('palabras_clave',
+                           'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
-            self.add_error('lineas_investigacion', 'Debes escoger al menos 1 linea de investigacion')
+            self.add_error('lineas_investigacion',
+                           'Debes escoger al menos 1 linea de investigacion')
 
         return cleaned_data
 
@@ -565,6 +701,8 @@ class TesisForm(ModelForm):
 """
 CBV para los formularios Popup
 """
+
+
 class AutorForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -583,20 +721,26 @@ class AutorForm(ModelForm):
             Q(user__first_name=first_name, user__last_name=last_name)
         ).count()
         if autor_existente > 0:
-            self.add_error('first_name', 'Un autor con los mismos datos ya existe. Elíjalo o verifique sus datos')
+            self.add_error(
+                'first_name', 'Un autor con los mismos datos ya existe. Elíjalo o verifique sus datos')
 
         if user is None:
             if first_name is None or last_name is None:
-                self.add_error('user', 'Debe seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
+                self.add_error(
+                    'user', 'Debe seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
 
         if len(first_name) <= LONGITUD_NOMBRE_AUTOR:
-            self.add_error('first_name', 'El nombre debe ser mayor a 1 carácter')
+            self.add_error(
+                'first_name', 'El nombre debe ser mayor a 1 carácter')
 
         if len(last_name) <= LONGITUD_APELLIDO_AUTOR:
-            self.add_error('last_name', 'El apellido debe ser mayor a 1 carácter')
+            self.add_error(
+                'last_name', 'El apellido debe ser mayor a 1 carácter')
+
 
 class RevistaForm(ModelForm):
-    id_field = forms.CharField(max_length=30, required=True, widget=forms.HiddenInput)
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
 
     class Meta:
         model = Revista
@@ -606,6 +750,7 @@ class RevistaForm(ModelForm):
                 'unique': 'Una revista con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
+
 
 class EditorialForm(ModelForm):
     id_field = forms.CharField(
@@ -620,6 +765,7 @@ class EditorialForm(ModelForm):
             }
         }
 
+
 class PalabrasForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -632,6 +778,7 @@ class PalabrasForm(ModelForm):
                 'unique': 'Una palabra clave con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
+
 
 class LineasForm(ModelForm):
     id_field = forms.CharField(
@@ -646,6 +793,7 @@ class LineasForm(ModelForm):
             }
         }
 
+
 class AlumnoForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -653,6 +801,7 @@ class AlumnoForm(ModelForm):
     class Meta:
         model = Alumno
         fields = '__all__'
+
 
 class InstitucionForm(ModelForm):
     id_field = forms.CharField(
