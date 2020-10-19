@@ -42,9 +42,9 @@ class Home(ListView):
         context['title'] = 'Comunidapp'
         return context
 
-    # def get_queryset(self):
-    #     queryset = User.objects.filter(is_superuser=False)
-    #     return queryset
+    def get_queryset(self):
+        queryset = User.objects.filter(is_superuser=False)
+        return queryset
 
 # CBV para el perfil detallado de cada usuario
 class Perfil(DetailView):

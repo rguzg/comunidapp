@@ -1,10 +1,15 @@
 {% include 'navbar.html' %}
 {% load custom_tags %}
 {% block content %}
+{% load static %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-2">
-            <img src="{{user.foto.url}}" style="height: auto; width: 200px;" alt="">
+            {% if user.foto %}
+                <img src="{{user.foto.url}}" style="height: auto; width: 200px;" alt="">
+            {% else %}
+                <img src="{% static 'img/user.png' %}" style="height: auto; width: 200px;" alt="">
+            {% endif %}
         </div>
         <div class="col-10">
             <h1>{{ user.get_full_name }}</h1>
