@@ -12,8 +12,10 @@ from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
 LONGITUD_NOMBRE_AUTOR = 1
 LONGITUD_APELLIDO_AUTOR = 1
 
-
-
+"""
+Formularios para creacion de usuarios: Profesores y Administradores
+Son necesarios 2 diferentes formularios debido a los distintos permisos de cada usuario
+"""
 class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
@@ -38,10 +40,7 @@ class UserCreationForm(UserCreationForm):
     def save(self, commit=True):
         if self.instance.email == '':
             self.instance.email = None
-        # self.instance.is_superuser = True
-        print(self.instance.is_superuser)
-        return super().save(commit)
-
+        return super().save(commit=commit)
 
 class ProfesorCreationForm(UserCreationForm):
     nacimiento= forms.DateField(input_formats=['%d-%m-%Y'], required=False)
@@ -75,21 +74,15 @@ class ProfesorCreationForm(UserCreationForm):
     def clean(self):
         cleaned_data = super(ProfesorCreationForm, self).clean()
         foto = cleaned_data.get('foto')
-        print(foto)
-
         cleaned_data['email'] = cleaned_data['username']
         email = cleaned_data.get('email')
         username = cleaned_data.get('username')
-        print(email, username)
-
         return cleaned_data
 
 
 """
 CBV para los formularios de inicio de sesion y actualizacion de datos
 """
-
-
 class UserActualizadoForm(forms.Form):
     error_css_class = "error"
 
@@ -146,8 +139,6 @@ class AuthenticationForm(AuthenticationForm):
 """
 CBV para los formularios estaticos
 """
-
-
 class ArticuloForm(ModelForm):
     error_css_class = 'error'
     publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
@@ -233,7 +224,6 @@ class ArticuloForm(ModelForm):
                     'indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
 
         return cleaned_data
-
 
 class CapituloLibroForm(ModelForm):
     publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
@@ -339,7 +329,6 @@ class CapituloLibroForm(ModelForm):
 
         return cleaned_data
 
-
 class PatenteForm(ModelForm):
     publicacion = forms.DateField(label="Fecha de publicación", input_formats=[
                                   '%d-%m-%Y'], required=False)
@@ -380,7 +369,6 @@ class PatenteForm(ModelForm):
             'registro': 'Numero de registro según el país',
             'pais': 'País donde se registro la patente'
         }
-
 
 class CongresoForm(ModelForm):
     publicacion = forms.DateField(label='Fecha de publicación', input_formats=[
@@ -478,7 +466,6 @@ class CongresoForm(ModelForm):
                 self.add_error('estadoP', 'Necesitas seleccionar un estado')
 
         return cleaned_data
-
 
 class InvestigacionForm(ModelForm):
     inicio = forms.DateField(label='Fecha de inicio', input_formats=[
@@ -618,7 +605,6 @@ class InvestigacionForm(ModelForm):
 
         return cleaned_data
 
-
 class TesisForm(ModelForm):
     inicio = forms.DateField(label='Fecha de inicio', input_formats=[
                              '%d-%m-%Y'], required=True)
@@ -701,8 +687,6 @@ class TesisForm(ModelForm):
 """
 CBV para los formularios Popup
 """
-
-
 class AutorForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -737,7 +721,6 @@ class AutorForm(ModelForm):
             self.add_error(
                 'last_name', 'El apellido debe ser mayor a 1 carácter')
 
-
 class RevistaForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -750,7 +733,6 @@ class RevistaForm(ModelForm):
                 'unique': 'Una revista con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
-
 
 class EditorialForm(ModelForm):
     id_field = forms.CharField(
@@ -765,7 +747,6 @@ class EditorialForm(ModelForm):
             }
         }
 
-
 class PalabrasForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -778,7 +759,6 @@ class PalabrasForm(ModelForm):
                 'unique': 'Una palabra clave con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
-
 
 class LineasForm(ModelForm):
     id_field = forms.CharField(
@@ -793,7 +773,6 @@ class LineasForm(ModelForm):
             }
         }
 
-
 class AlumnoForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -801,7 +780,6 @@ class AlumnoForm(ModelForm):
     class Meta:
         model = Alumno
         fields = '__all__'
-
 
 class InstitucionForm(ModelForm):
     id_field = forms.CharField(

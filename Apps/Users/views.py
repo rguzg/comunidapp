@@ -20,7 +20,6 @@ from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
 """
 Clases para el manejo y administracion de sesiones y de usuarios
 """
-# CBV para el Login (necesario LOGIN_URL, LOGIN_REDIRECT_URL y LOGOUT_REDIRECT_URL en SETTINGS)
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
@@ -31,7 +30,6 @@ class CustomLogin(LoginView):
         context['title'] = 'Inicia sesión en Comunidapp'
         return context
 
-# CBV para el HTML de Home (donde se listan los usuarios)
 class Home(ListView):
     template_name = 'home.html'
     paginate_by = 20
@@ -46,7 +44,6 @@ class Home(ListView):
         queryset = User.objects.filter(is_superuser=False)
         return queryset
 
-# CBV para el perfil detallado de cada usuario
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
@@ -57,7 +54,6 @@ class Perfil(DetailView):
         context['title'] = "Perfil de {0}".format(user.get_full_name())
         return context
 
-# CBV para actualizar los datos del perfil del usuario
 class Profile(FormView):
     form_class = UserActualizadoForm
     template_name = 'my_profile.html'
@@ -111,11 +107,9 @@ class Profile(FormView):
             inve for inve in LineaInvestigacion.objects.all().values_list('id', flat=True)]
         return initial
 
-# CBV para la funcionalidad de Logout
 class CustomLogout(LogoutView):
     next_page = 'login'
 
-# CBV para la funcionalidad de cambiar la contraseña
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
     template_name = 'password.html'
@@ -141,7 +135,6 @@ class CustomResetPassword(View):
             'title': 'Cambio de contraseña'
         })
 
-# CBV para aprobar o rechazar peticion de actualizaciones de perfil
 class UpdatedUsers(ListView):
     model = UserActualizado
     paginate_by = 10
@@ -188,7 +181,10 @@ class UpdatedUsers(ListView):
         # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
 
-#CBV para creacion de usuarios administradores
+
+"""
+CBV para la creacion de usuarios administradores y profesores
+"""
 class AddAdminUsers(SuccessMessageMixin, CreateView):
     template_name = 'users.html'
     form_class = UserCreationForm
@@ -208,7 +204,6 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
         context['producto'] = 'administrador'
         return context
 
-#CBV para creacion de usuarios profesores
 class AddProfesorUsers(SuccessMessageMixin, CreateView):
     template_name = 'users.html'
     form_class = ProfesorCreationForm
@@ -217,19 +212,26 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
 
     # Necesario poner el username y el email iguales
 
-    # def get_initial(self):
-    #     initial = super(AddProfesorUsers, self).get_initial()
-    #     initial = initial.copy()
-    #     return initial
+    def get_initial(self):
+        initial = super(AddProfesorUsers, self).get_initial()
+        initial = initial.copy()
+        initial['publico'] = True
+        return initial
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args,**kwargs)
         context['title'] = 'Agrega un usuario Profesor'
         context['producto'] = 'profesor'
         return context
+
+    # Necesario para guardar los campos M2M
+    def form_valid(self, form):
+        form_valid = super(AddProfesorUsers, self).form_valid(form)
+        form_val = form.save(commit=False)
+        form_val.save()
+        form.save_m2m()
+        return form_valid
     
-
-
 """
 Clases para agregar productos
 """
