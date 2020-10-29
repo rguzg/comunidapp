@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import User, Facultad, Nivel, Contrato, LineaInvestigacion, UserActualizado, Alumno, Articulo, Autor, CapituloLibro, Ciudad, Congreso, Contrato, Editorial, Estado, Institucion, Pais, PalabrasClave, Patente, Revista, Tesis, UpdateRequest
+from .models import User, Facultad, Nivel, Contrato, LineaInvestigacion, Alumno, Articulo, Autor, CapituloLibro, Ciudad, Congreso, Contrato, Editorial, Estado, Institucion, Pais, PalabrasClave, Patente, Revista, Tesis, UpdateRequest
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,7 +18,6 @@ admin.site.register(Facultad)
 admin.site.register(Nivel)
 admin.site.register(Contrato)
 admin.site.register(LineaInvestigacion)
-admin.site.register(UserActualizado)
 admin.site.register(Alumno)
 admin.site.register(Articulo)
 admin.site.register(Autor)

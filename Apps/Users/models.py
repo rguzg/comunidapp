@@ -152,26 +152,6 @@ class LineaInvestigacion(models.Model):
     def __str__(self):
         return self.nombre
 
-class UserActualizado(models.Model):
-
-    class Meta:
-        ordering=['-id']
-        verbose_name = 'Petición de actualización'
-        verbose_name_plural = 'Peticiones de actualización'
-        
-    estados  = [
-        ('P', 'Pendiente'),
-        ('A', 'Aprobado'),
-        ('R', 'Rechazado')
-    ]
-
-    user = models.OneToOneField('User', on_delete=models.CASCADE)
-    cambios = models.CharField(max_length=1000, null=True, blank=True)
-    estado = models.CharField(max_length=1, null=False, blank=True, choices=estados)
-    fecha = models.DateTimeField(auto_now=True, auto_now_add=False)
-    motivo = models.CharField(max_length=1000, null=True, blank=True)
-    created = models.DateTimeField(auto_now=True, auto_now_add=False)
-
 class Autor(models.Model):
 
     class Meta:

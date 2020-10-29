@@ -83,43 +83,6 @@ class ProfesorCreationForm(UserCreationForm):
 """
 CBV para los formularios de inicio de sesion y actualizacion de datos
 """
-class UserActualizadoForm(forms.Form):
-    error_css_class = "error"
-
-    generos = [
-        ('H', 'Hombre'),
-        ('M', 'Mujer')
-    ]
-
-    grados = [
-        ('L', 'Licenciatura'),
-        ('M', 'Maestría'),
-        ('D', 'Doctorado')
-    ]
-
-    email = forms.EmailField(required=True)
-    clave = forms.IntegerField(required=True, max_value=999999, min_value=1)
-    sexo = forms.ChoiceField(required=True, choices=generos)
-    nacimiento = forms.DateField(required=True, widget=forms.DateInput)
-    foto = forms.ImageField(required=True)
-    grado = forms.ChoiceField(required=True, choices=grados)
-    contratacion = forms.ModelChoiceField(queryset=Contrato.objects.all())
-    facultades = forms.ModelMultipleChoiceField(
-        queryset=Facultad.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-
-    )
-    niveles = forms.ModelMultipleChoiceField(
-        queryset=Nivel.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-
-    )
-    investigaciones = forms.ModelMultipleChoiceField(
-        queryset=LineaInvestigacion.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-
-    )
-
 class UpdateRequestForm(ModelForm):
     nacimiento = forms.DateField(label="Nacimiento", input_formats=['%d-%m-%Y'], required=True)
     class Meta:

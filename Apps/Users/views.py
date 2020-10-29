@@ -14,9 +14,9 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
-                    UserActualizadoForm, UserCreationForm, ProfesorCreationForm, UpdateRequestForm)
+                    UserCreationForm, ProfesorCreationForm, UpdateRequestForm)
 from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UserActualizado, UpdateRequest)
+                     Pais, User, UpdateRequest)
 
 """
 Clases para el manejo y administracion de sesiones y de usuarios
@@ -138,60 +138,6 @@ class Profile(SuccessMessageMixin, FormView):
         peticion.__dict__.update(changed_data)
         peticion.save()
         return super().form_valid(form)
-
-
-# class Profile(FormView):
-#     form_class = UserActualizadoForm
-#     template_name = 'my_profile.html'
-#     success_url = '/'
-
-#     def get_context_data(self, **kwargs):
-#         context = super(Profile, self).get_context_data(**kwargs)
-#         context['title'] = "Actualización de mis datos"
-#         return context
-
-#     def form_valid(self, form):
-#         """
-#         Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
-#         """
-#         data = {}
-#         if form.has_changed():
-#             for field in form.changed_data:
-#                 data[field] = str(form.cleaned_data[field])
-
-#         print(data)
-#         update, created = UserActualizado.objects.get_or_create(
-#             user=self.request.user)
-#         if(update.estado == 'P'):
-#             form.add_error(
-#                 None, 'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace.')
-#             return super().form_invalid(form)
-
-#         update.cambios = data
-#         update.estado = 'P'
-#         update.save()
-#         return super().form_valid(form)
-
-#     def get_initial(self):
-#         """
-#         Regresando la informacion del usuario al formulario,
-#         ya que no es un ModelForm
-#         """
-#         initial = super().get_initial()
-#         initial['email'] = self.request.user.email
-#         initial['clave'] = self.request.user.clave
-#         initial['sexo'] = self.request.user.sexo
-#         initial['nacimiento'] = self.request.user.nacimiento
-#         initial['foto'] = self.request.user.foto
-#         initial['grado'] = self.request.user.grado
-#         initial['contratacion'] = self.request.user.contratacion
-#         initial['niveles'] = [
-#             nivel for nivel in Nivel.objects.all().values_list('id', flat=True)]
-#         initial['facultades'] = [
-#             facu for facu in Facultad.objects.all().values_list('id', flat=True)]
-#         initial['investigaciones'] = [
-#             inve for inve in LineaInvestigacion.objects.all().values_list('id', flat=True)]
-#         return initial
 
 class CustomLogout(LogoutView):
     next_page = 'login'
