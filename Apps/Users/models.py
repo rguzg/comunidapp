@@ -12,18 +12,23 @@ grados = [
     ('M', 'Maestría'),
     ('D', 'Doctorado')
 ]
-def image_user(instance, filename):
-    return '{0}/{1}'.format('images_users', instance.username)
-class User(AbstractUser):
-    generos  = [
+
+generos  = [
         ('H', 'Hombre'),
         ('M', 'Mujer')
     ]
 
+def image_user(instance, filename):
+    return '{0}/{1}'.format('images_users', instance.username)
+
+def temp_image_user(instance, filename):
+    return '{0}/{1}'.format('images_users', instance.username)
+
+class User(AbstractUser):
+
     class Meta:
         verbose_name_plural = 'Usuarios'
         ordering = ['id']
-
     email = models.EmailField(unique=True, blank=True, null=True)
     clave = models.PositiveIntegerField(unique=True, blank=False, null=True, verbose_name = 'Clave de empleado', validators=[
             MaxValueValidator(999999),
@@ -40,6 +45,39 @@ class User(AbstractUser):
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
 
+class UpdateRequest(models.Model):
+    class Meta:
+        ordering=['-fecha']
+        
+    estados  = [
+        ('P', 'Pendiente'),
+        ('A', 'Aprobado'),
+        ('R', 'Rechazado')
+    ]
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    estado = models.CharField(max_length=1, null=True, blank=False, choices=estados)
+    fecha = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name = 'Fecha')
+    motivo = models.CharField(max_length=1000, null=True, blank=True)
+    first_name = models.CharField(max_length=150, null=True, blank=False)
+    last_name = models.CharField(max_length=150, null=True, blank=False)
+    email = models.EmailField(null=True, blank=False)
+    clave = models.PositiveIntegerField(null=True, blank=False, 
+        verbose_name = 'Clave de empleado', 
+        validators=[
+            MaxValueValidator(999999),
+            MinValueValidator(1)
+        ])
+    sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
+    nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
+    foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True)
+    grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
+    cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
+    publico = models.BooleanField(null=True, blank=False)
+    contratacion = models.ForeignKey('Contrato', on_delete=models.CASCADE, blank=False, null=True, verbose_name = 'Tipo de contrato')
+    facultades = models.ManyToManyField('Facultad',  blank=True, verbose_name = 'Facultades donde imparte clases')
+    niveles = models.ManyToManyField('Nivel', blank=True, verbose_name= 'Niveles donde imparte clases')
+    investigaciones = models.ManyToManyField('LineaInvestigacion', blank=True, verbose_name= 'Lineas de investigación o áreas de interes')
+    changed_fields = models.JSONField(null=True, blank=True)
 
 """
 Modelos auxiliares o de llaves foraneas

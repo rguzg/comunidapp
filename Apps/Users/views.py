@@ -7,15 +7,16 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponse, redirect, render
 from django.views import View
+from django.forms.models import model_to_dict
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
-                    UserActualizadoForm, UserCreationForm, ProfesorCreationForm)
+                    UserActualizadoForm, UserCreationForm, ProfesorCreationForm, UpdateRequestForm)
 from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UserActualizado)
+                     Pais, User, UserActualizado, UpdateRequest)
 
 """
 Clases para el manejo y administracion de sesiones y de usuarios
@@ -54,37 +55,22 @@ class Perfil(DetailView):
         context['title'] = "Perfil de {0}".format(user.get_full_name())
         return context
 
-class Profile(FormView):
-    form_class = UserActualizadoForm
+class Profile(SuccessMessageMixin, FormView):
+    form_class = UpdateRequestForm
     template_name = 'my_profile.html'
-    success_url = '/'
+    success_url = '/profile'
+    success_message = 'Petición de actualización enviada correctamente'
 
     def get_context_data(self, **kwargs):
         context = super(Profile, self).get_context_data(**kwargs)
+
+        is_peticion = UpdateRequest.objects.filter(user=self.request.user, estado='P')
+        if is_peticion.count()>0:
+            context['is_peticion'] = True
+
         context['title'] = "Actualización de mis datos"
+        context['producto'] = 'actualizacion'
         return context
-
-    def form_valid(self, form):
-        """
-        Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
-        """
-        data = {}
-        if form.has_changed():
-            for field in form.changed_data:
-                data[field] = str(form.cleaned_data[field])
-
-        print(data)
-        update, created = UserActualizado.objects.get_or_create(
-            user=self.request.user)
-        if(update.estado == 'P'):
-            form.add_error(
-                None, 'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace.')
-            return super().form_invalid(form)
-
-        update.cambios = data
-        update.estado = 'P'
-        update.save()
-        return super().form_valid(form)
 
     def get_initial(self):
         """
@@ -92,20 +78,120 @@ class Profile(FormView):
         ya que no es un ModelForm
         """
         initial = super().get_initial()
+        initial['first_name'] = self.request.user.first_name
+        initial['last_name'] = self.request.user.last_name  
         initial['email'] = self.request.user.email
         initial['clave'] = self.request.user.clave
         initial['sexo'] = self.request.user.sexo
-        initial['nacimiento'] = self.request.user.nacimiento
+        initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
         initial['foto'] = self.request.user.foto
         initial['grado'] = self.request.user.grado
         initial['contratacion'] = self.request.user.contratacion
+        initial['cuerpoAcademico'] = self.request.user.cuerpoAcademico
+        initial['publico'] = self.request.user.publico
+        initial['user'] = self.request.user
         initial['niveles'] = [
-            nivel for nivel in Nivel.objects.all().values_list('id', flat=True)]
+            nivel for nivel in self.request.user.niveles.all().values_list('id', flat=True)]
         initial['facultades'] = [
-            facu for facu in Facultad.objects.all().values_list('id', flat=True)]
+            facultad for facultad in self.request.user.facultades.all().values_list('id', flat=True)]
         initial['investigaciones'] = [
-            inve for inve in LineaInvestigacion.objects.all().values_list('id', flat=True)]
+            investigacion for investigacion in self.request.user.investigaciones.all().values_list('id', flat=True)]
         return initial
+
+    def post(self, request, *args, **kwargs):
+        peticion = UpdateRequest.objects.filter(user=request.user).first()
+        
+        if peticion: 
+            print('SI')
+            form = UpdateRequestForm(request.POST, instance=peticion)
+        else:
+            print('no')
+            form = UpdateRequestForm(request.POST)
+        
+        if form.is_valid():
+            print('si')
+            peticion_obj = form.save(commit=False)
+            peticion_obj.user = request.user
+            peticion_obj.estado = 'P'
+            peticion_obj.changed_fields = {'fields':form.changed_data}
+            peticion_obj.save()
+            form.save_m2m()
+
+        
+        messages.add_message(self.request, messages.SUCCESS, 'Petición de actualización enviada correctamente')
+        return render(request, self.template_name, {
+            'form': form,
+            'title': "Actualización de mis datos",
+        'producto': 'actualizacion'
+            })
+
+    def form_valid(self, form):
+        """
+        Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
+        """
+        cleaned_data = form.cleaned_data
+        changed_data = form.has_changed
+        print('--------------------------------------------------------------')
+
+        peticion, created = UpdateRequest.objects.get_or_create(user=self.request.user)
+        peticion.estado = 'P'
+        peticion.__dict__.update(changed_data)
+        peticion.save()
+        return super().form_valid(form)
+
+
+# class Profile(FormView):
+#     form_class = UserActualizadoForm
+#     template_name = 'my_profile.html'
+#     success_url = '/'
+
+#     def get_context_data(self, **kwargs):
+#         context = super(Profile, self).get_context_data(**kwargs)
+#         context['title'] = "Actualización de mis datos"
+#         return context
+
+#     def form_valid(self, form):
+#         """
+#         Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
+#         """
+#         data = {}
+#         if form.has_changed():
+#             for field in form.changed_data:
+#                 data[field] = str(form.cleaned_data[field])
+
+#         print(data)
+#         update, created = UserActualizado.objects.get_or_create(
+#             user=self.request.user)
+#         if(update.estado == 'P'):
+#             form.add_error(
+#                 None, 'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace.')
+#             return super().form_invalid(form)
+
+#         update.cambios = data
+#         update.estado = 'P'
+#         update.save()
+#         return super().form_valid(form)
+
+#     def get_initial(self):
+#         """
+#         Regresando la informacion del usuario al formulario,
+#         ya que no es un ModelForm
+#         """
+#         initial = super().get_initial()
+#         initial['email'] = self.request.user.email
+#         initial['clave'] = self.request.user.clave
+#         initial['sexo'] = self.request.user.sexo
+#         initial['nacimiento'] = self.request.user.nacimiento
+#         initial['foto'] = self.request.user.foto
+#         initial['grado'] = self.request.user.grado
+#         initial['contratacion'] = self.request.user.contratacion
+#         initial['niveles'] = [
+#             nivel for nivel in Nivel.objects.all().values_list('id', flat=True)]
+#         initial['facultades'] = [
+#             facu for facu in Facultad.objects.all().values_list('id', flat=True)]
+#         initial['investigaciones'] = [
+#             inve for inve in LineaInvestigacion.objects.all().values_list('id', flat=True)]
+#         return initial
 
 class CustomLogout(LogoutView):
     next_page = 'login'
@@ -136,40 +222,42 @@ class CustomResetPassword(View):
         })
 
 class UpdatedUsers(ListView):
-    model = UserActualizado
+    model = UpdateRequest
     paginate_by = 10
     template_name = 'updates.html'
     ordering = ['-created']
 
     def get_queryset(self):
-        return UserActualizado.objects.filter(estado='P')
+        return UpdateRequest.objects.filter(estado='P')
 
     def post(self, request, *args, **kwargs):
-        idUserActualizado = request.POST['id']
-        query = UserActualizado.objects.get(id=idUserActualizado)
-        cambios = query.cambios.replace("\'", "\"")
-        cambios = json.loads(cambios)
+        idPeticion = request.POST['id']
+        query = UpdateRequest.objects.get(id=idPeticion)
+        niveles_peticion = query.niveles.all()
+        facultades_peticion = query.facultades.all()
+        investigaciones_peticion = query.investigaciones.all()
 
-        user = User.objects.get(id=query.user.id)
+        user = User.objects.filter(id=query.user.id)
+        something = model_to_dict(query)
+        
+        del something['id']
+        del something['user']
+        del something['estado']
+        del something['motivo']
+        del something['changed_fields']
+        del something['facultades']
+        del something['investigaciones']
+        del something['niveles']
 
-        for attr, value in cambios.items():
-            if attr == 'contratacion':
-                value = Contrato.objects.get(tipo=value)
-            # if attr == 'facultades':
-            # if attr == 'niveles':
-            #     print("si")
-            #     # user.niveles.clear()
-            #     print(*value)
-            #     print(ast.literal_eval(value))
-            #     user.niveles.add(*value)
 
-            # if value == 'investigaciones':
-            setattr(user, attr, value)
-            # print(attr, ': ', value)
-        user.save()
+        user.update(**something)
 
+        user[0].niveles.set(niveles_peticion)
+        user[0].facultades.set(facultades_peticion)
+        user[0].investigaciones.set(investigaciones_peticion)
+
+        query = UpdateRequest.objects.get(id=idPeticion)
         query.estado = 'A'
-        query.cambios = '{}'
         query.save()
 
         return redirect('updates')
@@ -177,8 +265,6 @@ class UpdatedUsers(ListView):
     def get_context_data(self, **kwargs):
         context = super(UpdatedUsers, self).get_context_data(**kwargs)
         context['title'] = 'Peticiones de actualización'
-        # import ast
-        # print(ast.literal_eval("{'email': 'email@gmail.com2', 'clave': 2, 'sexo': 'H'}"))
         return context
 
 

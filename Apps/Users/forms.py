@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
                      Contrato, Editorial, Facultad, Institucion, Investigacion,
                      LineaInvestigacion, Nivel, PalabrasClave, Patente,
-                     Revista, Tesis, User)
+                     Revista, Tesis, User, UpdateRequest)
 
 LONGITUD_NOMBRE_AUTOR = 1
 LONGITUD_APELLIDO_AUTOR = 1
@@ -119,6 +119,53 @@ class UserActualizadoForm(forms.Form):
         widget=forms.CheckboxSelectMultiple,
 
     )
+
+class UpdateRequestForm(ModelForm):
+    nacimiento = forms.DateField(label="Nacimiento", input_formats=['%d-%m-%Y'], required=True)
+    class Meta:
+        model = UpdateRequest
+        fields = '__all__'
+        exclude = ['estado', 'changed_fields']
+        labels = {
+            'first_name': 'Nombre(s)',
+            'last_name': 'Apellido(s)',
+            'email': 'Correo electrónico',
+            'user': '',
+            'motivo': ''
+        }
+        widgets = {
+            'user': forms.HiddenInput(),
+            'motivo': forms.HiddenInput()
+        }
+
+    def clean(self):
+        data = {}
+        cleaned_data = super(UpdateRequestForm, self).clean()
+        user = cleaned_data.get('user')
+
+        peticion = UpdateRequest.objects.filter(user=user)
+        if peticion.count()>0:
+            peticion = peticion.first()
+            if peticion.estado == 'P' :
+                self.add_error(
+                    'first_name', 
+                    'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace'
+                )
+                return cleaned_data
+
+        else:
+            peticion = UpdateRequest(user=user)
+            peticion.save()
+
+        changed_data = self.changed_data
+        for field in changed_data:
+            data[field] = cleaned_data[field]
+
+        cleaned_data['changed_fields'] = self.changed_data
+        cleaned_data['changed'] = data
+        return cleaned_data
+
+    
 
 
 class AuthenticationForm(AuthenticationForm):
