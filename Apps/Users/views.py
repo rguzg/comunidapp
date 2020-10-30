@@ -64,12 +64,17 @@ class Profile(SuccessMessageMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(Profile, self).get_context_data(**kwargs)
 
-        is_peticion = UpdateRequest.objects.filter(user=self.request.user, estado='P')
-        if is_peticion.count()>0:
+        is_peticion = UpdateRequest.objects.filter(user=self.request.user, estado='P').count()
+        if is_peticion > 0:
             context['is_peticion'] = True
+        else:
+            peticion = UpdateRequest.objects.get(user=self.request.user)
+            if peticion.estado == 'R':
+                context['peticion'] = peticion
 
         context['title'] = "Actualización de mis datos"
         context['producto'] = 'actualizacion'
+        
         return context
 
     def get_initial(self):
@@ -178,6 +183,20 @@ class UpdatedUsers(ListView):
 
     def post(self, request, *args, **kwargs):
         idPeticion = request.POST['id']
+        comentario = request.POST['comentario-'+idPeticion]
+        rechazado = request.POST.get('Rechazado')
+        query = UpdateRequest.objects.get(id=idPeticion)
+
+        if rechazado:
+            query.estado = 'R'
+            query.motivo = comentario
+            query.save()
+            return redirect('/updates')
+        else:
+            query.estado = 'A'
+            query.motivo = None
+            query.save()
+
         query = UpdateRequest.objects.get(id=idPeticion)
         niveles_peticion = query.niveles.all()
         facultades_peticion = query.facultades.all()
@@ -195,16 +214,16 @@ class UpdatedUsers(ListView):
         del something['investigaciones']
         del something['niveles']
 
-
         user.update(**something)
 
         user[0].niveles.set(niveles_peticion)
         user[0].facultades.set(facultades_peticion)
         user[0].investigaciones.set(investigaciones_peticion)
 
-        query = UpdateRequest.objects.get(id=idPeticion)
-        query.estado = 'A'
-        query.save()
+        
+        
+        
+       
 
         return redirect('updates')
 

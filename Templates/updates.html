@@ -10,8 +10,9 @@
         <h6>Por el momento no existen peticion de actualización</h1>
     {% endif %}
 
-        <ul class="list-group list-group-flush">
+        
             {% for actualizacion in object_list %}
+            <ul class="list-group list-group-flush"></ul>
             <form action="{% url 'updates' %}" method="POST">
                 {% csrf_token  %}
 
@@ -57,13 +58,15 @@
                 </li>
 
                 <li class="list-group-item">
-                    <input class="btn btn-sm btn-outline-dark" type="submit" value="Rechazar">
-                    <input class="btn btn-sm btn-submit" type="submit" value="Aprobar">
+                    <textarea class="form-control mt-3 mb-3" name="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" id="comentario-{{actualizacion.id}}" rows="05"></textarea>
+                    <input class="btn btn-sm btn-outline-dark" name="Rechazado" type="submit" value="Rechazado">
+                    <input class="btn btn-sm btn-submit" type="submit" name="Aprobado" value="Aprobado">
                 </li>
             </form>
-            <br>
-            {% endfor %}
         </ul>
+        <br> <br>
+            {% endfor %}
+        
 
 </div>
 
