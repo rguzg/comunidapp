@@ -1,32 +1,130 @@
 {% include 'navbar.html' %}
 {% load custom_tags %}
+{% load static %}
 {% block content %}
 
-<div class="container-fluid">
-    <h1>Mi perfil - Datos actuales</h1>
-    <p>Recuerda que para cambiar tus datos deberas solicitar aprobacion del administrador <small>(El administrador aprobara o rechazara los cambios)</small></p>
-    <a href="{% url 'password' %}">Cambiar contraseña</a>
+<div class="container">
+    <div class="card text-center mt-4">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link {% if producto == 'actualizacion' %}active{% endif %}" href="{% url 'AddArticulo' %}">
+                        Mis datos
+                    </a>
+                </li>
 
-    <div class="container">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
 
-            {% for hidden_field in form.hidden_fields %}
-                {{ hidden_field.errors }}
-                {{ hidden_field }}
-            {% endfor %}
+            {% if is_peticion %}
+            <div class="alert alert-warning text-center">
+                <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
+            </div>
+            {% endif %}
 
+            <!-- Mensaje de exito -->
+            {% if messages %}
+                <div class="alert alert-success text-center">
+                    {% for message in messages %}
+                        <strong>{{message}} </strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-            {% for field in form.visible_fields %}
-            
-                {{ field.errors }}
-                {{ field.label }}
-                {{ field|addclass:'form-line p-0 w-100 mt-2 mb-2' }}
-                <br>
-            {% endfor %}
-            <input class="btn btn-sm btn-submit" type="submit" value="Solicitar cambios" />
-        </form>
+            <!-- Mensajes de error sin campo asociado -->
+            {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {% for error in form.non_field_errors %}
+                    <p class="form-error">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Formulario -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Mostrando errores de todos los campos -->
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <strong>Corrigue los siguientes errores:</strong>
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <li>
+                                        <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <!-- Mostrando los campos del formulario -->
+                {% for field in form %}
+                <div class="form-group mb-4">
+
+                    <!-- Mostrando el error especifico del campo -->
+                    {% if field.errors %}
+                        <div class="alert alert-danger">
+                            {% for error in field.errors %}
+                            <strong>{{error}}</strong>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Si el campo es fecha, agrega la clase datepicker -->
+                    {% if field.name == 'nacimiento' or field.name == 'fecha' %}
+                        {{ field.label_tag }}
+
+                        {% if field.help_text %}
+                            <small class="text-muted">({{ field.help_text }})</small>
+                        {% endif %}
+
+                        {{ field|addclass:'datepicker form-control' }}
+                    {% else %}
+
+                    {% if field.name != "nacimiento" and field.name != 'user' and field.name != 'motivo' %}
+                    {{ field.label_tag }}
+                    {% endif %}
+                    
+
+                    {% if field.name == "investigaciones" %}
+                    <div class="row">
+                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                            data-placement="top" title="Agrega una linea de investigación">
+                            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                onclick="return showAddPopup(this);">
+                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Agregando los campos que no sean de tipo fecha -->
+                    {% if field.help_text %}
+                        <small class="text-muted">({{ field.help_text }})</small>
+                    {% endif %}
+
+                    {% if field.name != "nacimiento" and field.name != 'investigaciones' %}
+                        {{ field|addclass:'form-control' }}
+                    {% endif %}
+
+                        
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+        </div>
     </div>
-</div>
+
+
+    
+
+
 {% endblock %}

@@ -13,6 +13,7 @@ body, html{
     height: 15% !important;
 }
 
+
 .main{
     height: 100%;
     width: 100%;
@@ -52,4 +53,48 @@ ul.errorlist{
     border: none;
     border-bottom: 2px solid #25D3A2;
 
+}
+
+.main-logo{
+    width: 52px !important;
+    height: 52px !important;
+}
+
+.input-text-size{
+    font-size: .9rem !important;
+}
+
+.error {
+    /* border: 2px red solid !important; */
+    color: red;
+}
+
+.img-add{
+    width: 20px;
+    height: auto;
+}
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 01000;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

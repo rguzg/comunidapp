@@ -7,8 +7,8 @@
 
     {% if object_list %}
     {% else %}
-    <h6>Por el momento no existen peticion de actualización</h1>
-        {% endif %}
+        <h6>Por el momento no existen peticion de actualización</h1>
+    {% endif %}
 
         <ul class="list-group list-group-flush">
             {% for actualizacion in object_list %}
@@ -16,8 +16,46 @@
                 {% csrf_token  %}
 
                 <li class="list-group-item">Peticion de <b>{{actualizacion.user}}</b></li>
-                <li class="list-group-item">Actualizaciones: {{actualizacion.cambios}}</li>
+                <li class="list-group-item">
+                    Actualizaciones: {{actualizacion.cambios}}
+
+                    {% for key, value in actualizacion.changed_fields.items %}
+                        {{value|join:', '}}
+                    {% endfor %}
+                </li>
                 <input type="hidden" value="{{actualizacion.id}}" name="id">
+                <li class="list-group-item">
+
+                    {% for key, value in actualizacion.changed_fields.items %}
+                        {% for v in value %}
+                            <b>{{v}}</b>
+                            <br>
+
+                            {% if v != 'investigaciones' and v != 'niveles' %}
+                                Actual: {{ actualizacion.user|getattribute:v }} 
+                                <br>
+                                Peticion: {{actualizacion|getattribute:v}}
+                                <br><br>
+                            {% endif %}
+
+                            {% if v == 'niveles' %}
+                                Actual: {{ actualizacion.user.niveles.all|join:' - '}} 
+                                <br>
+                                Peticion: {{actualizacion.niveles.all|join:' - '}}
+                                <br><br>
+                            {% endif %}
+
+                            {% if v == 'investigaciones' %}
+                                Actual: {{ actualizacion.user.investigaciones.all|join:' - '}} 
+                                <br>
+                                Peticion: {{actualizacion.investigaciones.all|join:' - '}}
+                                <br><br>
+                            {% endif %}
+
+                        {% endfor %}  
+                    {% endfor %}
+                </li>
+
                 <li class="list-group-item">
                     <input class="btn btn-sm btn-outline-dark" type="submit" value="Rechazar">
                     <input class="btn btn-sm btn-submit" type="submit" value="Aprobar">

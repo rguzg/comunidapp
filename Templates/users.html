@@ -1,0 +1,101 @@
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="card text-center mt-4">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
+                        href="{% url 'AddAdminUsers' %}">
+                        Administrador
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if producto == 'profesor' %}active{% endif %}"
+                        href="{% url 'AddProfesorUsers' %}">
+                        Profesor
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+
+            <!-- Mensaje de exito -->
+            {% if messages %}
+            <div class="alert alert-success text-center">
+                {% for message in messages %}
+                <strong>{{message}} </strong>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Mensajes de error sin campo asociado -->
+            {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {% for error in form.non_field_errors %}
+                <p class="form-error">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Mostrando errores de todos los campos -->
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Corrigue los siguientes errores:</strong>
+                    <ul>
+                        {% for field in form %}
+                        {% if field.errors %}
+                        <li>
+                            <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Mostrando los campos del formulario -->
+                {% for field in form %}
+                <div class="form-group mb-4">
+
+                    <!-- Mostrando el error especifico del campo -->
+                    {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in field.errors %}
+                        <strong>{{error}}</strong>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if field.name != 'is_superuser' and field.name != 'is_staff' and field.name != 'email' %}
+                        {{ field.label_tag }}
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <small class="text-muted">({{ field.help_text }})</small>
+                    {% endif %}
+
+                    {% if field.name == 'nacimiento' %}
+                        {{field|addclass:'datepicker form-control'}}
+                    {% else %}
+                        {{field|addclass:'form-control'}}
+                    {% endif %}
+                    
+
+                </div>
+                {% endfor %}
+                <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+            </form>
+        </div>
+    </div>
+
+    {% endblock %}

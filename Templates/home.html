@@ -1,6 +1,6 @@
 {% include 'navbar.html' %}
 {% block content %}
-
+{% load static %}
 <div class="container-fluid">
     <h1 class="display-4">Bienvenido {{request.user.get_full_name}}</h1>
 
@@ -10,7 +10,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-2">
-                    <img src="{{ user.foto.url }}" style="height: auto; width: 100px;" alt="">
+                    {% if user.foto %}
+                        <img src="{{ user.foto.url }}" style="height: auto; width: 100px;" alt="">
+                    {% else %}
+                        <img src="{% static 'img/user.png' %}" style="height: auto; width: 100px;" alt="">
+                    {% endif %}
+                    
                 </div>
                 <div class="col-10">
                     <a href="{% url 'profile-detail' pk=user.id %}">
