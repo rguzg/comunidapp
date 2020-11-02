@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
     'Apps.comunidad',
     'Apps.Users',
 ]
@@ -71,6 +72,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'comunidapp.wsgi.application'
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('urimeba'),
+    'API_KEY': os.environ.get('api_key'),
+    'API_SECRET': os.environ.get('api_secret'),
+}
 
 
 # Database

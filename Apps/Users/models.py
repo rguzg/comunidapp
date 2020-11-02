@@ -37,7 +37,7 @@ class User(AbstractUser):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = CloudinaryField('image', upload_to=image_user, null=True, blank=True)
+    foto = CloudinaryField('image', null=True, blank=True, upload_to=image_user,)
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(default=False)
