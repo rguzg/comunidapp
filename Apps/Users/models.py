@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
+from cloudinary.models import CloudinaryField
 
 """
 Modelo del usuario
@@ -36,7 +37,7 @@ class User(AbstractUser):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=image_user, null=True, blank=True)
+    foto = CloudinaryField('image', upload_to=image_user, null=True, blank=True)
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(default=False)
@@ -44,6 +45,13 @@ class User(AbstractUser):
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
+
+    def __unicode__(self):
+        try:
+            foto_id = self.foto.id
+        except AttributeError:
+            foto_id = ''
+        return "Foto <%s:%s>" % (self.email, foto_id)
 
 class UpdateRequest(models.Model):
     class Meta:
