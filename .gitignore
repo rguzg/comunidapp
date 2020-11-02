@@ -1,6 +1,4 @@
 
-Apps/Users/migrations/
-
 Pipfile
 
 Media/images_users/
@@ -17,3 +15,7 @@ comunidapp/__pycache__/
 Media/comprobantes/
 
 Media/resumenes/
+
+Apps/external-content.duckduckgo.com.png
+
+Apps/another.png

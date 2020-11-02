@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=t$7l@j^s*%!%$x@78kf=d)z6@y90n+sbnbz-rcq0r@7cx6&za'
+SECRET_KEY = os.environ.get('secret_key_django')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'comunidapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'comunidapp',
-        'HOST':'127.0.0.1',
-        'USER':'root',
-        'PASSWORD':'',
-        'PORT':'3306'
+        'NAME': os.environ.get('namedb_jawsdb'),
+        'HOST': os.environ.get('host_jawsdb'),
+        'USER': os.environ.get('username_jawsdb'),
+        'PASSWORD': os.environ.get('password_jawsdb'),
+        'PORT': os.environ.get('port_jawsdb')
     }
 }
 
