@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'comunidapp.wsgi.application'
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('urimeba'),
+    'CLOUD_NAME': os.environ.get('cloud_name'),
     'API_KEY': os.environ.get('api_key'),
     'API_SECRET': os.environ.get('api_secret'),
 }
