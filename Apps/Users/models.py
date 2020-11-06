@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 """
 Modelo del usuario
@@ -36,7 +37,7 @@ class User(AbstractUser):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=image_user, null=True, blank=True)
+    foto = models.ImageField(null=True, blank=True, upload_to=image_user, storage=MediaCloudinaryStorage())
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(default=False)
@@ -44,6 +45,13 @@ class User(AbstractUser):
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
+
+    def __unicode__(self):
+        try:
+            foto_id = self.foto.id
+        except AttributeError:
+            foto_id = ''
+        return "Foto <%s:%s>" % (self.email, foto_id)
 
 class UpdateRequest(models.Model):
     class Meta:
@@ -69,7 +77,7 @@ class UpdateRequest(models.Model):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True)
+    foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True, storage=MediaCloudinaryStorage())
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(null=True, blank=False)
@@ -348,7 +356,7 @@ class Patente(models.Model):
     registro = models.CharField(max_length=25)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     publicacion = models.DateField(auto_now=False, auto_now_add=False)
-    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size]  )
+    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size])
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 

@@ -23,6 +23,14 @@
                 <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
             </div>
             {% endif %}
+            
+            {% if peticion %}
+                <div class="alert alert-danger text-center">
+                    <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
+                </div>
+                
+            {% endif %}
+            
 
             <!-- Mensaje de exito -->
             {% if messages %}
