@@ -236,6 +236,221 @@
     </div>
 
 
+    <div class="container-fluid mt-4 text-center">
+        <div class="btn-group" role="group" aria-label="add-products">
+            <a href="{% url 'AddArticulo' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'articulo' %}active{% endif %}">Artículo</button>
+            </a>
+            <a href="{% url 'AddCapituloLibro' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'libro' %}active{% endif %}">Libro/Capítulo</button>
+            </a>
+            <a href="{% url 'AddPatente' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'patente' %}active{% endif %}">Patente</button>
+            </a>
+            <a href="{% url 'AddCongreso' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'congreso' %}active{% endif %}">Congreso</button>
+            </a>
+            <a href="{% url 'AddInvestigacion' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'investigacion' %}active{% endif %}">Investigación/Vinculación</button>
+            </a>
+            <a href="{% url 'AddTesis' %}">
+                <button type="button" class="btn btn-secondary {% if producto == 'tesis' %}active{% endif %}">Dirección de tesis</button>
+            </a>
+        </div>
+    </div>
+
+
+    <!-- Titulo del formulario -->
+    <div class="text-center mt-3">
+        <h1 class="display-4">{{title}}</h1>
+    </div>
+
+    <!-- Mensaje de exito -->
+    {% if messages %}
+    <div class="alert alert-success text-center">
+        {% for message in messages %}
+        <strong>{{message}} </strong>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Mensajes de error sin campo asociado -->
+    {% if form.non_field_errors %}
+    <div class="non-field-errors">
+        {% for error in form.non_field_errors %}
+        <p class="form-error">
+            {{ error }}
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Mostrando errores de todos los campos -->
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>Corrigue los siguientes errores:</strong>
+            <ul>
+                {% for field in form %}
+                {% if field.errors %}
+                <li>
+                    <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Mostrando los campos del formulario -->
+        {% for field in form %}
+        <div class="form-group mb-4">
+
+            <!-- Mostrando el error especifico del campo -->
+            {% if field.errors %}
+            <div class="alert alert-danger">
+                {% for error in field.errors %}
+                <strong>{{error}}</strong>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Si el campo es fecha, agrega la clase datepicker -->
+            {% if field.name == 'publicacion' or field.name == 'presentacion' or field.name == "inicio" or field.name == "fin"  %}
+            {{ field.label_tag }}
+
+            {% if field.help_text %}
+            <small class="text-muted">({{ field.help_text }})</small>
+            {% endif %}
+
+            {{ field|addclass:' datepicker form-control' }}
+            {% else %}
+
+            <!-- Agregando los campos que no sean de tipo fecha -->
+            {% if field.name != "tipo_financiamiento" and field.name != 'profesor' %}
+            {{ field.label_tag }}
+            {% if field.help_text %}
+            <small class="text-muted">({{ field.help_text }})</small>
+            {% endif %}
+            {% endif %}
+
+            {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega un autor externo">
+                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_author"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "financiamiento" %}
+            <div class="row">
+                <div class="col d-flex flex-row justify-align-items align-items-center">
+                    {{field}}
+                </div>
+                <div class="col">
+                    {{form.tipo_financiamiento.label_tag}}
+                    {{form.tipo_financiamiento|addclass:'form-control'}}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "palabras_clave" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega una palabra clave">
+                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}}" id="add_palabras"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "revista" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega una revista">
+                    <a href="javascript:void(0);" data-url="{% url 'RevistaCreate' %}" id="add_revista"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "editorial" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega una editorial">
+                    <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "lineas_investigacion" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega una linea de investigación">
+                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name == "institucion" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega una Institución">
+                    <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+
+            {% if field.name == "alumno" or field.name == "primer_alumno" or field.name == "segundo_alumno" or field.name == "tercer_alumno" %}
+            <div class="row">
+                <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                    data-placement="top" title="Agrega un Alumno">
+                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
+                        onclick="return showAddPopup(this);">
+                        <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" and field.name != "autores" and field.name != "financiamiento" and field.name != "tipo_financiamiento" and field.name != "institucion" and field.name != "alumno" and field.name != "primer_alumno" and field.name != "segundo_alumno" and field.name != "tercer_alumno" %}
+            {{ field|addclass:'form-control' }}
+            {% endif %}
+
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+    </form>
 </div>
 
 
