@@ -10,6 +10,6 @@ def create_user_autor(sender, instance, created, **kwargs):
         Autor.objects.create(user=instance)
         UpdateRequest.objects.create(
             user=instance,
-            estado='P'
+            estado='A'
         )
 
