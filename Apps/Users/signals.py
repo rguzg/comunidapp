@@ -8,3 +8,7 @@ from Apps.Users.models import User, Autor
 def create_user_autor(sender, instance, created, **kwargs):
     if created:
         Autor.objects.create(user=instance)
+        UpdateRequest.objects.create(
+            user=instance,
+            estado='A'
+        )
