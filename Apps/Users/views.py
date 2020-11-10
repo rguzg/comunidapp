@@ -88,7 +88,8 @@ class Profile(SuccessMessageMixin, FormView):
         initial['email'] = self.request.user.email
         initial['clave'] = self.request.user.clave
         initial['sexo'] = self.request.user.sexo
-        initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
+        if self.request.user.nacimiento:
+            initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
         initial['foto'] = self.request.user.foto
         initial['grado'] = self.request.user.grado
         initial['contratacion'] = self.request.user.contratacion
