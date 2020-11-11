@@ -108,20 +108,28 @@ class Profile(SuccessMessageMixin, FormView):
         peticion = UpdateRequest.objects.filter(user=request.user).first()
         
         if peticion: 
-            print('SI')
-            form = UpdateRequestForm(request.POST, instance=peticion)
+            print('Si existe una instancia')
+            form = UpdateRequestForm(request.POST, request.FILES, instance=peticion)
         else:
-            print('no')
-            form = UpdateRequestForm(request.POST)
+            print('No existe una instancia ')
+            form = UpdateRequestForm(request.POST, request.FILES)
         
         if form.is_valid():
-            print('si')
+            print('Formulario valido')
             peticion_obj = form.save(commit=False)
             peticion_obj.user = request.user
             peticion_obj.estado = 'P'
             peticion_obj.changed_fields = {'fields':form.changed_data}
+
+            print(form)
+            if 'foto' in form:
+                print('SI HAY FOTO')
+            
             peticion_obj.save()
+
             form.save_m2m()
+
+            
 
         
         messages.add_message(self.request, messages.SUCCESS, 'Petición de actualización enviada correctamente')
@@ -220,6 +228,7 @@ class UpdatedUsers(ListView):
         user[0].niveles.set(niveles_peticion)
         user[0].facultades.set(facultades_peticion)
         user[0].investigaciones.set(investigaciones_peticion)
+        
 
         
         
