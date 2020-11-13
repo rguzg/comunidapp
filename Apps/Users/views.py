@@ -1,5 +1,6 @@
 import ast
 import json
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -10,6 +11,7 @@ from django.views import View
 from django.forms.models import model_to_dict
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.db.models import Q
 from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
@@ -18,9 +20,36 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
 from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UpdateRequest)
 
+
 """
 Clases para el manejo y administracion de sesiones y de usuarios
 """
+
+
+class SearchUsers(View):
+    def post(self, request, *args, **kwargs):
+        print("hola")
+
+        # textoBusqueda = request.POST.get('textoBusqueda')
+        textoBusqueda = json.load(request)['textoBusqueda'] #Get data from POST request
+        print(textoBusqueda)
+        # textoBusqueda = 'a'
+        users = User.objects.filter(
+            Q(username__icontains=textoBusqueda) |
+            Q(first_name__icontains=textoBusqueda) |
+            Q(last_name__icontains=textoBusqueda) |
+            Q(cuerpoAcademico__icontains=textoBusqueda) 
+        ).filter(
+            is_staff=False,
+            is_superuser=False,
+            is_active=True
+        ).values('id','username', 'foto', 'first_name', 'last_name', 'clave', 'cuerpoAcademico')
+
+        print(users)
+
+        return JsonResponse({'users':list(users)}, safe=False)
+
+
 class CustomLogin(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
@@ -30,6 +59,7 @@ class CustomLogin(LoginView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Inicia sesión en Comunidapp'
         return context
+
 
 class Home(ListView):
     template_name = 'home.html'
@@ -45,6 +75,7 @@ class Home(ListView):
         queryset = User.objects.filter(is_superuser=False)
         return queryset
 
+
 class Perfil(DetailView):
     model = User
     template_name = 'perfil-detail.html'
@@ -55,6 +86,7 @@ class Perfil(DetailView):
         context['title'] = "Perfil de {0}".format(user.get_full_name())
         return context
 
+
 class Profile(SuccessMessageMixin, FormView):
     form_class = UpdateRequestForm
     template_name = 'my_profile.html'
@@ -64,7 +96,8 @@ class Profile(SuccessMessageMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(Profile, self).get_context_data(**kwargs)
 
-        is_peticion = UpdateRequest.objects.filter(user=self.request.user, estado='P').count()
+        is_peticion = UpdateRequest.objects.filter(
+            user=self.request.user, estado='P').count()
         if is_peticion > 0:
             context['is_peticion'] = True
         else:
@@ -74,7 +107,7 @@ class Profile(SuccessMessageMixin, FormView):
 
         context['title'] = "Actualización de mis datos"
         context['producto'] = 'actualizacion'
-        
+
         return context
 
     def get_initial(self):
@@ -84,12 +117,13 @@ class Profile(SuccessMessageMixin, FormView):
         """
         initial = super().get_initial()
         initial['first_name'] = self.request.user.first_name
-        initial['last_name'] = self.request.user.last_name  
+        initial['last_name'] = self.request.user.last_name
         initial['email'] = self.request.user.email
         initial['clave'] = self.request.user.clave
         initial['sexo'] = self.request.user.sexo
         if self.request.user.nacimiento:
-            initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
+            initial['nacimiento'] = self.request.user.nacimiento.strftime(
+                "%d-%m-%Y")
         initial['foto'] = self.request.user.foto
         initial['grado'] = self.request.user.grado
         initial['contratacion'] = self.request.user.contratacion
@@ -106,38 +140,37 @@ class Profile(SuccessMessageMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         peticion = UpdateRequest.objects.filter(user=request.user).first()
-        
-        if peticion: 
+
+        if peticion:
             print('Si existe una instancia')
-            form = UpdateRequestForm(request.POST, request.FILES, instance=peticion)
+            form = UpdateRequestForm(
+                request.POST, request.FILES, instance=peticion)
         else:
             print('No existe una instancia ')
             form = UpdateRequestForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
             print('Formulario valido')
             peticion_obj = form.save(commit=False)
             peticion_obj.user = request.user
             peticion_obj.estado = 'P'
-            peticion_obj.changed_fields = {'fields':form.changed_data}
+            peticion_obj.changed_fields = {'fields': form.changed_data}
 
             print(form)
             if 'foto' in form:
                 print('SI HAY FOTO')
-            
+
             peticion_obj.save()
 
             form.save_m2m()
 
-            
-
-        
-        messages.add_message(self.request, messages.SUCCESS, 'Petición de actualización enviada correctamente')
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Petición de actualización enviada correctamente')
         return render(request, self.template_name, {
             'form': form,
             'title': "Actualización de mis datos",
-        'producto': 'actualizacion'
-            })
+            'producto': 'actualizacion'
+        })
 
     def form_valid(self, form):
         """
@@ -147,14 +180,17 @@ class Profile(SuccessMessageMixin, FormView):
         changed_data = form.has_changed
         print('--------------------------------------------------------------')
 
-        peticion, created = UpdateRequest.objects.get_or_create(user=self.request.user)
+        peticion, created = UpdateRequest.objects.get_or_create(
+            user=self.request.user)
         peticion.estado = 'P'
         peticion.__dict__.update(changed_data)
         peticion.save()
         return super().form_valid(form)
 
+
 class CustomLogout(LogoutView):
     next_page = 'login'
+
 
 class CustomResetPassword(View):
     form_class = PasswordChangeForm
@@ -180,6 +216,7 @@ class CustomResetPassword(View):
             'form': form,
             'title': 'Cambio de contraseña'
         })
+
 
 class UpdatedUsers(ListView):
     model = UpdateRequest
@@ -213,7 +250,7 @@ class UpdatedUsers(ListView):
 
         user = User.objects.filter(id=query.user.id)
         something = model_to_dict(query)
-        
+
         del something['id']
         del something['user']
         del something['estado']
@@ -228,12 +265,6 @@ class UpdatedUsers(ListView):
         user[0].niveles.set(niveles_peticion)
         user[0].facultades.set(facultades_peticion)
         user[0].investigaciones.set(investigaciones_peticion)
-        
-
-        
-        
-        
-       
 
         return redirect('updates')
 
@@ -246,6 +277,8 @@ class UpdatedUsers(ListView):
 """
 CBV para la creacion de usuarios administradores y profesores
 """
+
+
 class AddAdminUsers(SuccessMessageMixin, CreateView):
     template_name = 'users.html'
     form_class = UserCreationForm
@@ -260,10 +293,11 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddAdminUsers, self).get_context_data(*args,**kwargs)
+        context = super(AddAdminUsers, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Administrador'
         context['producto'] = 'administrador'
         return context
+
 
 class AddProfesorUsers(SuccessMessageMixin, CreateView):
     template_name = 'users.html'
@@ -280,7 +314,7 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args,**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Profesor'
         context['producto'] = 'profesor'
         return context
@@ -292,10 +326,13 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
         form_val.save()
         form.save_m2m()
         return form_valid
-    
+
+
 """
 Clases para agregar productos
 """
+
+
 class AddArticulo(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
     form_class = ArticuloForm
@@ -307,6 +344,7 @@ class AddArticulo(SuccessMessageMixin, CreateView):
         context['title'] = 'Agrega un artículo'
         context['producto'] = 'articulo'
         return context
+
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
@@ -320,6 +358,7 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
         context['producto'] = 'libro'
         return context
 
+
 class AddPatente(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
     form_class = PatenteForm
@@ -331,6 +370,7 @@ class AddPatente(SuccessMessageMixin, CreateView):
         context['title'] = 'Agrega una patente'
         context['producto'] = 'patente'
         return context
+
 
 class AddCongreso(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
@@ -344,6 +384,7 @@ class AddCongreso(SuccessMessageMixin, CreateView):
         context['producto'] = 'congreso'
         return context
 
+
 class AddInvestigacion(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
     form_class = InvestigacionForm
@@ -355,6 +396,7 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         context['title'] = 'Agrega un proyecto de investigación'
         context['producto'] = 'investigacion'
         return context
+
 
 class AddTesis(SuccessMessageMixin, CreateView):
     template_name = 'add-producto.html'
@@ -369,7 +411,7 @@ class AddTesis(SuccessMessageMixin, CreateView):
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddTesis, self).get_context_data(*args,**kwargs)
+        context = super(AddTesis, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega una dirección de tesis'
         context['producto'] = 'tesis'
         return context
@@ -378,13 +420,15 @@ class AddTesis(SuccessMessageMixin, CreateView):
 """
 Clases para la creacion de campos foraneos (aparecen como PopUp)
 """
+
+
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AutorForm()
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Autor o Colaborador externo'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = AutorForm(request.POST)
@@ -397,13 +441,14 @@ class AutorCreatePopup(View):
             'title': 'Agrega un Autor/Colaborador externo'
         })
 
+
 class AlumnoCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = AlumnoForm()
         return render(request, 'add-externo.html', {
-            'form': form, 
+            'form': form,
             'title': 'Agrega un Alumno'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = AlumnoForm(request.POST)
@@ -412,17 +457,18 @@ class AlumnoCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
-            'form': form, 
+            'form': form,
             'title': 'Agrega un Alumno'
-            })
+        })
+
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = RevistaForm()
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Revista'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = RevistaForm(request.POST)
@@ -431,17 +477,18 @@ class RevistaCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Revista'
-            })
+        })
+
 
 class EditorialCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = EditorialForm()
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Editorial'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = EditorialForm(request.POST)
@@ -450,17 +497,18 @@ class EditorialCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Editorial'
-            })
+        })
+
 
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = PalabrasForm()
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una palabra clave'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = PalabrasForm(request.POST)
@@ -469,17 +517,18 @@ class PalabrasCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una palabra clave'
-            })
+        })
+
 
 class LineasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = LineasForm()
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Linea de Investigacion'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = LineasForm(request.POST)
@@ -488,17 +537,18 @@ class LineasCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Linea de Investigacion'
-            })
+        })
+
 
 class InstitucionCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form = InstitucionForm()
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Institucion'
-            })
+        })
 
     def post(self, request, *args, **kwargs):
         form = InstitucionForm(request.POST)
@@ -507,7 +557,6 @@ class InstitucionCreatePopup(View):
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
-            "form": form, 
+            "form": form,
             'title': 'Agrega una Institucion'
-            })
-
+        })
