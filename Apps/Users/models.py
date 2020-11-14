@@ -289,6 +289,7 @@ class Articulo(models.Model):
     revista = models.ForeignKey(Revista, on_delete=models.CASCADE)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
     isnn = models.CharField(max_length=13, null=False, blank=False)
+    # isnn = models.BigIntegerField()
     publicacion = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
     url = models.URLField(max_length=300, null=True, blank=True)
     pagina_inicio = models.PositiveIntegerField(null=True, blank=True)
