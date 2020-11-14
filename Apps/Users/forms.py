@@ -198,9 +198,20 @@ class ArticuloForm(ModelForm):
 
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
-        if pagina_fin < pagina_inicio:
-            self.add_error(
-                'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
+        if pagina_inicio:
+            if not pagina_fin:
+                self.add_error(
+                'pagina_fin', 'Debes seleccionar una pagina de fin')
+
+        if pagina_fin:
+            if not pagina_inicio:
+                self.add_error(
+                'pagina_fin', 'Debes seleccionar una pagina de fin')
+                
+        if pagina_inicio and pagina_fin:
+            if pagina_fin < pagina_inicio:
+                self.add_error(
+                    'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
