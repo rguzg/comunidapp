@@ -23,7 +23,7 @@ def image_user(instance, filename):
     return '{0}/{1}'.format('images_users', instance.username)
 
 def temp_image_user(instance, filename):
-    return '{0}/{1}'.format('images_users', instance.username)
+    return '{0}/{1}'.format('images_users', instance.user.username)
 
 class User(AbstractUser):
 

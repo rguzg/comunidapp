@@ -128,9 +128,6 @@ class UpdateRequestForm(ModelForm):
         cleaned_data['changed'] = data
         return cleaned_data
 
-    
-
-
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
