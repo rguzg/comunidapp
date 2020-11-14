@@ -298,12 +298,12 @@ class Articulo(models.Model):
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
     isnn = models.BigIntegerField()
     publicacion = models.DateField(auto_now=False, auto_now_add=False, null=True, blank=True)
-    url = models.URLField(max_length=300, null=False, blank=False)
-    pagina_inicio = models.PositiveIntegerField()
-    pagina_fin = models.PositiveIntegerField()
+    url = models.URLField(max_length=300, null=True, blank=True)
+    pagina_inicio = models.PositiveIntegerField(null=True, blank=True)
+    pagina_fin = models.PositiveIntegerField(null=True, blank=True)
     volumen = models.PositiveIntegerField(null=True, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    doi = models.URLField(max_length=100, null=False, blank=False)
+    doi = models.URLField(max_length=100, null=True, blank=True)
     indice_revista = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
