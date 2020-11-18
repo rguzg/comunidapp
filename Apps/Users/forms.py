@@ -325,9 +325,10 @@ class CapituloLibroForm(ModelForm):
             if not pagina_inicio or not pagina_fin:
                 self.add_error(
                     'pagina_inicio', 'El capitulo necesita una pagina de inicio y de fin')
-            if pagina_fin < pagina_inicio:
-                self.add_error(
-                    'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
+            if pagina_inicio and pagina_fin:
+                if pagina_fin < pagina_inicio:
+                    self.add_error(
+                        'pagina_inicio', 'La pagina de inicio no puede ser mayor a la pagina de fin')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
@@ -365,7 +366,7 @@ class CapituloLibroForm(ModelForm):
                     'pais', 'Debes agregar un pais')
             if not editorial:
                 self.add_error(
-                    'editorial', 'Debes agregar una editoria')
+                    'editorial', 'Debes agregar una editorial')
             if not edicion:
                 self.add_error(
                     'edicion', 'Debes agregar un numero de edicion')
