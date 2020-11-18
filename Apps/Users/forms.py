@@ -298,15 +298,16 @@ class CapituloLibroForm(ModelForm):
                 self.add_error(
                     'segundo_coautor', 'No puedes tener un segundo coautor sin un primer coautor')
 
-        if primer_autor != "":
-            if primer_autor == primer_coautor or primer_coautor == segundo_coautor:
-                self.add_error(
-                'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
+        if primer_coautor !="" and segundo_coautor !="":
+            if primer_coautor != "":
+                if primer_autor == primer_coautor or primer_coautor == segundo_coautor:
+                    self.add_error(
+                    'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
 
-        if segundo_coautor != "":
-            if primer_autor == segundo_coautor or segundo_coautor == primer_coautor:
-                self.add_error(
-                    'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
+            if segundo_coautor != "":
+                if primer_autor == segundo_coautor or segundo_coautor == primer_coautor:
+                    self.add_error(
+                        'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
 
         tipo = cleaned_data.get('tipo')
         pagina_inicio = cleaned_data.get('pagina_inicio')
