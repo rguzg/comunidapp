@@ -305,7 +305,7 @@ class Articulo(models.Model):
     volumen = models.PositiveIntegerField(null=True, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     doi = models.URLField(max_length=100, null=True, blank=True)
-    indice_revista = models.PositiveIntegerField(null=True, blank=True)
+    indice_revista = models.CharField(max_length=100,null=True, blank=True)
 
     def __str__(self):
         return 'Articulo: "{0}" '.format(self.titulo)
