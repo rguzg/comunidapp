@@ -285,10 +285,7 @@ class CapituloLibroForm(ModelForm):
 
         cleaned_data = super(CapituloLibroForm, self).clean()
 
-        isbn = cleaned_data.get('isbn')
-        if len(isbn) > 15 and len(isbn) < 12:
-            self.add_error(
-                'ISBN', 'El ISBN debe tener entre 12 y 15 caracteres')
+        
 
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
@@ -334,14 +331,58 @@ class CapituloLibroForm(ModelForm):
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
+        pais = cleaned_data.get('pais')
+        editorial = cleaned_data.get('editorial')
+        edicion = cleaned_data.get('edicion')
+        tiraje = cleaned_data.get('tiraje')
+        isbn = cleaned_data.get('isbn')
+        
+
         if estado == 'A':
+            if pais:
+                self.add_error(
+                    'pais', 'No puedes agregar un pais si no se encuentra publicado')
+            if editorial:
+                self.add_error(
+                    'editoria', 'No puedes agregar una editorial si no se encuentra publicado')
+            if edicion:
+                self.add_error(
+                    'edicion', 'No puedes agregar una edicion si no se encuentra publicado')
+            if tiraje:
+                self.add_error(
+                    'tiraje', 'No puedes agregar un numero de tiraje si no se encuentra publicado')
+            if isbn:
+                self.add_error(
+                    'isbn', 'No puedes agregar el ISBN si no se encuentra publicado')
+
             if publicacion:
                 self.add_error(
                     'publicacion', 'No puedes agregar una fecha de publicación a un articulo no publicado')
         else:
+
+            if not pais:
+                self.add_error(
+                    'pais', 'Debes agregar un pais')
+            if not editorial:
+                self.add_error(
+                    'editorial', 'Debes agregar una editoria')
+            if not edicion:
+                self.add_error(
+                    'edicion', 'Debes agregar un numero de edicion')
+            if not tiraje:
+                self.add_error(
+                    'tiraje', 'Debes agregar un numero de tiraje')
+            if not isbn:
+                self.add_error(
+                    'isbn', 'Debes agregar el ISBN')
             if not publicacion:
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicación')
+
+        if isbn:
+            if len(isbn) > 15 and len(isbn) < 12:
+                self.add_error(
+                    'isbn', 'El ISBN debe tener entre 12 y 15 caracteres')
 
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:

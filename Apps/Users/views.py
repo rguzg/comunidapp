@@ -28,8 +28,6 @@ Clases para el manejo y administracion de sesiones y de usuarios
 
 class SearchUsers(View):
     def post(self, request, *args, **kwargs):
-        print("hola")
-
         # textoBusqueda = request.POST.get('textoBusqueda')
         textoBusqueda = json.load(request)['textoBusqueda'] #Get data from POST request
         print(textoBusqueda)
