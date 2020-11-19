@@ -16,7 +16,8 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
-                    UserCreationForm, ProfesorCreationForm, UpdateRequestForm)
+                    UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
+                    NivelForm, ContratoForm)
 from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UpdateRequest)
 
@@ -557,4 +558,64 @@ class InstitucionCreatePopup(View):
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Institucion'
+        })
+
+
+class FacultadCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = FacultadForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega una Facultad'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = FacultadForm(request.POST)
+        if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega una Facultad'
+        })
+
+
+class NivelesCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = NivelForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un Nivel'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = NivelForm(request.POST)
+        if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un Nivel'
+        })
+
+
+class ContratoCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form = ContratoForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Contrato'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form = ContratoForm(request.POST)
+        if form.is_valid():
+            id_field = form.cleaned_data.get('id_field')
+            instance = form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Contrato'
         })

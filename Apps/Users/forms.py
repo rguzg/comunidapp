@@ -912,3 +912,43 @@ class InstitucionForm(ModelForm):
                 'unique': 'Una institución con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
+
+class FacultadForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Facultad
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una facultad con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
+class NivelForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Nivel
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Un nivel con este nombre ya existe. Elíjalo o verifique sus datos'
+            }
+        }
+
+
+class ContratoForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Contrato
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Un tipo de contrato con este nombre ya existe. Elíjalo o verifique sus datos'
+            }
+        }

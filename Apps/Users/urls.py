@@ -34,4 +34,7 @@ urlpatterns = [
     url(r'^lineas/create', login_required(views.LineasCreatePopup.as_view()), name = "LineasCreate"),
     url(r'^alumno/create', login_required(views.AlumnoCreatePopup.as_view()), name = "AlumnoCreate"),
     url(r'^institucion/create', login_required(views.InstitucionCreatePopup.as_view()), name = "InstitucionCreate"),
+    url(r'^facultad/create', login_required(views.FacultadCreatePopup.as_view()), name = "FacultadCreate"),
+    url(r'^nivel/create', login_required(views.NivelesCreatePopup.as_view()), name = "NivelCreate"),
+    url(r'^contrato/create', login_required(views.ContratoCreatePopup.as_view()), name = "ContratoCreate"),
 ]
