@@ -83,8 +83,10 @@ class Perfil(DetailView):
         context = super(Perfil, self).get_context_data(**kwargs)
         user = super().get_object()
         context['title'] = "Perfil de {0}".format(user.get_full_name())
+        userId = self.kwargs['pk']
 
-        autor = Autor.objects.get(user=self.request.user)
+        autor = Autor.objects.get(user_id=userId)
+        print(autor)
 
         articulos = Articulo.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         capituloslibros = CapituloLibro.objects.filter(Q(primer_autor = autor) | Q(primer_coautor = autor) | Q(segundo_coautor = autor) )
