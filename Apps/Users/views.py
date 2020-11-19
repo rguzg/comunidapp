@@ -18,8 +18,8 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
                     NivelForm, ContratoForm)
-from .models import (Articulo, Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UpdateRequest)
+from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
+                     Pais, User, UpdateRequest, Autor)
 
 
 """
@@ -83,6 +83,23 @@ class Perfil(DetailView):
         context = super(Perfil, self).get_context_data(**kwargs)
         user = super().get_object()
         context['title'] = "Perfil de {0}".format(user.get_full_name())
+
+        autor = Autor.objects.get(user=self.request.user)
+
+        articulos = Articulo.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
+        capituloslibros = CapituloLibro.objects.filter(Q(primer_autor = autor) | Q(primer_coautor = autor) | Q(segundo_coautor = autor) )
+        patentes = Patente.objects.filter(autores=autor)
+        congresos = Congreso.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
+        investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
+        tesis = Tesis.objects.filter(profesor=self.request.user)
+
+        context['articulos'] = articulos
+        context['capituloslibros'] = capituloslibros
+        context['patentes'] = patentes
+        context['congresos'] = congresos
+        context['investigaciones'] = investigaciones
+        context['tesis'] = tesis
+
         return context
 
 

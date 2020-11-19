@@ -46,6 +46,43 @@
                 </div>
             </div>
 
+            <div class="container-fluid">
+
+            <p><b>Articulos</b></p>
+            {% for articulo in articulos %}
+                <p>{{articulo}}</p>
+            {% endfor %}
+
+            <p><b>Libros o Capitulos</b></p>
+            {% for capitulolibro in capitulolibros %}
+                <p>{{capitulolibro}}</p>
+            {% endfor %}
+
+            <p><b>Patentes</b></p>
+            {% for patente in patentes %}
+                <p>{{patente}}</p>
+            {% endfor %}
+
+            <p><b>Congresos</b></p>
+            {% for congreso in congresos %}
+                <p>{{congreso}}</p>
+            {% endfor %}
+
+            <p><b>Investigaciones</b></p>
+            {% for investigacion in investigaciones %}
+                <p>{{investigacion}}</p>
+            {% endfor %}
+
+            <p><b>Tesis</b></p>
+            {% for tesi in tesis %}
+                <p>{{tesi}}</p>
+            {% endfor %}
+
+            
+            </div>
+
+            
+
             {% else %}
 
             <p>Este usuario tiene su perfil privado. Habla con el o con el administrador si crees que es un error.</p>
