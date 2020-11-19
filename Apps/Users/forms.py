@@ -172,8 +172,8 @@ class ArticuloForm(ModelForm):
         }
         help_texts = {
             'indice_revista': 'Solo si es indizada',
-            'pagina_inicio': 'Solo si es Capítulo',
-            'pagina_fin': 'Solo si es Capítulo',
+            # 'pagina_inicio': 'Solo si es Capítulo',
+            # 'pagina_fin': 'Solo si es Capítulo',
             'palabras_clave': 'Mínimo tres',
             'lineas_investigacion': 'Mínimo una',
             'isnn': '(Número Internacional Normalizado de Publicaciones Seriadas)',
@@ -182,19 +182,34 @@ class ArticuloForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(ArticuloForm, self).clean()
+        
         primer_autor = cleaned_data.get('primer_autor')
-        primer_colaborador = cleaned_data.get('primer_colaborador')
-        segundo_colaborador = cleaned_data.get('segundo_colaborador')
-        if segundo_colaborador:
-            if not primer_colaborador:
+        primer_coautor = cleaned_data.get('primer_coautor')
+        segundo_coautor = cleaned_data.get('segundo_coautor')
+        if segundo_coautor:
+            if not primer_coautor:
                 self.add_error(
-                    'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
-                self.add_error(
-                    'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
+                    'segundo_coautor', 'No puedes tener un segundo coautor sin un primer coautor')
 
-        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            self.add_error(
-                'primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
+        if primer_coautor:
+            if primer_autor == primer_coautor:
+                self.add_error(
+                'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
+
+            if segundo_coautor:
+                if primer_coautor == segundo_coautor:
+                    self.add_error(
+                        'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
+
+        if segundo_coautor:
+            if primer_autor == segundo_coautor:
+                self.add_error(
+                    'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
+            if primer_coautor:
+                if segundo_coautor == primer_coautor:
+                    self.add_error(
+                        'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
+
 
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
@@ -207,7 +222,7 @@ class ArticuloForm(ModelForm):
             if not pagina_inicio:
                 self.add_error(
                 'pagina_fin', 'Debes seleccionar una pagina de fin')
-                
+        
         if pagina_inicio and pagina_fin:
             if pagina_fin < pagina_inicio:
                 self.add_error(
@@ -215,15 +230,44 @@ class ArticuloForm(ModelForm):
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
+        pais = cleaned_data.get('pais')
+        revista = cleaned_data.get('revista')
+        editorial = cleaned_data.get('editorial')
+        isnn = cleaned_data.get('isnn')
         if estado == 'A':
+            if pais:
+                self.add_error(
+                    'pais', 'No puedes agregar un pais si no se encuentra publicado')
+            if editorial:
+                self.add_error(
+                    'editoria', 'No puedes agregar una editorial si no se encuentra publicado')
+            if revista:
+                self.add_error(
+                    'revista', 'No puedes agregar una revista si no se encuentra publicado')
+            if isnn:
+                self.add_error(
+                    'isnn', 'No puedes agregar el isnn si no se encuentra publicado')
             if publicacion:
                 self.add_error(
-                    'publicacion', 'No puedes agregar una fecha de publicacion a un articulo no publicado')
+                    'publicacion', 'No puedes agregar una fecha de publicación a un articulo no publicado')
         else:
+
+            if not pais:
+                self.add_error(
+                    'pais', 'Debes agregar un pais')
+            if not editorial:
+                self.add_error(
+                    'editorial', 'Debes agregar una editorial')
+            if not revista:
+                self.add_error(
+                    'revista', 'Debes agregar una revista')
+            if not isnn:
+                self.add_error(
+                    'isnn', 'Debes agregar el ISNN')
             if not publicacion:
                 self.add_error(
-                    'publicacion', 'Debes agregar una fecha de publicacion')
-
+                    'publicacion', 'Debes agregar una fecha de publicación')
+                    
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
             self.add_error('palabras_clave',
@@ -866,5 +910,45 @@ class InstitucionForm(ModelForm):
         error_messages = {
             'nombre': {
                 'unique': 'Una institución con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
+class FacultadForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Facultad
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una facultad con este nombre ya existe. Elíjala o verifique sus datos'
+            }
+        }
+
+class NivelForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Nivel
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Un nivel con este nombre ya existe. Elíjalo o verifique sus datos'
+            }
+        }
+
+
+class ContratoForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Contrato
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Un tipo de contrato con este nombre ya existe. Elíjalo o verifique sus datos'
             }
         }

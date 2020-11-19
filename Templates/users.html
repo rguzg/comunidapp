@@ -84,16 +84,76 @@
                         <small class="text-muted">({{ field.help_text }})</small>
                     {% endif %}
 
+                    {% if field.name == "investigaciones" %}
+                    <div class="row">
+                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                            data-placement="top" title="Agrega una linea de investigación">
+                            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                onclick="return showAddPopup(this);">
+                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if field.name == "facultades" %}
+                    <div class="row">
+                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                            data-placement="top" title="Agrega una linea de investigación">
+                            <a href="javascript:void(0);" data-url="{% url 'FacultadCreate' %}" id="add_facultades"
+                                onclick="return showAddPopup(this);">
+                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+
+                    {% if field.name == "niveles" %}
+                    <div class="row">
+                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                            data-placement="top" title="Agrega una linea de investigación">
+                            <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
+                                onclick="return showAddPopup(this);">
+                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if field.name == "contratacion" %}
+                    <div class="row">
+                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
+                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
+                            data-placement="top" title="Agrega una linea de investigación">
+                            <a href="javascript:void(0);" data-url="{% url 'ContratoCreate' %}" id="add_contratacion"
+                                onclick="return showAddPopup(this);">
+                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
                     {% if field.name == 'nacimiento' %}
                         {{field|addclass:'datepicker form-control'}}
                     {% else %}
-                        {{field|addclass:'form-control'}}
+                        {% if field.name != "investigaciones" and field.name != "facultades" and field.name != "niveles" and field.name != "contratacion" %}
+                            {{ field|addclass:'form-control' }}
+                        {% endif %}
                     {% endif %}
-                    
 
                 </div>
                 {% endfor %}
                 <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+
+
+
+
+                
+
             </form>
         </div>
     </div>
