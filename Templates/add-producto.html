@@ -119,7 +119,7 @@
                     {% endif %}
                     {% endif %}
 
-                    {% if field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
+                    {% if field.name == "cuarto_colaborador" or field.name == "tercer_coautor" or field.name == "cuarto_coautor" or field.name == "tercer_colaborador" or field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
                     <div class="row">
                         <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
                         <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
@@ -223,7 +223,7 @@
                     </div>
                     {% endif %}
 
-                    {% if field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" and field.name != "autores" and field.name != "financiamiento" and field.name != "tipo_financiamiento" and field.name != "institucion" and field.name != "alumno" and field.name != "primer_alumno" and field.name != "segundo_alumno" and field.name != "tercer_alumno" %}
+                    {% if field.name != "tercer_coautor" and field.name != "cuarto_coautor" and field.name != "tercer_colaborador" and field.name != "cuarto_colaborador" and field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" and field.name != "autores" and field.name != "financiamiento" and field.name != "tipo_financiamiento" and field.name != "institucion" and field.name != "alumno" and field.name != "primer_alumno" and field.name != "segundo_alumno" and field.name != "tercer_alumno" %}
                     {{ field|addclass:'form-control' }}
                     {% endif %}
 
