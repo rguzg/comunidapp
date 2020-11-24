@@ -62,7 +62,7 @@ class CustomLogin(LoginView):
 
 class Home(ListView):
     template_name = 'home.html'
-    paginate_by = 20
+    paginate_by = 100
     model = User
 
     def get_context_data(self, **kwargs):
