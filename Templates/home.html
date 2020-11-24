@@ -6,21 +6,8 @@
 {% include 'head.html' %}
 
 <body>
-    <!-- Header -->
-    <header class="col-12 l-fixed-top m-header">
-        <div class="col-2 m-header__logo-container">
-            <img src="{% static 'img/logo.png' %}" class="m-header__image">
-            <b class="m-header__title">Comunidapp</b>
-        </div>
-        <div class="col-6">
-            <a href="" class="m-header__button">Solicitudes</a>
-            <a href="" class="m-header__button">Agregar Usuarios</a>
-        </div>
-        <div class="col-4 m-header__search-container">
-            <input class="m-search" type="text" name="search" id="search" placeholder="Buscar">
-            <div class="m-profile-picture" data-picture="../img/person.jpg"></div>
-        </div>
-    </header>
+    {% include 'header.html' %}
+
 
     <!-- Contenedor Principal -->
     <div class="container l-main">
