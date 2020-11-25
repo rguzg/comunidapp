@@ -270,9 +270,30 @@ a:hover{
     border-radius: 25px;
 }
 
+/* Product Card Module */
+.m-product-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 16px;
+    margin-left: 20px;
+    padding: 20px;
+    height: 100px;
+    width: 215px;
+    border: 1px solid #DFDFDF;
+    box-sizing: border-box;                            
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 /* Nav Module */
 .nav-link{
     color: var(--dark-grey);
+}
+
+.tab-content>.active{
+    display: flex;
+    flex-wrap: wrap !important;
 }
 
 /* Helpers */
