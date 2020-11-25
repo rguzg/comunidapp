@@ -7,7 +7,7 @@
 
 <body>
     {% include 'header.html' %}
-
+    
 
     <!-- Contenedor Principal -->
     <div class="container l-main">
@@ -19,48 +19,21 @@
         <div class="row">
             <!-- Grid de tarjetas -->
             <div class="l-grid col-12">
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <p>correo@correo.com</p>
+                {% for user in object_list %}
+                    <div class="m-card col-3">
+                        <div class="m-profile-picture" style="
+                        {% if user.foto %}
+                            background-image: url({{user.foto.url}});
+                        {% else %}
+                            background-image: url({% static 'img/person.jpg' %});
+                        {% endif %}"
+                        ></div>
+                        <div class="m-card__text">
+                            <b>{{user.get_full_name}}</b>
+                            <p>{{user.email}}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <p>correo@correo.com</p>
-                    </div>
-                </div>
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <p>correo@correo.com</p>
-                    </div>
-                </div>
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <i>Perfil privado</i>
-                    </div>
-                </div>
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <i>Perfil privado</i>
-                    </div>
-                </div>
-                <div class="m-card col-3">
-                    <div class="m-profile-picture"></div>
-                    <div class="m-card__text">
-                        <b>John Person</b>
-                        <i>Perfil privado</i>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>

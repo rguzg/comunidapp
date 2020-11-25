@@ -147,7 +147,7 @@ a:hover{
 }
 
 .m-profile-picture{
-    background-image: url("../img/person.jpg");
+    /* background-image: url("../img/person.jpg"); */
     background-size: cover;
     border-radius: 25px;
     width: 40px;
