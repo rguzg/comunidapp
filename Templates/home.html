@@ -1,37 +1,68 @@
-{% include 'navbar.html' %}
-{% block content %}
 {% load static %}
-<div class="container-fluid">
-    <h1 class="display-4">Bienvenido {{request.user.get_full_name}}</h1>
 
-    <h6>Estos son los usuarios en la plataforma:</h6>
-    <ul>
-        {% for user in object_list %}
-        <div class="container">
-            <div class="row">
-                <div class="col-2">
-                    {% if user.foto %}
-                        <img src="{{ user.foto.url }}" style="height: auto; width: 100px;" alt="">
-                    {% else %}
-                        <img src="{% static 'img/user.png' %}" style="height: auto; width: 100px;" alt="">
-                    {% endif %}
-                    
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+
+<body>
+    {% include 'header.html' %}
+
+
+    <!-- Contenedor Principal -->
+    <div class="container l-main">
+        <div class="row">
+            <div class="col-12">
+                <h3>Usuarios</h3>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Grid de tarjetas -->
+            <div class="l-grid col-12">
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <p>correo@correo.com</p>
+                    </div>
                 </div>
-                <div class="col-10">
-                    <a href="{% url 'profile-detail' pk=user.id %}">
-                        {{user.get_full_name}}
-                    </a>
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <p>correo@correo.com</p>
+                    </div>
+                </div>
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <p>correo@correo.com</p>
+                    </div>
+                </div>
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <i>Perfil privado</i>
+                    </div>
+                </div>
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <i>Perfil privado</i>
+                    </div>
+                </div>
+                <div class="m-card col-3">
+                    <div class="m-profile-picture"></div>
+                    <div class="m-card__text">
+                        <b>John Person</b>
+                        <i>Perfil privado</i>
+                    </div>
                 </div>
             </div>
-
         </div>
-        {% endfor %}
-    </ul>
-
-</div>
-
-
-
-
-
-{% endblock %}
+    </div>
+</body>
+</html>
