@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+
+<body>
+    {% include 'header.html' %}
+
+
+    <!-- Contenedor Principal -->
+    <div class="container l-main">
+        <div class="row">
+            <div class="col-12 l-grid">
+                <div class="col-4">
+                    <div class="m-user-info col-12">
+                        <div class="m-profile-picture m-profile-picture--big"></div>
+                        <div class="m-user-info__text">
+                            <h5>John Person</h5>
+                            <p>correo@correo.com</p>
+                            <button class="btn m-user-info__button">Editar Perfil</button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <b>Clave de Empleado</b>
+                        <p>123456</p>
+                    </div>
+                    <div class="col-12">
+                        <b>Género</b>
+                        <p>-</p>
+                    </div>
+                    <div class="col-12">
+                        <b>Estudios</b>
+                        <p>Licenciatura</p>
+                    </div>
+                    <div class="col-12">
+                        <b>Niveles</b>
+                        <p>Licenciatura, Posgrado</p>
+                    </div>
+                    <div class="col-12">
+                        <b>Facultad</b>
+                        <p>Facultad de Informática, Facultad de Contaduria</p>
+                        <div class="m-facultad">
+                            <img src="{% static 'img/Facultades/fif.png' %}" alt="" srcset="">
+                            <p>Facultad de Informática</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 m-publications">
+                    <div class="row">
+                        <div class="col-12 m-publications__lineas">
+                            <b>Lineas de Investigación</b>
+                            <div class="l-pill-container">
+                                <div class="m-pills">Software</div>
+                                <div class="m-pills">Software</div>
+                                <div class="m-pills">Software</div>
+                                <div class="m-pills">Software</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Bootstrap's implementation of tabbed navigation -->
+
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs" id="products" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link active" id="articulos-tab" data-toggle="tab" href="#articulos" role="tab" aria-controls="articulos" aria-selected="true">Articulos</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="libroscapitulos-tab" data-toggle="tab" href="#libroscapitulos" role="tab" aria-controls="libroscapitulos" aria-selected="false">Libros o Capítulos</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="patentes-tab" data-toggle="tab" href="#patentes" role="tab" aria-controls="patentes" aria-selected="false">Patentes</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="congresos-tab" data-toggle="tab" href="#congresos" role="tab" aria-controls="congresos" aria-selected="false">Congresos</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="investigaciones-tab" data-toggle="tab" href="#investigaciones" role="tab" aria-controls="investigaciones" aria-selected="false">Investigaciones</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <a class="nav-link" id="tesis-tab" data-toggle="tab" href="#tesis" role="tab" aria-controls="tesis" aria-selected="false">Tesis</a>
+                                </li>
+                            </ul>
+
+                            <!-- Content -->
+                            <div class="tab-content" id="productsContent">
+                            <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">...</div>
+                            <div class="tab-pane fade" id="libroscapitulos" role="tabpanel" aria-labelledby="libroscapitulos-tab">...</div>
+                            <div class="tab-pane fade" id="patentes" role="tabpanel" aria-labelledby="patentes-tab">...</div>
+                            <div class="tab-pane fade" id="congresos" role="tabpanel" aria-labelledby="congresos-tab">...</div>
+                            <div class="tab-pane fade" id="investigaciones" role="tabpanel" aria-labelledby="investigaciones-tab">...</div>
+                            <div class="tab-pane fade" id="tesis" role="tabpanel" aria-labelledby="tesis-tab">...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,9 +7,11 @@ $(function () {
 window.onload = function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
-    // const dropdown_parent = document.querySelector('#dropdown_parent');
+    const dropdown_parent = document.querySelector('#dropdown_parent');
+    const logo = document.querySelector('#logo');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
+    logo.addEventListener('click', goHome)
     inputSearch.onkeyup = searchUsers(inputSearch);
 }
 
@@ -131,4 +133,6 @@ function toggleDropdown() {
     dropdown.classList.toggle('h-display');
 }
 
-
+function goHome() {
+    window.location.href = "/home";
+}
