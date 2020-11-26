@@ -19,8 +19,9 @@
         <div class="row">
             <!-- Grid de tarjetas -->
             <div class="l-grid col-12">
+
                 {% for user in object_list %}
-                    <div class="m-card col-3">
+            <div class="m-card col-3" onclick="location.href='{% url 'profile-detail' pk=user.id %}' ">
                         <div class="m-profile-picture" style="
                         {% if user.foto %}
                             background-image: url({{user.foto.url}});
@@ -34,6 +35,7 @@
                         </div>
                     </div>
                 {% endfor %}
+                
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@ $(function () {
 window.onload = function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
-    // const dropdown_parent = document.querySelector('#dropdown_parent');
+    const dropdown_parent = document.querySelector('#dropdown_parent');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
     inputSearch.onkeyup = searchUsers(inputSearch);
