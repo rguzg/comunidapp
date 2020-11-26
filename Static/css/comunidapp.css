@@ -1,9 +1,12 @@
 /* Base */
 :root{
     --comunidapp_green: #00DDA4;
+    --comunidapp_darkgreen: #297475;
+    --comunidapp_rojo: #FE0000;
     --black: #212529;
     --grey: #FAFAFA;
-    --dark-grey: #C4C4C4
+    --dark-grey: #737373;
+    --border-grey: #C4C4C4;
 }
 
 *{ 
@@ -26,7 +29,7 @@ h1, h2, h3, h4, h5, h6, b{
 }
 
 p{
-    margin-bottom: 0;
+    margin-bottom: 4px;
 }
 
 h3{
@@ -44,9 +47,27 @@ ul{
     margin-bottom: 0;
 }
 
+textarea{
+    resize: none;
+}
+
 a:hover{
     text-decoration: none;
     color: var(--black);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar-track{
+	background: #f0f0f0;  
+}
+
+::-webkit-scrollbar-thumb{
+    background: #a6a6a6;
+    border-radius: 25px;   
+}
+
+::-webkit-scrollbar{
+	width: 8px;
 }
 
 /* Layout */
@@ -66,7 +87,22 @@ a:hover{
     flex-wrap: wrap;
 }
 
+.l-pill-container{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.l-cambios{
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
 /* Modules */
+
+/* Header Module */
 .m-header{
     display: flex;
     background-color: var(--comunidapp_green);
@@ -80,10 +116,13 @@ a:hover{
     z-index: 999;
 }
 
+/* Header Components */
+
 .m-header__logo-container{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    cursor: pointer;
 }
 
 .m-header__title{
@@ -112,9 +151,9 @@ a:hover{
     display: none;
     position: absolute;
     background-color: #ffffff;
-    border-top: 0.5px solid var(--dark-grey);
-    border-left: 0.5px solid var(--dark-grey);
-    border-right: 0.5px solid var(--dark-grey);
+    border-top: 0.5px solid var(--border-grey);
+    border-left: 0.5px solid var(--border-grey);
+    border-right: 0.5px solid var(--border-grey);
     box-sizing: border-box;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
@@ -129,7 +168,7 @@ a:hover{
     width: 100%;
     height: 36px;
     text-align: center;
-    border-bottom: 1px solid var(--dark-grey);
+    border-bottom: 1px solid var(--border-grey);
     margin-top: 10px;
 }
 
@@ -137,14 +176,18 @@ a:hover{
     color: var(--black)
 }
 
+/* Search Box Module */
+
 .m-search{
     background: var(--grey);
-    border: 1px solid var(--dark-grey);
+    border: 1px solid var(--border-grey);
     border-radius: 5px;
     margin-right: 48px;
     width: 250px;
     font-size: 15px;
 }
+
+/* Profile Picture Module */
 
 .m-profile-picture{
     /* background-image: url("../img/person.jpg"); */
@@ -155,27 +198,176 @@ a:hover{
     cursor: pointer;
 }
 
-.m-card{
+/* Profile Picture Modifiers */
+
+.m-profile-picture--big{
+    height: 80px;
+    width: 80px;
+    border-radius: 50px;
+}
+
+/* User Info Module */
+
+.m-user-info{
     display: flex;
     align-content: flex-start;
-    justify-content: center;
-    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    height: 80px;
     padding: 16px 12px;
     margin-right: 40px;
-    margin-bottom: 40px;
-    border: 0.5px solid #DFDFDF;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    margin-bottom: 24px;
     background: #ffffff;
     cursor: pointer;
 }
 
-.m-card__text{
+/* User Info Components */
+
+.m-user-info__text{
     display: flex;
     flex-direction: column;
     margin-left: 16px;
+    margin-bottom: 5px;
+}
+
+.m-user-info__text > p {
+    margin-bottom: 0;
+}
+
+.m-user-info__button{
+    background-color: var(--comunidapp_green);
+    color: var(--black);
+    font-size: 15px;
+    margin-top: 4px;
+    width: 120px;
+}
+
+/* User Info Modifiers */
+
+.m-user-info--card{
+    height: 80px;
+    margin-bottom: 40px;
+    border: 0.5px solid #DFDFDF;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Facultad Module */
+
+.m-facultad{
+    display: flex;
+    align-items: center;
+}
+
+.m-facultad > p{
+    margin-bottom: 0;
+}
+
+.m-facultad > img{
+    margin-right: 8px;
+}
+
+/* Publicactions Module */
+.m-publications{
+    padding: 16px 12px;
+}
+
+/* Publications Components */
+.m-publications__lineas{
+    display: flex;
+    align-items: center;
+}
+
+.m-publications__lineas > b{
+    margin-right: 8px;
+    margin-bottom: 4px;
+}
+
+/* Button Modifiers */
+
+/* Pills Module */
+.m-pills{
+    height: 25px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    padding: 0 8px;
+    background-color: var(--comunidapp_green);
+    border-radius: 25px;
+}
+
+/* Product Card Module */
+.m-product-card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 16px;
+    margin-left: 20px;
+    padding: 20px;
+    height: 100px;
+    width: 215px;
+    border: 1px solid #DFDFDF;
+    box-sizing: border-box;                            
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Nav Module */
+.nav-link{
+    color: var(--dark-grey);
+}
+
+.tab-content>.active{
+    display: flex;
+    flex-wrap: wrap !important;
+}
+
+/* Cambios Module */
+.m-cambios{
+    min-height: 230px;
+    margin-right: 8px;
+    margin-bottom: 16px;
+    padding: 0;
+    border: 1px solid var(--border-grey);
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.m-cambios__aprobar{
+    background-color: var(--comunidapp_darkgreen);
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: 4px;
+    margin-right: 16px;
+}
+
+.m-cambios__rechazar{
+    background-color: var(--comunidapp_rojo);
+    color: #ffffff;
+    font-size: 15px;
+    margin-top: 4px;
+}
+
+.m-cambios__header{
+    width: 100%;
+    height: 48px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.m-cambios__content{
+    padding: 8px 20px;
+}
+
+.m-cambios__header > input {
+    margin-right: 20px;
+}
+
+.m-cambios__header > input:checked {
+    background-color: #00DDA4;
 }
 
 /* Helpers */
@@ -187,4 +379,8 @@ a:hover{
 
 .h-display{
     display: block;
+}
+
+.h-justify-end{
+    justify-content: flex-end;
 }

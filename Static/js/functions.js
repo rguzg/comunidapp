@@ -8,8 +8,16 @@ window.onload = function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
     const dropdown_parent = document.querySelector('#dropdown_parent');
+    const logo = document.querySelector('#logo');
+    const editar_button = document.querySelector('#editar_button');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
+    logo.addEventListener('click', goHome);
+
+    if(editar_button){
+        editar_button.addEventListener('click', goToEditar);
+    }
+
     inputSearch.onkeyup = searchUsers(inputSearch);
 }
 
@@ -131,4 +139,10 @@ function toggleDropdown() {
     dropdown.classList.toggle('h-display');
 }
 
+function goHome() {
+    window.location.href = "/home";
+}
 
+function goToEditar() {
+    window.location.href = "/profile";
+}
