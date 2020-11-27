@@ -22,11 +22,11 @@
                     {% endif %}"
                     ></div>
                     <div class="m-user-info__text">
-                        <b>{{user.get_full_name}}</b>
+                        <b class="h-text-overflow">{{user.get_full_name}}</b>
                         {% if user.publico %}
-                            <i>{{user.email}}</i>
+                            <i class="h-text-overflow">{{user.email}}</i>
                         {% else %}
-                            <i>Perfil privado</i>
+                            <i class="h-text-overflow">Perfil privado</i>
                         {% endif %}
                         
                     </div>

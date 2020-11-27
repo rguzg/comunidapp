@@ -227,6 +227,7 @@ a:hover{
     flex-direction: column;
     margin-left: 16px;
     margin-bottom: 5px;
+    width: 200px;
 }
 
 .m-user-info__text > p {
