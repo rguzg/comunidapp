@@ -1,35 +1,37 @@
 {% include 'navbar.html' %}
 {% block content %}
 {% load static %}
-<div class="container-fluid">
-    <h1 class="display-4">Bienvenido {{request.user.get_full_name}}</h1>
 
-    <h6>Estos son los usuarios en la plataforma:</h6>
-    <ul>
-        {% for user in object_list %}
-        <div class="container">
-            <div class="row">
-                <div class="col-2">
-                    {% if user.foto %}
-                        <img src="{{ user.foto.url }}" style="height: auto; width: 100px;" alt="">
-                    {% else %}
-                        <img src="{% static 'img/user.png' %}" style="height: auto; width: 100px;" alt="">
-                    {% endif %}
-                    
-                </div>
-                <div class="col-10">
-                    <a href="{% url 'profile-detail' pk=user.id %}">
-                        {{user.get_full_name}}
-                    </a>
-                </div>
-            </div>
-
+  <!-- Contenedor Principal -->
+  <div class="container l-main">
+    <div class="row">
+        <div class="col-12">
+            <h3>Usuarios</h3>
         </div>
-        {% endfor %}
-    </ul>
+    </div>
+    <div class="row">
+        <!-- Grid de tarjetas -->
+        <div class="l-grid col-12">
+            {% for user in object_list %}
+                <div class="m-user-info m-user-info--card col-3" onclick="location.href='{% url 'profile-detail' pk=user.id %}' ">
+                    <div class="m-profile-picture" style="
+                    {% if user.foto %}
+                        background-image: url({{user.foto.url}});
+                    {% else %}
+                        background-image: url({% static 'img/user2.png' %});
+                    {% endif %}"
+                    ></div>
+                    <div class="m-user-info__text">
+                        <b>{{user.get_full_name}}</b>
+                        <p>{{user.email}}</p>
+                    </div>
+                </div>
 
+                
+                {% endfor %}
+        </div>
+    </div>
 </div>
-
 
 
 
