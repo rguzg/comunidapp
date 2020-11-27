@@ -325,7 +325,7 @@ a:hover{
 
 /* Cambios Module */
 .m-cambios{
-    min-height: 230px;
+    height: 300px;
     margin-right: 8px;
     margin-bottom: 16px;
     padding: 0;
@@ -334,6 +334,7 @@ a:hover{
     border-radius: 5px;
 }
 
+/* Cambios Components */
 .m-cambios__aprobar{
     background-color: var(--comunidapp_darkgreen);
     color: #ffffff;
@@ -358,10 +359,6 @@ a:hover{
     border-bottom: 1px solid var(--border-grey);
 }
 
-.m-cambios__content{
-    padding: 8px 20px;
-}
-
 .m-cambios__header > input {
     margin-right: 20px;
 }
@@ -370,11 +367,29 @@ a:hover{
     background-color: #00DDA4;
 }
 
+.m-cambios__content{
+    padding: 8px 20px;
+}
+
+.m-cambios__content > b{
+    margin-right: 4px;
+    margin-bottom: 12px;
+}
+
+.m-cambios__buttons{
+    display: flex;
+    justify-content: center;
+}
+
 /* Helpers */
 .h-text-overflow{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.btn:hover{
+    color: var(--grey);
 }
 
 .h-display{
