@@ -23,7 +23,12 @@
                     ></div>
                     <div class="m-user-info__text">
                         <b>{{user.get_full_name}}</b>
-                        <p>{{user.email}}</p>
+                        {% if user.publico %}
+                            <i>{{user.email}}</i>
+                        {% else %}
+                            <i>Perfil privado</i>
+                        {% endif %}
+                        
                     </div>
                 </div>
 
