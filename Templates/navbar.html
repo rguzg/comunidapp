@@ -9,7 +9,7 @@
     <div class="col-5">
         {% if user.is_staff or user.is_superuser %}
             <a href="{% url 'updates' %}" class="m-header__button">Solicitudes</a>
-            <a href="" class="m-header__button">Agregar Usuarios</a>
+            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button">Agregar Usuarios</a>
         {% endif %}
     </div>
     <div class="col-4 m-header__search-container">
