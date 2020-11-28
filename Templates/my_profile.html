@@ -15,62 +15,62 @@
         </div>
     </div>
     <div class="row">
-        {% if is_peticion %}
-            <div class="alert alert-warning text-center">
-                <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
-            </div>
-        {% endif %}
-        
-        {% if peticion %}
-            <div class="alert alert-danger text-center">
-                <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
-            </div>
+        <div class="col-8">
+            {% if is_peticion %}
+                <div class="alert alert-warning">
+                    <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
+                </div>
+            {% endif %}
             
-        {% endif %}
-        
-
-        <!-- Mensaje de exito -->
-        {% if messages %}
-            <div class="alert alert-success text-center">
-                {% for message in messages %}
-                    <strong>{{message}} </strong>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        <!-- Mensajes de error sin campo asociado -->
-        {% if form.non_field_errors %}
-            <div class="non-field-errors">
-                {% for error in form.non_field_errors %}
-                    <p class="form-error">
-                        {{ error }}
-                    </p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                <strong>Corrigue los siguientes errores:</strong>
-                <ul>
-                    {% for field in form %}
-                        {% if field.errors %}
-                            <li>
-                                <a href="#id_{{field.name}}">{{field.label}}{{field.errors|striptags}}</a>
-                            </li>
-                        {% endif %}
+            {% if peticion %}
+                <div class="alert alert-danger">
+                    <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
+                </div>
+                
+            {% endif %}
+            
+    
+            <!-- Mensaje de exito -->
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        <strong>{{message}} </strong>
                     {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        {% if field.errors %}
-            <div class="alert alert-danger">
-                {% for error in field.errors %}
-                <strong>{{error}}</strong>
-                {% endfor %}
-            </div>
-        {% endif %}
+                </div>
+            {% endif %}
+    
+            <!-- Mensajes de error sin campo asociado -->
+            {% if form.non_field_errors %}
+                <div class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                        <p class="form-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+    
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Corrigue los siguientes errores:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <p href="#id_{{field.name}}">{{field.label}}{{field.errors|striptags}}<p>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+    
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    {% for error in field.errors %}
+                    <strong>{{error}}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
     </div>
     <div class="row">
         <!-- Grid de tarjetas -->
@@ -125,30 +125,30 @@
                         </div>
                     </div>
                     <div class="col-4 pl-0">
-                        <p>{{form.foto.label}}</p>
+                        <label>{{form.foto.label}}</label>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-form-input_file" for="id_foto">Sube una nueva foto</label>
+                            <label class="custom-file-label m-input-file" for="id_foto">Sube una nueva foto</label>
                             {{ form.foto|addclass:'custom-file-input' }}
                         </div>
                         <div class="m-form-input">
                             <label for="id_facultades">{{form.facultades.label}}</label>
-                            {{form.facultades|addclass:'m-form-input_multiselect'}}
+                            {{form.facultades|addclass:'m-input-multiselect'}}
                         </div>
                         <div class="m-form-input">
                             <label for="id_investigaciones">{{form.investigaciones.label}}</label>
-                            {{form.investigaciones|addclass:'m-form-input_multiselect'}}
+                            {{form.investigaciones|addclass:'m-input-multiselect'}}
                             <button class="btn m-comunidapp-button h-self-end" id="toggle_modal" type="button"><span href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
                                 onclick="return showAddPopup(this);">Añadir Linea
                             </span></button>   
                         </div> 
                     </div>
                 </div>
-                <div class="col-12 pl-0 m-form_button">
+                <div class="col-12 pl-0 m-form-button">
                     <div>
                         <small>Tus cambios deben ser aprobados antes de que se vean reflejados en tu perfil</small>
                     </div>
-                    <button class="btn m-comunidapp-button" id="editar_button" type="submit">Editar Perfil</button>
+                    <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Editar Perfil">
                 </div>
             </form>
         </div>
