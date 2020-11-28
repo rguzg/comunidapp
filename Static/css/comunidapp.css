@@ -104,6 +104,15 @@ a:hover{
     display: flex;
 }
 
+.l-popup{
+    min-height: calc(100% - 55px);
+    padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Modules */
 
 /* Header Module */
@@ -401,24 +410,63 @@ a:hover{
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 /* Form Input Components */
-
-.m-form-input_multiselect{
-    height: 60px !important;
-}
-
-.m-form_button{
+.m-form-button{
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: 8px;
+    margin-top: 16px;
 }
 
-.m-form_button > div{
+.m-form-button > div{
     width: 280px;
     margin-right: 16px;
+}
+
+/* Input Modules */
+.m-input-file{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    padding-left: .375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    border-radius: .25rem;
+    border: 1px solid var(--border-grey);
+    height: 30px;
+    background: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+.m-input-file::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    height: 28px;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Examinar";
+    background-color: #e9ecef;
+    border-left: inherit;
+    border-radius: 0 .25rem .25rem 0;
+}
+
+.m-input-multiselect{
+    height: 64px !important;
 }
 
 /* Helpers */

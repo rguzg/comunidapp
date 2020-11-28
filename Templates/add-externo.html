@@ -8,53 +8,54 @@
 {% include 'head.html' %}
 
 {% include 'navbar-for-externo.html' %}
-<div class="container">
-
-    <!-- Titulo del formulario -->
-    <div class="text-center mt-3">
-        <h2>{{title}}</h2>
-    </div>
-
-    <form method='POST' id="popup_form">
-        {% csrf_token %}
-
-        {% for field in form %}
-        <div class="form-group mb-4">
-
-            <!-- Mostrando el error especifico del campo -->
-            {% if field.errors %}
-                <div class="alert alert-danger">
-                    {% for error in field.errors %}
-                        <strong>{{error}}</strong>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            
-            <!-- 
-                IF para no mostrar ni el LABEL ni el CAMPO de "id_field",
-                ya que "id_field" debe estar oculto
-            -->
-            {% if field.name != "id_field" %}
-                {{field.label}}
-            {% endif %}
-
-            <!-- Agregando la clase al input -->
-            {{field|addclass:'form-control'}}
-            
+<div class="container l-popup">
+        <div class="row">
+            <div class="col-12">
+                <h3>Agregar Linea de Investigación</h3>
+            </div>
         </div>
-        {% endfor %}
-        <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
-    </form>
-
-    <script>
-        window.onload = function () {
-            // Funcion que permite saber a que campo se le asignara el nuevo valor creado
-            // Funciona a base del LOCALSTORAGE
-            const id_field = localStorage.getItem('id_field');
-            const field = document.getElementById('id_id_field');
-            field.value = id_field;
-            console.log(id_field);
-        }
-    </script>
+        <form class="col-8 p-0" method='POST' id="popup_form">
+            {% csrf_token %}
+    
+            {% for field in form %}
+            <div class="form-group mb-4">
+    
+                <!-- Mostrando el error especifico del campo -->
+                {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {% for error in field.errors %}
+                            <strong>{{error}}</strong>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <!-- 
+                    IF para no mostrar ni el LABEL ni el CAMPO de "id_field",
+                    ya que "id_field" debe estar oculto
+                -->
+                <div class="m-form-input">
+                    {% if field.name != "id_field" %}
+                        {{field.label}}
+                    {% endif %}
+        
+                    <!-- Agregando la clase al input -->
+                    {{field|addclass:'form-control'}}
+                </div>
+                
+            </div>
+            {% endfor %}
+            <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Agregar">
+        </form>
+    
+        <script>
+            window.onload = function () {
+                // Funcion que permite saber a que campo se le asignara el nuevo valor creado
+                // Funciona a base del LOCALSTORAGE
+                const id_field = localStorage.getItem('id_field');
+                const field = document.getElementById('id_id_field');
+                field.value = id_field;
+                console.log(id_field);
+            }
+        </script>
 </div>
 {% endblock %}
