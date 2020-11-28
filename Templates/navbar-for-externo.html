@@ -6,22 +6,19 @@
 {% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {% include 'head.html' %}
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-blue">
-        <a class="navbar-brand" href="">
-            <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-            Comunidapp
-        </a>
-    </nav>
+    <header class="col-12 l-fixed-top m-header">
+        <div class="col-2 m-header__logo-container">
+            <img src="{% static 'img/logo.png' %}" class="m-header__image">
+            <b class="m-header__title">Comunidapp</b>
+        </div>
+    </header>
 
     {% block content %}
     {% endblock %}
-
 </body>
-
 </html>
