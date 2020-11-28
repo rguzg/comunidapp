@@ -43,32 +43,31 @@ window.onload = function () {
 //     return false;
 // }
 
-// function showAddPopup(triggeringLink) {
-//     const id = triggeringLink;
-//     // console.log(id.id);
-//     const sibilingIdFull = id.parentElement.previousElementSibling.id;
-//     const sibilingId = sibilingIdFull.split("--")[1]
-//     // console.log(sibilingId);
-//     const name = triggeringLink.id.replace(/^add_/, '');
-//     const href = triggeringLink.getAttribute('data-url');
-//     const win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
-//     localStorage.setItem('id_field', sibilingId);
-//     win.focus();
-//     return false;
-// }
+function showAddPopup(triggeringLink) {
+    const id = triggeringLink;
+    const sibilingIdFull = id.parentElement.previousElementSibling.id;
+    console.log(sibilingIdFull);
+    const sibilingId = sibilingIdFull.split("--")[1]
+    // console.log(sibilingId);
+    const name = triggeringLink.id.replace(/^add_/, '');
+    const href = triggeringLink.getAttribute('data-url');
+    const win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    localStorage.setItem('id_field', sibilingId);
+    win.focus();
+    return false;
+}
 
-// function closePopup(win, newID, newRepr, id) {
-//     // console.log(win, newID, newRepr, id);
-//     let select = document.getElementById(id);
-//     let option = document.createElement('option');
-//     option.appendChild(document.createTextNode(newRepr));
-//     option.value = newID;
-//     option.setAttribute('selected', 'selected');
-//     select.appendChild(option);
-//     win.close();
+function closePopup(win, newID, newRepr, id) {
+    let select = document.getElementById(id);
+    let option = document.createElement('option');
+    option.appendChild(document.createTextNode(newRepr));
+    option.value = newID;
+    option.setAttribute('selected', 'selected');
+    select.appendChild(option);
+    win.close();
 
-//     localStorage.removeItem('id');
-// }
+    localStorage.removeItem('id');
+}
 
 // function searchUsers(text) {
 //     // console.log(text.value);
@@ -145,4 +144,14 @@ function goHome() {
 
 function goToEditar() {
     window.location.href = "/profile";
+}
+
+async function getLineasForm(){
+    // showAddPopup('investigacion');
+
+    let form = await fetch('/lineas/create');
+    let response = await form.text();
+
+    let modal = document.querySelector('.modal-body');
+    modal.innerHTML = response;
 }

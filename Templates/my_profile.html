@@ -4,46 +4,42 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
-    <div class="card text-center mt-4">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link {% if producto == 'actualizacion' %}active{% endif %}" href="{% url 'AddArticulo' %}">
-                        Mis datos
-                    </a>
-                </li>
-
-            </ul>
+<div class="container l-main">
+    <div class="row">
+        <div class="col-12">
+            {% if is_peticion or peticion or messages or form.non_field_errors or form.errors or field.errors %}
+            <h3 class="mb-2">Editar Perfil</h3>
+            {% else %}
+            <h3>Editar Perfil</h3>
+            {% endif %}
         </div>
-        <div class="card-body">
-            <h5 class="card-title">{{title}}</h5>
-
-            {% if is_peticion %}
+    </div>
+    <div class="row">
+        {% if is_peticion %}
             <div class="alert alert-warning text-center">
                 <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
             </div>
-            {% endif %}
+        {% endif %}
+        
+        {% if peticion %}
+            <div class="alert alert-danger text-center">
+                <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
+            </div>
             
-            {% if peticion %}
-                <div class="alert alert-danger text-center">
-                    <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
-                </div>
-                
-            {% endif %}
-            
+        {% endif %}
+        
 
-            <!-- Mensaje de exito -->
-            {% if messages %}
-                <div class="alert alert-success text-center">
-                    {% for message in messages %}
-                        <strong>{{message}} </strong>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        <!-- Mensaje de exito -->
+        {% if messages %}
+            <div class="alert alert-success text-center">
+                {% for message in messages %}
+                    <strong>{{message}} </strong>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-            <!-- Mensajes de error sin campo asociado -->
-            {% if form.non_field_errors %}
+        <!-- Mensajes de error sin campo asociado -->
+        {% if form.non_field_errors %}
             <div class="non-field-errors">
                 {% for error in form.non_field_errors %}
                     <p class="form-error">
@@ -51,90 +47,112 @@
                     </p>
                 {% endfor %}
             </div>
-            {% endif %}
+        {% endif %}
 
-            <!-- Formulario -->
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <!-- Mostrando errores de todos los campos -->
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        <strong>Corrigue los siguientes errores:</strong>
-                        <ul>
-                            {% for field in form %}
-                                {% if field.errors %}
-                                    <li>
-                                        <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
-
-                <!-- Mostrando los campos del formulario -->
-                {% for field in form %}
-                <div class="form-group mb-4">
-
-                    <!-- Mostrando el error especifico del campo -->
-                    {% if field.errors %}
-                        <div class="alert alert-danger">
-                            {% for error in field.errors %}
-                            <strong>{{error}}</strong>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <!-- Si el campo es fecha, agrega la clase datepicker -->
-                    {% if field.name == 'nacimiento' or field.name == 'fecha' %}
-                        {{ field.label_tag }}
-
-                        {% if field.help_text %}
-                            <small class="text-muted">({{ field.help_text }})</small>
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Corrigue los siguientes errores:</strong>
+                <ul>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li>
+                                <a href="#id_{{field.name}}">{{field.label}}{{field.errors|striptags}}</a>
+                            </li>
                         {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
 
-                        {{ field|addclass:'datepicker form-control' }}
-                    {% else %}
-
-                    {% if field.name != "nacimiento" and field.name != 'user' and field.name != 'motivo' %}
-                    {{ field.label_tag }}
-                    {% endif %}
-                    
-
-                    {% if field.name == "investigaciones" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+        {% if field.errors %}
+            <div class="alert alert-danger">
+                {% for error in field.errors %}
+                <strong>{{error}}</strong>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <!-- Grid de tarjetas -->
+        <div class="l-grid col-12">
+            <!-- Formulario de actualización de datos -->
+            <form class="col-12" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.user}}
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <div class="m-form-input">
+                            <label for="id_first_name">{{form.first_name.label}}</label>
+                            {{form.first_name}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_last_name">{{form.last_name.label}}</label>
+                            {{form.last_name}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_email">{{form.email.label}}</label>
+                            {{form.email}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_clave">{{form.clave.label}}</label>
+                            {{form.clave}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_nacimiento">{{form.nacimiento.label}}</label>
+                            {{form.nacimiento}}
                         </div>
                     </div>
-                    {% endif %}
-
-                    <!-- Agregando los campos que no sean de tipo fecha -->
-                    {% if field.help_text %}
-                        <small class="text-muted">({{ field.help_text }})</small>
-                    {% endif %}
-
-                    {% if field.name != "nacimiento" and field.name != 'investigaciones' %}
-                        {{ field|addclass:'form-control' }}
-                    {% endif %}
-
-                        
-                    {% endif %}
+                    <div class="col-4 pl-0">
+                        <div class="m-form-input">
+                            <label for="id_sexo">{{form.sexo.label}}</label>
+                            {{form.sexo}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_contratacion">{{form.contratacion.label}}</label>
+                            {{ form.contratacion|addclass:'custom-select custom-select-sm' }}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
+                            {{form.cuerpoAcademico}}
+                        </div> 
+                        <div class="m-form-input">
+                            <label for="id_grado">{{form.grado.label}}</label>
+                            {{form.grado|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_publico">{{form.publico.label}}</label>
+                            {{form.publico|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <p>{{form.foto.label}}</p>
+                        <div class="m-form-input custom-file">
+                            <br>
+                            <label class="custom-file-label m-form-input_file" for="id_foto">Sube una nueva foto</label>
+                            {{ form.foto|addclass:'custom-file-input' }}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_facultades">{{form.facultades.label}}</label>
+                            {{form.facultades|addclass:'m-form-input_multiselect'}}
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_investigaciones">{{form.investigaciones.label}}</label>
+                            {{form.investigaciones|addclass:'m-form-input_multiselect'}}
+                            <button class="btn m-comunidapp-button h-self-end" id="toggle_modal" type="button"><span href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                onclick="return showAddPopup(this);">Añadir Linea
+                            </span></button>   
+                        </div> 
+                    </div>
                 </div>
-                {% endfor %}
-                <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+                <div class="col-12 pl-0 m-form_button">
+                    <div>
+                        <small>Tus cambios deben ser aprobados antes de que se vean reflejados en tu perfil</small>
+                    </div>
+                    <button class="btn m-comunidapp-button" id="editar_button" type="submit">Editar Perfil</button>
+                </div>
             </form>
         </div>
     </div>
-
-
-    
-
+</div>
 
 {% endblock %}

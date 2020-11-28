@@ -37,9 +37,8 @@ h3{
     margin-bottom: 40px;
 }
 
-input{
+input, select{
     padding-left: 5px;
-    height: 30px;
 }
 
 ul{
@@ -98,6 +97,11 @@ a:hover{
     display: flex;
     flex-wrap: wrap;
     overflow: auto;
+}
+
+.l-form{
+    width: 100%;
+    display: flex;
 }
 
 /* Modules */
@@ -235,12 +239,12 @@ a:hover{
     margin-bottom: 0;
 }
 
-.m-user-info__button{
+.m-comunidapp-button{
     background-color: var(--comunidapp_green);
     color: var(--black);
     font-size: 15px;
     margin-top: 4px;
-    width: 120px;
+    width: 122px;
 }
 
 /* User Info Modifiers */
@@ -382,6 +386,41 @@ a:hover{
     justify-content: center;
 }
 
+/* Form Input Module */
+.m-form-input{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.m-form-input > input, select{
+    width: 100%;
+    height: 30px !important;
+    background: #FFFFFF;
+    border: 1px solid var(--border-grey) !important;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+/* Form Input Components */
+
+.m-form-input_multiselect{
+    height: 60px !important;
+}
+
+.m-form_button{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.m-form_button > div{
+    width: 280px;
+    margin-right: 16px;
+}
+
 /* Helpers */
 .h-text-overflow{
     text-overflow: ellipsis;
@@ -399,4 +438,8 @@ a:hover{
 
 .h-justify-end{
     justify-content: flex-end;
+}
+
+.h-self-end{
+    align-self: flex-end;
 }
