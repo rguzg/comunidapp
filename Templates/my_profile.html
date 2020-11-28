@@ -137,10 +137,27 @@
                         </div>
                         <div class="m-form-input">
                             <label for="id_investigaciones">{{form.investigaciones.label}}</label>
-                            {{form.investigaciones|addclass:'m-input-multiselect'}}
-                            <button class="btn m-comunidapp-button h-self-end" id="toggle_modal" type="button"><span href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                onclick="return showAddPopup(this);">Añadir Linea
-                            </span></button>   
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.investigaciones|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                        onclick="return showAddPopup(this);">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div> 
+                            </div>  
+                        </div> 
+                        <div class="m-form-input">
+                            <label for="id_niveles">{{form.niveles.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.niveles|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
+                                    onclick="return showAddPopup(this);">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div> 
                     </div>
                 </div>
