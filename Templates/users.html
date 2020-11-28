@@ -1,52 +1,44 @@
-{% include 'navbar.html' %}
-{% load custom_tags %}
 {% load static %}
-{% block content %}
+{% load custom_tags %}
 
-<div class="container">
-    <div class="card text-center mt-4">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
-                        href="{% url 'AddAdminUsers' %}">
-                        Administrador
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% if producto == 'profesor' %}active{% endif %}"
-                        href="{% url 'AddProfesorUsers' %}">
-                        Profesor
-                    </a>
-                </li>
-            </ul>
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+
+<body>
+    {% include 'navbar.html' %}
+    {% block content %}
+
+    <div class="container l-main pt-2">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-0">Agregar Usuarios</h3>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">{{title}}</h5>
-
-            <!-- Mensaje de exito -->
-            {% if messages %}
-            <div class="alert alert-success text-center">
-                {% for message in messages %}
-                <strong>{{message}} </strong>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            <!-- Mensajes de error sin campo asociado -->
-            {% if form.non_field_errors %}
-            <div class="non-field-errors">
-                {% for error in form.non_field_errors %}
-                <p class="form-error">
-                    {{ error }}
-                </p>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
+        <div class="row">
+            <div class="col-8">
+                <!-- Mensaje de exito -->
+                {% if messages %}
+                <div class="alert alert-success text-center">
+                    {% for message in messages %}
+                    <strong>{{message}} </strong>
+                    {% endfor %}
+                </div>
+                {% endif %}
+    
+                <!-- Mensajes de error sin campo asociado -->
+                {% if form.non_field_errors %}
+                <div class="non-field-errors">
+                    {% for error in form.non_field_errors %}
+                    <p class="form-error">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+    
+                
                 <!-- Mostrando errores de todos los campos -->
                 {% if form.errors %}
                 <div class="alert alert-danger">
@@ -55,107 +47,176 @@
                         {% for field in form %}
                         {% if field.errors %}
                         <li>
-                            <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
+                            <p>{{field.errors|striptags}}</p>
                         </li>
                         {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
                 {% endif %}
-
-                <!-- Mostrando los campos del formulario -->
-                {% for field in form %}
-                <div class="form-group mb-4">
-
-                    <!-- Mostrando el error especifico del campo -->
-                    {% if field.errors %}
-                    <div class="alert alert-danger">
-                        {% for error in field.errors %}
-                        <strong>{{error}}</strong>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    {% if field.name != 'is_superuser' and field.name != 'is_staff' and field.name != 'email' %}
-                        {{ field.label_tag }}
-                    {% endif %}
-
-                    {% if field.help_text %}
-                        <small class="text-muted">({{ field.help_text }})</small>
-                    {% endif %}
-
-                    {% if field.name == "investigaciones" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "facultades" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'FacultadCreate' %}" id="add_facultades"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
-
-
-                    {% if field.name == "niveles" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "contratacion" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'ContratoCreate' %}" id="add_contratacion"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == 'nacimiento' %}
-                        {{field|addclass:'datepicker form-control'}}
-                    {% else %}
-                        {% if field.name != "investigaciones" and field.name != "facultades" and field.name != "niveles" and field.name != "contratacion" %}
-                            {{ field|addclass:'form-control' }}
-                        {% endif %}
-                    {% endif %}
-
-                </div>
-                {% endfor %}
-                <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
-
-
-
-
-                
-
-            </form>
+            </div>
         </div>
-    </div>
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
+                            href="{% url 'AddAdminUsers' %}">
+                            Administrador
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if producto == 'profesor' %}active{% endif %}"
+                            href="{% url 'AddProfesorUsers' %}">
+                            Profesor
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Mostrando los campos del formulario -->
+                    <div class="l-form">
+                        <div class="col-4 pl-0">
+                            <div class="m-form-input">
+                                <label for="id_username">{{form.username.label}}</label>
+                                {{form.username}}
+                            </div>
+                            <div class="m-form-input">
+                                <label for="id_password1">{{form.password1.label}}</label>
+                                {{form.password1}}
+                            </div>
+                            <div class="m-form-input">
+                                <label for="id_password2">{{form.password2.label}}</label>
+                                {{form.password2}}
+                            </div>
+                            {% if form.first_name %}
+                            <div class="m-form-input">
+                                <label for="id_first_name">{{form.first_name.label}}</label>
+                                {{form.first_name}}
+                            </div>
+                            {% endif %}
+                            {% if form.last_name %}
+                            <div class="m-form-input">
+                                <label for="id_last_name">{{form.last_name.label}}</label>
+                                {{form.last_name}}
+                            </div>
+                            {% endif %}
+                            {% if form.clave %}
+                            <div class="m-form-input">
+                                <label for="id_clave">{{form.clave.label}}</label>
+                                {{form.clave}}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-4 pl-0">
+                            {% if form.nacimiento %}
+                            <div class="m-form-input">
+                                <label for="id_nacimiento">{{form.nacimiento.label}}</label>
+                                {{form.nacimiento}}
+                            </div>
+                            {% endif %}
+                            {% if form.sexo %}
+                            <div class="m-form-input">
+                                <label for="id_sexo">{{form.sexo.label}}</label>
+                                {{form.sexo}}
+                            </div>
+                            {% endif %}
+                            {% if form.contratacion %}
+                            <div class="m-form-input">
+                                <label for="id_contratacion">{{form.contratacion.label}}</label>
+                                <div class="col-12 pl-0 h-align-center">
+                                    {{ form.contratacion|addclass:'custom-select custom-select-sm' }}
+                                    <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'ContratoCreate' %}" id="add_facultades"
+                                        onclick="return showAddPopup(this);">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if form.cuerpoAcademico %}
+                            <div class="m-form-input">
+                                <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
+                                {{form.cuerpoAcademico}}
+                            </div> 
+                            {% endif %}
+                            {% if form.grado %}
+                            <div class="m-form-input">
+                                <label for="id_grado">{{form.grado.label}}</label>
+                                {{form.grado|addclass:'custom-select custom-select-sm'}}
+                            </div>
+                            {% endif %}
+                            {% if form.publico %}
+                            <div class="m-form-input">
+                                <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="Si activas esta opción, cualquier usuario de la plataforma podra ver tu información de contacto y tus productos">
+                                    <label for="id_publico">{{form.publico.label}}</label>
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                {{form.publico|addclass:'m-form-checkbox'}}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-4 pl-0">
+                            {% if form.foto %}
+                            <label>{{form.foto.label}}</label>
+                            <div class="m-form-input custom-file">
+                                <br>
+                                <label class="custom-file-label m-input-file" for="id_foto">Sube una nueva foto</label>
+                                {{ form.foto|addclass:'custom-file-input' }}
+                            </div>
+                            {% endif %}
+                            {% if form.facultades %}
+                            <div class="m-form-input">
+                                <label for="id_facultades">{{form.facultades.label}}</label>
+                                <div class="col-12 pl-0 h-align-center">
+                                    {{form.facultades|addclass:'m-input-multiselect'}}
+                                    <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'FacultadCreate' %}" id="add_facultades"
+                                        onclick="return showAddPopup(this);">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if form.investigaciones %}
+                            <div class="m-form-input">
+                                <label for="id_investigaciones">{{form.investigaciones.label}}</label>
+                                <div class="col-12 pl-0 h-align-center">
+                                    {{form.investigaciones|addclass:'m-input-multiselect'}}
+                                    <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                        onclick="return showAddPopup(this);">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="m-form-input">
+                                <label for="id_niveles">{{form.niveles.label}}</label>
+                                <div class="col-12 pl-0 h-align-center">
+                                    {{form.niveles|addclass:'m-input-multiselect'}}
+                                    <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
+                                        onclick="return showAddPopup(this);">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div> 
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-12 pl-0 mt-0 m-form-button">
+                        <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Agregar Usuario">
+                    </div>
+                </form>
+            </div>
+        </div>
 
     {% endblock %}
+</body>

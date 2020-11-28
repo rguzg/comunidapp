@@ -591,7 +591,7 @@ class FacultadCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = FacultadForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
+            id_field = "id_facultades"
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -611,7 +611,7 @@ class NivelesCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = NivelForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
+            id_field = 'id_niveles'
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
@@ -631,7 +631,7 @@ class ContratoCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = ContratoForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
+            id_field = "id_contratacion"
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {

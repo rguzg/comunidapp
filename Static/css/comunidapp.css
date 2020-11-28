@@ -50,6 +50,12 @@ textarea{
     resize: none;
 }
 
+svg{
+    color: var(--comunidapp_green);
+    margin-bottom: .5rem;
+    margin-left: 4px;
+}
+
 a:hover{
     text-decoration: none;
     color: var(--black);
@@ -253,7 +259,7 @@ a:hover{
     color: var(--black);
     font-size: 15px;
     margin-top: 4px;
-    width: 122px;
+    min-width: 122px;
 }
 
 /* User Info Modifiers */
@@ -415,6 +421,10 @@ a:hover{
 }
 
 /* Form Input Components */
+.m-form-checkbox{
+    width: 20px !important;
+}
+
 .m-form-button{
     display: flex;
     align-items: center;
@@ -469,6 +479,14 @@ a:hover{
     height: 64px !important;
 }
 
+.card{
+    border: none !important;
+}
+
+.card-header{
+    background-color: #FFFFFF;
+}
+
 /* Helpers */
 .h-text-overflow{
     text-overflow: ellipsis;
@@ -484,10 +502,19 @@ a:hover{
     display: block;
 }
 
+.h-align-center{
+    display: flex;
+}
+
 .h-justify-end{
     justify-content: flex-end;
 }
 
 .h-self-end{
     align-self: flex-end;
+}
+
+.h-align-center{
+    display: flex;
+    align-items: center;
 }
