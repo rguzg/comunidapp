@@ -41,16 +41,12 @@ window.onload = function () {
 //     return false;
 // }
 
-function showAddPopup(triggeringLink) {
+function showAddPopup(triggeringLink, resultContainer) {
     const id = triggeringLink;
-    const sibilingIdFull = id.parentElement.previousElementSibling.id;
-    console.log(sibilingIdFull);
-    const sibilingId = sibilingIdFull.split("--")[1]
-    // console.log(sibilingId);
     const name = triggeringLink.id.replace(/^add_/, '');
     const href = triggeringLink.getAttribute('data-url');
     const win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
-    localStorage.setItem('id_field', sibilingId);
+    localStorage.setItem('id_field', resultContainer);
     win.focus();
     return false;
 }

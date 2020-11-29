@@ -34,7 +34,7 @@ p{
 
 h3{
     font-size: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 input, select{
@@ -83,7 +83,7 @@ a:hover{
 
 .l-main{
     min-height: calc(100% - 55px);
-    padding-top: 35px;
+    padding-top: 20px;
 }
 
 .l-grid{
@@ -406,6 +406,7 @@ a:hover{
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    width: 100%;
 }
 
 .m-form-input > input, select{

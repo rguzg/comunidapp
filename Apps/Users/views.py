@@ -452,6 +452,7 @@ class AutorCreatePopup(View):
         form = AutorForm(request.POST)
         if form.is_valid():
             id_field = form.cleaned_data.get('id_field')
+            print(id_field)
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
@@ -551,7 +552,7 @@ class LineasCreatePopup(View):
     def post(self, request, *args, **kwargs):
         form = LineasForm(request.POST)
         if form.is_valid():
-            id_field = "id_investigaciones"
+            id_field = form.cleaned_data.get('id_field')
             instance = form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
