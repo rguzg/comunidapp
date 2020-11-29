@@ -6,15 +6,6 @@
 
 <div class="container l-main">
     <div class="row">
-        <div class="col-12">
-            {% if is_peticion or peticion or messages or form.non_field_errors or form.errors or field.errors %}
-            <h3 class="mb-2">Editar Perfil</h3>
-            {% else %}
-            <h3>Editar Perfil</h3>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
         <div class="col-8">
             {% if is_peticion %}
                 <div class="alert alert-warning">
@@ -69,6 +60,15 @@
                     <strong>{{error}}</strong>
                     {% endfor %}
                 </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if is_peticion or peticion or messages or form.non_field_errors or form.errors or field.errors %}
+            <h3 class="mb-2">Editar Perfil</h3>
+            {% else %}
+            <h3>Editar Perfil</h3>
             {% endif %}
         </div>
     </div>
@@ -128,7 +128,7 @@
                         <label>{{form.foto.label}}</label>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-input-file" for="id_foto">Sube una nueva foto</label>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_foto">Sube una nueva foto</label>
                             {{ form.foto|addclass:'custom-file-input' }}
                         </div>
                         <div class="m-form-input">

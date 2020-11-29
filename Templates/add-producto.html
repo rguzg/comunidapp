@@ -6,11 +6,6 @@
 
 <div class="container l-main">
     <div class="row">
-        <div class="col-12">
-            <h3 class="mb-0">Agregar Producto</h3>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-8">
             <!-- Mensaje de exito -->
             {% if messages %}
@@ -48,6 +43,11 @@
                 </ul>
             </div>
             {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-0">Agregar Producto</h3>
         </div>
     </div>
     <div class="card mt-2">
@@ -420,7 +420,12 @@
                                 <i class="fas fa-question-circle"></i>
                             </div>
                         {{form.isbn}}
-                    </div>
+                        </div>
+                        <!-- Edicion -->
+                        <div class="m-form-input">
+                            <label for="id_edicion">{{form.edicion.label}}</label>
+                            {{form.edicion}}
+                        </div>
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Fecha de Publicación -->
@@ -541,7 +546,7 @@
                         <label>{{form.comprobante.label}}</label>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-input-file" for="id_comprobante">Sube un comprobante</label>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
                             {{ form.comprobante|addclass:'custom-file-input' }}
                         </div>
                         <!-- Proposito -->
@@ -845,6 +850,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="m-form-input">
+                            <label for="id_tipo_proyecto">{{form.tipo_proyecto.label}}</label>
+                            {{form.tipo_proyecto|addclass:'custom-select custom-select-sm'}}
+                        </div>
                         <!-- Resumen -->
                         <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
                             <label for="id_resumen">{{form.resumen.label}}</label>
@@ -852,7 +861,7 @@
                         </div>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-input-file" for="id_resumen">Sube un resumen</label>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
                             {{ form.resumen|addclass:'custom-file-input' }}
                         </div>
                         <!-- Institución -->
