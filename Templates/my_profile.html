@@ -141,7 +141,7 @@
                                 {{form.investigaciones|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this,'id_investigaciones');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div> 
@@ -153,7 +153,7 @@
                                 {{form.niveles|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_niveles');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>

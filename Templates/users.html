@@ -131,7 +131,7 @@
                                     {{ form.contratacion|addclass:'custom-select custom-select-sm' }}
                                     <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'ContratoCreate' %}" id="add_facultades"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_contratacion');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                     </div>
@@ -176,7 +176,7 @@
                                     {{form.facultades|addclass:'m-input-multiselect'}}
                                     <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'FacultadCreate' %}" id="add_facultades"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_facultades');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                     </div>
@@ -190,7 +190,7 @@
                                     {{form.investigaciones|addclass:'m-input-multiselect'}}
                                     <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_investigaciones');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                     </div>
@@ -202,7 +202,7 @@
                                     {{form.niveles|addclass:'m-input-multiselect'}}
                                     <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_niveles');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                     </div>

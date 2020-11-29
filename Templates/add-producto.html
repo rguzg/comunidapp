@@ -123,7 +123,7 @@
                                 {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -136,7 +136,7 @@
                                 {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -149,7 +149,7 @@
                                 {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -162,7 +162,7 @@
                                 {{form.tercer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -175,7 +175,7 @@
                                 {{form.cuarto_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -205,7 +205,7 @@
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -307,7 +307,7 @@
                                 {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -320,7 +320,7 @@
                                 {{form.primer_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_primer_coautor');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -333,7 +333,7 @@
                                 {{form.segundo_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_segundo_coautor');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -381,7 +381,7 @@
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div>
@@ -394,7 +394,7 @@
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this);">
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
                                 </div>
@@ -640,7 +640,7 @@
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div>
@@ -756,7 +756,7 @@
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div>
@@ -907,7 +907,7 @@
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this);">
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div>
