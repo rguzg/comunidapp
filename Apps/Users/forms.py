@@ -240,13 +240,13 @@ class ArticuloForm(ModelForm):
                     'pais', 'No puedes agregar un pais si no se encuentra publicado')
             if editorial:
                 self.add_error(
-                    'editoria', 'No puedes agregar una editorial si no se encuentra publicado')
+                    'editorial', 'No puedes agregar una editorial si no se encuentra publicado')
             if revista:
                 self.add_error(
                     'revista', 'No puedes agregar una revista si no se encuentra publicado')
             if isnn:
                 self.add_error(
-                    'isnn', 'No puedes agregar el isnn si no se encuentra publicado')
+                    'isnn', 'No puedes agregar el ISNN si no se encuentra publicado')
             if publicacion:
                 self.add_error(
                     'publicacion', 'No puedes agregar una fecha de publicación a un articulo no publicado')
@@ -547,9 +547,9 @@ class CongresoForm(ModelForm):
                 self.add_error(
                     'segundo_colaborador', 'No puedes tener un segundo colaborador sin un primer colaborador')
 
-        if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
-            self.add_error(
-                'primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
+        # if primer_autor == primer_colaborador or primer_autor == segundo_colaborador or primer_colaborador == segundo_colaborador:
+        #     self.add_error(
+        #         'primer_autor', 'El autor y los colaboradores no pueden ser la misma persona')
 
         estado = cleaned_data.get('estado')
         publicacion = cleaned_data.get('publicacion')
