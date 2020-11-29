@@ -77,6 +77,14 @@
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
 
+                    {% if form.is_superuser %}
+                        {{form.is_superuser}}
+                    {% endif %}
+
+                    {% if form.is_staff %}
+                        {{form.is_staff}}
+                    {% endif %}
+
                     <!-- Mostrando los campos del formulario -->
                     <div class="l-form">
                         <div class="col-4 pl-0">
@@ -115,7 +123,7 @@
                             {% if form.nacimiento %}
                             <div class="m-form-input">
                                 <label for="id_nacimiento">{{form.nacimiento.label}}</label>
-                                {{form.nacimiento}}
+                                {{form.nacimiento|addclass:'datepicker'}}
                             </div>
                             {% endif %}
                             {% if form.sexo %}
