@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,31 +17,85 @@
                 <h3>Aprobar Cambios</h3>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 l-cambios">
-                <div class="col-4 m-cambios">
-                    <div class="m-cambios__header">
-                        <b>correo@correo.com</b>
-                    </div>
-                    <div class="m-cambios__content">
-                        <b>Actualización de Nombre</b>
-                        <br>
-                        <b>De:</b>
-                        <span>John Persona</span>
-                        <br>
-                        <b>A:</b>
-                        <span>John Persona</span>
-                        <br>
-                        <b>Comentarios</b>
-                        <textarea class="form-control" name="" id="" cols="30" rows="3"></textarea>    
-                    </div>
-                    <div class="m-cambios__buttons">
-                        <button class="btn m-cambios__aprobar" id="aprobar">Aprobar Cambios</button>
-                        <button class="btn m-cambios__rechazar" id="rechazar">Rechazar Cambios</button>
-                    </div>
+
+        {% if object_list %}
+
+            <div class="row">
+                <div class="col-12 l-cambios">
+                    
+                    {% for actualizacion in object_list %}
+                        <form action="{% url 'updates' %}" method="POST">
+                            {% csrf_token  %}
+                            <input type="hidden" value="{{actualizacion.id}}" name="id">
+                            <div class="col-4 m-cambios">
+                                <div class="m-cambios__header">
+                                    <b>{{actualizacion.user.get_full_name}}</b>
+                                </div>
+                                <div class="m-cambios__content">
+                                    {% for key, value in actualizacion.changed_fields.items %}
+                                        <b>Actualización de {{value|join:', '}}</b>
+                                    {% endfor %}
+                                    
+                                    <br>
+
+                                    {% for key, value in actualizacion.changed_fields.items %}
+                                        {% for v in value %}
+                                            <!-- <b>v: {{v}}</b>
+                                            <br> -->
+
+                                            {% if v != 'investigaciones' and v != 'niveles' %}
+                                                <b>De:</b>
+                                                <span>{{ actualizacion.user|getattribute:v }} </span>
+                                                <br>
+                                                <b>A:</b>
+                                                <span>{{actualizacion|getattribute:v}}</span>
+                                                <br>
+                                            {% endif %}
+
+                                            {% if v == 'niveles' %}
+                                                <b>De:</b>
+                                                <span>{{ actualizacion.user.niveles.all|join:' - '}} </span>
+                                                <br>
+                                                <b>A:</b>
+                                                <span>{{actualizacion.niveles.all|join:' - '}}</span>
+                                                <br>
+                                            {% endif %}
+
+                                            {% if v == 'investigaciones' %}
+                                                b>De:</b>
+                                                <span>{{ actualizacion.user.investigaciones.all|join:' - '}} </span>
+                                                <br>
+                                                <b>A:</b>
+                                                <span>{{actualizacion.investigaciones.all|join:' - '}}</span>
+                                                <br>
+                                            {% endif %}
+
+                                        {% endfor %}  
+                                    {% endfor %}
+
+                                    
+                                    <b>Comentarios</b>
+                                    <textarea class="form-control" name="comentario-{{actualizacion.id}}" id="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" cols="30" rows="3"></textarea>    
+                                </div>
+                                <div class="m-cambios__buttons">
+                                    <button class="btn m-cambios__aprobar" name="Aprobado" value="Aprobado" type="submit" id="aprobar">Aprobar Cambios</button>
+                                    <button class="btn m-cambios__rechazar" name="Rechazado" value="Rechazado" type="submit" id="rechazar">Rechazar Cambios</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endfor %}
+                    
                 </div>
             </div>
-        </div>
+        
+        
+
+
+        {% else %}
+            <h6>Por el momento no existen peticion de actualización</h1>
+        {% endif %}
+
+        
     </div>
 </body>
 </html>
