@@ -94,6 +94,9 @@
             <!-- Formulario -->
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                {% if form.profesor %}
+                    {{form.profesor}}
+                {% endif %}
 
                 <!-- Se utiliza un campo exclusivo de cada form para condicionar que form va a aparecer -->
 
