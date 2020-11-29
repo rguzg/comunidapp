@@ -33,17 +33,11 @@
                                 </div>
                                 <div class="m-cambios__content">
                                     {% for key, value in actualizacion.changed_fields.items %}
-                                        <b>Actualización de {{value|join:', '}}</b>
-                                    {% endfor %}
-                                    
-                                    <br>
-
-                                    {% for key, value in actualizacion.changed_fields.items %}
                                         {% for v in value %}
-                                            <!-- <b>v: {{v}}</b>
-                                            <br> -->
 
                                             {% if v != 'investigaciones' and v != 'niveles' %}
+                                                <b>Actualización de {{v}}</b>
+                                                <br>
                                                 <b>De:</b>
                                                 <span>{{ actualizacion.user|getattribute:v }} </span>
                                                 <br>
