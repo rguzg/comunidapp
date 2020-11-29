@@ -8,12 +8,21 @@ window.onload = function () {
     const dropdown_parent = document.querySelector('#dropdown_parent');
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
+    const file = document.querySelector('.m-input-file');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
 
     if(editar_button){
         editar_button.addEventListener('click', goToEditar);
+    }
+    
+    if(file){
+        let input_file = document.querySelector(`#${file.attributes["for"].value}`);
+        input_file.addEventListener('change', () => {
+            let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
+            file.innerText = filename;
+        });
     }
 
     inputSearch.onkeyup = searchUsers(inputSearch);

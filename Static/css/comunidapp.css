@@ -99,9 +99,9 @@ a:hover{
 }
 
 .l-cambios{
-    height: 400px;
+    /* height: 400px; */
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     overflow: auto;
 }
 
@@ -132,7 +132,7 @@ a:hover{
     height: 55px;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 5;
 }
 
 /* Header Components */
@@ -345,9 +345,8 @@ a:hover{
 
 /* Cambios Module */
 .m-cambios{
-    height: 300px;
     margin-right: 8px;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
     padding: 0;
     border: 1px solid var(--border-grey);
     box-sizing: border-box;
@@ -389,6 +388,10 @@ a:hover{
 
 .m-cambios__content{
     padding: 8px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    flex-wrap: wrap;
 }
 
 .m-cambios__content > b{
@@ -398,7 +401,7 @@ a:hover{
 
 .m-cambios__buttons{
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 /* Form Input Module */

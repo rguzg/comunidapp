@@ -12,11 +12,6 @@
 
     <div class="container l-main">
         <div class="row">
-            <div class="col-12">
-                <h3>Agregar Usuarios</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-8">
                 <!-- Mensaje de exito -->
                 {% if messages %}
@@ -54,6 +49,11 @@
                     </ul>
                 </div>
                 {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h3>Agregar Usuarios</h3>
             </div>
         </div>
         <div class="card mt-2">
@@ -173,7 +173,7 @@
                             <label>{{form.foto.label}}</label>
                             <div class="m-form-input custom-file">
                                 <br>
-                                <label class="custom-file-label m-input-file" for="id_foto">Sube una nueva foto</label>
+                                <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_foto">Sube una nueva foto</label>
                                 {{ form.foto|addclass:'custom-file-input' }}
                             </div>
                             {% endif %}
