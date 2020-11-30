@@ -1,75 +1,102 @@
-{% include 'navbar.html' %}
+{% load static %}
 {% load custom_tags %}
-{% block content %}
 
-<div class="container-fluid">
-    <h1>Peticiones de actualización</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-    {% if object_list %}
-    {% else %}
-        <h6>Por el momento no existen peticion de actualización</h1>
-    {% endif %}
+{% include 'head.html' %}
+
+<body>
+    {% include 'navbar.html' %}
+
+
+    <!-- Contenedor Principal -->
+    <div class="container l-main">
+        <div class="row">
+            <div class="col-12">
+                <h3>Aprobar Cambios</h3>
+            </div>
+        </div>
+
+        {% if object_list %}
+
+            <div class="row">
+                <div class="col-12 l-cambios">
+                    
+                    {% for actualizacion in object_list %}
+                        <form action="{% url 'updates' %}" method="POST">
+                            {% csrf_token  %}
+                            <input type="hidden" value="{{actualizacion.id}}" name="id">
+                            <div class="m-cambios" style="display: flex; flex-wrap:wrap;">
+                                <div class="m-cambios__header">
+                                    <b>{{actualizacion.user.get_full_name}}</b>
+                                </div>
+                                <div class="m-cambios__content col-12">
+                                    <div class="col-8 d-flex flex-wrap">
+                                        {% for key, value in actualizacion.changed_fields.items %}
+                                            {% for v in value %}
+                                                    <div style="width: 300px;">
+                                                        <!-- {{v}} -->
+            
+                                                        {% if v != 'investigaciones' and v != 'niveles' %}
+                                                            <b>Actualización de {{v}}</b>
+                                                            <br>
+                                                            <b>De:</b>
+                                                            <span>{{ actualizacion.user|getattribute:v }} </span>
+                                                            <br>
+                                                            <b>A:</b>
+                                                            <span>{{actualizacion|getattribute:v}}</span>
+                                                            <br>
+                                                        {% endif %}
+            
+                                                        {% if v == 'niveles' %}
+                                                            <b>Actualización de {{v}}</b>
+                                                            <br>
+                                                            <b>De:</b>
+                                                            <span>{{ actualizacion.user.niveles.all|join:' - '}} </span>
+                                                            <br>
+                                                            <b>A:</b>
+                                                            <span>{{actualizacion.niveles.all|join:' - '}}</span>
+                                                            <br>
+                                                        {% endif %}
+            
+                                                        {% if v == 'investigaciones' %}
+                                                            <b>De:</b>
+                                                            <span>{{ actualizacion.user.investigaciones.all|join:' - '}} </span>
+                                                            <br>
+                                                            <b>A:</b>
+                                                            <span>{{actualizacion.investigaciones.all|join:' - '}}</span>
+                                                            <br>
+                                                        {% endif %}
+            
+                                                    </div>
+                                            {% endfor %}  
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-4">
+                                        <b>Comentarios</b>
+                                        <textarea class="form-control" name="comentario-{{actualizacion.id}}" id="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" cols="30" rows="3"></textarea>  
+                                    </div>  
+                                    </div>
+                                    <div class="m-cambios__buttons col-12 px-4 py-2">
+                                    <button class="btn m-cambios__aprobar" name="Aprobado" value="Aprobado" type="submit" id="aprobar">Aprobar Cambios</button>
+                                    <button class="btn m-cambios__rechazar" name="Rechazado" value="Rechazado" type="submit" id="rechazar">Rechazar Cambios</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+        
+        
+
+
+        {% else %}
+            <h6>Por el momento no existen peticion de actualización</h1>
+        {% endif %}
 
         
-            {% for actualizacion in object_list %}
-            <ul class="list-group list-group-flush"></ul>
-            <form action="{% url 'updates' %}" method="POST">
-                {% csrf_token  %}
-
-                <li class="list-group-item">Peticion de <b>{{actualizacion.user}}</b></li>
-                <li class="list-group-item">
-                    Actualizaciones: {{actualizacion.cambios}}
-
-                    {% for key, value in actualizacion.changed_fields.items %}
-                        {{value|join:', '}}
-                    {% endfor %}
-                </li>
-                <input type="hidden" value="{{actualizacion.id}}" name="id">
-                <li class="list-group-item">
-
-                    {% for key, value in actualizacion.changed_fields.items %}
-                        {% for v in value %}
-                            <b>{{v}}</b>
-                            <br>
-
-                            {% if v != 'investigaciones' and v != 'niveles' %}
-                                Actual: {{ actualizacion.user|getattribute:v }} 
-                                <br>
-                                Peticion: {{actualizacion|getattribute:v}}
-                                <br><br>
-                            {% endif %}
-
-                            {% if v == 'niveles' %}
-                                Actual: {{ actualizacion.user.niveles.all|join:' - '}} 
-                                <br>
-                                Peticion: {{actualizacion.niveles.all|join:' - '}}
-                                <br><br>
-                            {% endif %}
-
-                            {% if v == 'investigaciones' %}
-                                Actual: {{ actualizacion.user.investigaciones.all|join:' - '}} 
-                                <br>
-                                Peticion: {{actualizacion.investigaciones.all|join:' - '}}
-                                <br><br>
-                            {% endif %}
-
-                        {% endfor %}  
-                    {% endfor %}
-                </li>
-
-                <li class="list-group-item">
-                    <textarea class="form-control mt-3 mb-3" name="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" id="comentario-{{actualizacion.id}}" rows="05"></textarea>
-                    <input class="btn btn-sm btn-outline-dark" name="Rechazado" type="submit" value="Rechazado">
-                    <input class="btn btn-sm btn-submit" type="submit" name="Aprobado" value="Aprobado">
-                </li>
-            </form>
-        </ul>
-        <br> <br>
-            {% endfor %}
-        
-
-</div>
-
-
-
-{% endblock %}
+    </div>
+</body>
+</html>

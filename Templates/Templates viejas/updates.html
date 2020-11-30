@@ -1,0 +1,75 @@
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% block content %}
+
+<div class="container-fluid">
+    <h1>Peticiones de actualización</h1>
+
+    {% if object_list %}
+    {% else %}
+        <h6>Por el momento no existen peticion de actualización</h1>
+    {% endif %}
+
+        
+            {% for actualizacion in object_list %}
+            <ul class="list-group list-group-flush"></ul>
+            <form action="{% url 'updates' %}" method="POST">
+                {% csrf_token  %}
+
+                <li class="list-group-item">Peticion de <b>{{actualizacion.user}}</b></li>
+                <li class="list-group-item">
+                    Actualizaciones: {{actualizacion.cambios}}
+
+                    {% for key, value in actualizacion.changed_fields.items %}
+                        {{value|join:', '}}
+                    {% endfor %}
+                </li>
+                <input type="hidden" value="{{actualizacion.id}}" name="id">
+                <li class="list-group-item">
+
+                    {% for key, value in actualizacion.changed_fields.items %}
+                        {% for v in value %}
+                            <b>{{v}}</b>
+                            <br>
+
+                            {% if v != 'investigaciones' and v != 'niveles' %}
+                                Actual: {{ actualizacion.user|getattribute:v }} 
+                                <br>
+                                Peticion: {{actualizacion|getattribute:v}}
+                                <br><br>
+                            {% endif %}
+
+                            {% if v == 'niveles' %}
+                                Actual: {{ actualizacion.user.niveles.all|join:' - '}} 
+                                <br>
+                                Peticion: {{actualizacion.niveles.all|join:' - '}}
+                                <br><br>
+                            {% endif %}
+
+                            {% if v == 'investigaciones' %}
+                                Actual: {{ actualizacion.user.investigaciones.all|join:' - '}} 
+                                <br>
+                                Peticion: {{actualizacion.investigaciones.all|join:' - '}}
+                                <br><br>
+                            {% endif %}
+
+                        {% endfor %}  
+                    {% endfor %}
+                </li>
+
+                <li class="list-group-item">
+                    <textarea class="form-control mt-3 mb-3" name="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" id="comentario-{{actualizacion.id}}" rows="05"></textarea>
+                    <input class="btn btn-sm btn-outline-dark" name="Rechazado" type="submit" value="Rechazado">
+                    <input class="btn btn-sm btn-submit" type="submit" name="Aprobado" value="Aprobado">
+                </li>
+            </form>
+        </ul>
+        <br> <br>
+            {% endfor %}
+        
+
+</div>
+
+
+
+{% endblock %}

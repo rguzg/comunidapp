@@ -1,85 +1,50 @@
 {% load static %}
-{% load custom_tags %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    {% include 'head.html' %}
-</head>
+<!-- Header -->
+ <header class="col-12 l-fixed-top m-header">
+    <div class="col-2 m-header__logo-container" id="logo">
+        <img src="{% static 'img/logo.png' %}" class="m-header__image">
+        <b class="m-header__title">Comunidapp</b>
+    </div>
+    <div class="col-5">
+        {% if user.is_staff or user.is_superuser %}
+            <a href="{% url 'updates' %}" class="m-header__button">Solicitudes</a>
+            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button">Agregar Usuarios</a>
+        {% else %}
+            <a href="{% url 'home' %}" class="m-header__button">Home</a>
+            <!-- <a href="{% url 'profile' %}" class="m-header__button">Mi Perfil</a> -->
+            <a href="{% url 'AddArticulo' %}" class="m-header__button">Agregar Productos</a>
+        {% endif %}
+    </div>
+    <div class="col-4 m-header__search-container">
+        <input class="m-search" type="text" name="search" id="search" placeholder="Buscar">
+        <ul>
+            <li class="m-profile-picture" 
+            {% if user.foto %}
+                data-picture="{{user.foto.url}}"
+            {% else %}
+                data-picture="{% static 'img/person.jpg' %}" 
+            {% endif %}
+            
+            id="dropdown_parent" 
+            style="
+                
+                {% if user.foto %}
+                    background-image: url({{user.foto.url}});
+                {% else %}
+                    background-image: url({% static 'img/person.jpg' %});
+                {% endif %}"
+            >
+            </li>
+            <ul class="m-header__dropdown" id="dropdown">
+                <li>{{request.user.get_short_name}}</li>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-blue">
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-            Comunidapp
-        </a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
                 {% if not request.user.is_staff or not request.user.is_superuser %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'home' %}">
-                        Home
-                        <!-- <span class="sr-only">(current)</span> -->
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">
-                        Mi perfil
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'AddArticulo' %}">
-                        Agregar productos
-                    </a>
-                </li>
+                    <li><a href="{% url 'profile' %}">Mi Perfil</a></li>
                 {% endif %}
 
-                {% if request.user.is_staff or request.user.is_superuser %}
-                <li class="nav-item">
-                    <a href="{% url 'updates' %}" class="nav-link">
-                        Solicitudes
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'AddAdminUsers' %}">
-                        Usuarios
-                    </a>
-                </li>
-                {% endif %}
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
-                </li>
+                <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
             </ul>
-
-            <!-- <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" onkeyup="searchUsers(this)" type="search" placeholder="Buscar perfil" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-            </form> -->
-
-            <form class="form-inline my-2 my-lg-0">
-                <select class="selectpicker" title="Buscar usuario..." data-live-search="true">
-                    <option>Mustard</option>
-                    <option>Ketchup</option>
-                    <option>Barbecue</option>
-                    <option>Barbecue</option>
-                  </select>
-            </form>
-
-        </div>
-    </nav>
-
-    {% block content %}
-    {% endblock %}
-</body>
-
-</html>
+        </ul>
+    </div>
+</header>

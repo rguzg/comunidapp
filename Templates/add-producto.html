@@ -1,10 +1,56 @@
+{% include 'head.html' %}
 {% include 'navbar.html' %}
 {% load custom_tags %}
 {% load static %}
 {% block content %}
 
-<div class="container">
-    <div class="card text-center mt-4">
+<div class="container l-main">
+    <div class="row">
+        <div class="col-8">
+            <!-- Mensaje de exito -->
+            {% if messages %}
+            <div class="alert alert-success text-center">
+                {% for message in messages %}
+                <strong>{{message}} </strong>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Mensajes de error sin campo asociado -->
+            {% if form.non_field_errors %}
+            <div class="non-field-errors">
+                {% for error in form.non_field_errors %}
+                <p class="form-error">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            
+            <!-- Mostrando errores de todos los campos -->
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Corrigue los siguientes errores:</strong>
+                <ul>
+                    {% for field in form %}
+                    {% if field.errors %}
+                    <li>
+                        <p>{{field.errors|striptags}}</p>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-0">Agregar Producto</h3>
+        </div>
+    </div>
+    <div class="card mt-2">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
@@ -45,193 +91,884 @@
             </ul>
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{title}}</h5>
-
-            <!-- Mensaje de exito -->
-            {% if messages %}
-            <div class="alert alert-success text-center">
-                {% for message in messages %}
-                <strong>{{message}} </strong>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-            <!-- Mensajes de error sin campo asociado -->
-            {% if form.non_field_errors %}
-            <div class="non-field-errors">
-                {% for error in form.non_field_errors %}
-                <p class="form-error">
-                    {{ error }}
-                </p>
-                {% endfor %}
-            </div>
-            {% endif %}
-
             <!-- Formulario -->
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+                {% if form.profesor %}
+                    {{form.profesor}}
+                {% endif %}
 
-                <!-- Mostrando errores de todos los campos -->
-                {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Corrigue los siguientes errores:</strong>
-                    <ul>
-                        {% for field in form %}
-                        {% if field.errors %}
-                        <li>
-                            <a href="#id_{{field.name}}">{{field.errors|striptags}}</a>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
+                <!-- Se utiliza un campo exclusivo de cada form para condicionar que form va a aparecer -->
+
+                {% if form.categoria %}
+                <!-- Form de Articulo -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}}</label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Descripción -->
+                        <div class="m-form-input">
+                            <label for="id_descripcion">{{form.descripcion.label}}</label>
+                            {{form.descripcion}}
+                        </div>
+                        <!-- Categoria -->
+                        <div class="m-form-input">
+                            <label for="id_categoria">{{form.categoria.label}}</label>
+                            {{form.categoria|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Primer Autor -->
+                        <div class="m-form-input">
+                            <label for="id_primer_autor">{{form.primer_autor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Primer Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Segundo Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tercer Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cuarto Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.cuarto_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
+                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Palabras Clave -->
+                        <div class="m-form-input">
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                                <small>({{form.palabras_clave.help_text}})</small>
+                            </label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado -->
+                        <div class="m-form-input">
+                            <label for="id_estado">{{form.estado.label}}</label>
+                            {{form.estado|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- País -->
+                        <div class="m-form-input">
+                            <label for="id_pais">{{form.pais.label}}</label>
+                            {{form.pais|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Revista -->
+                        <div class="m-form-input">
+                            <label for="id_revista">{{form.revista.label}}</label>
+                            {{form.revista|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Editorial -->
+                        <div class="m-form-input">
+                            <label for="id_editorial">{{form.editorial.label}}</label>
+                            {{form.editorial|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- ISNN -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isnn.help_text}}">
+                                <label for="id_isnn">{{form.isnn.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.isnn}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                                <label for="id_publicacion">{{form.publicacion.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
+                        <!-- URL -->
+                        <div class="m-form-input">
+                            <label for="id_url">{{form.url.label}}</label>
+                            {{form.url}}
+                        </div>
+                        <!-- Página de Inicio -->
+                        <div class="m-form-input">
+                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}}</label>
+                            {{form.pagina_inicio}}
+                        </div>
+                        <!-- Página Final -->
+                        <div class="m-form-input">
+                            <label for="id_pagina_fin">{{form.pagina_fin.label}}</label>
+                            {{form.pagina_fin}}
+                        </div>
+                        <!-- Volumen -->
+                        <div class="m-form-input">
+                            <label for="id_volumen">{{form.volumen.label}}</label>
+                            {{form.volumen}}
+                        </div>
+                        <!-- DOI -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.doi.help_text}}">
+                                <label for="id_doi">{{form.doi.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.doi}}
+                        </div>
+                        <!-- Indice de Revista -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.indice_revista.help_text}}">
+                                <label for="id_indice_revista">{{form.indice_revista.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.indice_revista}}
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
 
-                <!-- Mostrando los campos del formulario -->
-                {% for field in form %}
-                <div class="form-group mb-4">
-
-                    <!-- Mostrando el error especifico del campo -->
-                    {% if field.errors %}
-                    <div class="alert alert-danger">
-                        {% for error in field.errors %}
-                        <strong>{{error}}</strong>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <!-- Si el campo es fecha, agrega la clase datepicker -->
-                    {% if field.name == 'publicacion' or field.name == 'presentacion' or field.name == "inicio" or field.name == "fin"  %}
-                    {{ field.label_tag }}
-
-                    {% if field.help_text %}
-                    <small class="text-muted">({{ field.help_text }})</small>
-                    {% endif %}
-
-                    {{ field|addclass:' datepicker form-control' }}
-                    {% else %}
-
-                    <!-- Agregando los campos que no sean de tipo fecha -->
-                    {% if field.name != "tipo_financiamiento" and field.name != 'profesor' %}
-                    {{ field.label_tag }}
-                    {% if field.help_text %}
-                    <small class="text-muted">({{ field.help_text }})</small>
-                    {% endif %}
-                    {% endif %}
-
-                    {% if field.name == "cuarto_colaborador" or field.name == "tercer_coautor" or field.name == "cuarto_coautor" or field.name == "tercer_colaborador" or field.name == "primer_autor" or field.name == "primer_colaborador" or field.name == "segundo_colaborador" or field.name == "primer_coautor" or field.name == "segundo_coautor" or field.name == "autores" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega un autor externo">
-                            <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_author"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}">
-                            </a>
+                {% if form.cuarto_coautor %}
+                <!-- Form de Libro/Cápitulo -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}} 
+                                <small>({{form.titulo.help_text}})</small>
+                            </label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Primer Autor -->
+                        <div class="m-form-input">
+                            <label for="id_primer_autor">{{form.primer_autor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Primer Coautor -->
+                        <div class="m-form-input">
+                            <label for="id_primer_coautor">{{form.primer_coautor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_coautor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Segundo Coautor -->
+                        <div class="m-form-input">
+                            <label for="id_segundo_coautor">{{form.segundo_coautor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_coautor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_segundo_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tercer Coautor -->
+                        <div class="m-form-input">
+                            <label for="id_tercer_coautor">{{form.tercer_coautor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_coautor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this,'id_tercer_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cuarto Coautor -->
+                        <div class="m-form-input">
+                            <label for="id_cuarto_coautor">{{form.cuarto_coautor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.cuarto_coautor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_cuarto_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado -->
+                        <div class="m-form-input">
+                            <label for="id_estado">{{form.estado.label}}</label>
+                            {{form.estado|addclass:'custom-select custom-select-sm'}}
                         </div>
                     </div>
-                    {% endif %}
-
-                    {% if field.name == "financiamiento" %}
-                    <div class="row">
-                        <div class="col d-flex flex-row justify-align-items align-items-center">
-                            {{field}}
+                    <div class="col-4 pl-0">
+                        <!-- Palabras Clave -->
+                        <div class="m-form-input">
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                                <small>({{form.palabras_clave.help_text}})</small>
+                            </label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col">
-                            {{form.tipo_financiamiento.label_tag}}
-                            {{form.tipo_financiamiento|addclass:'form-control'}}
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "palabras_clave" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una palabra clave">
-                            <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}}" id="add_palabras"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+                        <!-- País -->
+                        <div class="m-form-input">
+                            <label for="id_pais">{{form.pais.label}}</label>
+                            {{form.pais|addclass:'custom-select custom-select-sm'}}
                         </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "revista" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una revista">
-                            <a href="javascript:void(0);" data-url="{% url 'RevistaCreate' %}" id="add_revista"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+                        <!-- Editorial -->
+                        <div class="m-form-input">
+                            <label for="id_editorial">{{form.editorial.label}}</label>
+                            {{form.editorial|addclass:'custom-select custom-select-sm'}}
                         </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "editorial" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una editorial">
-                            <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+                        <!-- ISBN -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isbn.help_text}}">
+                                <label for="id_isbn">{{form.isbn.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                        {{form.isbn}}
                         </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name == "lineas_investigacion" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una linea de investigación">
-                            <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+                        <!-- Edicion -->
+                        <div class="m-form-input">
+                            <label for="id_edicion">{{form.edicion.label}}</label>
+                            {{form.edicion}}
                         </div>
                     </div>
-                    {% endif %}
-
-                    {% if field.name == "institucion" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega una Institución">
-                            <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
+                    <div class="col-4 pl-0">
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                                <label for="id_publicacion">{{form.publicacion.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
+                        <!-- Tipo -->
+                        <div class="m-form-input">
+                            <label for="id_tipo">{{form.tipo.label}}</label>
+                            {{form.tipo|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Página de Inicio -->
+                        <div class="m-form-input">
+                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}} 
+                                <small>({{form.pagina_inicio.help_text}})</small>
+                            </label>
+                            {{form.pagina_inicio}}
+                        </div>
+                        <!-- Página Final -->
+                        <div class="m-form-input">
+                            <label for="id_pagina_fin">{{form.pagina_fin.label}} 
+                                <small>({{form.pagina_fin.help_text}})</small>
+                            </label>
+                            {{form.pagina_fin}}
+                        </div>
+                        <!-- Tiraje -->
+                        <div class="m-form-input">
+                            <label for="id_tiraje">{{form.tiraje.label}}</label>
+                            {{form.tiraje}}
+                        </div>
+                        <!-- Propósito -->
+                        <div class="m-form-input">
+                            <label for="id_proposito">{{form.proposito.label}}</label>
+                            {{form.proposito|addclass:'custom-select custom-select-sm'}}
                         </div>
                     </div>
-                    {% endif %}
-
-
-                    {% if field.name == "alumno" or field.name == "primer_alumno" or field.name == "segundo_alumno" or field.name == "tercer_alumno" %}
-                    <div class="row">
-                        <div class="col-11" id="id--{{ field.id_for_label }}">{{ field|addclass:'form-control' }}</div>
-                        <div class="col-1 d-flex flex-row justify-align-items align-items-center" data-toggle="tooltip"
-                            data-placement="top" title="Agrega un Alumno">
-                            <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
-                                onclick="return showAddPopup(this);">
-                                <img class="img-add" src="{% static 'img/add.png' %}" alt="">
-                            </a>
-                        </div>
-                    </div>
-                    {% endif %}
-
-                    {% if field.name != "tercer_coautor" and field.name != "cuarto_coautor" and field.name != "tercer_colaborador" and field.name != "cuarto_colaborador" and field.name != "primer_autor" and field.name != "primer_colaborador" and field.name != "segundo_colaborador" and field.name != "palabras_clave" and field.name != "revista" and field.name != "editorial" and field.name != "lineas_investigacion" and field.name != "primer_coautor" and field.name != "segundo_coautor" and field.name != "autores" and field.name != "financiamiento" and field.name != "tipo_financiamiento" and field.name != "institucion" and field.name != "alumno" and field.name != "primer_alumno" and field.name != "segundo_alumno" and field.name != "tercer_alumno" %}
-                    {{ field|addclass:'form-control' }}
-                    {% endif %}
-
-                    {% endif %}
-
                 </div>
-                {% endfor %}
-                <input class="btn btn-secondary btn-lg btn-block mb-5" type="submit" name="" id="" value="{{title}}">
+                {% endif %}
+
+                {% if form.uso %}
+                <!-- Form de Patente -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Autores -->
+                        <div class="m-form-input">
+                            <label for="id_autores">{{form.autores.label}} <small>({{form.autores.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.autores|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autores"
+                                    onclick="return showAddPopup(this, 'id_autores');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}}</label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Descripción -->
+                        <div class="m-form-input">
+                            <label for="id_descripcion">{{form.descripcion.label}}</label>
+                            {{form.descripcion}}
+                        </div>
+                        <!-- Uso -->
+                        <div class="m-form-input">
+                            <label for="id_uso">{{form.uso.label}}</label>
+                            {{form.uso}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Número de Patente -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.registro.help_text}}">
+                                <label for="id_registro">{{form.registro.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.registro}}
+                        </div>
+                        <!-- País -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.pais.help_text}}">
+                                <label for="id_pais">{{form.pais.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.pais|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                                <label for="id_publicacion">{{form.publicacion.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Comprobante -->
+                        <label>{{form.comprobante.label}}</label>
+                        <div class="m-form-input custom-file">
+                            <br>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
+                            {{ form.comprobante|addclass:'custom-file-input' }}
+                        </div>
+                        <!-- Proposito -->
+                        <div class="m-form-input">
+                            <label for="id_proposito">{{form.proposito.label}}</label>
+                            {{form.proposito|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if form.ciudad %}
+                <!-- Form de Congreso -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}}</label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Descripción -->
+                        <div class="m-form-input">
+                            <label for="id_descripcion">{{form.descripcion.label}}</label>
+                            {{form.descripcion}}
+                        </div>
+                        <!-- Primer Autor -->
+                        <div class="m-form-input">
+                            <label for="id_primer_autor">{{form.primer_autor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Primer Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Segundo Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tercer Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cuarto Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.cuarto_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
+                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Palabras Clave -->
+                        <div class="m-form-input">
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                                <small>({{form.palabras_clave.help_text}})</small>
+                            </label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Estado Actual -->
+                        <div class="m-form-input">
+                            <label for="id_estado">{{form.estado.label}}</label>
+                            {{form.estado|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Congreso -->
+                        <div class="m-form-input">
+                            <label for="id_congreso">{{form.congreso.label}}</label>
+                            {{form.congreso}}
+                        </div>
+                        <!-- País -->
+                        <div class="m-form-input">
+                            <label for="id_pais">{{form.pais.label}}</label>
+                            {{form.pais|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Estado -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.estadoP.help_text}}">
+                                <label for="id_estadoP">{{form.estadoP.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.estadoP|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Ciudad -->
+                        <div class="m-form-input">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.ciudad.help_text}}">
+                                <label for="id_ciudad">{{form.ciudad.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.ciudad|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                         <!-- Fecha de Publicación -->
+                         <div class="m-form-input">
+                            <label for="id_publicacion">{{form.publicacion.label}}</label>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
+                         <!-- Fecha de Presentacion -->
+                         <div class="m-form-input">
+                            <label for="id_presentacion">{{form.presentacion.label}}</label>
+                            {{form.presentacion|addclass:'datepicker'}}
+                        </div>
+                        <!-- Proposito -->
+                        <div class="m-form-input">
+                            <label for="id_proposito">{{form.proposito.label}}</label>
+                            {{form.proposito|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if form.financiamiento %}
+                <!-- Form de Investigación -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}}</label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Financiamiento -->
+                        <div class="m-form-input">
+                            <label for="id_financiamiento">{{form.financiamiento.label}}</label>
+                            {{form.financiamiento|addclass:'m-form-checkbox'}}
+                        </div>
+                        <!-- Tipo de Financiamiento -->
+                        <div class="m-form-input">
+                            <label for="id_tipo_financiamiento">{{form.tipo_financiamiento.label}}</label>
+                            {{form.tipo_financiamiento|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Fecha de Inicio -->
+                        <div class="m-form-input">
+                            <label for="id_inicio">{{form.inicio.label}}</label>
+                            {{form.inicio|addclass:'datepicker'}}
+                        </div>
+                         <!-- Fecha de Fin -->
+                         <div class="m-form-input">
+                            <label for="id_fin">{{form.fin.label}}</label>
+                            {{form.fin|addclass:'datepicker'}}
+                        </div>
+                        <!-- Responsable -->
+                        <div class="m-form-input">
+                            <label for="id_responsable">{{form.responsable.label}}</label>
+                            {{form.responsable|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Palabras Clave -->
+                        <div class="m-form-input">
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                                <small>({{form.palabras_clave.help_text}})</small>
+                            </label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Primer Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Segundo Colaborador -->
+                        <div class="m-form-input">
+                            <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                                </div>
+                            </div>
+                        <!-- Primer Alumno -->
+                        <div class="m-form-input">
+                            <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_alumno|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_primer_alumno"
+                                    onclick="return showAddPopup(this, 'id_primer_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Segundo Alumno -->
+                        <div class="m-form-input">
+                            <label for="id_segundo_alumno">{{form.segundo_alumno.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_alumno|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_segundo_alumno"
+                                    onclick="return showAddPopup(this, 'id_segundo_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tercer Alumno -->
+                        <div class="m-form-input">
+                            <label for="id_tercer_alumno">{{form.tercer_alumno.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_alumno|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_tercer_alumno"
+                                    onclick="return showAddPopup(this, 'id_tercer_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-form-input">
+                            <label for="id_tipo_proyecto">{{form.tipo_proyecto.label}}</label>
+                            {{form.tipo_proyecto|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Resumen -->
+                        <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
+                            <label for="id_resumen">{{form.resumen.label}}</label>
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="m-form-input custom-file">
+                            <br>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
+                            {{ form.resumen|addclass:'custom-file-input' }}
+                        </div>
+                        <!-- Institución -->
+                        <div class="m-form-input">
+                            <label for="id_institucion">{{form.institucion.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.institucion|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
+                                    onclick="return showAddPopup(this, 'id_institucion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if form.profesor %}
+                <!-- Form de Tesis -->
+                <div class="l-form">
+                    <div class="col-4 pl-0">
+                        <!-- Titulo -->
+                        <div class="m-form-input">
+                            <label for="id_titulo">{{form.titulo.label}}</label>
+                            {{form.titulo}}
+                        </div>
+                        <!-- Grado -->
+                        <div class="m-form-input">
+                            <label for="id_grado">{{form.grado.label}}</label>
+                            {{form.grado|addclass:'custom-select custom-select-sm'}}
+                        </div>
+                        <!-- Alumno -->
+                        <div class="m-form-input">
+                            <label for="id_alumno">{{form.alumno.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.alumno|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
+                                    onclick="return showAddPopup(this, 'id_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Palabras Clave -->
+                        <div class="m-form-input">
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                                <small>({{form.palabras_clave.help_text}})</small>
+                            </label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Lineas de Investigación -->
+                        <div class="m-form-input">
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
+                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Institución -->
+                        <div class="m-form-input">
+                            <label for="id_institucion">{{form.institucion.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.institucion|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
+                                    onclick="return showAddPopup(this, 'id_institucion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 pl-0">
+                        <!-- Fecha de Inicio -->
+                        <div class="m-form-input">
+                            <label for="id_inicio">{{form.inicio.label}}</label>
+                            {{form.inicio|addclass:'datepicker'}}
+                        </div>
+                        <!-- Fecha de Fin -->
+                        <div class="m-form-input">
+                        <label for="id_fin">{{form.fin.label}}</label>
+                        {{form.fin|addclass:'datepicker'}}
+                    </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="col-12 pl-0 mt-0 m-form-button">
+                    <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Agregar">
+                </div>
         </div>
     </div>
 

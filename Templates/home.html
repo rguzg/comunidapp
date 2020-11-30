@@ -1,44 +1,44 @@
-{% include 'navbar.html' %}
-{% block content %}
 {% load static %}
 
-  <!-- Contenedor Principal -->
-  <div class="container l-main">
-    <div class="row">
-        <div class="col-12">
-            <h3>Usuarios</h3>
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'head.html' %}
+
+<body>
+    {% include 'navbar.html' %}
+
+    <!-- Contenedor Principal -->
+    <div class="container l-main">
+        <div class="row">
+            <div class="col-12">
+                <h3>Usuarios</h3>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <!-- Grid de tarjetas -->
-        <div class="l-grid col-12">
-            {% for user in object_list %}
+        <div class="row">
+            <!-- Grid de tarjetas -->
+            <div class="l-grid col-12">
+
+                {% for user in object_list %}
                 <div class="m-user-info m-user-info--card col-3" onclick="location.href='{% url 'profile-detail' pk=user.id %}' ">
                     <div class="m-profile-picture" style="
                     {% if user.foto %}
                         background-image: url({{user.foto.url}});
                     {% else %}
-                        background-image: url({% static 'img/user2.png' %});
+                        background-image: url({% static 'img/person.jpg' %});
                     {% endif %}"
                     ></div>
                     <div class="m-user-info__text">
                         <b class="h-text-overflow">{{user.get_full_name}}</b>
-                        {% if user.publico %}
-                            <i class="h-text-overflow">{{user.email}}</i>
-                        {% else %}
-                            <i class="h-text-overflow">Perfil privado</i>
-                        {% endif %}
-                        
+                        <p class="h-text-overflow">{{user.email}}</p>
                     </div>
                 </div>
 
                 
                 {% endfor %}
+
+            </div>
         </div>
     </div>
-</div>
-
-
-
-
-{% endblock %}
+</body>
+</html>

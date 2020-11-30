@@ -34,12 +34,11 @@ p{
 
 h3{
     font-size: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
-input{
+input, select{
     padding-left: 5px;
-    height: 30px;
 }
 
 ul{
@@ -49,6 +48,12 @@ ul{
 
 textarea{
     resize: none;
+}
+
+svg{
+    color: var(--comunidapp_green);
+    margin-bottom: .5rem;
+    margin-left: 4px;
 }
 
 a:hover{
@@ -78,7 +83,7 @@ a:hover{
 
 .l-main{
     min-height: calc(100% - 55px);
-    padding-top: 35px;
+    padding-top: 20px;
 }
 
 .l-grid{
@@ -94,10 +99,24 @@ a:hover{
 }
 
 .l-cambios{
-    height: 400px;
+    /* height: 400px; */
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     overflow: auto;
+}
+
+.l-form{
+    width: 100%;
+    display: flex;
+}
+
+.l-popup{
+    min-height: calc(100% - 55px);
+    padding-top: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Modules */
@@ -113,7 +132,7 @@ a:hover{
     height: 55px;
     position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 5;
 }
 
 /* Header Components */
@@ -190,6 +209,7 @@ a:hover{
 /* Profile Picture Module */
 
 .m-profile-picture{
+    /* background-image: url("../img/person.jpg"); */
     background-size: cover;
     border-radius: 25px;
     width: 40px;
@@ -234,12 +254,12 @@ a:hover{
     margin-bottom: 0;
 }
 
-.m-user-info__button{
+.m-comunidapp-button{
     background-color: var(--comunidapp_green);
     color: var(--black);
     font-size: 15px;
     margin-top: 4px;
-    width: 120px;
+    min-width: 122px;
 }
 
 /* User Info Modifiers */
@@ -325,15 +345,15 @@ a:hover{
 
 /* Cambios Module */
 .m-cambios{
-    min-height: 230px;
     margin-right: 8px;
-    margin-bottom: 16px;
+    /* margin-bottom: 16px; */
     padding: 0;
     border: 1px solid var(--border-grey);
     box-sizing: border-box;
     border-radius: 5px;
 }
 
+/* Cambios Components */
 .m-cambios__aprobar{
     background-color: var(--comunidapp_darkgreen);
     color: #ffffff;
@@ -358,16 +378,117 @@ a:hover{
     border-bottom: 1px solid var(--border-grey);
 }
 
-.m-cambios__content{
-    padding: 8px 20px;
-}
-
 .m-cambios__header > input {
     margin-right: 20px;
 }
 
 .m-cambios__header > input:checked {
     background-color: #00DDA4;
+}
+
+.m-cambios__content{
+    padding: 8px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    flex-wrap: wrap;
+}
+
+.m-cambios__content > b{
+    margin-right: 4px;
+    margin-bottom: 12px;
+}
+
+.m-cambios__buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Form Input Module */
+.m-form-input{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+}
+
+.m-form-input > input, select{
+    width: 100%;
+    height: 30px !important;
+    background: #FFFFFF;
+    border: 1px solid var(--border-grey) !important;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Form Input Components */
+.m-form-checkbox{
+    width: 20px !important;
+}
+
+.m-form-button{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.m-form-button > div{
+    width: 280px;
+    margin-right: 16px;
+}
+
+/* Input Modules */
+.m-input-file{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    padding-left: .375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    border-radius: .25rem;
+    border: 1px solid var(--border-grey);
+    height: 30px;
+    background: #FFFFFF;
+    margin-bottom: 8px;
+}
+
+.m-input-file::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    height: 28px;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    color: #495057;
+    content: "Examinar";
+    background-color: #e9ecef;
+    border-left: inherit;
+    border-radius: 0 .25rem .25rem 0;
+}
+
+.m-input-multiselect{
+    height: 64px !important;
+}
+
+.card{
+    border: none !important;
+}
+
+.card-header{
+    background-color: #FFFFFF;
 }
 
 /* Helpers */
@@ -377,10 +498,27 @@ a:hover{
     overflow: hidden;
 }
 
+.btn:hover{
+    color: var(--grey);
+}
+
 .h-display{
     display: block;
 }
 
+.h-align-center{
+    display: flex;
+}
+
 .h-justify-end{
     justify-content: flex-end;
+}
+
+.h-self-end{
+    align-self: flex-end;
+}
+
+.h-align-center{
+    display: flex;
+    align-items: center;
 }

@@ -300,7 +300,7 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
     template_name = 'users.html'
     form_class = UserCreationForm
     success_url = '/add/admin'
-    success_message = 'Usuario creado correctamente'
+    success_message = 'Administrador creado correctamente'
 
     def get_initial(self):
         initial = super(AddAdminUsers, self).get_initial()
