@@ -36,6 +36,7 @@
                                         {% for key, value in actualizacion.changed_fields.items %}
                                             {% for v in value %}
                                                     <div style="width: 300px;">
+                                                        <!-- {{v}} -->
             
                                                         {% if v != 'investigaciones' and v != 'niveles' %}
                                                             <b>Actualización de {{v}}</b>
@@ -49,6 +50,8 @@
                                                         {% endif %}
             
                                                         {% if v == 'niveles' %}
+                                                            <b>Actualización de {{v}}</b>
+                                                            <br>
                                                             <b>De:</b>
                                                             <span>{{ actualizacion.user.niveles.all|join:' - '}} </span>
                                                             <br>
