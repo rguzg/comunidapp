@@ -159,6 +159,10 @@ a:hover{
     margin-right: 20px;
 }
 
+.m-header__button--active{
+    font-weight: 600;
+}
+
 .m-header__search-container{
     display: flex;
     align-items: center;
