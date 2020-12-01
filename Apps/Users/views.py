@@ -93,7 +93,7 @@ class Perfil(DetailView):
         patentes = Patente.objects.filter(autores=autor)
         congresos = Congreso.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
-        tesis = Tesis.objects.filter(profesor=self.request.user)
+        tesis = Tesis.objects.filter(profesor=user)
 
         print(articulos)
         context['articulos'] = articulos
