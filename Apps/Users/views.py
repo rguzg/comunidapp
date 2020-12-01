@@ -86,7 +86,6 @@ class Perfil(DetailView):
         userId = self.kwargs['pk']
 
         autor = Autor.objects.get(user_id=userId)
-        print(autor)
 
         articulos = Articulo.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         capituloslibros = CapituloLibro.objects.filter(Q(primer_autor = autor) | Q(primer_coautor = autor) | Q(segundo_coautor = autor) )
@@ -95,6 +94,7 @@ class Perfil(DetailView):
         investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         tesis = Tesis.objects.filter(profesor=self.request.user)
 
+        print(articulos)
         context['articulos'] = articulos
         context['capituloslibros'] = capituloslibros
         context['patentes'] = patentes

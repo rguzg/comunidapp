@@ -29,8 +29,8 @@
             id="dropdown_parent" 
             style="
                 
-                {% if user.foto %}
-                    background-image: url({{user.foto.url}});
+                {% if request.user.foto %}
+                    background-image: url({{request.user.foto.url}});
                 {% else %}
                     background-image: url({% static 'img/person.jpg' %});
                 {% endif %}"
