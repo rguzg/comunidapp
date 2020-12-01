@@ -68,6 +68,7 @@ class Home(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Comunidapp'
+        context['path'] = 'home'
         return context
 
     def get_queryset(self):
@@ -289,6 +290,7 @@ class UpdatedUsers(ListView):
     def get_context_data(self, **kwargs):
         context = super(UpdatedUsers, self).get_context_data(**kwargs)
         context['title'] = 'Peticiones de actualización'
+        context['path'] = 'solicitudes'
         return context
 
 
@@ -313,7 +315,8 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AddAdminUsers, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Administrador'
-        context['producto'] = 'administrador'
+        context['producto'] = 'usuarios'
+        context['path'] = 'usuarios'
         return context
 
 
@@ -334,7 +337,8 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Profesor'
-        context['producto'] = 'profesor'
+        context['producto'] = 'usuarios'
+        context['path'] = 'usuarios'
         return context
 
     # Necesario para guardar los campos M2M
@@ -360,7 +364,8 @@ class AddArticulo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un artículo'
-        context['producto'] = 'articulo'
+        context['producto'] = 'productos'
+        context['path'] = 'productos'
         return context
 
 
@@ -374,6 +379,7 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un libro o capítulo'
         context['producto'] = 'libro'
+        context['path'] = 'productos'
         return context
 
 
@@ -387,6 +393,7 @@ class AddPatente(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega una patente'
         context['producto'] = 'patente'
+        context['path'] = 'productos'
         return context
 
 
@@ -400,6 +407,7 @@ class AddCongreso(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un partición en congreso'
         context['producto'] = 'congreso'
+        context['path'] = 'productos'
         return context
 
 
@@ -413,6 +421,7 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un proyecto de investigación'
         context['producto'] = 'investigacion'
+        context['path'] = 'productos'
         return context
 
 
@@ -431,7 +440,8 @@ class AddTesis(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AddTesis, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega una dirección de tesis'
-        context['producto'] = 'tesis'
+        context['producto'] = 'productos'
+        context['path'] = 'productos'
         return context
 
 
