@@ -115,8 +115,8 @@
                                 <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
                                     {% if articulos %}
                                         {% for articulo in articulos %}
-                                            <div class="col- m-product-card">
-                                                <b>{{articulo.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{articulo.titulo}}</b>
                                                 {% if articulo.publicacion %}
                                                     <p>{{articulo.publicacion}}</p>
                                                 {% else %}
@@ -131,8 +131,8 @@
                                 <div class="tab-pane fade" id="libroscapitulos" role="tabpanel" aria-labelledby="libroscapitulos-tab">
                                     {% if capituloslibros %}
                                         {% for capitulolibro in capituloslibros %}
-                                            <div class="col- m-product-card">
-                                                <b>{{capitulolibro.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{capitulolibro.titulo}}</b>
                                                 {% if capitulolibro.publicacion %}
                                                     <p>{{capitulolibro.publicacion}}</p>
                                                 {% else %}
@@ -147,8 +147,8 @@
                                 <div class="tab-pane fade" id="patentes" role="tabpanel" aria-labelledby="patentes-tab">
                                     {% if patentes %}
                                         {% for patente in patentes %}
-                                            <div class="col- m-product-card">
-                                                <b>{{patente.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{patente.titulo}}</b>
                                                 {% if patente.publicacion %}
                                                     <p>{{patente.publicacion}}</p>
                                                 {% else %}
@@ -163,8 +163,8 @@
                                 <div class="tab-pane fade" id="congresos" role="tabpanel" aria-labelledby="congresos-tab">
                                     {% if congresos %}
                                         {% for congreso in congresos %}
-                                            <div class="col- m-product-card">
-                                                <b>{{congreso.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{congreso.titulo}}</b>
                                                 {% if congreso.publicacion %}
                                                     <p>{{congreso.publicacion}}</p>
                                                 {% else %}
@@ -179,8 +179,8 @@
                                 <div class="tab-pane fade" id="investigaciones" role="tabpanel" aria-labelledby="investigaciones-tab">
                                     {% if investigaciones %}
                                         {% for investigacion in investigaciones %}
-                                            <div class="col- m-product-card">
-                                                <b>{{investigacion.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{investigacion.titulo}}</b>
                                                 {% if investigacion.fin %}
                                                     <p>{{investigacion.fin}}</p>
                                                 {% else %}
@@ -195,8 +195,8 @@
                                 <div class="tab-pane fade" id="tesis" role="tabpanel" aria-labelledby="tesis-tab">
                                     {% if tesis %}
                                         {% for tesi in tesis %}
-                                            <div class="col- m-product-card">
-                                                <b>{{tesi.titulo}}</b>
+                                            <div class="m-product-card">
+                                                <b class="h-text-overflow">{{tesi.titulo}}</b>
                                                 {% if tesi.fin %}
                                                     <p>{{tesi.fin}}</p>
                                                 {% else %}
