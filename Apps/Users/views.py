@@ -1,4 +1,3 @@
-import ast
 import json
 from django.http import JsonResponse
 from django.contrib import messages
@@ -25,7 +24,50 @@ from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, 
 """
 Clases para el manejo y administracion de sesiones y de usuarios
 """
+class getProducto(View):
+    def post(self, request, *args, **kwargs):
+        idProducto = request.POST.get('idProducto', None)
+        tipoProducto = request.POST.get('tipoProducto', None)
+        fields = {}
 
+        if tipoProducto == 'articulo':
+            producto = Articulo.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(articulo=producto).values('nombre'))
+        elif tipoProducto == 'capituloLibro':
+            producto = CapituloLibro.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(capitulolibro=producto).values('nombre'))
+            
+        elif tipoProducto == 'patente':
+            producto = Patente.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(patente=producto).values('nombre'))
+            
+        elif tipoProducto == 'congreso':
+            producto = Congreso.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(congreso=producto).values('nombre'))
+            
+        elif tipoProducto == 'investigacion':
+            producto = Investigacion.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(investigacion=producto).values('nombre'))
+            
+        elif tipoProducto == 'tesis':
+            producto = Tesis.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(tesis=producto).values('nombre'))
+        else:
+            return JsonResponse({
+                'Error': 'Debes proporcionar un Tipo de Producto válido'
+            }, status=500)
+
+        fields['lineas'] = lineas
+        for field in producto._meta.fields:
+            fname = field.name        
+            try:
+                value = getattr(producto, fname)
+            except AttributeError:
+                value = None
+            if field.editable and value and field.name in ('id', 'titulo', 'publicacion', 'fin', 'primer_autor', 'primer_colaborador','segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador', 'primer_coautor', 'segundo_coautor', 'tercer_coautor', 'cuarto_coautor', 'autores', 'responsable', 'profesor', 'alumno', 'lineas_investigacion') :
+                fields[field.name] = str(value)
+
+        return JsonResponse(fields)
 
 class SearchUsers(View):
     def post(self, request, *args, **kwargs):
