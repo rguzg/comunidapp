@@ -36,37 +36,93 @@
                                         {% for key, value in actualizacion.changed_fields.items %}
                                             {% for v in value %}
                                                     <div style="width: 300px;">
-                                                        <!-- {{v}} -->
-            
-                                                        {% if v != 'investigaciones' and v != 'niveles' %}
-                                                            <b>Actualización de {{v}}</b>
+                                                        {% if v != 'investigaciones' and v != 'niveles' and v != 'facultades' %}
+                                                            <b>Actualización de
+                                                                <!-- Harcoding del nombre de las variables, ya que necesitan ser guardados con el nombre del campo especifico -->
+                                                                {% if v == 'first_name' %}
+                                                                    nombre(s)
+                                                                {% elif v == 'email' %}
+                                                                    correo electrónico
+                                                                {% elif v == 'sexo' %}
+                                                                    genero
+                                                                {% elif v == 'grado' %}
+                                                                    estudios
+                                                                {% elif v == 'publico' %}
+                                                                    perfil público
+                                                                {% elif v == 'last_name' %}
+                                                                    apellido(s)
+                                                                {% elif v == 'clave' %}
+                                                                    clave
+                                                                {% elif v == 'nacimiento' %}
+                                                                    fecha de Nacimiento
+                                                                {% elif v == 'cuerpoAcademico' %}
+                                                                    cuerpo Académico
+                                                                {% elif v == 'contratacion' %}
+                                                                    tipo de contratación
+                                                                {% endif %}
+                                                            </b>
                                                             <br>
                                                             <b>De:</b>
-                                                            <span>{{ actualizacion.user|getattribute:v }} </span>
+                                                            <span>
+                                                                <!-- Harcoding de campos CHOICES de usuarios para mostrarlos completos -->
+                                                                {% if v == 'sexo' %}
+                                                                    {{ actualizacion.user.get_sexo_display }}
+                                                                {% elif v == 'grado' %}
+                                                                    {{ actualizacion.user.get_grado_display }}
+                                                                {% elif v == 'publico' %}
+                                                                    {{ actualizacion.user.publico|yesno:"Si, No" }}
+                                                                {% else %}
+                                                                    {{ actualizacion.user|getattribute:v }}
+                                                                {% endif %}
+                                                            </span>
                                                             <br>
                                                             <b>A:</b>
-                                                            <span>{{actualizacion|getattribute:v}}</span>
-                                                            <br>
+                                                            <span>
+                                                                <!-- Harcoding de campos CHOICES de la peticion de actualizacion para mostrarlos completos -->
+                                                                {% if v == 'sexo' %}
+                                                                    {{ actualizacion.get_sexo_display }}
+                                                                {% elif  v == 'grado' %}
+                                                                    {{ actualizacion.get_grado_display }}
+                                                                {% elif v == 'publico' %}
+                                                                    {{ actualizacion.publico|yesno:"Si, No" }}
+                                                                {% else %}
+                                                                    {{actualizacion|getattribute:v}}
+                                                                {% endif %}
+                                                            </span>
+                                                            <br><br>
                                                         {% endif %}
             
                                                         {% if v == 'niveles' %}
-                                                            <b>Actualización de {{v}}</b>
+                                                            <b>Actualización de niveles</b>
                                                             <br>
                                                             <b>De:</b>
-                                                            <span>{{ actualizacion.user.niveles.all|join:' - '}} </span>
+                                                            <span>{{ actualizacion.user.niveles.all|join:' • '}} </span>
                                                             <br>
                                                             <b>A:</b>
-                                                            <span>{{actualizacion.niveles.all|join:' - '}}</span>
-                                                            <br>
+                                                            <span>{{actualizacion.niveles.all|join:' • '}}</span>
+                                                            <br><br>
                                                         {% endif %}
             
                                                         {% if v == 'investigaciones' %}
+                                                            <b>Actualización de investigaciones</b>
+                                                            <br>
                                                             <b>De:</b>
-                                                            <span>{{ actualizacion.user.investigaciones.all|join:' - '}} </span>
+                                                            <span>{{ actualizacion.user.investigaciones.all|join:' • '}} </span>
                                                             <br>
                                                             <b>A:</b>
-                                                            <span>{{actualizacion.investigaciones.all|join:' - '}}</span>
+                                                            <span>{{actualizacion.investigaciones.all|join:' • '}}</span>
+                                                            <br><br>
+                                                        {% endif %}
+
+                                                        {% if v == 'facultades' %}
+                                                            <b>Actualización de facultades</b>
                                                             <br>
+                                                            <b>De:</b>
+                                                            <span>{{ actualizacion.user.facultades.all|join:' • '}} </span>
+                                                            <br>
+                                                            <b>A:</b>
+                                                            <span>{{actualizacion.facultades.all|join:' • '}}</span>
+                                                            <br><br>
                                                         {% endif %}
             
                                                     </div>
