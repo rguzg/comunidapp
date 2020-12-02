@@ -71,7 +71,7 @@ class UpdateRequest(models.Model):
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
     foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True)
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
-    cuerpoAcademico = models.CharField(max_length=18, blank=False, null=True, verbose_name='Cuerpo Académico')
+    cuerpoAcademico = models.CharField(max_length=50, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(null=True, blank=False)
     contratacion = models.ForeignKey('Contrato', on_delete=models.CASCADE, blank=False, null=True, verbose_name = 'Tipo de contrato')
     facultades = models.ManyToManyField('Facultad',  blank=True, verbose_name = 'Facultades donde imparte clases')
