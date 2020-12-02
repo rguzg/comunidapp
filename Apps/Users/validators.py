@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 from django.core.exceptions import ValidationError
 
-isalphavalidator = RegexValidator(r'^[a-zA-Z ]+$',
+isalphavalidator = RegexValidator(r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$',
                              message='El nombre debe ser alfanumerico',
                              code='Nombre no válido')
 
