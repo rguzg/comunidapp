@@ -1,3 +1,5 @@
+const server = 'http://127.0.0.1:8000/'
+
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
@@ -13,11 +15,11 @@ window.onload = function () {
     dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
 
-    if(editar_button){
+    if (editar_button) {
         editar_button.addEventListener('click', goToEditar);
     }
-    
-    if(file){
+
+    if (file) {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
         input_file.addEventListener('change', () => {
             let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
@@ -42,6 +44,34 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+getProducto = (elementoHTML) => {
+    const csrftoken = getCookie('csrftoken');
+    const tipoProducto = elementoHTML.dataset.tipoproducto;
+    const idProducto = elementoHTML.dataset.idproducto;
+
+    fetch(server + 'getProducto', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({
+            'tipoProducto': tipoProducto,
+            'idProducto': idProducto
+        })
+    })
+        .then(res => {
+            return res.json();
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 // function showEditPopup(url) {
@@ -112,12 +142,12 @@ function closePopup(win, newID, newRepr, id) {
 //                 // spanText.className = "text";
 //                 // spanText.appendChild(document.createTextNode(user["first_name"]));
 
-                
+
 //                 // newAnchor.appendChild(spanText);
 //                 // // console.log(newAnchor);
 //                 // newLi.appendChild(newAnchor);
 //                 // selectUsers.appendChild(newLi);
-                
+
 //                 // console.log(selectUsers);
 
 //                 selectUsers.innerHTML+='<li><a role="option" class="dropdown-item active selected" id="bs-select-1-0" tabindex="0" aria-setsize="4" aria-posinset="1" aria-selected="true"><span class="text">Mustardddddd</span></a></li>';
@@ -149,7 +179,7 @@ function goToEditar() {
     window.location.href = "/profile";
 }
 
-async function getLineasForm(){
+async function getLineasForm() {
     // showAddPopup('investigacion');
 
     let form = await fetch('/lineas/create');

@@ -26,8 +26,9 @@ Clases para el manejo y administracion de sesiones y de usuarios
 """
 class getProducto(View):
     def post(self, request, *args, **kwargs):
-        idProducto = request.POST.get('idProducto', None)
-        tipoProducto = request.POST.get('tipoProducto', None)
+        data = json.loads(request.body)
+        idProducto = data['idProducto']
+        tipoProducto = data['tipoProducto']
         fields = {}
 
         if tipoProducto == 'articulo':
