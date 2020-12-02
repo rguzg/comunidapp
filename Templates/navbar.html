@@ -36,7 +36,9 @@
             >
             </li>
             <ul class="m-header__dropdown" id="dropdown">
-                <li>{{request.user.get_short_name}}</li>
+                {% if request.user.get_short_name %}
+                    <li>{{request.user.get_short_name}}</li>
+                {% endif %}
 
                 {% if not request.user.is_staff or not request.user.is_superuser %}
                     <li><a href="{% url 'profile' %}">Mi Perfil</a></li>

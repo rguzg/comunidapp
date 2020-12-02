@@ -53,17 +53,13 @@
                         <div class="col-12">
                             <b>Niveles</b>
                             <p>
-                                {% for nivel in user.niveles.all %}
-                                    {{nivel}} |
-                                {% endfor %}
+                                {{user.niveles.all|join:' • '}}
                             </p>
                         </div>
                         <div class="col-12">
                             <b>Facultad</b>
                             <p>
-                                {% for facultad in user.facultades.all %}
-                                    {{facultad}} |
-                                {% endfor %}
+                                {{user.facultades.all|join:' • '}}
                             </p>
                             <div class="m-facultad">
                                 <img src="{% static 'img/Facultades/fif.png' %}" alt="" srcset="">

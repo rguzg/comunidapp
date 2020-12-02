@@ -31,7 +31,6 @@ class SearchUsers(View):
     def post(self, request, *args, **kwargs):
         # textoBusqueda = request.POST.get('textoBusqueda')
         textoBusqueda = json.load(request)['textoBusqueda'] #Get data from POST request
-        print(textoBusqueda)
         # textoBusqueda = 'a'
         users = User.objects.filter(
             Q(username__icontains=textoBusqueda) |
@@ -159,23 +158,17 @@ class Profile(SuccessMessageMixin, FormView):
         peticion = UpdateRequest.objects.filter(user=request.user).first()
 
         if peticion:
-            print('Si existe una instancia')
             form = UpdateRequestForm(
                 request.POST, request.FILES, instance=peticion)
         else:
-            print('No existe una instancia ')
             form = UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print('Formulario valido')
             peticion_obj = form.save(commit=False)
             peticion_obj.user = request.user
             peticion_obj.estado = 'P'
             peticion_obj.changed_fields = {'fields': form.changed_data}
 
-            print(form)
-            if 'foto' in form:
-                print('SI HAY FOTO')
 
             peticion_obj.save()
 
@@ -195,7 +188,6 @@ class Profile(SuccessMessageMixin, FormView):
         """
         cleaned_data = form.cleaned_data
         changed_data = form.has_changed
-        print('--------------------------------------------------------------')
 
         peticion, created = UpdateRequest.objects.get_or_create(
             user=self.request.user)
