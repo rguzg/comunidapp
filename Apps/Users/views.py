@@ -95,7 +95,6 @@ class Perfil(DetailView):
         investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         tesis = Tesis.objects.filter(profesor=user)
 
-        print(articulos)
         context['articulos'] = articulos
         context['capituloslibros'] = capituloslibros
         context['patentes'] = patentes
