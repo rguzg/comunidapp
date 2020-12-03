@@ -14,6 +14,17 @@ window.onload = function () {
 
     dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
+    
+    // Agrega el eventListener que muestra el modal a todos los productos de la 
+    // categoria activa
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        let activeTabpane = document.querySelector('.tab-pane.active');
+        let products = activeTabpane.querySelectorAll('.m-product-card');
+        
+        products.forEach(element => {
+            element.addEventListener('click', showModal);
+        });
+    })
 
     if (editar_button) {
         editar_button.addEventListener('click', goToEditar);
@@ -165,6 +176,10 @@ function closePopup(win, newID, newRepr, id) {
 //             console.log(err);
 //         });
 // }
+
+function showModal(){
+    $('#detallesModal').modal('show');
+}
 
 function toggleDropdown() {
     const dropdown = document.querySelector('#dropdown');
