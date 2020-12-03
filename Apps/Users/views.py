@@ -1,4 +1,3 @@
-import ast
 import json
 from django.http import JsonResponse
 from django.contrib import messages
@@ -25,13 +24,56 @@ from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, 
 """
 Clases para el manejo y administracion de sesiones y de usuarios
 """
+class getProducto(View):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        idProducto = data['idProducto']
+        tipoProducto = data['tipoProducto']
+        fields = {}
 
+        if tipoProducto == 'articulo':
+            producto = Articulo.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(articulo=producto).values('nombre'))
+        elif tipoProducto == 'capituloLibro':
+            producto = CapituloLibro.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(capitulolibro=producto).values('nombre'))
+            
+        elif tipoProducto == 'patente':
+            producto = Patente.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(patente=producto).values('nombre'))
+            
+        elif tipoProducto == 'congreso':
+            producto = Congreso.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(congreso=producto).values('nombre'))
+            
+        elif tipoProducto == 'investigacion':
+            producto = Investigacion.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(investigacion=producto).values('nombre'))
+            
+        elif tipoProducto == 'tesis':
+            producto = Tesis.objects.get(pk=idProducto)
+            lineas = list(LineaInvestigacion.objects.filter(tesis=producto).values('nombre'))
+        else:
+            return JsonResponse({
+                'Error': 'Debes proporcionar un Tipo de Producto válido'
+            }, status=500)
+
+        fields['lineas'] = lineas
+        for field in producto._meta.fields:
+            fname = field.name        
+            try:
+                value = getattr(producto, fname)
+            except AttributeError:
+                value = None
+            if field.editable and value and field.name in ('id', 'titulo', 'publicacion', 'fin', 'primer_autor', 'primer_colaborador','segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador', 'primer_coautor', 'segundo_coautor', 'tercer_coautor', 'cuarto_coautor', 'autores', 'responsable', 'profesor', 'alumno', 'lineas_investigacion') :
+                fields[field.name] = str(value)
+
+        return JsonResponse(fields)
 
 class SearchUsers(View):
     def post(self, request, *args, **kwargs):
         # textoBusqueda = request.POST.get('textoBusqueda')
         textoBusqueda = json.load(request)['textoBusqueda'] #Get data from POST request
-        print(textoBusqueda)
         # textoBusqueda = 'a'
         users = User.objects.filter(
             Q(username__icontains=textoBusqueda) |
@@ -68,6 +110,7 @@ class Home(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Comunidapp'
+        context['path'] = 'home'
         return context
 
     def get_queryset(self):
@@ -86,14 +129,13 @@ class Perfil(DetailView):
         userId = self.kwargs['pk']
 
         autor = Autor.objects.get(user_id=userId)
-        print(autor)
 
         articulos = Articulo.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         capituloslibros = CapituloLibro.objects.filter(Q(primer_autor = autor) | Q(primer_coautor = autor) | Q(segundo_coautor = autor) )
         patentes = Patente.objects.filter(autores=autor)
         congresos = Congreso.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
         investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
-        tesis = Tesis.objects.filter(profesor=self.request.user)
+        tesis = Tesis.objects.filter(profesor=user)
 
         context['articulos'] = articulos
         context['capituloslibros'] = capituloslibros
@@ -160,23 +202,17 @@ class Profile(SuccessMessageMixin, FormView):
         peticion = UpdateRequest.objects.filter(user=request.user).first()
 
         if peticion:
-            print('Si existe una instancia')
             form = UpdateRequestForm(
                 request.POST, request.FILES, instance=peticion)
         else:
-            print('No existe una instancia ')
             form = UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print('Formulario valido')
             peticion_obj = form.save(commit=False)
             peticion_obj.user = request.user
             peticion_obj.estado = 'P'
             peticion_obj.changed_fields = {'fields': form.changed_data}
 
-            print(form)
-            if 'foto' in form:
-                print('SI HAY FOTO')
 
             peticion_obj.save()
 
@@ -196,7 +232,6 @@ class Profile(SuccessMessageMixin, FormView):
         """
         cleaned_data = form.cleaned_data
         changed_data = form.has_changed
-        print('--------------------------------------------------------------')
 
         peticion, created = UpdateRequest.objects.get_or_create(
             user=self.request.user)
@@ -289,6 +324,7 @@ class UpdatedUsers(ListView):
     def get_context_data(self, **kwargs):
         context = super(UpdatedUsers, self).get_context_data(**kwargs)
         context['title'] = 'Peticiones de actualización'
+        context['path'] = 'solicitudes'
         return context
 
 
@@ -313,7 +349,8 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AddAdminUsers, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Administrador'
-        context['producto'] = 'administrador'
+        context['producto'] = 'usuarios'
+        context['path'] = 'usuarios'
         return context
 
 
@@ -334,7 +371,8 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Agrega un usuario Profesor'
-        context['producto'] = 'profesor'
+        context['producto'] = 'usuarios'
+        context['path'] = 'usuarios'
         return context
 
     # Necesario para guardar los campos M2M
@@ -360,7 +398,8 @@ class AddArticulo(SuccessMessageMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un artículo'
-        context['producto'] = 'articulo'
+        context['producto'] = 'productos'
+        context['path'] = 'productos'
         return context
 
 
@@ -374,6 +413,7 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un libro o capítulo'
         context['producto'] = 'libro'
+        context['path'] = 'productos'
         return context
 
 
@@ -387,6 +427,7 @@ class AddPatente(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega una patente'
         context['producto'] = 'patente'
+        context['path'] = 'productos'
         return context
 
 
@@ -400,6 +441,7 @@ class AddCongreso(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un partición en congreso'
         context['producto'] = 'congreso'
+        context['path'] = 'productos'
         return context
 
 
@@ -413,6 +455,7 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Agrega un proyecto de investigación'
         context['producto'] = 'investigacion'
+        context['path'] = 'productos'
         return context
 
 
@@ -431,7 +474,8 @@ class AddTesis(SuccessMessageMixin, CreateView):
     def get_context_data(self, *args, **kwargs):
         context = super(AddTesis, self).get_context_data(*args, **kwargs)
         context['title'] = 'Agrega una dirección de tesis'
-        context['producto'] = 'tesis'
+        context['producto'] = 'productos'
+        context['path'] = 'productos'
         return context
 
 

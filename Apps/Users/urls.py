@@ -1,12 +1,14 @@
 from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
+# from django.views.decorators.csrf import csrf_exempt
 from . import views
 
 urlpatterns = [
     # URLS para el uso de los usuarios normales
     path('', views.CustomLogin.as_view(), name='login'),
     path('searchUsers', views.SearchUsers.as_view(), name='searchUsers'),
+    path('getProducto', views.getProducto.as_view(), name='getProducto'),
     path('logout', login_required(views.CustomLogout.as_view()), name='logout'),
     path('home', login_required(views.Home.as_view()), name='home'),
     path('profile', login_required(views.Profile.as_view()), name='profile'),
