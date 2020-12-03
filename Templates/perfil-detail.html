@@ -15,7 +15,13 @@
             <div class="col-12 l-grid">
                 <div class="col-4">
                     <div class="m-user-info col-12">
-                        <div class="m-profile-picture m-profile-picture--big"></div>
+                        <div class="m-profile-picture m-profile-picture--big" style="
+                            {% if user.foto %}
+                                background-image: url({{user.foto.url}});
+                            {% else %}
+                                background-image: url({% static 'img/person.jpg' %});
+                            {% endif %}"
+                        "></div>
                         <div class="m-user-info__text">
                             <h5>John Person</h5>
                             <p>correo@correo.com</p>
@@ -88,7 +94,8 @@
                             <!-- Content -->
                             <div class="tab-content" id="productsContent">
                                 <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
-                                    <div class="m-product-card">
+                                    <!-- En el atributo de title va  -->
+                                    <div class="m-product-card" data-toggle="tooltip" data-placement="top" title="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, distinctio iusto culpa expedita ipsum possimus molestiae obcaecati illo. Aperiam, quibusdam cum numquam placeat quis perferendis vitae quos magni harum recusandae!">
                                             <b class="h-text-overflow">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, distinctio iusto culpa expedita ipsum possimus molestiae obcaecati illo. Aperiam, quibusdam cum numquam placeat quis perferendis vitae quos magni harum recusandae!</b>
                                         <p>Publicado</p>
                                     </div>

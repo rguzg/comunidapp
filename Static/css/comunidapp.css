@@ -330,9 +330,9 @@ a:hover{
     margin-left: 20px;
     padding: 20px;
     height: 100px;
-    max-width: 40%;
+    width: 200px;
     border: 1px solid #DFDFDF;
-    box-sizing: border-box;                            
+    box-sizing: border-box;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -342,11 +342,16 @@ a:hover{
     color: var(--dark-grey);
 }
 
+.nav-item{
+    min-width: 110px;
+    text-align: center;
+}
+
 .tab-content>.active{
     display: flex;
     flex-wrap: wrap !important;
     justify-content: flex-start;
-    max-width: 80%;
+    max-width: 100%;
 }
 
 /* Cambios Module */
