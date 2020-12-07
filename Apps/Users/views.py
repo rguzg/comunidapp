@@ -48,11 +48,17 @@ class getProducto(View):
         elif tipoProducto == 'patente':
             producto = Patente.objects.get(pk=idProducto)
             lineas = list(LineaInvestigacion.objects.filter(patente=producto).values('nombre'))
-            autores = producto.autores.all().values(nombre=F('user_id__first_name'), apellido=F('user_id__last_name'))
+
+            autores = producto.autores.all().values(nombre=F('user_id__first_name'), apellido=F('user_id__last_name'), autor_nombre=F('first_name'), autor_apellido=F('last_name'))
+            print(autores)
             auto = []
             for autor in autores:
                 # print(autor)
-                full_name = '{0} {1}'.format(autor['nombre'], autor['apellido'])
+                if autor['nombre'] is not None and autor['apellido'] is not None:
+                    full_name = '{0} {1}'.format(autor['nombre'], autor['apellido'])
+                else:
+                    full_name = '{0} {1}'.format(autor['autor_nombre'], autor['autor_apellido'])
+                    
                 auto.append(full_name)
 
             print(auto)
