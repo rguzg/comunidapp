@@ -412,6 +412,15 @@
                         <div class="m-form-input">
                             <label for="id_editorial">{{form.editorial.label}}</label>
                             {{form.editorial|addclass:'custom-select custom-select-sm'}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.editorial|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
+                                    onclick="return showAddPopup(this, 'id_editorial');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- ISBN -->
                         <div class="m-form-input">
