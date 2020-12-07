@@ -27,7 +27,7 @@
             </div>
             {% endif %}
 
-            
+
             <!-- Mostrando errores de todos los campos -->
             {% if form.errors %}
             <div class="alert alert-danger">
@@ -59,7 +59,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if producto == 'libro' %}active{% endif %}" href="{% url 'AddCapituloLibro' %}">
+                    <a class="nav-link {% if producto == 'libro' %}active{% endif %}"
+                        href="{% url 'AddCapituloLibro' %}">
                         Libro/Capítulo
                     </a>
                 </li>
@@ -77,7 +78,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {% if producto == 'investigacion' %}active{% endif %}" href="{% url 'AddInvestigacion' %}">
+                    <a class="nav-link {% if producto == 'investigacion' %}active{% endif %}"
+                        href="{% url 'AddInvestigacion' %}">
                         Investigación
                     </a>
                 </li>
@@ -95,7 +97,7 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if form.profesor %}
-                    {{form.profesor}}
+                {{form.profesor}}
                 {% endif %}
 
                 <!-- Se utiliza un campo exclusivo de cada form para condicionar que form va a aparecer -->
@@ -125,10 +127,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_primer_autor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_primer_autor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -138,10 +140,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
-                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_primer_colaborador"
+                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -151,10 +154,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
-                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_segundo_colaborador"
+                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -164,10 +168,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
-                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_tercer_colaborador"
+                                        onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -177,10 +182,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
-                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_cuarto_colaborador"
+                                        onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -188,13 +194,14 @@
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
                         <div class="m-form-input">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}}
                                 <small>({{form.palabras_clave.help_text}})</small>
                             </label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}"
+                                        id="add_palabras_clave"
                                         onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
@@ -203,14 +210,16 @@
                         </div>
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +245,8 @@
                         </div>
                         <!-- ISNN -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isnn.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.isnn.help_text}}">
                                 <label for="id_isnn">{{form.isnn.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -246,7 +256,8 @@
                     <div class="col-4 pl-0">
                         <!-- Fecha de Publicación -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.publicacion.help_text}}">
                                 <label for="id_publicacion">{{form.publicacion.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -274,7 +285,8 @@
                         </div>
                         <!-- DOI -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.doi.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.doi.help_text}}">
                                 <label for="id_doi">{{form.doi.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -282,7 +294,8 @@
                         </div>
                         <!-- Indice de Revista -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.indice_revista.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.indice_revista.help_text}}">
                                 <label for="id_indice_revista">{{form.indice_revista.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -298,7 +311,7 @@
                     <div class="col-4 pl-0">
                         <!-- Titulo -->
                         <div class="m-form-input">
-                            <label for="id_titulo">{{form.titulo.label}} 
+                            <label for="id_titulo">{{form.titulo.label}}
                                 <small>({{form.titulo.help_text}})</small>
                             </label>
                             {{form.titulo}}
@@ -309,10 +322,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_primer_autor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_primer_autor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -322,10 +335,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_primer_coautor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_primer_coautor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -335,10 +348,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_segundo_coautor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_segundo_coautor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -348,10 +361,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this,'id_tercer_coautor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this,'id_tercer_coautor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -361,10 +374,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_coautor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_cuarto_coautor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_cuarto_coautor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -377,13 +390,14 @@
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
                         <div class="m-form-input">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}}
                                 <small>({{form.palabras_clave.help_text}})</small>
                             </label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}"
+                                        id="add_palabras_clave"
                                         onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
@@ -392,14 +406,16 @@
                         </div>
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -414,20 +430,22 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.editorial|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
-                                    onclick="return showAddPopup(this, 'id_editorial');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}"
+                                        id="add_editorial" onclick="return showAddPopup(this, 'id_editorial');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
+
                         <!-- ISBN -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isbn.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.isbn.help_text}}">
                                 <label for="id_isbn">{{form.isbn.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
-                        {{form.isbn}}
+                            {{form.isbn}}
                         </div>
                         <!-- Edicion -->
                         <div class="m-form-input">
@@ -438,7 +456,8 @@
                     <div class="col-4 pl-0">
                         <!-- Fecha de Publicación -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.publicacion.help_text}}">
                                 <label for="id_publicacion">{{form.publicacion.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -451,14 +470,14 @@
                         </div>
                         <!-- Página de Inicio -->
                         <div class="m-form-input">
-                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}} 
+                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}}
                                 <small>({{form.pagina_inicio.help_text}})</small>
                             </label>
                             {{form.pagina_inicio}}
                         </div>
                         <!-- Página Final -->
                         <div class="m-form-input">
-                            <label for="id_pagina_fin">{{form.pagina_fin.label}} 
+                            <label for="id_pagina_fin">{{form.pagina_fin.label}}
                                 <small>({{form.pagina_fin.help_text}})</small>
                             </label>
                             {{form.pagina_fin}}
@@ -483,14 +502,15 @@
                     <div class="col-4 pl-0">
                         <!-- Autores -->
                         <div class="m-form-input">
-                            <label for="id_autores">{{form.autores.label}} <small>({{form.autores.help_text}})</small></label>
+                            <label for="id_autores">{{form.autores.label}}
+                                <small>({{form.autores.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.autores|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autores"
-                                    onclick="return showAddPopup(this, 'id_autores');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autores"
+                                        onclick="return showAddPopup(this, 'id_autores');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -513,20 +533,23 @@
                     <div class="col-4 pl-0">
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                         <!-- Número de Patente -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.registro.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.registro.help_text}}">
                                 <label for="id_registro">{{form.registro.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -534,7 +557,8 @@
                         </div>
                         <!-- País -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.pais.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.pais.help_text}}">
                                 <label for="id_pais">{{form.pais.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -542,7 +566,8 @@
                         </div>
                         <!-- Fecha de Publicación -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.publicacion.help_text}}">
                                 <label for="id_publicacion">{{form.publicacion.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -554,7 +579,8 @@
                         <label>{{form.comprobante.label}}</label>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file"
+                                for="id_comprobante">Sube un comprobante</label>
                             {{ form.comprobante|addclass:'custom-file-input' }}
                         </div>
                         <!-- Proposito -->
@@ -586,10 +612,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                    onclick="return showAddPopup(this, 'id_primer_autor');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                        onclick="return showAddPopup(this, 'id_primer_autor');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -599,10 +625,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
-                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_primer_colaborador"
+                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -612,10 +639,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
-                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_segundo_colaborador"
+                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -625,10 +653,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
-                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_tercer_colaborador"
+                                        onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -638,10 +667,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
-                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_cuarto_colaborador"
+                                        onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -649,13 +679,14 @@
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
                         <div class="m-form-input">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}}
                                 <small>({{form.palabras_clave.help_text}})</small>
                             </label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}"
+                                        id="add_palabras_clave"
                                         onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
@@ -664,14 +695,16 @@
                         </div>
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -694,7 +727,8 @@
                     <div class="col-4 pl-0">
                         <!-- Estado -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.estadoP.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.estadoP.help_text}}">
                                 <label for="id_estadoP">{{form.estadoP.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
@@ -702,19 +736,20 @@
                         </div>
                         <!-- Ciudad -->
                         <div class="m-form-input">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.ciudad.help_text}}">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                                title="{{form.ciudad.help_text}}">
                                 <label for="id_ciudad">{{form.ciudad.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
                             {{form.ciudad|addclass:'custom-select custom-select-sm'}}
                         </div>
-                         <!-- Fecha de Publicación -->
-                         <div class="m-form-input">
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input">
                             <label for="id_publicacion">{{form.publicacion.label}}</label>
                             {{form.publicacion|addclass:'datepicker'}}
                         </div>
-                         <!-- Fecha de Presentacion -->
-                         <div class="m-form-input">
+                        <!-- Fecha de Presentacion -->
+                        <div class="m-form-input">
                             <label for="id_presentacion">{{form.presentacion.label}}</label>
                             {{form.presentacion|addclass:'datepicker'}}
                         </div>
@@ -751,8 +786,8 @@
                             <label for="id_inicio">{{form.inicio.label}}</label>
                             {{form.inicio|addclass:'datepicker'}}
                         </div>
-                         <!-- Fecha de Fin -->
-                         <div class="m-form-input">
+                        <!-- Fecha de Fin -->
+                        <div class="m-form-input">
                             <label for="id_fin">{{form.fin.label}}</label>
                             {{form.fin|addclass:'datepicker'}}
                         </div>
@@ -765,13 +800,14 @@
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
                         <div class="m-form-input">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}}
                                 <small>({{form.palabras_clave.help_text}})</small>
                             </label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}"
+                                        id="add_palabras_clave"
                                         onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
@@ -780,14 +816,16 @@
                         </div>
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -797,10 +835,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
-                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_primer_colaborador"
+                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -810,23 +849,24 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
-                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
-                                </div>
+                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
+                                        id="add_segundo_colaborador"
+                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
+                        </div>
                         <!-- Primer Alumno -->
                         <div class="m-form-input">
                             <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_alumno|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_primer_alumno"
-                                    onclick="return showAddPopup(this, 'id_primer_alumno');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
+                                        id="add_primer_alumno" onclick="return showAddPopup(this, 'id_primer_alumno');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -838,10 +878,11 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_alumno|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_segundo_alumno"
-                                    onclick="return showAddPopup(this, 'id_segundo_alumno');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
+                                        id="add_segundo_alumno"
+                                        onclick="return showAddPopup(this, 'id_segundo_alumno');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -851,10 +892,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_alumno|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_tercer_alumno"
-                                    onclick="return showAddPopup(this, 'id_tercer_alumno');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
+                                        id="add_tercer_alumno" onclick="return showAddPopup(this, 'id_tercer_alumno');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -863,13 +904,15 @@
                             {{form.tipo_proyecto|addclass:'custom-select custom-select-sm'}}
                         </div>
                         <!-- Resumen -->
-                        <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
+                        <div class="h-align-center" data-toggle="tooltip" data-placement="top"
+                            title="{{form.resumen.help_text}}">
                             <label for="id_resumen">{{form.resumen.label}}</label>
                             <i class="fas fa-question-circle"></i>
                         </div>
                         <div class="m-form-input custom-file">
                             <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
+                            <label class="custom-file-label m-input-file h-text-overflow m-input-file"
+                                for="id_resumen">Sube un resumen</label>
                             {{ form.resumen|addclass:'custom-file-input' }}
                         </div>
                         <!-- Institución -->
@@ -878,10 +921,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.institucion|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
-                                    onclick="return showAddPopup(this, 'id_institucion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}"
+                                        id="add_institucion" onclick="return showAddPopup(this, 'id_institucion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -909,10 +952,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.alumno|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
-                                    onclick="return showAddPopup(this, 'id_alumno');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
+                                        onclick="return showAddPopup(this, 'id_alumno');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -920,13 +963,14 @@
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
                         <div class="m-form-input">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
+                            <label for="id_palabras_clave">{{form.palabras_clave.label}}
                                 <small>({{form.palabras_clave.help_text}})</small>
                             </label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.palabras_clave|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
+                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}"
+                                        id="add_palabras_clave"
                                         onclick="return showAddPopup(this, 'id_palabras_clave');">
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
@@ -935,14 +979,16 @@
                         </div>
                         <!-- Lineas de Investigación -->
                         <div class="m-form-input">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
+                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}}
+                                <small>({{form.lineas_investigacion.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}"
+                                        id="add_lineas_investigacion"
+                                        onclick="return showAddPopup(this, 'id_lineas_investigacion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -952,10 +998,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.institucion|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
-                                    onclick="return showAddPopup(this, 'id_institucion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                                    <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}"
+                                        id="add_institucion" onclick="return showAddPopup(this, 'id_institucion');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -968,9 +1014,9 @@
                         </div>
                         <!-- Fecha de Fin -->
                         <div class="m-form-input">
-                        <label for="id_fin">{{form.fin.label}}</label>
-                        {{form.fin|addclass:'datepicker'}}
-                    </div>
+                            <label for="id_fin">{{form.fin.label}}</label>
+                            {{form.fin|addclass:'datepicker'}}
+                        </div>
                     </div>
                 </div>
                 {% endif %}
