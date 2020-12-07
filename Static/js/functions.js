@@ -11,9 +11,36 @@ window.onload = function () {
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
     const file = document.querySelector('.m-input-file');
+    const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
+
+    search_boxes.forEach(element => {
+        let parent = element.parentElement;
+        
+        let search_box = parent.querySelector('.m-pill-input_searchbox');
+        let search_input = parent.querySelector('.m-pill-input_search');
+
+        search_input.addEventListener('focus', () => {
+            search_box.classList.toggle('h-display-none');
+        });
+
+        search_input.addEventListener('blur', () => {
+            search_box.classList.toggle('h-display-none');
+        });
+    });
+    
+    // Agrega el eventListener que muestra el modal a todos los productos de la 
+    // categoria activa
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        let activeTabpane = document.querySelector('.tab-pane.active');
+        let products = activeTabpane.querySelectorAll('.m-product-card');
+        
+        products.forEach(element => {
+            element.addEventListener('click', showModal);
+        });
+    })
 
     if (editar_button) {
         editar_button.addEventListener('click', goToEditar);
@@ -26,6 +53,7 @@ window.onload = function () {
             file.innerText = filename;
         });
     }
+
 
     inputSearch.onkeyup = searchUsers(inputSearch);
 }
@@ -166,6 +194,10 @@ function closePopup(win, newID, newRepr, id) {
 //         });
 // }
 
+function showModal(){
+    $('#detallesModal').modal('show');
+}
+
 function toggleDropdown() {
     const dropdown = document.querySelector('#dropdown');
     dropdown.classList.toggle('h-display');
@@ -178,6 +210,7 @@ function goHome() {
 function goToEditar() {
     window.location.href = "/profile";
 }
+
 
 async function getLineasForm() {
     // showAddPopup('investigacion');
