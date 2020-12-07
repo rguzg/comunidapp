@@ -268,9 +268,9 @@ class ArticuloForm(ModelForm):
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicación')
                     
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
@@ -430,9 +430,9 @@ class CapituloLibroForm(ModelForm):
                     'isbn', 'El ISBN debe tener entre 12 y 15 caracteres')
 
         palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
+        #                    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -563,8 +563,8 @@ class CongresoForm(ModelForm):
                     'publicacion', 'Debes agregar una fecha de publicacion')
 
         palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
+        # if palabras_clave.count() < 3:
+            # self.add_error('palabras_clave',
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
@@ -705,9 +705,9 @@ class InvestigacionForm(ModelForm):
                 self.add_error('primer_alumno',
                                'Los alumnos no pueden ser la misma persona')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+            # self.add_error('palabras_clave',
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
@@ -790,9 +790,9 @@ class TesisForm(ModelForm):
                 self.add_error(
                     'inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
