@@ -271,7 +271,7 @@ class ArticuloForm(ModelForm):
         # palabras_clave = cleaned_data.get('palabras_clave')
         # if palabras_clave.count() < 3:
         #     self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -562,10 +562,10 @@ class CongresoForm(ModelForm):
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicacion')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
+        # palabras_clave = cleaned_data.get('palabras_clave')
         # if palabras_clave.count() < 3:
             # self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -708,7 +708,7 @@ class InvestigacionForm(ModelForm):
         # palabras_clave = cleaned_data.get('palabras_clave')
         # if palabras_clave.count() < 3:
             # self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -793,7 +793,7 @@ class TesisForm(ModelForm):
         # palabras_clave = cleaned_data.get('palabras_clave')
         # if palabras_clave.count() < 3:
         #     self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
