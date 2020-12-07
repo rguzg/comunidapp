@@ -236,12 +236,20 @@
                         <!-- Revista -->
                         <div class="m-form-input">
                             <label for="id_revista">{{form.revista.label}}</label>
-                            {{form.revista|addclass:'custom-select custom-select-sm'}}
+                            <div class="col-11 pl-0 h-align-center">
+                                {{form.revista|addclass:'custom-select custom-select-sm'}}
+                                <div class="col-1">
+                                    <a href="javascript:void(0);" data-url="{% url 'RevistaCreate' %}"
+                                        id="add_revisa" onclick="return showAddPopup(this, 'id_revista');">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- Editorial -->
                         <div class="m-form-input">
                             <label for="id_editorial">{{form.editorial.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
+                            <div class="col-11 pl-0 h-align-center">
                                 {{form.editorial|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}"
@@ -435,7 +443,7 @@
                         <!-- Editorial -->
                         <div class="m-form-input">
                             <label for="id_editorial">{{form.editorial.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
+                            <div class="col-11 pl-0 h-align-center">
                                 {{form.editorial|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}"
