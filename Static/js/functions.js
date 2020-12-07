@@ -1,4 +1,4 @@
-const server = 'http://127.0.0.1:8000/'
+const server = 'https://comuniuaq.herokuapp.com/'
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
