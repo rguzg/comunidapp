@@ -319,6 +319,11 @@ a:hover{
     padding: 0 8px;
     background-color: var(--comunidapp_green);
     border-radius: 25px;
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 /* Product Card Module */
@@ -330,9 +335,9 @@ a:hover{
     margin-left: 20px;
     padding: 20px;
     height: 100px;
-    max-width: 40%;
+    width: 200px;
     border: 1px solid #DFDFDF;
-    box-sizing: border-box;                            
+    box-sizing: border-box;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -342,11 +347,16 @@ a:hover{
     color: var(--dark-grey);
 }
 
+.nav-item{
+    min-width: 110px;
+    text-align: center;
+}
+
 .tab-content>.active{
     display: flex;
     flex-wrap: wrap !important;
     justify-content: flex-start;
-    max-width: 80%;
+    max-width: 100%;
 }
 
 /* Cambios Module */
@@ -395,8 +405,6 @@ a:hover{
 .m-cambios__content{
     padding: 8px 20px;
     display: flex;
-    flex-direction: column;
-    height: 300px;
     flex-wrap: wrap;
 }
 
@@ -485,6 +493,50 @@ a:hover{
     border-radius: 0 .25rem .25rem 0;
 }
 
+/* Pill Input Module */
+
+.m-pill-input{
+    display: flex;
+    margin-bottom: 16px;
+    flex-direction: column;
+    height: 100px;
+}
+
+/* Pill Input Components */
+.m-pill-input_selected-pills{
+    display: flex;
+    height: 100px;
+    border: 1px solid var(--border-grey);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 12px;
+    flex-wrap: wrap;
+    overflow: overlay;
+    margin-bottom: 5px;
+}
+
+.m-pill-input_search{
+    font-size: 12px;
+}
+
+.m-pill-input_searchbox{
+    width: 345px;
+    font-size: 12px;
+    position: absolute;
+    bottom: -30px;
+    background: #ffffff;
+    border: 1px solid var(--border-grey);
+    border-top: none;
+    box-sizing: border-box;
+    z-index: 999;
+    max-height: 150px;
+    overflow: scroll;
+}
+
+.m-search-result:hover{
+    background: var(--comunidapp_green);
+}
+
 .m-input-multiselect{
     height: 64px !important;
 }
@@ -510,6 +562,10 @@ a:hover{
 
 .h-display{
     display: block;
+}
+
+.h-display-none{
+    display: none;
 }
 
 .h-align-center{
