@@ -216,6 +216,7 @@ async function showModal(elementoHTML){
     // const idProducto = elementoHTML.dataset.idproducto;
     // console.log(idProducto);
     const producto = await getProducto(elementoHTML);
+    // console.log(producto);
 
     let lineas = [];
     producto['lineas'].forEach(linea => {
