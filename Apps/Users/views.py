@@ -47,13 +47,18 @@ class getProducto(View):
 
         elif tipoProducto == 'patente':
             producto = Patente.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(
-                patente=producto).values('nombre'))
-            autores = producto.autores.all().values(nombre=F('user_id__first_name'), apellido=F('user_id__last_name'))
+            lineas = list(LineaInvestigacion.objects.filter(patente=producto).values('nombre'))
+
+            autores = producto.autores.all().values(nombre=F('user_id__first_name'), apellido=F('user_id__last_name'), autor_nombre=F('first_name'), autor_apellido=F('last_name'))
+            print(autores)
             auto = []
             for autor in autores:
                 # print(autor)
-                full_name = autor['nombre'] + ' ' +  autor['apellido']
+                if autor['nombre'] is not None and autor['apellido'] is not None:
+                    full_name = '{0} {1}'.format(autor['nombre'], autor['apellido'])
+                else:
+                    full_name = '{0} {1}'.format(autor['autor_nombre'], autor['autor_apellido'])
+                    
                 auto.append(full_name)
 
             print(auto)
@@ -214,15 +219,14 @@ class Profile(SuccessMessageMixin, FormView):
         initial['clave']=self.request.user.clave
         initial['sexo']=self.request.user.sexo
         if self.request.user.nacimiento:
-            initial['nacimiento']=self.request.user.nacimiento.strftime(
-                "%d-%m-%Y")
-        initial['foto']=self.request.user.foto
-        initial['grado']=self.request.user.grado
-        initial['contratacion']=self.request.user.contratacion
-        initial['cuerpoAcademico']=self.request.user.cuerpoAcademico
-        initial['publico']=self.request.user.publico
-        initial['user']=self.request.user
-        initial['niveles']=[
+            initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
+        initial['foto'] = self.request.user.foto
+        initial['grado'] = self.request.user.grado
+        initial['contratacion'] = self.request.user.contratacion
+        initial['cuerpoAcademico'] = self.request.user.cuerpoAcademico
+        initial['publico'] = self.request.user.publico
+        initial['user'] = self.request.user
+        initial['niveles'] = [
             nivel for nivel in self.request.user.niveles.all().values_list('id', flat=True)]
         initial['facultades']=[
             facultad for facultad in self.request.user.facultades.all().values_list('id', flat=True)]
