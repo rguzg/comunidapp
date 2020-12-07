@@ -427,7 +427,8 @@
                         <!-- Editorial -->
                         <div class="m-form-input">
                             <label for="id_editorial">{{form.editorial.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
+                            {{form.editorial|addclass:'custom-select custom-select-sm'}}
+                            <!-- <div class="col-12 pl-0 h-align-center">
                                 {{form.editorial|addclass:'custom-select custom-select-sm'}}
                                 <div class="col-1">
                                     <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}"
@@ -435,7 +436,7 @@
                                         <i class="fas fa-plus-circle"></i>
                                     </a>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- ISBN -->
