@@ -291,7 +291,7 @@ class Articulo(models.Model):
     segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
     tercer_colaborador = models.ForeignKey(Autor, related_name='tercer_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
     cuarto_colaborador = models.ForeignKey(Autor, related_name='cuarto_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=False)
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
@@ -330,7 +330,7 @@ class CapituloLibro(models.Model):
     titulo = models.CharField(max_length=150)
     pagina_inicio = models.PositiveIntegerField(null=True, blank=True)
     pagina_fin = models.PositiveIntegerField(null=True, blank=True)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=False)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE, null=True, blank=True)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE, null=True, blank=True)
@@ -384,7 +384,7 @@ class Congreso(models.Model):
     presentacion = models.DateField(auto_now=False, auto_now_add=False)
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=False)
 
 class Investigacion(models.Model):
     class Meta:
@@ -412,7 +412,7 @@ class Investigacion(models.Model):
     segundo_alumno = models.ForeignKey(Alumno, related_name='segundo_alumno_investigacion', on_delete=models.CASCADE, null=True, blank=True)
     tercer_alumno = models.ForeignKey(Alumno,related_name='tercer_alumno_investigacion', on_delete=models.CASCADE, null=True, blank=True)
     resumen = models.FileField(upload_to=resumenes, validators=[FileExtensionValidator(allowed_extensions=['PDF'])])
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=False)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
@@ -430,4 +430,4 @@ class Tesis(models.Model):
     fin = models.DateField(auto_now=False, auto_now_add=False)
     profesor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=False)
