@@ -164,12 +164,12 @@ class Perfil(DetailView):
         autor=Autor.objects.get(user_id=userId)
 
         articulos=Articulo.objects.filter(Q(primer_autor=autor) | Q(
-            primer_colaborador=autor) | Q(segundo_colaborador=autor))
+            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
         capituloslibros=CapituloLibro.objects.filter(
-            Q(primer_autor=autor) | Q(primer_coautor=autor) | Q(segundo_coautor=autor))
+            Q(primer_autor=autor) | Q(primer_coautor=autor) | Q(segundo_coautor=autor) | Q(tercer_coautor=autor) | Q(cuarto_coautor=autor))
         patentes=Patente.objects.filter(autores=autor)
         congresos=Congreso.objects.filter(Q(primer_autor=autor) | Q(
-            primer_colaborador=autor) | Q(segundo_colaborador=autor))
+            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
         investigaciones=Investigacion.objects.filter(
             Q(primer_colaborador=autor) | Q(segundo_colaborador=autor))
         tesis=Tesis.objects.filter(profesor=user)
