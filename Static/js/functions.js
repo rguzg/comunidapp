@@ -11,25 +11,26 @@ window.onload = function () {
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
     const file = document.querySelector('.m-input-file');
-    const search_boxes = document.querySelectorAll('.m-pill-input_search');
+    const lineas_investigacion = document.querySelector('#pills_lineas');
+    // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
 
-    search_boxes.forEach(element => {
-        let parent = element.parentElement;
+    // search_boxes.forEach(element => {
+    //     let parent = element.parentElement;
         
-        let search_box = parent.querySelector('.m-pill-input_searchbox');
-        let search_input = parent.querySelector('.m-pill-input_search');
+    //     let search_box = parent.querySelector('.m-pill-input_searchbox');
+    //     let search_input = parent.querySelector('.m-pill-input_search');
 
-        search_input.addEventListener('focus', () => {
-            search_box.classList.toggle('h-display-none');
-        });
+    //     search_input.addEventListener('focus', () => {
+    //         search_box.classList.toggle('h-display-none');
+    //     });
 
-        search_input.addEventListener('blur', () => {
-            search_box.classList.toggle('h-display-none');
-        });
-    });
+    //     search_input.addEventListener('blur', () => {
+    //         search_box.classList.toggle('h-display-none');
+    //     });
+    // });
     
     // Agrega el eventListener que muestra el modal a todos los productos de la 
     // categoria activa
@@ -55,7 +56,14 @@ window.onload = function () {
     }
 
 
-    inputSearch.onkeyup = searchUsers(inputSearch);
+    // inputSearch.onkeyup = searchUsers(inputSearch);
+    
+    // Funcionalidad del input que contiene pills
+    if(lineas_investigacion){
+        sessionStorage.setItem("pills_lineas", JSON.stringify(["Software", "Software con olor a limón", "Tu corazón"]));
+
+        PillsBox(lineas_investigacion);
+    }
 }
 
 function getCookie(name) {
@@ -220,4 +228,54 @@ async function getLineasForm() {
 
     let modal = document.querySelector('.modal-body');
     modal.innerHTML = response;
+}
+
+// Encargado de la funcionalidad del input que contiene pills
+function PillsBox(contenedor){
+    let selected_pills = JSON.parse(sessionStorage.getItem("pills_lineas"));
+    let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
+    let pill_input = contenedor.querySelector('.m-pill-input_search')
+    let pills = [];
+
+    let add_pill = (pill_text) => {
+        let pill = document.createElement('div');
+        pill.classList.add('m-pills');
+
+        let text = document.createElement('span');
+        text.classList.add("h-text-overflow");
+        text.style.maxWidth = "100px";
+        text.textContent = pill_text;
+        
+        let delete_icon = document.createElement('i');
+        delete_icon.classList.add("fas", "fa-times", "mb-0");
+        delete_icon.setAttribute("style", "color: white; font-size: 12px;  cursor: pointer;");
+
+        let delete_container = document.createElement('div');
+        delete_container.appendChild(delete_icon);
+        
+        let delete_pill = (pill) => {
+            pill_container.removeChild(pill);
+            /*
+                Decirle al back que elimine la pill
+            */
+        };
+
+        delete_container.addEventListener('click', () => {
+            delete_pill(pill, selected_pill);
+        });
+
+        pill.appendChild(text);
+        pill.appendChild(delete_container);
+
+        return pill;
+    };
+
+    selected_pills.forEach(selected_pill => {
+        let pill = add_pill(selected_pill);
+        pills.push(pill);
+    });
+
+    pills.forEach(pill => {
+        pill_container.appendChild(pill);
+    })
 }
