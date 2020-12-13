@@ -159,16 +159,16 @@
                             </div>
                             {% endif %}
                             {% if form.publico %}
-                            <div class="m-form-input">
+                            <div class="m-form-input justify-content-center" style="height: 70px; padding-top: 20px;">
                                 <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="Si activas esta opción, cualquier usuario de la plataforma podra ver tu información de contacto y tus productos">
-                                    <label for="id_publico">{{form.publico.label}}</label>
-                                    <i class="fas fa-question-circle"></i>
+                                    {{form.publico|addclass:'m-form-checkbox'}}
+                                    <span for="id_publico" class="mx-2">{{form.publico.label}}</span>
+                                    <i class="fas fa-question-circle mb-0"></i>
                                 </div>
-                                {{form.publico|addclass:'m-form-checkbox'}}
                             </div>
                             {% endif %}
                         </div>
-                        <div class="col-4 pl-0">
+                        <div class="col-4 pl-0 ">
                             {% if form.foto %}
                             <label>{{form.foto.label}}</label>
                             <div class="m-form-input custom-file">
