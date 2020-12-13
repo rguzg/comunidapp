@@ -34,14 +34,27 @@ window.onload = function () {
     
     // Agrega el eventListener que muestra el modal a todos los productos de la 
     // categoria activa
+    let activeTabpane = document.querySelector('.tab-pane.active');
+    let products = activeTabpane.querySelectorAll('.m-product-card');
+    
+    products.forEach(element => {
+        element.addEventListener('click', function(){
+            showModal(element);
+        });
+    });
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         let activeTabpane = document.querySelector('.tab-pane.active');
         let products = activeTabpane.querySelectorAll('.m-product-card');
         
         products.forEach(element => {
-            element.addEventListener('click', showModal);
+            element.addEventListener('click', function(){
+                showModal(element);
+            });
         });
     })
+
+    
 
     if (editar_button) {
         editar_button.addEventListener('click', goToEditar);
@@ -87,7 +100,7 @@ getProducto = (elementoHTML) => {
     const tipoProducto = elementoHTML.dataset.tipoproducto;
     const idProducto = elementoHTML.dataset.idproducto;
 
-    fetch(server + 'getProducto', {
+    return fetch(server + 'getProducto', {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -103,10 +116,14 @@ getProducto = (elementoHTML) => {
             return res.json();
         })
         .then(res => {
-            console.log(res);
+            // console.log(res);
+            // res = res;
+            return res;
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
+            // res = err;
+            return err;
         });
 }
 
@@ -202,7 +219,27 @@ function closePopup(win, newID, newRepr, id) {
 //         });
 // }
 
-function showModal(){
+async function showModal(elementoHTML){
+    // console.log(elementoHTML);
+    // const idProducto = elementoHTML.dataset.idproducto;
+    // console.log(idProducto);
+    const producto = await getProducto(elementoHTML);
+
+    let lineas = [];
+    producto['lineas'].forEach(linea => {
+        // console.log(linea['nombre']);
+        lineas.push(linea['nombre']);
+    })
+
+
+    let titulo = producto['titulo'] ? producto['titulo'] : 'Sin titulo definido';
+    let publicacion = producto['publicacion'] ? producto['publicacion'] : 'Publicación en tramite';
+
+    const modalProducto = document.getElementById('detallesModal');
+    modalProducto.getElementsByClassName('modal-title')[0].textContent = titulo;
+    modalProducto.getElementsByClassName('modal-date')[0].textContent = 'Publicacion: ' + publicacion;
+    modalProducto.getElementsByClassName('modal-colabs')[0].textContent = 'Colaboradores: ' + producto['contribuidores'].join(', ');
+    modalProducto.getElementsByClassName('modal-lines')[0].textContent = 'Líneas de Investigacion: ' + lineas.join(', ');
     $('#detallesModal').modal('show');
 }
 

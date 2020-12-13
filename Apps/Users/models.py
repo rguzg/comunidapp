@@ -158,8 +158,8 @@ class Autor(models.Model):
         verbose_name = 'Autor'
         verbose_name_plural = 'Autores'
 
-    first_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
-    last_name = models.CharField(max_length=255, null=True, blank=True, validators=[isalphavalidator])
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     

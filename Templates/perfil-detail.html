@@ -110,12 +110,12 @@
                                 <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
                                     {% if articulos %}
                                         {% for articulo in articulos %}
-                                            <div class="m-product-card" data-tipoProducto="articulo" data-idProducto={{articulo.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card " data-tipoProducto="articulo" data-idProducto={{articulo.id}} >
                                                 <b class="h-text-overflow">{{articulo.titulo}}</b>
                                                 {% if articulo.publicacion %}
-                                                    <p>{{articulo.publicacion}}</p>
+                                                    <p class="h-text-overflow">{{articulo.publicacion}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -126,12 +126,12 @@
                                 <div class="tab-pane fade" id="libroscapitulos" role="tabpanel" aria-labelledby="libroscapitulos-tab">
                                     {% if capituloslibros %}
                                         {% for capitulolibro in capituloslibros %}
-                                            <div class="m-product-card" data-tipoProducto="capituloLibro" data-idProducto={{capitulolibro.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card" data-tipoProducto="capituloLibro" data-idProducto={{capitulolibro.id}} >
                                                 <b class="h-text-overflow">{{capitulolibro.titulo}}</b>
                                                 {% if capitulolibro.publicacion %}
-                                                    <p>{{capitulolibro.publicacion}}</p>
+                                                    <p class="h-text-overflow">{{capitulolibro.publicacion}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -142,12 +142,12 @@
                                 <div class="tab-pane fade" id="patentes" role="tabpanel" aria-labelledby="patentes-tab">
                                     {% if patentes %}
                                         {% for patente in patentes %}
-                                            <div class="m-product-card" data-tipoProducto="patente" data-idProducto={{patente.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card" data-tipoProducto="patente" data-idProducto={{patente.id}} >
                                                 <b class="h-text-overflow">{{patente.titulo}}</b>
                                                 {% if patente.publicacion %}
-                                                    <p>{{patente.publicacion}}</p>
+                                                    <p class="h-text-overflow">{{patente.publicacion}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -158,12 +158,12 @@
                                 <div class="tab-pane fade" id="congresos" role="tabpanel" aria-labelledby="congresos-tab">
                                     {% if congresos %}
                                         {% for congreso in congresos %}
-                                            <div class="m-product-card" data-tipoProducto="congreso" data-idProducto={{congreso.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card" data-tipoProducto="congreso" data-idProducto={{congreso.id}} >
                                                 <b class="h-text-overflow">{{congreso.titulo}}</b>
                                                 {% if congreso.publicacion %}
-                                                    <p>{{congreso.publicacion}}</p>
+                                                    <p class="h-text-overflow">{{congreso.publicacion}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -174,12 +174,12 @@
                                 <div class="tab-pane fade" id="investigaciones" role="tabpanel" aria-labelledby="investigaciones-tab">
                                     {% if investigaciones %}
                                         {% for investigacion in investigaciones %}
-                                            <div class="m-product-card" data-tipoProducto="investigacion" data-idProducto={{investigacion.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card" data-tipoProducto="investigacion" data-idProducto={{investigacion.id}} >
                                                 <b class="h-text-overflow">{{investigacion.titulo}}</b>
                                                 {% if investigacion.fin %}
-                                                    <p>{{investigacion.fin}}</p>
+                                                    <p class="h-text-overflow">{{investigacion.fin}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
@@ -190,66 +190,18 @@
                                 <div class="tab-pane fade" id="tesis" role="tabpanel" aria-labelledby="tesis-tab">
                                     {% if tesis %}
                                         {% for tesi in tesis %}
-                                            <div class="m-product-card" data-tipoProducto="tesis" data-idProducto={{tesi.id}} onclick="getProducto(this)">
+                                            <div class="m-product-card" data-tipoProducto="tesis" data-idProducto={{tesi.id}} >
                                                 <b class="h-text-overflow">{{tesi.titulo}}</b>
                                                 {% if tesi.fin %}
-                                                    <p>{{tesi.fin}}</p>
+                                                    <p class="h-text-overflow">{{tesi.fin}}</p>
                                                 {% else %}
-                                                    <p>Publicacion en tramite</p>
+                                                    <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
                                         {% endfor %}
                                     {% else %}
                                             <p>{{user.get_short_name}} no tiene Tesis aún.</p>
                                     {% endif %}
-                                    <div class="m-product-card" data-toggle="tooltip" data-placement="top" title="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, distinctio iusto culpa expedita ipsum possimus molestiae obcaecati illo. Aperiam, quibusdam cum numquam placeat quis perferendis vitae quos magni harum recusandae!">
-                                            <b class="h-text-overflow">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, distinctio iusto culpa expedita ipsum possimus molestiae obcaecati illo. Aperiam, quibusdam cum numquam placeat quis perferendis vitae quos magni harum recusandae!</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, distinctio </b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
-                                    <div class="m-product-card">
-                                        <b class="h-text-overflow">La Ciencia del Amor</b>
-                                        <p>Publicado</p>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -264,13 +216,17 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Titulo del Producto</h5>
+              <h5 class="modal-title" id="product-title">Titulo del Producto</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <p>Información del producto</p>
+              <p class="modal-date">Fecha: </p>
+              <p class="modal-colabs">Colaboradores: </p>
+              <p class="modal-lines">Líneas de Investigación: </p>
+              
             </div>
           </div>
         </div>

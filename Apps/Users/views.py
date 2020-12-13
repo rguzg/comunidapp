@@ -7,6 +7,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponse, redirect, render
 from django.views import View
+from django.db.models import F
+from django.db.models.functions import Concat
+from django.db.models import Value
 from django.forms.models import model_to_dict
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
@@ -24,6 +27,8 @@ from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, 
 """
 Clases para el manejo y administracion de sesiones y de usuarios
 """
+
+
 class getProducto(View):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -33,140 +38,172 @@ class getProducto(View):
 
         if tipoProducto == 'articulo':
             producto = Articulo.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(articulo=producto).values('nombre'))
+            lineas = list(LineaInvestigacion.objects.filter(
+                articulo=producto).values('nombre'))
         elif tipoProducto == 'capituloLibro':
             producto = CapituloLibro.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(capitulolibro=producto).values('nombre'))
-            
+            lineas = list(LineaInvestigacion.objects.filter(
+                capitulolibro=producto).values('nombre'))
+
         elif tipoProducto == 'patente':
             producto = Patente.objects.get(pk=idProducto)
             lineas = list(LineaInvestigacion.objects.filter(patente=producto).values('nombre'))
-            
+
+            autores = producto.autores.all().values(nombre=F('user_id__first_name'), apellido=F('user_id__last_name'), autor_nombre=F('first_name'), autor_apellido=F('last_name'))
+            print(autores)
+            auto = []
+            for autor in autores:
+                # print(autor)
+                if autor['nombre'] is not None and autor['apellido'] is not None:
+                    full_name = '{0} {1}'.format(autor['nombre'], autor['apellido'])
+                else:
+                    full_name = '{0} {1}'.format(autor['autor_nombre'], autor['autor_apellido'])
+                    
+                auto.append(full_name)
+
+            print(auto)
+            fields['contribuidores'] = auto
+
         elif tipoProducto == 'congreso':
-            producto = Congreso.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(congreso=producto).values('nombre'))
-            
+            producto=Congreso.objects.get(pk=idProducto)
+            lineas=list(LineaInvestigacion.objects.filter(
+                congreso=producto).values('nombre'))
+
         elif tipoProducto == 'investigacion':
-            producto = Investigacion.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(investigacion=producto).values('nombre'))
-            
+            producto=Investigacion.objects.get(pk=idProducto)
+            lineas=list(LineaInvestigacion.objects.filter(
+                investigacion=producto).values('nombre'))
+
         elif tipoProducto == 'tesis':
-            producto = Tesis.objects.get(pk=idProducto)
-            lineas = list(LineaInvestigacion.objects.filter(tesis=producto).values('nombre'))
+            producto=Tesis.objects.get(pk=idProducto)
+            lineas=list(LineaInvestigacion.objects.filter(
+                tesis=producto).values('nombre'))
         else:
             return JsonResponse({
                 'Error': 'Debes proporcionar un Tipo de Producto válido'
             }, status=500)
 
-        fields['lineas'] = lineas
+        fields['lineas']=lineas
+        contribuidores=[]
         for field in producto._meta.fields:
-            fname = field.name        
+            fname=field.name
             try:
-                value = getattr(producto, fname)
+                value=getattr(producto, fname)
             except AttributeError:
-                value = None
-            if field.editable and value and field.name in ('id', 'titulo', 'publicacion', 'fin', 'primer_autor', 'primer_colaborador','segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador', 'primer_coautor', 'segundo_coautor', 'tercer_coautor', 'cuarto_coautor', 'autores', 'responsable', 'profesor', 'alumno', 'lineas_investigacion') :
-                fields[field.name] = str(value)
+                value=None
+            if field.editable and value and field.name in ('id', 'titulo', 'publicacion', 'fin', 'primer_autor', 'primer_colaborador', 'segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador', 'primer_coautor', 'segundo_coautor', 'tercer_coautor', 'cuarto_coautor', 'autores', 'responsable', 'profesor', 'alumno', 'lineas_investigacion'):
+                fields[field.name]=str(value)
 
+                if field.name in ('primer_autor', 'primer_colaborador', 'segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador', 'primer_coautor', 'segundo_coautor', 'tercer_coautor', 'cuarto_coautor', 'autores', 'responsable', 'profesor', 'alumno'):
+                    contribuidores.append(str(value))
+
+        if (len(contribuidores) > 0):
+            fields['contribuidores']=contribuidores
+        
         return JsonResponse(fields)
 
 class SearchUsers(View):
     def post(self, request, *args, **kwargs):
         # textoBusqueda = request.POST.get('textoBusqueda')
-        textoBusqueda = json.load(request)['textoBusqueda'] #Get data from POST request
+        # Get data from POST request
+        textoBusqueda=json.load(request)['textoBusqueda']
         # textoBusqueda = 'a'
-        users = User.objects.filter(
+        users=User.objects.filter(
             Q(username__icontains=textoBusqueda) |
             Q(first_name__icontains=textoBusqueda) |
             Q(last_name__icontains=textoBusqueda) |
-            Q(cuerpoAcademico__icontains=textoBusqueda) 
+            Q(cuerpoAcademico__icontains=textoBusqueda)
         ).filter(
             is_staff=False,
             is_superuser=False,
             is_active=True
-        ).values('id','username', 'foto', 'first_name', 'last_name', 'clave', 'cuerpoAcademico')
+        ).values('id', 'username', 'foto', 'first_name', 'last_name', 'clave', 'cuerpoAcademico')
 
         print(users)
 
-        return JsonResponse({'users':list(users)}, safe=False)
+        return JsonResponse({'users': list(users)}, safe=False)
 
 
 class CustomLogin(LoginView):
-    template_name = 'login.html'
-    redirect_authenticated_user = True
-    authentication_form = AuthenticationForm
+    template_name='login.html'
+    redirect_authenticated_user=True
+    authentication_form=AuthenticationForm
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Inicia sesión en Comunidapp'
+        context=super().get_context_data(**kwargs)
+        context['title']='Inicia sesión en Comunidapp'
         return context
 
 
 class Home(ListView):
-    template_name = 'home.html'
-    paginate_by = 100
-    model = User
+    template_name='home.html'
+    paginate_by=100
+    model=User
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Comunidapp'
-        context['path'] = 'home'
+        context=super().get_context_data(**kwargs)
+        context['title']='Comunidapp'
+        context['path']='home'
         return context
 
     def get_queryset(self):
-        queryset = User.objects.filter(is_superuser=False)
+        queryset=User.objects.filter(is_superuser=False)
         return queryset
 
 
 class Perfil(DetailView):
-    model = User
-    template_name = 'perfil-detail.html'
+    model=User
+    template_name='perfil-detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(Perfil, self).get_context_data(**kwargs)
-        user = super().get_object()
-        context['title'] = "Perfil de {0}".format(user.get_full_name())
-        userId = self.kwargs['pk']
+        context=super(Perfil, self).get_context_data(**kwargs)
+        user=super().get_object()
+        context['title']="Perfil de {0}".format(user.get_full_name())
+        userId=self.kwargs['pk']
 
-        autor = Autor.objects.get(user_id=userId)
+        autor=Autor.objects.get(user_id=userId)
 
-        articulos = Articulo.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
-        capituloslibros = CapituloLibro.objects.filter(Q(primer_autor = autor) | Q(primer_coautor = autor) | Q(segundo_coautor = autor) )
-        patentes = Patente.objects.filter(autores=autor)
-        congresos = Congreso.objects.filter(Q(primer_autor = autor) | Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
-        investigaciones = Investigacion.objects.filter(Q(primer_colaborador = autor) | Q(segundo_colaborador = autor) )
-        tesis = Tesis.objects.filter(profesor=user)
+        articulos=Articulo.objects.filter(Q(primer_autor=autor) | Q(
+            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
+        capituloslibros=CapituloLibro.objects.filter(
+            Q(primer_autor=autor) | Q(primer_coautor=autor) | Q(segundo_coautor=autor) | Q(tercer_coautor=autor) | Q(cuarto_coautor=autor))
+        patentes=Patente.objects.filter(autores=autor)
+        congresos=Congreso.objects.filter(Q(primer_autor=autor) | Q(
+            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
+        investigaciones=Investigacion.objects.filter(
+            Q(primer_colaborador=autor) | Q(segundo_colaborador=autor))
+        tesis=Tesis.objects.filter(profesor=user)
 
-        context['articulos'] = articulos
-        context['capituloslibros'] = capituloslibros
-        context['patentes'] = patentes
-        context['congresos'] = congresos
-        context['investigaciones'] = investigaciones
-        context['tesis'] = tesis
+        context['articulos']=articulos
+        context['capituloslibros']=capituloslibros
+        context['patentes']=patentes
+        context['congresos']=congresos
+        context['investigaciones']=investigaciones
+        context['tesis']=tesis
 
         return context
 
 
 class Profile(SuccessMessageMixin, FormView):
-    form_class = UpdateRequestForm
-    template_name = 'my_profile.html'
-    success_url = '/profile'
-    success_message = 'Petición de actualización enviada correctamente'
+    form_class=UpdateRequestForm
+    template_name='my_profile.html'
+    success_url='/profile'
+    success_message='Petición de actualización enviada correctamente'
 
     def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data(**kwargs)
+        context=super(Profile, self).get_context_data(**kwargs)
 
-        is_peticion = UpdateRequest.objects.filter(
+        is_peticion=UpdateRequest.objects.filter(
             user=self.request.user, estado='P').count()
         if is_peticion > 0:
-            context['is_peticion'] = True
+            context['is_peticion']=True
         else:
-            peticion = UpdateRequest.objects.get(user=self.request.user)
+            peticion=UpdateRequest.objects.get(user=self.request.user)
             if peticion.estado == 'R':
-                context['peticion'] = peticion
+                context['peticion']=peticion
 
-        context['title'] = "Actualización de mis datos"
-        context['producto'] = 'actualizacion'
+        context['title']="Actualización de mis datos"
+        context['producto']='actualizacion'
 
         return context
 
@@ -175,15 +212,14 @@ class Profile(SuccessMessageMixin, FormView):
         Regresando la informacion del usuario al formulario,
         ya que no es un ModelForm
         """
-        initial = super().get_initial()
-        initial['first_name'] = self.request.user.first_name
-        initial['last_name'] = self.request.user.last_name
-        initial['email'] = self.request.user.email
-        initial['clave'] = self.request.user.clave
-        initial['sexo'] = self.request.user.sexo
+        initial=super().get_initial()
+        initial['first_name']=self.request.user.first_name
+        initial['last_name']=self.request.user.last_name
+        initial['email']=self.request.user.email
+        initial['clave']=self.request.user.clave
+        initial['sexo']=self.request.user.sexo
         if self.request.user.nacimiento:
-            initial['nacimiento'] = self.request.user.nacimiento.strftime(
-                "%d-%m-%Y")
+            initial['nacimiento'] = self.request.user.nacimiento.strftime("%d-%m-%Y")
         initial['foto'] = self.request.user.foto
         initial['grado'] = self.request.user.grado
         initial['contratacion'] = self.request.user.contratacion
@@ -192,26 +228,26 @@ class Profile(SuccessMessageMixin, FormView):
         initial['user'] = self.request.user
         initial['niveles'] = [
             nivel for nivel in self.request.user.niveles.all().values_list('id', flat=True)]
-        initial['facultades'] = [
+        initial['facultades']=[
             facultad for facultad in self.request.user.facultades.all().values_list('id', flat=True)]
-        initial['investigaciones'] = [
+        initial['investigaciones']=[
             investigacion for investigacion in self.request.user.investigaciones.all().values_list('id', flat=True)]
         return initial
 
     def post(self, request, *args, **kwargs):
-        peticion = UpdateRequest.objects.filter(user=request.user).first()
+        peticion=UpdateRequest.objects.filter(user=request.user).first()
 
         if peticion:
-            form = UpdateRequestForm(
+            form=UpdateRequestForm(
                 request.POST, request.FILES, instance=peticion)
         else:
-            form = UpdateRequestForm(request.POST, request.FILES)
+            form=UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            peticion_obj = form.save(commit=False)
-            peticion_obj.user = request.user
-            peticion_obj.estado = 'P'
-            peticion_obj.changed_fields = {'fields': form.changed_data}
+            peticion_obj=form.save(commit=False)
+            peticion_obj.user=request.user
+            peticion_obj.estado='P'
+            peticion_obj.changed_fields={'fields': form.changed_data}
 
 
             peticion_obj.save()
@@ -230,27 +266,27 @@ class Profile(SuccessMessageMixin, FormView):
         """
         Funcion que detecta que campos cambiaron y guarda unicamente los cambiados
         """
-        cleaned_data = form.cleaned_data
-        changed_data = form.has_changed
+        cleaned_data=form.cleaned_data
+        changed_data=form.has_changed
 
-        peticion, created = UpdateRequest.objects.get_or_create(
+        peticion, created=UpdateRequest.objects.get_or_create(
             user=self.request.user)
-        peticion.estado = 'P'
+        peticion.estado='P'
         peticion.__dict__.update(changed_data)
         peticion.save()
         return super().form_valid(form)
 
 
 class CustomLogout(LogoutView):
-    next_page = 'login'
+    next_page='login'
 
 
 class CustomResetPassword(View):
-    form_class = PasswordChangeForm
-    template_name = 'password.html'
+    form_class=PasswordChangeForm
+    template_name='password.html'
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(
+        form=self.form_class(
             user=request.user
         )
         return render(request, 'password.html', {
@@ -259,7 +295,7 @@ class CustomResetPassword(View):
         })
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(user=request.user, data=request.POST)
+        form=self.form_class(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
@@ -272,37 +308,37 @@ class CustomResetPassword(View):
 
 
 class UpdatedUsers(ListView):
-    model = UpdateRequest
-    paginate_by = 10
-    template_name = 'updates.html'
-    ordering = ['-created']
+    model=UpdateRequest
+    paginate_by=10
+    template_name='updates.html'
+    ordering=['-created']
 
     def get_queryset(self):
         return UpdateRequest.objects.filter(estado='P')
 
     def post(self, request, *args, **kwargs):
-        idPeticion = request.POST['id']
-        comentario = request.POST['comentario-'+idPeticion]
-        rechazado = request.POST.get('Rechazado')
-        query = UpdateRequest.objects.get(id=idPeticion)
+        idPeticion=request.POST['id']
+        comentario=request.POST['comentario-'+idPeticion]
+        rechazado=request.POST.get('Rechazado')
+        query=UpdateRequest.objects.get(id=idPeticion)
 
         if rechazado:
-            query.estado = 'R'
-            query.motivo = comentario
+            query.estado='R'
+            query.motivo=comentario
             query.save()
             return redirect('/updates')
         else:
-            query.estado = 'A'
-            query.motivo = None
+            query.estado='A'
+            query.motivo=None
             query.save()
 
-        query = UpdateRequest.objects.get(id=idPeticion)
-        niveles_peticion = query.niveles.all()
-        facultades_peticion = query.facultades.all()
-        investigaciones_peticion = query.investigaciones.all()
+        query=UpdateRequest.objects.get(id=idPeticion)
+        niveles_peticion=query.niveles.all()
+        facultades_peticion=query.facultades.all()
+        investigaciones_peticion=query.investigaciones.all()
 
-        user = User.objects.filter(id=query.user.id)
-        something = model_to_dict(query)
+        user=User.objects.filter(id=query.user.id)
+        something=model_to_dict(query)
 
         del something['id']
         del something['user']
@@ -322,9 +358,9 @@ class UpdatedUsers(ListView):
         return redirect('updates')
 
     def get_context_data(self, **kwargs):
-        context = super(UpdatedUsers, self).get_context_data(**kwargs)
-        context['title'] = 'Peticiones de actualización'
-        context['path'] = 'solicitudes'
+        context=super(UpdatedUsers, self).get_context_data(**kwargs)
+        context['title']='Peticiones de actualización'
+        context['path']='solicitudes'
         return context
 
 
@@ -334,51 +370,51 @@ CBV para la creacion de usuarios administradores y profesores
 
 
 class AddAdminUsers(SuccessMessageMixin, CreateView):
-    template_name = 'users.html'
-    form_class = UserCreationForm
-    success_url = '/add/admin'
-    success_message = 'Administrador creado correctamente'
+    template_name='users.html'
+    form_class=UserCreationForm
+    success_url='/add/admin'
+    success_message='Administrador creado correctamente'
 
     def get_initial(self):
-        initial = super(AddAdminUsers, self).get_initial()
-        initial = initial.copy()
-        initial['is_superuser'] = True
-        initial['is_staff'] = True
+        initial=super(AddAdminUsers, self).get_initial()
+        initial=initial.copy()
+        initial['is_superuser']=True
+        initial['is_staff']=True
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddAdminUsers, self).get_context_data(*args, **kwargs)
-        context['title'] = 'Agrega un usuario Administrador'
-        context['producto'] = 'usuarios'
-        context['path'] = 'usuarios'
+        context=super(AddAdminUsers, self).get_context_data(*args, **kwargs)
+        context['title']='Agrega un usuario Administrador'
+        context['producto']='usuarios'
+        context['path']='usuarios'
         return context
 
 
 class AddProfesorUsers(SuccessMessageMixin, CreateView):
-    template_name = 'users.html'
-    form_class = ProfesorCreationForm
-    success_url = '/add/profesor'
-    success_message = 'Profesor creado correctamente'
+    template_name='users.html'
+    form_class=ProfesorCreationForm
+    success_url='/add/profesor'
+    success_message='Profesor creado correctamente'
 
     # Necesario poner el username y el email iguales
 
     def get_initial(self):
-        initial = super(AddProfesorUsers, self).get_initial()
-        initial = initial.copy()
-        initial['publico'] = True
+        initial=super(AddProfesorUsers, self).get_initial()
+        initial=initial.copy()
+        initial['publico']=True
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['title'] = 'Agrega un usuario Profesor'
-        context['producto'] = 'usuarios'
-        context['path'] = 'usuarios'
+        context=super().get_context_data(*args, **kwargs)
+        context['title']='Agrega un usuario Profesor'
+        context['producto']='usuarios'
+        context['path']='usuarios'
         return context
 
     # Necesario para guardar los campos M2M
     def form_valid(self, form):
-        form_valid = super(AddProfesorUsers, self).form_valid(form)
-        form_val = form.save(commit=False)
+        form_valid=super(AddProfesorUsers, self).form_valid(form)
+        form_val=form.save(commit=False)
         form_val.save()
         form.save_m2m()
         return form_valid
@@ -390,92 +426,92 @@ Clases para agregar productos
 
 
 class AddArticulo(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = ArticuloForm
-    success_url = '/new/articulo'
-    success_message = 'Artículo creado correctamente'
+    template_name='add-producto.html'
+    form_class=ArticuloForm
+    success_url='/new/articulo'
+    success_message='Artículo creado correctamente'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega un artículo'
-        context['producto'] = 'productos'
-        context['path'] = 'productos'
+        context=super().get_context_data(**kwargs)
+        context['title']='Agrega un artículo'
+        context['producto']='productos'
+        context['path']='productos'
         return context
 
 
 class AddCapituloLibro(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = CapituloLibroForm
-    success_url = '/new/libro'
-    success_message = 'Libro/Capítulo creado correctamente'
+    template_name='add-producto.html'
+    form_class=CapituloLibroForm
+    success_url='/new/libro'
+    success_message='Libro/Capítulo creado correctamente'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega un libro o capítulo'
-        context['producto'] = 'libro'
-        context['path'] = 'productos'
+        context=super().get_context_data(**kwargs)
+        context['title']='Agrega un libro o capítulo'
+        context['producto']='libro'
+        context['path']='productos'
         return context
 
 
 class AddPatente(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = PatenteForm
-    success_url = '/new/patente'
-    success_message = 'Patente creada correctamente'
+    template_name='add-producto.html'
+    form_class=PatenteForm
+    success_url='/new/patente'
+    success_message='Patente creada correctamente'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega una patente'
-        context['producto'] = 'patente'
-        context['path'] = 'productos'
+        context=super().get_context_data(**kwargs)
+        context['title']='Agrega una patente'
+        context['producto']='patente'
+        context['path']='productos'
         return context
 
 
 class AddCongreso(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = CongresoForm
-    success_url = '/new/congreso'
-    success_message = 'Participacion en congreso creada correctamente'
+    template_name='add-producto.html'
+    form_class=CongresoForm
+    success_url='/new/congreso'
+    success_message='Participacion en congreso creada correctamente'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega un partición en congreso'
-        context['producto'] = 'congreso'
-        context['path'] = 'productos'
+        context=super().get_context_data(**kwargs)
+        context['title']='Agrega un partición en congreso'
+        context['producto']='congreso'
+        context['path']='productos'
         return context
 
 
 class AddInvestigacion(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = InvestigacionForm
-    success_url = '/new/investigacion'
-    success_message = 'Proyecto de Investigacion/Vinculacion agregado'
+    template_name='add-producto.html'
+    form_class=InvestigacionForm
+    success_url='/new/investigacion'
+    success_message='Proyecto de Investigacion/Vinculacion agregado'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Agrega un proyecto de investigación'
-        context['producto'] = 'investigacion'
-        context['path'] = 'productos'
+        context=super().get_context_data(**kwargs)
+        context['title']='Agrega un proyecto de investigación'
+        context['producto']='investigacion'
+        context['path']='productos'
         return context
 
 
 class AddTesis(SuccessMessageMixin, CreateView):
-    template_name = 'add-producto.html'
-    form_class = TesisForm
-    success_url = '/new/tesis'
-    success_message = 'Dirección de tesis agregada'
+    template_name='add-producto.html'
+    form_class=TesisForm
+    success_url='/new/tesis'
+    success_message='Dirección de tesis agregada'
 
     def get_initial(self):
-        initial = super(AddTesis, self).get_initial()
-        initial = initial.copy()
-        initial['profesor'] = self.request.user
+        initial=super(AddTesis, self).get_initial()
+        initial=initial.copy()
+        initial['profesor']=self.request.user
         return initial
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddTesis, self).get_context_data(*args, **kwargs)
-        context['title'] = 'Agrega una dirección de tesis'
-        context['producto'] = 'productos'
-        context['path'] = 'productos'
+        context=super(AddTesis, self).get_context_data(*args, **kwargs)
+        context['title']='Agrega una dirección de tesis'
+        context['producto']='productos'
+        context['path']='productos'
         return context
 
 
@@ -486,17 +522,17 @@ Clases para la creacion de campos foraneos (aparecen como PopUp)
 
 class AutorCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = AutorForm()
+        form=AutorForm()
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Autor o Colaborador externo'
         })
 
     def post(self, request, *args, **kwargs):
-        form = AutorForm(request.POST)
+        form=AutorForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
             'form': form,
@@ -506,17 +542,17 @@ class AutorCreatePopup(View):
 
 class AlumnoCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = AlumnoForm()
+        form=AlumnoForm()
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Alumno'
         })
 
     def post(self, request, *args, **kwargs):
-        form = AlumnoForm(request.POST)
+        form=AlumnoForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, 'add-externo.html', {
             'form': form,
@@ -526,17 +562,17 @@ class AlumnoCreatePopup(View):
 
 class RevistaCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = RevistaForm()
+        form=RevistaForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Revista'
         })
 
     def post(self, request, *args, **kwargs):
-        form = RevistaForm(request.POST)
+        form=RevistaForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -546,17 +582,17 @@ class RevistaCreatePopup(View):
 
 class EditorialCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = EditorialForm()
+        form=EditorialForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Editorial'
         })
 
     def post(self, request, *args, **kwargs):
-        form = EditorialForm(request.POST)
+        form=EditorialForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -566,17 +602,17 @@ class EditorialCreatePopup(View):
 
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = PalabrasForm()
+        form=PalabrasForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una palabra clave'
         })
 
     def post(self, request, *args, **kwargs):
-        form = PalabrasForm(request.POST)
+        form=PalabrasForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -586,17 +622,17 @@ class PalabrasCreatePopup(View):
 
 class LineasCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = LineasForm()
+        form=LineasForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Linea de Investigacion'
         })
 
     def post(self, request, *args, **kwargs):
-        form = LineasForm(request.POST)
+        form=LineasForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -606,17 +642,17 @@ class LineasCreatePopup(View):
 
 class InstitucionCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = InstitucionForm()
+        form=InstitucionForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Institucion'
         })
 
     def post(self, request, *args, **kwargs):
-        form = InstitucionForm(request.POST)
+        form=InstitucionForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -626,17 +662,17 @@ class InstitucionCreatePopup(View):
 
 class FacultadCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = FacultadForm()
+        form=FacultadForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Facultad'
         })
 
     def post(self, request, *args, **kwargs):
-        form = FacultadForm(request.POST)
+        form=FacultadForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -646,17 +682,17 @@ class FacultadCreatePopup(View):
 
 class NivelesCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = NivelForm()
+        form=NivelForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un Nivel'
         })
 
     def post(self, request, *args, **kwargs):
-        form = NivelForm(request.POST)
+        form=NivelForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
@@ -666,17 +702,17 @@ class NivelesCreatePopup(View):
 
 class ContratoCreatePopup(View):
     def get(self, request, *args, **kwargs):
-        form = ContratoForm()
+        form=ContratoForm()
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un tipo de Contrato'
         })
 
     def post(self, request, *args, **kwargs):
-        form = ContratoForm(request.POST)
+        form=ContratoForm(request.POST)
         if form.is_valid():
-            id_field = form.cleaned_data.get('id_field')
-            instance = form.save()
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
             return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
         return render(request, "add-externo.html", {
             "form": form,
