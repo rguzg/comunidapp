@@ -10,7 +10,7 @@ window.onload = function () {
     const dropdown_parent = document.querySelector('#dropdown_parent');
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
-    const file = document.querySelector('.m-input-file');
+    const file = document.querySelector('.m-file_input');
     const lineas_investigacion = document.querySelector('#pills_lineas');
     // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
@@ -34,14 +34,6 @@ window.onload = function () {
     
     // Agrega el eventListener que muestra el modal a todos los productos de la 
     // categoria activa
-    let activeTabpane = document.querySelector('.tab-pane.active');
-    let products = activeTabpane.querySelectorAll('.m-product-card');
-    
-    products.forEach(element => {
-        element.addEventListener('click', function(){
-            showModal(element);
-        });
-    });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         let activeTabpane = document.querySelector('.tab-pane.active');
@@ -64,7 +56,7 @@ window.onload = function () {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
         input_file.addEventListener('change', () => {
             let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
-            file.innerText = filename;
+            file.innerHTML = `<img src="/static/img/foto.svg" alt="" srcset=""> ${filename}`;
         });
     }
 

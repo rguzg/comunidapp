@@ -455,42 +455,35 @@ a:hover{
     margin-right: 16px;
 }
 
-/* Input Modules */
-.m-input-file{
+/* File Input Modules */
+.m-file{
+    position: relative;
+    width: 100%;
+    height: 120px;
+    margin-bottom: 1rem;
+}
+
+.m-file_input{
     display: flex;
     align-items: center;
-    position: absolute;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
     top: 0;
     right: 0;
     left: 0;
     z-index: 1;
-    padding-left: .375rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #495057;
+    color: var(--dark-grey);
     border-radius: .25rem;
     border: 1px solid var(--border-grey);
-    height: 30px;
+    height: 120px;
     background: #FFFFFF;
-    margin-bottom: 8px;
 }
 
-.m-input-file::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    height: 28px;
-    padding: .375rem .75rem;
-    line-height: 1.5;
-    color: #495057;
-    content: "Examinar";
-    background-color: #e9ecef;
-    border-left: inherit;
-    border-radius: 0 .25rem .25rem 0;
+.m-file__input::after {
+    display: none;
 }
 
 /* Pill Input Module */
