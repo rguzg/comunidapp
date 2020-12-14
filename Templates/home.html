@@ -25,7 +25,15 @@
                     {% if user.foto %}
                         background-image: url({{user.foto.url}});
                     {% else %}
-                        background-image: url({% static 'img/person.jpg' %});
+                        {% if user.sexo %}
+                            {% if user.sexo == 'H' %}
+                                background-image: url({% static 'img/profesor1.svg' %});
+                            {% else %}
+                                background-image: url({% static 'img/profesor2.svg' %});
+                            {% endif %}
+                        {% else %}
+                            background-image: url({% static 'img/profesor1.svg' %});
+                        {% endif %}
                     {% endif %}"
                     ></div>
                     <div class="m-user-info__text">
