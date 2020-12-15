@@ -6,7 +6,7 @@
 
 <div class="container l-main">
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 p-0">
             <!-- Mensaje de exito -->
             {% if messages %}
             <div class="alert alert-success text-center">
@@ -46,12 +46,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <h3 class="mb-0">Agregar Producto</h3>
+        <div class="col-12 m-title">
+            <h3>Agregar Producto</h3>
         </div>
     </div>
-    <div class="card mt-2">
-        <div class="card-header">
+    <div class="card">
+        <div class="card-header  pt-0">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
                     <a class="nav-link {% if producto == 'articulo' %}active{% endif %}" href="{% url 'AddArticulo' %}">

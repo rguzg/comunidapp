@@ -12,7 +12,7 @@
 
     <div class="container l-main">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <!-- Mensaje de exito -->
                 {% if messages %}
                 <div class="alert alert-success text-center">
@@ -52,12 +52,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 m-title">
                 <h3>Agregar Usuarios</h3>
             </div>
         </div>
-        <div class="card mt-2">
-            <div class="card-header">
+        <div class="card">
+            <div class="card-header pt-0">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
                         <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
@@ -221,7 +221,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="col-12 pl-0 mt-0 m-form-button">
+                    <div class="col-12 pl-0 m-form-button">
                         <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Agregar Usuario">
                     </div>
                 </form>
