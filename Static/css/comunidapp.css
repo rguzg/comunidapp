@@ -277,7 +277,7 @@ a:hover{
 }
 
 .m-button{
-    background-color: var(--comunidapp_green);
+    background-color: var(--border-grey);
     color: var(--black);
     font-size: 15px;
     margin-top: 4px;

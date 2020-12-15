@@ -12,6 +12,7 @@ window.onload = function () {
     const editar_button = document.querySelector('#editar_button');
     const file = document.querySelector('.m-file_input');
     const lineas_investigacion = document.querySelector('#pills_lineas');
+    const boton_cancelar = document.querySelector('#cancel');
     // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
     dropdown_parent.addEventListener('click', toggleDropdown);
@@ -68,6 +69,12 @@ window.onload = function () {
         sessionStorage.setItem("pills_lineas", JSON.stringify(["Software", "Software con olor a limón", "Tu corazón"]));
 
         PillsBox(lineas_investigacion);
+    }
+
+    if(boton_cancelar){
+        boton_cancelar.addEventListener('click', () => {
+            window.history.back();
+        });
     }
 }
 
