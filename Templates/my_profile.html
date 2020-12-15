@@ -81,61 +81,64 @@
                 {{form.user}}
                 <div class="l-form">
                     <div class="col-4 pl-0">
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_first_name">{{form.first_name.label}}</label>
                             {{form.first_name}}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_last_name">{{form.last_name.label}}</label>
                             {{form.last_name}}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_email">{{form.email.label}}</label>
                             {{form.email}}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_clave">{{form.clave.label}}</label>
                             {{form.clave}}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_nacimiento">{{form.nacimiento.label}}</label>
                             {{form.nacimiento|addclass:'datepicker'}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_sexo">{{form.sexo.label}}</label>
                             {{form.sexo}}
                         </div>
-                        <div class="m-form-input">
+                    </div>
+                    <div class="col-4 pl-0">
+                        <div class="m-form-input col-11">
                             <label for="id_contratacion">{{form.contratacion.label}}</label>
-                            {{ form.contratacion|addclass:'custom-select custom-select-sm' }}
+                            {{ form.contratacion }}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
                             {{form.cuerpoAcademico}}
                         </div> 
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_grado">{{form.grado.label}}</label>
-                            {{form.grado|addclass:'custom-select custom-select-sm'}}
+                            {{form.grado}}
                         </div>
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_publico">{{form.publico.label}}</label>
-                            {{form.publico|addclass:'custom-select custom-select-sm'}}
+                            {{form.publico}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- <label>{{form.foto.label}}</label>
-                        <div class="m-form-input custom-file">
-                            <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_foto">Sube una nueva foto</label>
-                            {{ form.foto|addclass:'custom-file-input' }}
-                        </div> -->
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11">
                             <label for="id_facultades">{{form.facultades.label}}</label>
                             {{form.facultades|addclass:'m-input-multiselect'}}
                         </div>
-                        <div class="m-form-input mb-2">
+                    </div>
+                    <div class="col-4 pl-0">
+                        <label>{{form.foto.label}}</label>
+                        <div class="m-file col-11 p-0">
+                            <label class="m-file_input h-text-overflow" for="id_foto">
+                                <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
+                                Sube una nueva foto de perfil
+                            </label>
+                            <input type="file" name="foto" accept="image/*" class="h-display-none" id="id_foto">
+                        </div>
+                        
+                        <div class="m-form-input col-11 mb-2 p-0">
                             <label for="id_investigaciones">{{form.investigaciones.label}}</label>
                             <div id="pills_lineas">
                                 <div class="col-12 pl-0 pr-0 h-align-center m-pill-input" id="pills_lineas">
@@ -167,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="m-form-input">
+                        <!-- <div class="m-form-input col-11">
                             <label for="id_investigaciones">{{form.investigaciones.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.investigaciones|addclass:'m-input-multiselect'}}
@@ -179,7 +182,7 @@
                                 </div> 
                             </div>  
                         </div>  -->
-                        <div class="m-form-input">
+                        <div class="m-form-input col-11 p-0">
                             <label for="id_niveles">{{form.niveles.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.niveles|addclass:'m-input-multiselect'}}

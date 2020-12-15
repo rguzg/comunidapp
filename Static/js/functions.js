@@ -290,7 +290,7 @@ function PillsBox(contenedor){
         };
 
         delete_container.addEventListener('click', () => {
-            delete_pill(pill, selected_pill);
+            delete_pill(pill);
         });
 
         pill.appendChild(text);
