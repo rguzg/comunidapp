@@ -98,3 +98,83 @@ ul.errorlist{
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+
+
+
+
+
+
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:active, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover{
+    color: #495057 !important;
+}
+
+.btn-light{
+    background-color: transparent !important;
+}
+
+
+
+.bootstrap-select {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: .5rem;
+    font-size: .875rem;
+    display: inline-block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px) !important;
+    padding: .375rem 1.75rem .375rem .75rem;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057 !important;
+    vertical-align: middle;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+  }
+  .bootstrap-select .btn {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: .5rem;
+    font-size: .875rem;
+    display: inline-block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px) !important;
+    /* padding: .375rem 1.75rem .375rem .75rem; */
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057 !important;
+    vertical-align: middle;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .container a{
+    color: #495057 !important;
+
+  }
+  
+
+  .bootstrap-select .dropdown-menu {
+    margin: 15px 0 0;
+  }
+
+  
+  select::-ms-expand {
+    /* for IE 11 */
+    display: none;
+  }
