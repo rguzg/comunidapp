@@ -813,24 +813,27 @@ class AutorForm(ModelForm):
     class Meta:
         model = Autor
         fields = ['first_name', 'last_name']
+        labels = {
+            'first_name':'Nombre(s)',
+            'last_name':'Apellido(s)'
+        }
 
     def clean(self):
         cleaned_data = super(AutorForm, self).clean()
         first_name = cleaned_data.get('first_name')
         last_name = cleaned_data.get('last_name')
-        user = cleaned_data.get('user')
+        # user = cleaned_data.get('user')
         autor_existente = Autor.objects.filter(
             Q(first_name=first_name, last_name=last_name) |
             Q(user__first_name=first_name, user__last_name=last_name)
         ).count()
+
+        if first_name is None or last_name is None:
+                raise forms.ValidationError('Debe crear un autor con nombre(s) y apellido(s)')
+
         if autor_existente > 0:
             self.add_error(
                 'first_name', 'Un autor con los mismos datos ya existe. Elíjalo o verifique sus datos')
-
-        if user is None:
-            if first_name is None or last_name is None:
-                self.add_error(
-                    'user', 'Debe seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
 
         if len(first_name) <= LONGITUD_NOMBRE_AUTOR:
             self.add_error(

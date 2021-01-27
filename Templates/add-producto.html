@@ -1,6 +1,7 @@
 {% include 'head.html' %}
 {% include 'navbar.html' %}
 {% load custom_tags %}
+{% load widget_tweaks %}
 {% load static %}
 {% block content %}
 
@@ -123,7 +124,7 @@
                         <div class="m-form-input col-11">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_autor}}
+                                {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_autor');">
@@ -136,7 +137,7 @@
                         <div class="m-form-input col-11">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
                                     onclick="return showAddPopup(this, 'id_primer_colaborador');">
@@ -149,7 +150,8 @@
                         <div class="m-form-input col-11">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                                <!-- {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}} -->
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
                                     onclick="return showAddPopup(this, 'id_segundo_colaborador');">
@@ -162,7 +164,7 @@
                         <div class="m-form-input col-11">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_colaborador}}
+                                {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
                                     onclick="return showAddPopup(this, 'id_tercer_colaborador');">
@@ -175,7 +177,7 @@
                         <div class="m-form-input col-11">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_colaborador}}
+                                {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
                                     onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
@@ -222,17 +224,18 @@
                         <!-- País -->
                         <div class="m-form-input col-11">
                             <label for="id_pais">{{form.pais.label}}</label>
-                            {{form.pais}}
+                            <!-- {{form.pais|addclass:'custom-select custom-select-sm'}} -->
+                            {{form.pais|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
                         <!-- Revista -->
                         <div class="m-form-input col-11">
                             <label for="id_revista">{{form.revista.label}}</label>
-                            {{form.revista}}
+                            {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
                         <!-- Editorial -->
                         <div class="m-form-input col-11">
                             <label for="id_editorial">{{form.editorial.label}}</label>
-                            {{form.editorial}}
+                            {{form.editorial|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
                         <!-- ISNN -->
                         <div class="m-form-input col-11">

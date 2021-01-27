@@ -143,15 +143,23 @@ function showAddPopup(triggeringLink, resultContainer) {
 }
 
 function closePopup(win, newID, newRepr, id) {
+    console.log(newID);
     let select = document.getElementById(id);
     let option = document.createElement('option');
     option.appendChild(document.createTextNode(newRepr));
     option.value = newID;
     option.setAttribute('selected', 'selected');
+
     select.appendChild(option);
     win.close();
 
     localStorage.removeItem('id');
+
+
+    $('#'+id).val(parseInt(newID));
+    $('.selectpicker').selectpicker('refresh');
+    $('.selectpicker').selectpicker('refresh');
+    
 }
 
 // function searchUsers(text) {
