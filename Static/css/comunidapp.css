@@ -546,10 +546,9 @@ a:hover{
 }
 
 .m-pill-input_searchbox{
-    width: 345px;
+    width: 100%;
     font-size: 12px;
     position: absolute;
-    bottom: -30px;
     background: #ffffff;
     border: 1px solid var(--border-grey);
     border-top: none;

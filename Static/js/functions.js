@@ -338,8 +338,18 @@ function PillsBox(contenedor){
     })
 
     pill_input.addEventListener('keyup', () => {
+        /* El contenedor de new_pills se genera de nuevo cada vez que se escribe en el input de  
+        agregar pills */
+
         if(contenedor.querySelector('#new_pills')){
             contenedor.querySelector('#new_pills').remove();
+        }
+
+        // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
+        if(pill_input.value == ""){
+            contenedor.querySelector("#searchbox").classList.add("h-display-none");
+        } else {
+            contenedor.querySelector("#searchbox").classList.remove("h-display-none");
         }
 
         let new_pills_input = pill_input.value;
@@ -369,6 +379,10 @@ function PillsBox(contenedor){
         });
 
         pill_container.appendChild(new_pills_container);
-    })
+    });
+
+    pill_input.addEventListener('focusout', () => {
+        contenedor.querySelector("#searchbox").classList.add("h-display-none");
+    });
 
 }
