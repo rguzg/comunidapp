@@ -66,8 +66,6 @@ window.onload = function () {
     
     // Funcionalidad del input que contiene pills
     if(lineas_investigacion){
-        sessionStorage.setItem("pills_lineas", JSON.stringify(["Software", "Software con olor a limón", "Tu corazón"]));
-
         PillsBox(lineas_investigacion);
     }
 
@@ -276,10 +274,10 @@ async function getLineasForm() {
 
 // Encargado de la funcionalidad del input que contiene pills
 function PillsBox(contenedor){
-    let selected_pills = JSON.parse(sessionStorage.getItem("pills_lineas"));
+    let selected_pills = ["Software", "Software con olor a limón", "Tu corazón"];
+
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
-    let pills = [];
 
     let new_pill = (pill_text) => {
         let pill = document.createElement('div');
@@ -328,23 +326,28 @@ function PillsBox(contenedor){
         return pill;
     };
 
-    selected_pills.forEach(selected_pill => {
-        let pill = new_pill(selected_pill);
-        pills.push(pill);
-    });
+    let generate_pills = (text_array, container) => {
+        let pills = [];
 
-    pills.forEach(pill => {
-        pill_container.appendChild(pill);
-    })
+        text_array.forEach(selected_pill => {
+            let pill = new_pill(selected_pill);
+            pills.push(pill);
+        });
+    
+        pills.forEach(pill => {
+            container.appendChild(pill);
+        });
+    }
 
-    pill_input.addEventListener('keyup', () => {
+    let generate_new_pills = () => {
         /* El contenedor de new_pills se genera de nuevo cada vez que se escribe en el input de  
         agregar pills */
-
+        let new_pills = [];
+    
         if(contenedor.querySelector('#new_pills')){
             contenedor.querySelector('#new_pills').remove();
         }
-
+    
         // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
         if(pill_input.value == ""){
             contenedor.querySelector("#searchbox").classList.add("h-display-none");
@@ -352,37 +355,36 @@ function PillsBox(contenedor){
             contenedor.querySelector("#searchbox").classList.remove("h-display-none");
         }
 
-        let new_pills_input = pill_input.value;
-        let new_pills_text = [];
-
         let new_pills_container = document.createElement('div');
         new_pills_container.setAttribute('id', 'new_pills');
         new_pills_container.classList.add('col-12', 'p-0', 'd-flex', 'flex-row', 'flex-wrap');
 
-        let pill_array = new_pills_input.split(',')
+        let pill_array = pill_input.value.split(',');
         
         pill_array.forEach((element) => {
             if(element != "" && element != " "){
                 let trimmed_element = element.trimEnd().trimStart();
-                
-                if(selected_pills.includes(trimmed_element)){
-                    alert("YA ESTA!!!!!!!!!");
-                } else {
-                    new_pills_text.push(trimmed_element);
+
+                // ¿Qué pasa si se repite un elemento?
+                if(!new_pills.includes(trimmed_element)){
+                    new_pills.push(trimmed_element);
                 }
             }
         });
 
-        new_pills_text.forEach(pill_text => {
-            let pill = new_pill(pill_text);
-            new_pills_container.appendChild(pill);
-        });
+        generate_pills(new_pills, new_pills_container);
 
         pill_container.appendChild(new_pills_container);
+    }
+
+    pill_input.addEventListener('keyup', () => {
+        generate_new_pills();
     });
 
     pill_input.addEventListener('focusout', () => {
         contenedor.querySelector("#searchbox").classList.add("h-display-none");
     });
+
+    generate_pills(selected_pills, pill_container);
 
 }
