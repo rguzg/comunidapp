@@ -6,7 +6,7 @@
 
 <div class="container l-main">
     <div class="row">
-        <div class="col-8">
+        <div class="col-12 p-0">
             {% if is_peticion %}
                 <div class="alert alert-warning">
                     <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
@@ -64,143 +64,138 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            {% if is_peticion or peticion or messages or form.non_field_errors or form.errors or field.errors %}
-            <h3 class="mb-2">Editar Perfil</h3>
-            {% else %}
+        <div class="col-12 m-title">
             <h3>Editar Perfil</h3>
-            {% endif %}
+            <small>Tus cambios deben ser aprobados antes de que se vean reflejados en tu perfil</small>
         </div>
     </div>
     <div class="row">
-        <!-- Grid de tarjetas -->
-        <div class="l-grid col-12">
             <!-- Formulario de actualización de datos -->
-            <form class="col-12" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{form.user}}
-                <div class="l-form">
-                    <div class="col-4 pl-0">
-                        <div class="m-form-input">
-                            <label for="id_first_name">{{form.first_name.label}}</label>
-                            {{form.first_name}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_last_name">{{form.last_name.label}}</label>
-                            {{form.last_name}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_email">{{form.email.label}}</label>
-                            {{form.email}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_clave">{{form.clave.label}}</label>
-                            {{form.clave}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_nacimiento">{{form.nacimiento.label}}</label>
-                            {{form.nacimiento|addclass:'datepicker'}}
-                        </div>
+        <form class="col-12 p-0" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.user}}
+            <div class="l-form">
+                <div class="col-4 pl-0">
+                    <div class="m-form-input col-11">
+                        <label for="id_first_name">{{form.first_name.label}}</label>
+                        {{form.first_name}}
                     </div>
-                    <div class="col-4 pl-0">
-                        <div class="m-form-input">
-                            <label for="id_sexo">{{form.sexo.label}}</label>
-                            {{form.sexo}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_contratacion">{{form.contratacion.label}}</label>
-                            {{ form.contratacion|addclass:'custom-select custom-select-sm' }}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
-                            {{form.cuerpoAcademico}}
-                        </div> 
-                        <div class="m-form-input">
-                            <label for="id_grado">{{form.grado.label}}</label>
-                            {{form.grado|addclass:'custom-select custom-select-sm'}}
-                        </div>
-                        <div class="m-form-input">
-                            <label for="id_publico">{{form.publico.label}}</label>
-                            {{form.publico|addclass:'custom-select custom-select-sm'}}
-                        </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_last_name">{{form.last_name.label}}</label>
+                        {{form.last_name}}
                     </div>
-                    <div class="col-4 pl-0">
-                        <!-- <label>{{form.foto.label}}</label>
-                        <div class="m-form-input custom-file">
-                            <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_foto">Sube una nueva foto</label>
-                            {{ form.foto|addclass:'custom-file-input' }}
-                        </div> -->
-                        <div class="m-form-input">
-                            <label for="id_facultades">{{form.facultades.label}}</label>
-                            {{form.facultades|addclass:'m-input-multiselect'}}
-                        </div>
-                        <div class="m-form-input mb-2">
-                            <label for="id_investigaciones">{{form.investigaciones.label}}</label>
-                            <div id="pills_lineas">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input" id="pills_lineas">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                        <div class="m-pills">
-                                            <span class="h-text-overflow" style="max-width: 100px;">Software</span>
-                                            <div>
-                                                <i class="fas fa-times mb-0" style="color: white; font-size: 12px;  cursor: pointer;"></i>
-                                            </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_email">{{form.email.label}}</label>
+                        {{form.email}}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_clave">{{form.clave.label}}</label>
+                        {{form.clave}}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_nacimiento">{{form.nacimiento.label}}</label>
+                        {{form.nacimiento|addclass:'datepicker'}}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_sexo">{{form.sexo.label}}</label>
+                        {{form.sexo}}
+                    </div>
+                </div>
+                <div class="col-4 pl-0">
+                    <div class="m-form-input col-11">
+                        <label for="id_contratacion">{{form.contratacion.label}}</label>
+                        {{ form.contratacion }}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
+                        {{form.cuerpoAcademico}}
+                    </div> 
+                    <div class="m-form-input col-11">
+                        <label for="id_grado">{{form.grado.label}}</label>
+                        {{form.grado}}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_publico">{{form.publico.label}}</label>
+                        {{form.publico}}
+                    </div>
+                    <div class="m-form-input col-11">
+                        <label for="id_facultades">{{form.facultades.label}}</label>
+                        {{form.facultades|addclass:'m-input-multiselect'}}
+                    </div>
+                </div>
+                <div class="col-4 pl-0">
+                    <label>{{form.foto.label}}</label>
+                    <div class="m-file col-11 p-0">
+                        <label class="m-file_input h-text-overflow" for="id_foto">
+                            <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
+                            Sube una nueva foto de perfil
+                        </label>
+                        <input type="file" name="foto" accept="image/*" class="h-display-none" id="id_foto">
+                    </div>
+                    
+                    <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                        <label for="id_investigaciones">{{form.investigaciones.label}}</label>
+                        <div class="col-12 p-0">
+                            <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                <div class="m-pill-input_selected-pills col-12">
+                                    <div class="m-pills">
+                                        <span class="h-text-overflow" style="max-width: 100px;">Software</span>
+                                        <div>
+                                            <i class="fas fa-times mb-0" style="color: white; font-size: 12px;  cursor: pointer;"></i>
                                         </div>
                                     </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Ingresa una linea...">
-                                    <!-- <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                        <div class="d-flex flex-column">
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                            <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
-                                        </div>
-                                    </div> -->
                                 </div>
+                            </div>  
+                            <div class="m-form-input">
+                                <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                <!-- <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                    <div class="d-flex flex-column">
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                        <span class="p-2 col-12 m-search-result">King G. and The L.W.</span>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
-                        <!-- <div class="m-form-input">
-                            <label for="id_investigaciones">{{form.investigaciones.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.investigaciones|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                        onclick="return showAddPopup(this,'id_investigaciones');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
-                                </div> 
-                            </div>  
-                        </div>  -->
-                        <div class="m-form-input">
-                            <label for="id_niveles">{{form.niveles.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.niveles|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
-                                    onclick="return showAddPopup(this, 'id_niveles');">
+                    </div>
+                    <!-- <div class="m-form-input col-11">
+                        <label for="id_investigaciones">{{form.investigaciones.label}}</label>
+                        <div class="col-12 pl-0 h-align-center">
+                            {{form.investigaciones|addclass:'m-input-multiselect'}}
+                            <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
+                                    onclick="return showAddPopup(this,'id_investigaciones');">
                                     <i class="fas fa-plus-circle"></i>
                                 </a>
-                                </div>
+                            </div> 
+                        </div>  
+                    </div>  -->
+                    <div class="m-form-input col-11 p-0">
+                        <label for="id_niveles">{{form.niveles.label}}</label>
+                        <div class="col-12 pl-0 h-align-center">
+                            {{form.niveles|addclass:'m-input-multiselect'}}
+                            <div class="col-1">
+                            <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
+                                onclick="return showAddPopup(this, 'id_niveles');">
+                                <i class="fas fa-plus-circle"></i>
+                            </a>
                             </div>
-                        </div> 
-                    </div>
+                        </div>
+                    </div> 
                 </div>
-                <div class="col-12 pl-0 m-form-button">
-                    <div>
-                        <small>Tus cambios deben ser aprobados antes de que se vean reflejados en tu perfil</small>
-                    </div>
-                    <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Editar Perfil">
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="col-12 p-0 m-form-button">
+                <input class="btn m-button mr-2" id="cancel" value="Descartar Cambios">
+                <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Aplicar Cambios">
+            </div>
+        </form>
     </div>
 </div>
 

@@ -98,7 +98,7 @@ class UpdateRequestForm(ModelForm):
         }
         widgets = {
             'user': forms.HiddenInput(),
-            'motivo': forms.HiddenInput()
+            'motivo': forms.HiddenInput(),
         }
 
     def clean(self):

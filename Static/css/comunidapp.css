@@ -6,7 +6,7 @@
     --black: #212529;
     --grey: #FAFAFA;
     --dark-grey: #737373;
-    --border-grey: #C4C4C4;
+    --border-grey: #dfdfdf;
 }
 
 *{ 
@@ -34,11 +34,16 @@ p{
 
 h3{
     font-size: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 input, select{
     padding-left: 5px;
+}
+
+select {
+    background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px !important;
+    appearance: none;
 }
 
 ul{
@@ -108,6 +113,14 @@ a:hover{
 .l-form{
     width: 100%;
     display: flex;
+}
+
+.l-form > div {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
 }
 
 .l-popup{
@@ -229,6 +242,11 @@ a:hover{
     border-radius: 50px;
 }
 
+/* Title Module */
+.m-title{
+    margin-bottom: 20px;
+}
+
 /* User Info Module */
 
 .m-user-info{
@@ -258,12 +276,17 @@ a:hover{
     margin-bottom: 0;
 }
 
-.m-comunidapp-button{
-    background-color: var(--comunidapp_green);
+.m-button{
+    background-color: var(--border-grey);
     color: var(--black);
     font-size: 15px;
     margin-top: 4px;
     min-width: 122px;
+}
+
+.m-button--comunidapp{
+    background-color: var(--comunidapp_green);
+    color: var(--black);
 }
 
 /* User Info Modifiers */
@@ -423,19 +446,21 @@ a:hover{
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    flex-basis: 0;
     width: 100%;
 }
 
 .m-form-input > input, select{
     width: 100%;
-    height: 30px !important;
+    height: 36px !important;
     background: #FFFFFF;
-    border: 1px solid var(--border-grey) !important;
+    border: 1px solid #dfdfdf;
     box-sizing: border-box;
     border-radius: 4px;
     margin-bottom: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
+    padding-left: 12px;
 }
 
 /* Form Input Components */
@@ -447,7 +472,8 @@ a:hover{
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .m-form-button > div{
@@ -490,18 +516,22 @@ a:hover{
 
 .m-pill-input{
     display: flex;
-    margin-bottom: 16px;
     flex-direction: column;
     height: 100px;
+    border-bottom: none;
 }
 
 /* Pill Input Components */
 .m-pill-input_selected-pills{
     display: flex;
+    width: 100%;
     height: 100px;
     border: 1px solid var(--border-grey);
+    border-bottom: none;
     box-sizing: border-box;
     border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     padding: 12px;
     flex-wrap: wrap;
     overflow: overlay;
@@ -510,6 +540,9 @@ a:hover{
 
 .m-pill-input_search{
     font-size: 12px;
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
 .m-pill-input_searchbox{
@@ -532,6 +565,7 @@ a:hover{
 
 .m-input-multiselect{
     height: 64px !important;
+    padding-left: 0;
 }
 
 .card{
