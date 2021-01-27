@@ -339,7 +339,7 @@ function PillsBox(contenedor){
         });
     }
 
-    let generate_new_pills = () => {
+    let generate_new_pills = (text_array) => {
         /* El contenedor de new_pills se genera de nuevo cada vez que se escribe en el input de  
         agregar pills */
         let new_pills = [];
@@ -347,21 +347,12 @@ function PillsBox(contenedor){
         if(contenedor.querySelector('#new_pills')){
             contenedor.querySelector('#new_pills').remove();
         }
-    
-        // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
-        if(pill_input.value == ""){
-            contenedor.querySelector("#searchbox").classList.add("h-display-none");
-        } else {
-            contenedor.querySelector("#searchbox").classList.remove("h-display-none");
-        }
 
         let new_pills_container = document.createElement('div');
         new_pills_container.setAttribute('id', 'new_pills');
         new_pills_container.classList.add('col-12', 'p-0', 'd-flex', 'flex-row', 'flex-wrap');
-
-        let pill_array = pill_input.value.split(',');
         
-        pill_array.forEach((element) => {
+        text_array.forEach((element) => {
             if(element != "" && element != " "){
                 let trimmed_element = element.trimEnd().trimStart();
 
@@ -376,9 +367,47 @@ function PillsBox(contenedor){
 
         pill_container.appendChild(new_pills_container);
     }
+    
+    let generate_autocomplete = (query_text) => {
+        let generate_result = (text) => {
+            let span = document.createElement('span');
+            span.classList.add('p-2', 'col-12', 'm-search-result')
+            span.innerText = text;
+
+            return span;
+        }        
+
+        /* El contenedor de autocomplete se genera de nuevo cada vez que se escribe en el input de  
+        agregar pills */
+        if(contenedor.querySelector('#searchbox_results')){
+            contenedor.querySelector('#searchbox_results').remove();
+        }
+
+        let contenedor_resultado = document.createElement('div');
+        contenedor_resultado.classList.add('d-flex', 'flex-column');
+        contenedor_resultado.id = "searchbox_results";
+        contenedor_resultado.appendChild(generate_result(query_text));
+
+        contenedor.querySelector("#searchbox").appendChild(contenedor_resultado);
+    }
+
 
     pill_input.addEventListener('keyup', () => {
-        generate_new_pills();
+        // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
+        if(pill_input.value == ""){
+            contenedor.querySelector("#searchbox").classList.add("h-display-none");
+        } else {
+            contenedor.querySelector("#searchbox").classList.remove("h-display-none");
+        }
+
+        let split_input = pill_input.value.split(',');
+        
+        // Asegurarse de que no el ultimo elemento en el input no sea un espacio
+        if(split_input[split_input.length - 1] != "" && split_input[split_input.length - 1] != " "){
+            generate_autocomplete(split_input[split_input.length - 1]);
+        }
+        
+        generate_new_pills(split_input);
     });
 
     pill_input.addEventListener('focusout', () => {
