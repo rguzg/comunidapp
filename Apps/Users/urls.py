@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.views.decorators.csrf import csrf_exempt
-from . import views
+from . import views, views_busqueda
 
 urlpatterns = [
     # URLS para el uso de los usuarios normales
@@ -39,4 +39,8 @@ urlpatterns = [
     url(r'^facultad/create', login_required(views.FacultadCreatePopup.as_view()), name = "FacultadCreate"),
     url(r'^nivel/create', login_required(views.NivelesCreatePopup.as_view()), name = "NivelCreate"),
     url(r'^contrato/create', login_required(views.ContratoCreatePopup.as_view()), name = "ContratoCreate"),
+
+    #URLs para realizar busquedas
+    path('buscar/lineas', views_busqueda.BuscarLineas.as_view(), name="BuscarLineas"),
+
 ]
