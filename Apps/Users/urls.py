@@ -41,9 +41,9 @@ urlpatterns = [
     url(r'^contrato/create', login_required(views.ContratoCreatePopup.as_view()), name = "ContratoCreate"),
 
     #URLs para realizar busquedas
-    path('buscar/lineas', views_busqueda.BuscarLineas.as_view(), name="BuscarLineas"),
-    path('buscar/facultades', views_busqueda.BuscarFacultades.as_view(), name="BuscarFacultades"),
-    path('buscar/niveles', views_busqueda.BuscarNiveles.as_view(), name="BuscarNiveles"),
-    path('buscar/palabras', views_busqueda.BuscarPalabrasClave.as_view(), name="BuscarPalabrasClave"),
+    path('buscar/lineas', login_required(views_busqueda.BuscarLineas.as_view()), name="BuscarLineas"),
+    path('buscar/facultades', login_required(views_busqueda.BuscarFacultades.as_view()), name="BuscarFacultades"),
+    path('buscar/niveles', login_required(views_busqueda.BuscarNiveles.as_view()), name="BuscarNiveles"),
+    path('buscar/palabras', login_required(views_busqueda.BuscarPalabrasClave.as_view()), name="BuscarPalabrasClave"),
 
 ]
