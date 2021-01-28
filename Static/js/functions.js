@@ -374,6 +374,18 @@ function PillsBox(contenedor){
             span.classList.add('p-2', 'col-12', 'm-search-result')
             span.innerText = text;
 
+            span.addEventListener('click', () => {
+                let split_input = pill_input.value.split(',');
+
+                pill_input.value = pill_input.value.replace(split_input[split_input.length - 1], `${text}, `);
+                split_input[split_input.length - 1] = text;
+
+                contenedor.querySelector("#searchbox").classList.add("h-display-none");
+                pill_input.focus();
+        
+                generate_new_pills(split_input);
+            })
+
             return span;
         }        
 
@@ -410,9 +422,11 @@ function PillsBox(contenedor){
         generate_new_pills(split_input);
     });
 
-    pill_input.addEventListener('focusout', () => {
-        contenedor.querySelector("#searchbox").classList.add("h-display-none");
-    });
+    // pill_input.addEventListener('focusout', () => {
+    //     if(!contenedor.querySelector("#searchbox_results").hasFocus){
+    //         contenedor.querySelector("#searchbox").classList.add("h-display-none");
+    //     }
+    // });
 
     generate_pills(selected_pills, pill_container);
 
