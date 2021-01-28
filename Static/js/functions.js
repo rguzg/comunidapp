@@ -395,12 +395,19 @@ function PillsBox(contenedor){
             contenedor.querySelector('#searchbox_results').remove();
         }
 
-        let contenedor_resultado = document.createElement('div');
-        contenedor_resultado.classList.add('d-flex', 'flex-column');
-        contenedor_resultado.id = "searchbox_results";
-        contenedor_resultado.appendChild(generate_result(query_text));
+        // Asegurarse de que no el ultimo elemento en el input no sea un espacio
+        if(query_text != "" && query_text != " "){
+            contenedor.querySelector("#searchbox").classList.remove("h-display-none");
 
-        contenedor.querySelector("#searchbox").appendChild(contenedor_resultado);
+            let contenedor_resultado = document.createElement('div');
+            contenedor_resultado.classList.add('d-flex', 'flex-column');
+            contenedor_resultado.id = "searchbox_results";
+            contenedor_resultado.appendChild(generate_result(query_text));
+    
+            contenedor.querySelector("#searchbox").appendChild(contenedor_resultado);
+        } else {
+            contenedor.querySelector("#searchbox").classList.add("h-display-none");
+        }
     }
 
 
@@ -414,19 +421,9 @@ function PillsBox(contenedor){
 
         let split_input = pill_input.value.split(',');
         
-        // Asegurarse de que no el ultimo elemento en el input no sea un espacio
-        if(split_input[split_input.length - 1] != "" && split_input[split_input.length - 1] != " "){
-            generate_autocomplete(split_input[split_input.length - 1]);
-        }
-        
+        generate_autocomplete(split_input[split_input.length - 1]);
         generate_new_pills(split_input);
     });
-
-    // pill_input.addEventListener('focusout', () => {
-    //     if(!contenedor.querySelector("#searchbox_results").hasFocus){
-    //         contenedor.querySelector("#searchbox").classList.add("h-display-none");
-    //     }
-    // });
 
     generate_pills(selected_pills, pill_container);
 
