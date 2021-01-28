@@ -1,4 +1,4 @@
-from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel, Pais, User, UpdateRequest, Autor)
+from .models import Facultad, LineaInvestigacion, Nivel, PalabrasClave
 from django.views import View
 from django.db.models import Q, query 
 from django.http.response import JsonResponse
@@ -20,3 +20,22 @@ class BuscarLineas(View):
             return JsonResponse(json)
         except:
             return JsonResponse({'status': 400, 'mensaje': "El query parameter 'q' es obligatorio"})
+
+class BuscarFacultades(View):
+    def get(self, request):
+        try:
+            queryResult = Facultad.objects.filter(Q(nombre__icontains = request.GET['q']))
+
+            json = {
+                'status': 200,
+                'mensaje': []
+            }
+
+            for facultad in queryResult:
+                json['mensaje'].append(facultad.nombre)
+
+            return JsonResponse(json)
+        except:
+            return JsonResponse({'status': 400, 'mensaje': "El query parameter 'q' es obligatorio"})
+
+
