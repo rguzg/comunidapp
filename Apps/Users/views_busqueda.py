@@ -55,4 +55,19 @@ class BuscarNiveles(View):
         except:
             return JsonResponse({'status': 400, 'mensaje': "El query parameter 'q' es obligatorio"})
 
+class BuscarPalabrasClave(View):
+    def get(self, request):
+        try:
+            queryResult = PalabrasClave.objects.filter(Q(nombre__icontains = request.GET['q']))
 
+            json = {
+                'status': 200,
+                'mensaje': []
+            }
+
+            for palabra in queryResult:
+                json['mensaje'].append(palabra.nombre)
+
+            return JsonResponse(json)
+        except:
+            return JsonResponse({'status': 400, 'mensaje': "El query parameter 'q' es obligatorio"})
