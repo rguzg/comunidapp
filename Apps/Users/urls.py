@@ -43,6 +43,7 @@ urlpatterns = [
     #URLs para realizar busquedas
     path('buscar/lineas', views_busqueda.BuscarLineas.as_view(), name="BuscarLineas"),
     path('buscar/facultades', views_busqueda.BuscarFacultades.as_view(), name="BuscarFacultades"),
+    path('buscar/niveles', views_busqueda.BuscarNiveles.as_view(), name="BuscarNiveles"),
 
 
 ]
