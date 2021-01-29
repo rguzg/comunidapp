@@ -47,6 +47,9 @@ urlpatterns = [
     path('buscar/palabras', login_required(views_busqueda.BuscarPalabrasClave.as_view()), name="BuscarPalabrasClave"),
 
     #URLs de Serializers
-    path('api/lineas', views_serializer.LineasInvestigacion_Serializer_View.as_view(), name="BuscarPalabrasClave"),
+    path('api/lineas', views_serializer.LineasInvestigacion_Serializer_View.as_view(), name="API_Lineas"),
+    path('api/facultades', views_serializer.Facultad_Serializer_View.as_view(), name="API_Facultades"),
+    path('api/niveles', views_serializer.Nivel_Serializer_View.as_view(), name="API_Niveles"),
+    path('api/palabras', views_serializer.PalabraClave_Serializer_View.as_view(), name="API_PalabrasClave"),
 
 ]

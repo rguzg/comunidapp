@@ -133,6 +133,8 @@ async function PillsBox(contenedor, recurso){
             span.addEventListener('click', () => {
                 let split_input = pill_input.value.split(',');
 
+                // BUG BUG: En lugar de replace, reconstruir el value de pill_input con los contenidos de
+                // split_input
                 pill_input.value = pill_input.value.replace(split_input[split_input.length - 1], `${text}, `);
                 split_input[split_input.length - 1] = text;
 
