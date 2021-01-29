@@ -168,8 +168,9 @@ async function PillsBox(contenedor, recurso){
         }
 
         let split_input = pill_input.value.split(',');
+        let query = split_input[split_input.length - 1].trimEnd().trimStart()
         
-        generate_autocomplete(split_input[split_input.length - 1]);
+        generate_autocomplete(query);
         generate_new_pills(split_input);
     });
 
