@@ -555,7 +555,8 @@ a:hover{
     box-sizing: border-box;
     z-index: 999;
     max-height: 150px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .m-search-result:hover{
