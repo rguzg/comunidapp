@@ -4,7 +4,7 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-window.onload = function () {
+window.onload = async function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
     const dropdown_parent = document.querySelector('#dropdown_parent');
@@ -66,7 +66,7 @@ window.onload = function () {
     
     // Funcionalidad del input que contiene pills
     if(lineas_investigacion){
-        PillsBox(lineas_investigacion);
+        PillsBox(lineas_investigacion, 'lineas');
     }
 
     if(boton_cancelar){

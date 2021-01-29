@@ -1,6 +1,20 @@
-// Encargado de la funcionalidad del input que contiene pills
-function PillsBox(contenedor){
-    let selected_pills = ["Software", "Software con olor a limón", "Tu corazón"];
+/* 
+    Encargado de la funcionalidad del input que contiene pills 
+
+    Parametros de la función:
+    - Contenedor: Contenedor donde se colocara la PillsBox
+    - Recurso: Nombre del recurso de donde se obtendrá la información de autocompletar y las pills seleccionadas
+*/
+async function PillsBox(contenedor, recurso){
+    let selected_pills = [];
+
+    let request = await fetch(`api/${recurso}`);
+    let resources = await request.json();
+
+    resources.forEach((element) => {
+        let key_name = Object.keys(element);
+        selected_pills.push(element[key_name]);
+    })
 
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
