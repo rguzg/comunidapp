@@ -179,7 +179,6 @@ async function PillsBox(contenedor, recurso){
         }
     }
 
-
     pill_input.addEventListener('keyup', () => {
         // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
         if(pill_input.value == ""){
@@ -194,6 +193,10 @@ async function PillsBox(contenedor, recurso){
         generate_autocomplete(query);
         generate_new_pills(split_input);
     });
+
+    document.body.addEventListener('click', () => {
+        contenedor.querySelector("#searchbox").classList.add("h-display-none");
+    })
 
     generate_pills(selected_pills, pill_container);
 
