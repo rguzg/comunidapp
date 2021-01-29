@@ -4,6 +4,22 @@
     Parametros de la función:
     - Contenedor: Contenedor donde se colocara la PillsBox
     - Recurso: Nombre del recurso de donde se obtendrá la información de autocompletar y las pills seleccionadas
+
+    El recurso que obtiene la información de autocompletar debe tener el siguiente formato:
+    { key: ["resultado", "resultado2"...]}
+
+    El recurso que obtiene la información de pills seleccionadas debe tener el siguiente formato:
+    [ 
+        {
+            key: "pill"
+        },
+
+        {
+            key: "pill"
+        }
+        ...
+    ]
+
 */
 async function PillsBox(contenedor, recurso){
     let selected_pills = [];
