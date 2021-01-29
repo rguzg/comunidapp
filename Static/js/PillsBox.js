@@ -133,10 +133,13 @@ async function PillsBox(contenedor, recurso){
             span.addEventListener('click', () => {
                 let split_input = pill_input.value.split(',');
 
-                // BUG BUG: En lugar de replace, reconstruir el value de pill_input con los contenidos de
-                // split_input
-                pill_input.value = pill_input.value.replace(split_input[split_input.length - 1], `${text}, `);
+                // Regenerar el value de pill_input a partir de lo que hay en el arreglo split_input
                 split_input[split_input.length - 1] = text;
+                pill_input.value = ""
+
+                split_input.forEach((element) => {
+                    pill_input.value += `${element}, `
+                })
 
                 contenedor.querySelector("#searchbox").classList.add("h-display-none");
                 pill_input.focus();
