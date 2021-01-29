@@ -108,7 +108,7 @@ async function PillsBox(contenedor, recurso){
         pill_container.appendChild(new_pills_container);
     }
     
-    let generate_autocomplete = (query_text) => {
+    let generate_autocomplete = async (query_text) => {
         let generate_result = (text) => {
             let span = document.createElement('span');
             span.classList.add('p-2', 'col-12', 'm-search-result')
@@ -142,8 +142,16 @@ async function PillsBox(contenedor, recurso){
             let contenedor_resultado = document.createElement('div');
             contenedor_resultado.classList.add('d-flex', 'flex-column');
             contenedor_resultado.id = "searchbox_results";
-            contenedor_resultado.appendChild(generate_result(query_text));
-    
+
+            let request = await fetch(`buscar/${recurso}?q=${query_text}`);
+            let resources = await request.json();
+            
+            let key_name = Object.keys(resources)[0];
+
+            resources[key_name].forEach((element) => {
+                contenedor_resultado.appendChild(generate_result(element));
+            });
+
             contenedor.querySelector("#searchbox").appendChild(contenedor_resultado);
         } else {
             contenedor.querySelector("#searchbox").classList.add("h-display-none");
