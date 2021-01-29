@@ -10,7 +10,6 @@ class BuscarLineas(View):
             queryResult = LineaInvestigacion.objects.filter(Q(nombre__icontains = request.GET['q']))
 
             json = {
-                'status': 200,
                 'mensaje': []
             }
 
@@ -27,7 +26,6 @@ class BuscarFacultades(View):
             queryResult = Facultad.objects.filter(Q(nombre__icontains = request.GET['q']))
 
             json = {
-                'status': 200,
                 'mensaje': []
             }
 
@@ -44,7 +42,6 @@ class BuscarNiveles(View):
             queryResult = Nivel.objects.filter(Q(nombre__icontains = request.GET['q']))
 
             json = {
-                'status': 200,
                 'mensaje': []
             }
 
@@ -61,7 +58,6 @@ class BuscarPalabrasClave(View):
             queryResult = PalabrasClave.objects.filter(Q(nombre__icontains = request.GET['q']))
 
             json = {
-                'status': 200,
                 'mensaje': []
             }
 
