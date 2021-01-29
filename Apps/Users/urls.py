@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.views.decorators.csrf import csrf_exempt
-from . import views, views_busqueda
+from . import views, views_busqueda, views_serializer
 
 urlpatterns = [
     # URLS para el uso de los usuarios normales
@@ -45,5 +45,8 @@ urlpatterns = [
     path('buscar/facultades', login_required(views_busqueda.BuscarFacultades.as_view()), name="BuscarFacultades"),
     path('buscar/niveles', login_required(views_busqueda.BuscarNiveles.as_view()), name="BuscarNiveles"),
     path('buscar/palabras', login_required(views_busqueda.BuscarPalabrasClave.as_view()), name="BuscarPalabrasClave"),
+
+    #URLs de Serializers
+    path('api/lineas', views_serializer.LineasInvestigacion_Serializer_View.as_view(), name="BuscarPalabrasClave"),
 
 ]
