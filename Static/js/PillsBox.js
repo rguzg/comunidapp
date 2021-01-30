@@ -164,7 +164,7 @@ async function PillsBox(contenedor, recurso){
             contenedor_resultado.classList.add('d-flex', 'flex-column');
             contenedor_resultado.id = "searchbox_results";
 
-            let request = await fetch(`buscar/${recurso}?q=${query_text}`);
+            let request = await fetch(`/buscar/${recurso}?q=${query_text}`);
             let resources = await request.json();
             
             let key_name = Object.keys(resources)[0];
