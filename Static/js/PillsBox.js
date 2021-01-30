@@ -24,7 +24,7 @@
 async function PillsBox(contenedor, recurso){
     let selected_pills = [];
 
-    let request = await fetch(`api/${recurso}`);
+    let request = await fetch(`/api/${recurso}`);
     let resources = await request.json();
 
     resources.forEach((element) => {
