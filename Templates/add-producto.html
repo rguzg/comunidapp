@@ -5,6 +5,9 @@
 {% load static %}
 {% block content %}
 
+<script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
+<script src="{% static 'js/PillsBox.js' %}"></script>"
+
 <div class="container l-main">
     <div class="row">
         <div class="col-12 p-0">
@@ -189,30 +192,32 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
-                        <div class="m-form-input col-11">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
-                                <small>({{form.palabras_clave.help_text}})</small>
-                            </label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
+                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
@@ -379,30 +384,32 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
-                        <div class="m-form-input col-11">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
-                                <small>({{form.palabras_clave.help_text}})</small>
-                            </label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
+                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
@@ -507,15 +514,17 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
@@ -643,30 +652,32 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
-                        <div class="m-form-input col-11">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
-                                <small>({{form.palabras_clave.help_text}})</small>
-                            </label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
+                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
@@ -759,30 +770,32 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
-                        <div class="m-form-input col-11">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
-                                <small>({{form.palabras_clave.help_text}})</small>
-                            </label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
+                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
@@ -914,30 +927,32 @@
                     </div>
                     <div class="col-4 pl-0">
                         <!-- Palabras Clave -->
-                        <div class="m-form-input col-11">
-                            <label for="id_palabras_clave">{{form.palabras_clave.label}} 
-                                <small>({{form.palabras_clave.help_text}})</small>
-                            </label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.palabras_clave|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'PalabrasCreate' %}" id="add_palabras_clave"
-                                        onclick="return showAddPopup(this, 'id_palabras_clave');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
+                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11">
-                            <label for="id_lineas_investigacion">{{form.lineas_investigacion.label}} <small>({{form.lineas_investigacion.help_text}})</small></label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.lineas_investigacion|addclass:'m-input-multiselect'}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas_investigacion"
-                                    onclick="return showAddPopup(this, 'id_lineas_investigacion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
+                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                            <div class="col-12 p-0">
+                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                    <div class="m-pill-input_selected-pills col-12">
+                                    </div>
+                                </div>  
+                                <div class="m-form-input">
+                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                </div>
+                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
                             </div>
                         </div>
