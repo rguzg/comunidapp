@@ -11,7 +11,6 @@ window.onload = async function () {
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
     const file = document.querySelector('.m-file_input');
-    const lineas_investigacion = document.querySelector('#pills_lineas');
     const boton_cancelar = document.querySelector('#cancel');
     // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
@@ -63,11 +62,6 @@ window.onload = async function () {
 
 
     // inputSearch.onkeyup = searchUsers(inputSearch);
-    
-    // Funcionalidad del input que contiene pills
-    if(lineas_investigacion){
-        PillsBox(lineas_investigacion, 'lineas');
-    }
 
     if(boton_cancelar){
         boton_cancelar.addEventListener('click', () => {

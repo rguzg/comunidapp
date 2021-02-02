@@ -6,10 +6,3 @@ PillsBox(niveles, 'niveles');
 
 const facultades = document.querySelector('#pills_facultades');
 PillsBox(facultades, 'facultades');
-
-const form = document.querySelector('#perfilForm')
-
-form.addEventListener('submit', () => {
-    alert();
-})
-

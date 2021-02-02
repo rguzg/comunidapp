@@ -6,6 +6,9 @@
 
 {% include 'head.html' %}
 
+<script defer src="{% static 'js/AgregarUsuarios.js' %}"></script>
+<script src="{% static 'js/PillsBox.js' %}"></script>
+
 <body>
     {% include 'navbar.html' %}
     {% block content %}
@@ -180,44 +183,50 @@
                             </div>
                             {% endif %}
                             {% if form.facultades %}
-                            <div class="m-form-input col-11 p-0">
-                                <label for="id_facultades">{{form.facultades.label}}</label>
-                                <div class="col-12 pl-0 h-align-center">
-                                    {{form.facultades|addclass:'m-input-multiselect'}}
-                                    <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'FacultadCreate' %}" id="add_facultades"
-                                        onclick="return showAddPopup(this, 'id_facultades');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                            <div class="m-form-input col-11 mb-2 p-0" id="pills_facultades">
+                                <label for="id_investigaciones">{{form.facultades.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas facultades aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
                                 </div>
                             </div>
                             {% endif %}
                             {% if form.investigaciones %}
-                            <div class="m-form-input col-11 p-0">
+                            <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
                                 <label for="id_investigaciones">{{form.investigaciones.label}}</label>
-                                <div class="col-12 pl-0 h-align-center">
-                                    {{form.investigaciones|addclass:'m-input-multiselect'}}
-                                    <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'LineasCreate' %}" id="add_lineas"
-                                        onclick="return showAddPopup(this, 'id_investigaciones');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
                                 </div>
-                            </div> 
-                            <div class="m-form-input col-11 p-0">
-                                <label for="id_niveles">{{form.niveles.label}}</label>
-                                <div class="col-12 pl-0 h-align-center">
-                                    {{form.niveles|addclass:'m-input-multiselect'}}
-                                    <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'NivelCreate' %}" id="add_niveles"
-                                        onclick="return showAddPopup(this, 'id_niveles');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                            </div>
+                            <div class="m-form-input col-11 mb-2 p-0" id="pills_niveles">
+                                <label for="id_investigaciones">{{form.niveles.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas niveles aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             {% endif %}
                         </div>
                     </div>
