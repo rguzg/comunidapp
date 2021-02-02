@@ -73,7 +73,7 @@
     </div>
     <div class="row">
             <!-- Formulario de actualización de datos -->
-        <form class="col-12 p-0" method="POST" enctype="multipart/form-data">
+        <form class="col-12 p-0" method="POST" enctype="multipart/form-data" id="perfilForm">
             {% csrf_token %}
             {{form.user}}
             <div class="l-form">
