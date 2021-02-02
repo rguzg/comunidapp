@@ -199,5 +199,4 @@ async function PillsBox(contenedor, recurso){
     })
 
     generate_pills(selected_pills, pill_container);
-
 }
