@@ -5,10 +5,7 @@
     - Contenedor: Contenedor donde se colocara la PillsBox
     - Recurso: Nombre del recurso de donde se obtendrá la información de autocompletar y las pills seleccionadas
 
-    El recurso que obtiene la información de autocompletar debe tener el siguiente formato:
-    { key: ["resultado", "resultado2"...]}
-
-    El recurso que obtiene la información de pills seleccionadas debe tener el siguiente formato:
+    Los recursos tendrán el siguiente formato:
     [ 
         {
             id: 0,
