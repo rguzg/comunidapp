@@ -142,9 +142,10 @@ a:hover{
     justify-content: space-evenly;
     padding-left: 48px;
     padding-right: 48px;
-    height: 55px;
-    position: sticky;
+    height: 80px; 
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 5;
 }
 
@@ -158,22 +159,28 @@ a:hover{
 }
 
 .m-header__title{
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .m-header__image{
-    height: 40px;
-    width: 40px;
+    height: 45px;
+    width: 45px;
     margin-right: 8px;
 }
 
 .m-header__button{
+    font-size:14px;
     color: var(--black);
-    margin-right: 20px;
+    margin-right: 16px;
+    padding: 0 5px 0 5px;
 }
-
+.m-header__button:hover{
+    border-bottom: solid 2px #212529;
+    cursor: pointer;
+}
 .m-header__button--active{
     font-weight: 600;
+    border-bottom: solid 2px #212529;
 }
 
 .m-header__search-container{
@@ -218,9 +225,11 @@ a:hover{
     background: var(--grey);
     border: 1px solid var(--border-grey);
     border-radius: 5px;
-    margin-right: 48px;
-    width: 250px;
-    font-size: 15px;
+    margin-right: 12px;
+    width: 300px;
+    font-size: 12px;
+    padding: 5px;
+    outline: none;
 }
 
 /* Profile Picture Module */
@@ -229,8 +238,8 @@ a:hover{
     /* background-image: url("../img/person.jpg"); */
     background-size: cover;
     border-radius: 25px;
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
 }
 

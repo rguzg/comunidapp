@@ -6,16 +6,16 @@
         <img src="{% static 'img/logo.png' %}" class="m-header__image">
         <b class="m-header__title">Comunidapp</b>
     </div>
-    <div class="col-5">
-        <a href="{% url 'home' %}" class="m-header__button {% if path == 'home' %} m-header__button--active {% endif%}">Home</a>
+    <div class="col-4 offset-3 d-flex justify-content-end">
+        <a href="{% url 'home' %}" class="m-header__button {% if path == 'home' %} m-header__button--active {% endif%}">Inicio</a>
         {% if user.is_staff or user.is_superuser %}
             <a href="{% url 'updates' %}" class="m-header__button {% if path == 'solicitudes' %} m-header__button--active {% endif%}">Solicitudes</a>
-            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar Usuarios</a>
+            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button mr-0 {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar usuarios</a>
         {% else %}
             <a href="{% url 'AddArticulo' %}" class="m-header__button {% if path == 'productos' %} m-header__button--active {% endif%}">Agregar Productos</a>
         {% endif %}
     </div>
-    <div class="col-4 m-header__search-container">
+    <div class="col-3 m-header__search-container">
         <input class="m-search" type="text" name="search" id="search" placeholder="Buscar">
         <ul>
             <li class="m-profile-picture" 
