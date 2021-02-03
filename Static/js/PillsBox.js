@@ -201,3 +201,18 @@ async function PillsBox(contenedor, recurso){
     generate_pills(selected_pills, pill_container);
 
 }
+
+function CreateFormData(form){
+    let data = new FormData();
+    
+    // Agregar al FormData el valor de todos los inputs excepto los que sean botones o inputs de PillsBox
+    for (let i = 0; i < form.elements.length; i++) {
+        let element = form.elements[i];
+
+        if(element.type != "submit" && element.type != "button" && element.name != "input_pill"){
+            data.append(element.name, element.value);
+        }
+    }
+
+   return data;
+};
