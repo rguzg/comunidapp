@@ -11,38 +11,33 @@
     El recurso que obtiene la información de pills seleccionadas debe tener el siguiente formato:
     [ 
         {
-            key: "pill"
+            id: 0,
+            nombre: "pill"
         },
 
         {
-            key: "pill"
+            id: 0,
+            nombre: "pill"
         }
         ...
     ]
 
 */
 async function PillsBox(contenedor, recurso){
-    let selected_pills = [];
-
     let request = await fetch(`/api/${recurso}`);
-    let resources = await request.json();
-
-    resources.forEach((element) => {
-        let key_name = Object.keys(element);
-        selected_pills.push(element[key_name]);
-    })
-
+    let selected_pills = await request.json();
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
 
-    let new_pill = (pill_text) => {
+    let new_pill = (pill_object) => {
         let pill = document.createElement('div');
         pill.classList.add('m-pills');
+        pill.setAttribute('data-id', pill_object.id);
 
         let text = document.createElement('span');
         text.classList.add("h-text-overflow");
         text.style.maxWidth = "100px";
-        text.textContent = pill_text;
+        text.textContent = pill_object.nombre;
         
         let delete_icon = document.createElement('i');
         delete_icon.classList.add("fas", "fa-times", "mb-0");
@@ -82,10 +77,10 @@ async function PillsBox(contenedor, recurso){
         return pill;
     };
 
-    let generate_pills = (text_array, container) => {
+    let generate_pills = (selected_pills, container) => {
         let pills = [];
 
-        text_array.forEach(selected_pill => {
+        selected_pills.forEach(selected_pill => {
             let pill = new_pill(selected_pill);
             pills.push(pill);
         });
@@ -114,7 +109,10 @@ async function PillsBox(contenedor, recurso){
 
                 // ¿Qué pasa si se repite un elemento?
                 if(!new_pills.includes(trimmed_element)){
-                    new_pills.push(trimmed_element);
+                    new_pills.push({
+                        id: 0,
+                        nombre: trimmed_element
+                    });
                 }
             }
         });
