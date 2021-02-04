@@ -13,34 +13,43 @@ const form = document.querySelector('#perfilForm')
 JavaScript se va a encargar de crear el formdata que se le va a enviar al servidor. */
 form.addEventListener('submit', async (event) => {
     let data = CreateFormData(form);
-
+    
     // Añadir los valores de los PillsBox
     let pills_lineas = lineas_investigacion.querySelectorAll('.m-pills');
+    let lineas_array = [];
+
     pills_lineas.forEach(element => {
-       data.append("lineas", JSON.stringify({
-           id: element.dataset.id,
-           nombre: element.firstChild.textContent
-        }));
+        lineas_array.push(JSON.stringify({
+            id: element.dataset.id,
+            nombre: element.firstChild.textContent
+         }));
     });
+    data.append("lineas", lineas_array);
 
     let pills_niveles = niveles.querySelectorAll('.m-pills');
+    let niveles_array = [];
+
     pills_niveles.forEach(element => {
-       data.append("niveles", JSON.stringify({
+       niveles_array.push(JSON.stringify({
            id: element.dataset.id,
            nombre: element.firstChild.textContent
         }));
     });
+    data.append("niveles", niveles_array);
 
     let pills_facultades = facultades.querySelectorAll('.m-pills');
+    let facultades_array = [];
+
     pills_facultades.forEach(element => {
-       data.append("facultades", JSON.stringify({
+       facultades_array.append(JSON.stringify({
            id: element.dataset.id,
            nombre: element.firstChild.textContent
         }));
     });
+    data.append("facultades", facultades_array);
 
     try {
-        await fetch('/profile', {
+        await fetch('/forms/perfil', {
             method: 'POST',
             body: data
         })

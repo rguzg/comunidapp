@@ -116,7 +116,7 @@ async function PillsBox(contenedor, recurso){
     }
     
     let generate_autocomplete = async (query_text) => {
-          /*
+        /*
         generate_result recibe result_object que contiene el id del objeto de la base de datos que se está
         sugiriendo y el texto que va a ir en span.m-search-result. result_object tiene el siguiente formato:
         
