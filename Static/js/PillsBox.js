@@ -103,14 +103,10 @@ async function PillsBox(contenedor, recurso){
         text_array.forEach((element) => {
             if(element != "" && element != " "){
                 let trimmed_element = element.trimEnd().trimStart();
-
-                // ¿Qué pasa si se repite un elemento?
-                if(!new_pills.includes(trimmed_element)){
-                    new_pills.push({
-                        id: 0,
-                        nombre: trimmed_element
-                    });
-                }
+                new_pills.push({
+                    id: 0,
+                    nombre: trimmed_element
+                });
             }
         });
 
@@ -120,16 +116,25 @@ async function PillsBox(contenedor, recurso){
     }
     
     let generate_autocomplete = async (query_text) => {
-        let generate_result = (text) => {
+          /*
+        generate_result recibe result_object que contiene el id del objeto de la base de datos que se está
+        sugiriendo y el texto que va a ir en span.m-search-result. result_object tiene el siguiente formato:
+        
+        {
+            id: 0,
+            nombre: "pill"
+        },
+        */   
+        let generate_result = (result_object) => {
             let span = document.createElement('span');
             span.classList.add('p-2', 'col-12', 'm-search-result')
-            span.innerText = text;
+            span.innerText = result_object.nombre;
 
             span.addEventListener('click', () => {
                 let split_input = pill_input.value.split(',');
 
                 // Regenerar el value de pill_input a partir de lo que hay en el arreglo split_input
-                split_input[split_input.length - 1] = text;
+                split_input[split_input.length - 1] = result_object.nombre;
                 pill_input.value = ""
 
                 split_input.forEach((element) => {
@@ -161,10 +166,8 @@ async function PillsBox(contenedor, recurso){
 
             let request = await fetch(`/buscar/${recurso}?q=${query_text}`);
             let resources = await request.json();
-            
-            let key_name = Object.keys(resources)[0];
 
-            resources[key_name].forEach((element) => {
+            resources['mensaje'].forEach((element) => {
                 contenedor_resultado.appendChild(generate_result(element));
             });
 
