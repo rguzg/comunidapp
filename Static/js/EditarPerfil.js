@@ -51,7 +51,7 @@ form.addEventListener('submit', async (event) => {
     data.append("facultades", facultades_array);
 
     try {
-        await fetch('/forms/perfil', {
+        await fetch('/proxy', {
             method: 'POST',
             body: data
         }).then(() => {
