@@ -12,6 +12,8 @@ const form = document.querySelector('#perfilForm')
 /* Para poder enviar los datos que hay en los PillsBox, 
 JavaScript se va a encargar de crear el formdata que se le va a enviar al servidor. */
 form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
     let data = CreateFormData(form);
     
     // Añadir los valores de los PillsBox
@@ -41,7 +43,7 @@ form.addEventListener('submit', async (event) => {
     let facultades_array = [];
 
     pills_facultades.forEach(element => {
-       facultades_array.append(JSON.stringify({
+       facultades_array.push(JSON.stringify({
            id: element.dataset.id,
            nombre: element.firstChild.textContent
         }));
@@ -52,11 +54,12 @@ form.addEventListener('submit', async (event) => {
         await fetch('/forms/perfil', {
             method: 'POST',
             body: data
+        }).then(() => {
+            location.reload();
         })
     } catch (error) {
         console.error("Error mandando la actualización de perfil");
     }
 
-    event.preventDefault();
 });
 

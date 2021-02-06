@@ -208,7 +208,11 @@ function CreateFormData(form){
         let element = form.elements[i];
 
         if(element.type != "submit" && element.type != "button" && element.name != "input_pill"){
-            data.append(element.name, element.value);
+            if(element.type == "file"){
+                data.append(element.name, element.files[0]);
+            } else {
+                data.append(element.name, element.value);
+            }
         }
     }
 
