@@ -40,9 +40,12 @@ form.addEventListener('submit', async (event) => {
         try {
             await fetch('/proxy', {
                 method: 'POST',
+                headers: {
+                    'PROXY': document.location.pathname
+                },
                 body: data
             }).then(() => {
-                // location.reload();
+                location.reload();
             })
         } catch (error) {
             console.error("Error mandando la actualización de perfil");

@@ -24,28 +24,28 @@ class Proxy(View):
         # Este header se utiliza para saber a que URL mandar la petición que se está procesando
         pathname = request.headers['PROXY']
 
-        if(request.POST['lineas']):
+        if('lineas' in request.POST):
             lineas = ast.literal_eval(request.POST['lineas'])
             if(type(lineas) == dict):
                 request_body['investigaciones'].append(self.ObtenerIDObjeto(LineaInvestigacion, lineas['nombre']))
             elif(type(lineas) == tuple):
                 for linea in lineas:
                     request_body['investigaciones'].append(self.ObtenerIDObjeto(LineaInvestigacion, linea['nombre']))
-        if(request.POST['niveles']):
+        if('niveles' in request.POST):
             niveles = ast.literal_eval(request.POST['niveles'])
             if(type(niveles) == dict):
                 request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, niveles['nombre']))
             elif(type(niveles) == tuple):
                 for nivel in niveles:
                     request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, nivel['nombre']))
-        if(request.POST['facultades']):
+        if('facultades' in request.POST):
             facultades = ast.literal_eval(request.POST['facultades'])
             if(type(facultades) == dict):
                 request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultades['nombre']))
             elif(type(facultades) == tuple):
                 for facultad in facultades:
                     request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultad['nombre']))
-        if(request.POST['palabras']):
+        if('palabras' in request.POST):
             palabras = ast.literal_eval(request.POST['palabras'])
             if(type(palabras) == dict):
                 request_body['palabras'].append(self.ObtenerIDObjeto(PalabrasClave, palabras['nombre']))
@@ -60,10 +60,10 @@ class Proxy(View):
         for key in request.FILES:
             files.append((key, (request.FILES[key].name, request.FILES[key].read(), request.FILES[key].content_type)))
 
-        csrf_token = requests.get(f'http://localhost:8000/{pathname}').cookies['csrftoken']
+        csrf_token = requests.get(f'http://localhost:8000{pathname}').cookies['csrftoken']
         request_body['csrfmiddlewaretoken'] = csrf_token
 
-        r = requests.post(f'http://localhost:8000/{pathname}', request_body, cookies = {
+        r = requests.post(f'http://localhost:8000{pathname}', request_body, cookies = {
             'csrftoken': csrf_token,
             'sessionid': request.COOKIES['sessionid'],
         }, headers = {'connection': 'close'}, files = files)
