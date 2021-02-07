@@ -12,12 +12,7 @@ import requests
 
 class Proxy(View):
     def post(self, request):
-        request_body = {
-            'investigaciones': [],
-            'niveles': [],
-            'facultades': [],
-            'palabras': []
-        }
+        request_body = {}
 
         files = []
 
@@ -25,13 +20,24 @@ class Proxy(View):
         pathname = request.headers['PROXY']
 
         if('lineas' in request.POST):
+            key = ""
+
+            if(pathname == '/profile'):
+                key = 'lineas'
+            else:
+                key = 'lineas_investigacion'
+
+            request_body[key] = []
+
             lineas = ast.literal_eval(request.POST['lineas'])
             if(type(lineas) == dict):
-                request_body['investigaciones'].append(self.ObtenerIDObjeto(LineaInvestigacion, lineas['nombre']))
+                request_body[key].append(self.ObtenerIDObjeto(LineaInvestigacion, lineas['nombre']))
             elif(type(lineas) == tuple):
                 for linea in lineas:
-                    request_body['investigaciones'].append(self.ObtenerIDObjeto(LineaInvestigacion, linea['nombre']))
+                    request_body[key].append(self.ObtenerIDObjeto(LineaInvestigacion, linea['nombre']))
         if('niveles' in request.POST):
+            request_body['niveles'] = []
+
             niveles = ast.literal_eval(request.POST['niveles'])
             if(type(niveles) == dict):
                 request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, niveles['nombre']))
@@ -39,6 +45,8 @@ class Proxy(View):
                 for nivel in niveles:
                     request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, nivel['nombre']))
         if('facultades' in request.POST):
+            request_body['facultades'] = []
+
             facultades = ast.literal_eval(request.POST['facultades'])
             if(type(facultades) == dict):
                 request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultades['nombre']))
@@ -46,12 +54,14 @@ class Proxy(View):
                 for facultad in facultades:
                     request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultad['nombre']))
         if('palabras' in request.POST):
+            request_body['palabras_clave'] = []
+
             palabras = ast.literal_eval(request.POST['palabras'])
             if(type(palabras) == dict):
-                request_body['palabras'].append(self.ObtenerIDObjeto(PalabrasClave, palabras['nombre']))
+                request_body['palabras_clave'].append(self.ObtenerIDObjeto(PalabrasClave, palabras['nombre']))
             elif(type(palabras) == tuple):
                 for palabra in palabras:
-                    request_body['palabras'].append(self.ObtenerIDObjeto(PalabrasClave, palabra['nombre']))
+                    request_body['palabras_clave'].append(self.ObtenerIDObjeto(PalabrasClave, palabra['nombre']))
                     
         for key in request.POST:
             if(not (key in ['lineas', 'niveles', 'facultades', 'palabras', 'csrfmiddlewaretoken'])):
