@@ -66,10 +66,9 @@ class Proxy(View):
         r = requests.post(f'http://localhost:8000{pathname}', request_body, cookies = {
             'csrftoken': csrf_token,
             'sessionid': request.COOKIES['sessionid'],
-        }, headers = {'connection': 'close'}, files = files)
-        print(r)
+        }, files = files)
 
-        return HttpResponse(200)
+        return HttpResponse(r.text)
 
     def ObtenerIDObjeto(self, modelo: Any, nombre_objeto: str) -> int:
         objeto = modelo.objects.filter(models.Q(nombre__exact = nombre_objeto)).first()
