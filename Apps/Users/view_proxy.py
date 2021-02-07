@@ -6,7 +6,7 @@ from typing import Any
 from django.http.response import HttpResponse
 from django.views import View
 from django.db import models
-from .models import Facultad, LineaInvestigacion, Nivel
+from .models import Facultad, LineaInvestigacion, Nivel, PalabrasClave
 import ast
 import requests
 
@@ -20,6 +20,9 @@ class Proxy(View):
         }
 
         files = []
+
+        # Este header se utiliza para saber a que URL mandar la petición que se está procesando
+        pathname = request.headers['PROXY']
 
         if(request.POST['lineas']):
             lineas = ast.literal_eval(request.POST['lineas'])
@@ -45,10 +48,10 @@ class Proxy(View):
         if(request.POST['palabras']):
             palabras = ast.literal_eval(request.POST['palabras'])
             if(type(palabras) == dict):
-                request_body['palabras'].append(self.ObtenerIDObjeto(Facultad, palabras['nombre']))
+                request_body['palabras'].append(self.ObtenerIDObjeto(PalabrasClave, palabras['nombre']))
             elif(type(palabras) == tuple):
                 for palabra in palabras:
-                    request_body['palabras'].append(self.ObtenerIDObjeto(Facultad, palabra['nombre']))
+                    request_body['palabras'].append(self.ObtenerIDObjeto(PalabrasClave, palabra['nombre']))
                     
         for key in request.POST:
             if(not (key in ['lineas', 'niveles', 'facultades', 'palabras', 'csrfmiddlewaretoken'])):
@@ -57,13 +60,14 @@ class Proxy(View):
         for key in request.FILES:
             files.append((key, (request.FILES[key].name, request.FILES[key].read(), request.FILES[key].content_type)))
 
-        csrf_token = requests.get('http://localhost:8000/profile').cookies['csrftoken']
+        csrf_token = requests.get(f'http://localhost:8000/{pathname}').cookies['csrftoken']
         request_body['csrfmiddlewaretoken'] = csrf_token
 
-        requests.post('http://localhost:8000/profile', request_body, cookies = {
+        r = requests.post(f'http://localhost:8000/{pathname}', request_body, cookies = {
             'csrftoken': csrf_token,
             'sessionid': request.COOKIES['sessionid'],
         }, headers = {'connection': 'close'}, files = files)
+        print(r)
 
         return HttpResponse(200)
 
