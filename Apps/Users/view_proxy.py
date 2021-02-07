@@ -15,7 +15,8 @@ class Proxy(View):
         request_body = {
             'investigaciones': [],
             'niveles': [],
-            'facultades': []
+            'facultades': [],
+            'palabras': []
         }
 
         files = []
@@ -41,9 +42,16 @@ class Proxy(View):
             elif(type(facultades) == tuple):
                 for facultad in facultades:
                     request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultad['nombre']))
+        if(request.POST['palabras']):
+            palabras = ast.literal_eval(request.POST['palabras'])
+            if(type(palabras) == dict):
+                request_body['palabras'].append(self.ObtenerIDObjeto(Facultad, palabras['nombre']))
+            elif(type(palabras) == tuple):
+                for palabra in palabras:
+                    request_body['palabras'].append(self.ObtenerIDObjeto(Facultad, palabra['nombre']))
                     
         for key in request.POST:
-            if(not (key in ['lineas', 'niveles', 'facultades', 'csrfmiddlewaretoken'])):
+            if(not (key in ['lineas', 'niveles', 'facultades', 'palabras', 'csrfmiddlewaretoken'])):
                 request_body[key] = request.POST[key]
         
         for key in request.FILES:
@@ -52,7 +60,7 @@ class Proxy(View):
         csrf_token = requests.get('http://localhost:8000/profile').cookies['csrftoken']
         request_body['csrfmiddlewaretoken'] = csrf_token
 
-        r = requests.post('http://localhost:8000/profile', request_body, cookies = {
+        requests.post('http://localhost:8000/profile', request_body, cookies = {
             'csrftoken': csrf_token,
             'sessionid': request.COOKIES['sessionid'],
         }, headers = {'connection': 'close'}, files = files)
