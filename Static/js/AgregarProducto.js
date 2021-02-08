@@ -38,16 +38,20 @@ form.addEventListener('submit', async (event) => {
         }
 
         try {
-            await fetch('/proxy', {
+            let request = await fetch('/proxy', {
                 method: 'POST',
                 headers: {
                     'PROXY': document.location.pathname
                 },
                 body: data
-            }).then(() => {
-                location.reload();
-            })
+            });
+
+            let html = await request.text();
+
+            messageDOM = new DOMParser().parseFromString(html, 'text/html');
+            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+
         } catch (error) {
-            console.error("Error mandando la actualización de perfil");
+            console.error(`Error agregando producto ${error}`);
         }
 })
