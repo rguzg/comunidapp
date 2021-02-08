@@ -18,47 +18,62 @@ form.addEventListener('submit', async (event) => {
     
     // Añadir los valores de los PillsBox
     let pills_lineas = lineas_investigacion.querySelectorAll('.m-pills');
-    let lineas_array = [];
 
-    pills_lineas.forEach(element => {
-        lineas_array.push(JSON.stringify({
-            id: element.dataset.id,
-            nombre: element.firstChild.textContent
-         }));
-    });
-    data.append("lineas", lineas_array);
+    if(pills_lineas.length != 0){
+        let lineas_array = [];
+    
+        pills_lineas.forEach(element => {
+            lineas_array.push(JSON.stringify({
+                id: element.dataset.id,
+                nombre: element.firstChild.textContent
+             }));
+        });
+        data.append("lineas", lineas_array);
+    }
 
     let pills_niveles = niveles.querySelectorAll('.m-pills');
-    let niveles_array = [];
-
-    pills_niveles.forEach(element => {
-       niveles_array.push(JSON.stringify({
-           id: element.dataset.id,
-           nombre: element.firstChild.textContent
-        }));
-    });
-    data.append("niveles", niveles_array);
+    if(pills_niveles.length != 0){
+        let niveles_array = [];
+    
+        pills_niveles.forEach(element => {
+           niveles_array.push(JSON.stringify({
+               id: element.dataset.id,
+               nombre: element.firstChild.textContent
+            }));
+        });
+        data.append("niveles", niveles_array);        
+    }
 
     let pills_facultades = facultades.querySelectorAll('.m-pills');
-    let facultades_array = [];
 
-    pills_facultades.forEach(element => {
-       facultades_array.push(JSON.stringify({
-           id: element.dataset.id,
-           nombre: element.firstChild.textContent
-        }));
-    });
-    data.append("facultades", facultades_array);
+    if(pills_facultades.length != 0){
+        let facultades_array = [];
+    
+        pills_facultades.forEach(element => {
+           facultades_array.push(JSON.stringify({
+               id: element.dataset.id,
+               nombre: element.firstChild.textContent
+            }));
+        });
+        data.append("facultades", facultades_array);
+    }
 
     try {
-        await fetch('/proxy', {
+        let request = await fetch('/proxy', {
             method: 'POST',
-            body: data
-        }).then(() => {
-            location.reload();
-        })
+            body: data,
+            headers: {
+                'PROXY': document.location.pathname
+            },
+        });
+
+        let html = await request.text();
+        
+        let messageDOM = new DOMParser().parseFromString(html, 'text/html');
+        document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+
     } catch (error) {
-        console.error("Error mandando la actualización de perfil");
+        console.error(`Error mandando la actualización de perfil ${error}`);
     }
 
 });
