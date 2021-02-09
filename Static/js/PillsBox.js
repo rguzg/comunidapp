@@ -5,44 +5,36 @@
     - Contenedor: Contenedor donde se colocara la PillsBox
     - Recurso: Nombre del recurso de donde se obtendrá la información de autocompletar y las pills seleccionadas
 
-    El recurso que obtiene la información de autocompletar debe tener el siguiente formato:
-    { key: ["resultado", "resultado2"...]}
-
-    El recurso que obtiene la información de pills seleccionadas debe tener el siguiente formato:
+    Los recursos tendrán el siguiente formato:
     [ 
         {
-            key: "pill"
+            id: 0,
+            nombre: "pill"
         },
 
         {
-            key: "pill"
+            id: 0,
+            nombre: "pill"
         }
         ...
     ]
 
 */
 async function PillsBox(contenedor, recurso){
-    let selected_pills = [];
-
     let request = await fetch(`/api/${recurso}`);
-    let resources = await request.json();
-
-    resources.forEach((element) => {
-        let key_name = Object.keys(element);
-        selected_pills.push(element[key_name]);
-    })
-
+    let selected_pills = await request.json();
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
 
-    let new_pill = (pill_text) => {
+    let new_pill = (pill_object) => {
         let pill = document.createElement('div');
         pill.classList.add('m-pills');
+        pill.setAttribute('data-id', pill_object.id);
 
         let text = document.createElement('span');
         text.classList.add("h-text-overflow");
         text.style.maxWidth = "100px";
-        text.textContent = pill_text;
+        text.textContent = pill_object.nombre;
         
         let delete_icon = document.createElement('i');
         delete_icon.classList.add("fas", "fa-times", "mb-0");
@@ -82,10 +74,10 @@ async function PillsBox(contenedor, recurso){
         return pill;
     };
 
-    let generate_pills = (text_array, container) => {
+    let generate_pills = (selected_pills, container) => {
         let pills = [];
 
-        text_array.forEach(selected_pill => {
+        selected_pills.forEach(selected_pill => {
             let pill = new_pill(selected_pill);
             pills.push(pill);
         });
@@ -111,11 +103,10 @@ async function PillsBox(contenedor, recurso){
         text_array.forEach((element) => {
             if(element != "" && element != " "){
                 let trimmed_element = element.trimEnd().trimStart();
-
-                // ¿Qué pasa si se repite un elemento?
-                if(!new_pills.includes(trimmed_element)){
-                    new_pills.push(trimmed_element);
-                }
+                new_pills.push({
+                    id: 0,
+                    nombre: trimmed_element
+                });
             }
         });
 
@@ -125,16 +116,25 @@ async function PillsBox(contenedor, recurso){
     }
     
     let generate_autocomplete = async (query_text) => {
-        let generate_result = (text) => {
+        /*
+        generate_result recibe result_object que contiene el id del objeto de la base de datos que se está
+        sugiriendo y el texto que va a ir en span.m-search-result. result_object tiene el siguiente formato:
+        
+        {
+            id: 0,
+            nombre: "pill"
+        },
+        */   
+        let generate_result = (result_object) => {
             let span = document.createElement('span');
             span.classList.add('p-2', 'col-12', 'm-search-result')
-            span.innerText = text;
+            span.innerText = result_object.nombre;
 
             span.addEventListener('click', () => {
                 let split_input = pill_input.value.split(',');
 
                 // Regenerar el value de pill_input a partir de lo que hay en el arreglo split_input
-                split_input[split_input.length - 1] = text;
+                split_input[split_input.length - 1] = result_object.nombre;
                 pill_input.value = ""
 
                 split_input.forEach((element) => {
@@ -166,10 +166,8 @@ async function PillsBox(contenedor, recurso){
 
             let request = await fetch(`/buscar/${recurso}?q=${query_text}`);
             let resources = await request.json();
-            
-            let key_name = Object.keys(resources)[0];
 
-            resources[key_name].forEach((element) => {
+            resources['mensaje'].forEach((element) => {
                 contenedor_resultado.appendChild(generate_result(element));
             });
 
@@ -199,4 +197,25 @@ async function PillsBox(contenedor, recurso){
     })
 
     generate_pills(selected_pills, pill_container);
+
 }
+
+function CreateFormData(form){
+    let data = new FormData();
+    
+    // Agregar al FormData el valor de todos los inputs excepto los que sean botones o inputs de PillsBox
+    for (let i = 0; i < form.elements.length; i++) {
+        let element = form.elements[i];
+
+        if(element.type != "submit" && element.type != "button" && element.name != "input_pill"){
+            if(element.type == "file"){
+                data.append(element.name, element.files[0]);
+            } else {
+                data.append(element.name, element.value);
+            }
+        }
+    }
+
+   return data;
+};
+

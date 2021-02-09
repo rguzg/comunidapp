@@ -8,7 +8,7 @@
 <script src="{% static 'js/PillsBox.js' %}"></script>
 
 <div class="container l-main">
-    <div class="row">
+    <div class="row" id="messages">
         <div class="col-12 p-0">
             {% if is_peticion %}
                 <div class="alert alert-warning">
@@ -74,7 +74,7 @@
     </div>
     <div class="row">
             <!-- Formulario de actualización de datos -->
-        <form class="col-12 p-0" method="POST" enctype="multipart/form-data">
+        <form class="col-12 p-0" method="POST" enctype="multipart/form-data" id="perfilForm">
             {% csrf_token %}
             {{form.user}}
             <div class="l-form">
@@ -129,7 +129,7 @@
                                 </div>
                             </div>  
                             <div class="m-form-input">
-                                <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas facultades aquí">
+                                <input class="m-pill-input_search" type="text" name="input_pill" placeholder="Escribe nuevas facultades aquí">
                             </div>
                             <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                             </div>
@@ -153,7 +153,7 @@
                                 </div>
                             </div>  
                             <div class="m-form-input">
-                                <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                <input class="m-pill-input_search" type="text" name="input_pill" placeholder="Escribe nuevas lineas aquí">
                             </div>
                             <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                             </div>
@@ -167,7 +167,7 @@
                                 </div>
                             </div>  
                             <div class="m-form-input">
-                                <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas niveles aquí">
+                                <input class="m-pill-input_search" type="text" name="input_pill" placeholder="Escribe nuevas niveles aquí">
                             </div>
                             <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                             </div>
@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="col-12 p-0 m-form-button">
-                <input class="btn m-button mr-2" id="cancel" value="Descartar Cambios">
+                <input class="btn m-button mr-2" id="cancel" type="button" value="Descartar Cambios">
                 <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Aplicar Cambios">
             </div>
         </form>
