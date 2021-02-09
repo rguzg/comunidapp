@@ -22,10 +22,15 @@ class Proxy(View):
         if('lineas' in request.POST):
             key = ""
 
+            # El nombre que tiene el field de lineas de investigación depende cambia según el form al que se
+            # va a mandar
             if(pathname == '/profile'):
                 key = 'lineas'
             else:
-                key = 'lineas_investigacion'
+                if(pathname == '/add/profesor'):
+                    key = 'investigaciones'
+                else:
+                    key = 'lineas_investigacion'
 
             request_body[key] = []
 
