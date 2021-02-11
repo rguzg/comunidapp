@@ -456,7 +456,7 @@ a:hover{
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    flex-basis: 0;
+    /* flex-basis: fill; */
     width: 100%;
 }
 
@@ -471,19 +471,25 @@ a:hover{
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 12px;
+    font-size:15px;
+}
+
+.m-form-input label{
+    font-size: 15px;
 }
 
 /* Form Input Components */
 .m-form-checkbox{
-    width: 20px !important;
+    width: 24px !important;
 }
 
 .m-form-button{
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-end;
     margin-top: 20px;
     margin-bottom: 20px;
+    height: 145px;
 }
 
 .m-form-button > div{
