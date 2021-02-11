@@ -14,7 +14,7 @@
     {% block content %}
 
     <div class="container l-main">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-12">
                 <!-- Mensaje de exito -->
                 {% if messages %}
@@ -54,13 +54,18 @@
                 {% endif %}
             </div>
         </div>
-        <div class="row">
+        <!-- Start Title of page  -->
+        <!-- <div class="row mt-5">
             <div class="col-12 m-title">
                 <h3>Agregar Usuarios</h3>
             </div>
-        </div>
+        </div> -->
+        <!-- End title of the page -->
+
+        <!-- START THE CONTAINER OF THE FORM -->
         <div class="card">
-            <div class="card-header pt-0">
+        <!-- Start of title of card  | Row of tabs {Admin, Professor} -->
+            <div class="card-header pt-0 mt-5">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
                         <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
@@ -89,54 +94,71 @@
                     {% endif %}
 
                     <!-- Mostrando los campos del formulario -->
-                    <div class="l-form">
-                        <div class="col-4 pl-0">
-                            <div class="m-form-input col-11">
-                                <label for="id_username">{{form.username.label}}</label>
-                                {{form.username}}
-                            </div>
-                            <div class="m-form-input col-11">
-                                <label for="id_password1">{{form.password1.label}}</label>
-                                {{form.password1}}
-                            </div>
-                            <div class="m-form-input col-11">
-                                <label for="id_password2">{{form.password2.label}}</label>
-                                {{form.password2}}
-                            </div>
+                    <div class="l-form d-flex flex-column">
+                        <!-- Start personal data inputs -->
+                        <div class="row pl-0 d-flex flex-row">
+                            <h5 class="col-12 mb-2">Información Personal</h5>
+                            <!-- Fisrt name -->
                             {% if form.first_name %}
-                            <div class="m-form-input col-11">
+                            <div class="m-form-input col-4">
                                 <label for="id_first_name">{{form.first_name.label}}</label>
                                 {{form.first_name}}
                             </div>
                             {% endif %}
+                            <!-- Last name -->
                             {% if form.last_name %}
-                            <div class="m-form-input col-11">
+                            <div class="m-form-input col-4">
                                 <label for="id_last_name">{{form.last_name.label}}</label>
                                 {{form.last_name}}
                             </div>
                             {% endif %}
-                            {% if form.clave %}
-                            <div class="m-form-input col-11">
-                                <label for="id_clave">{{form.clave.label}}</label>
-                                {{form.clave}}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-4 pl-0">
-                            {% if form.nacimiento %}
-                            <div class="m-form-input col-11">
-                                <label for="id_nacimiento">{{form.nacimiento.label}}</label>
-                                {{form.nacimiento|addclass:'datepicker'}}
-                            </div>
-                            {% endif %}
+                            
                             {% if form.sexo %}
-                            <div class="m-form-input col-11">
+                            <div class="m-form-input col-4">
                                 <label for="id_sexo">{{form.sexo.label}}</label>
                                 {{form.sexo}}
                             </div>
                             {% endif %}
+                            
+                            {% if form.nacimiento %}
+                            <div class="m-form-input col-4">
+                                <label for="id_nacimiento">{{form.nacimiento.label}}</label>
+                                {{form.nacimiento|addclass:'datepicker'}}
+                            </div>
+                            {% endif %}
+                            <div class="m-form-input col-4">
+                                <label for="id_username">{{form.username.label}}</label>
+                                {{form.username}}
+                            </div>
+                            <div class="m-form-input col-4">
+                                <label for="id_password1">{{form.password1.label}}</label>
+                                {{form.password1}}
+                            </div>
+                            <div class="m-form-input col-4">
+                                <label for="id_password2">{{form.password2.label}}</label>
+                                {{form.password2}}
+                            </div>
+    
+                        </div>
+                        <!-- Start academic data inputs -->
+                        <div class="row pl-0 d-flex flex-row">
+                            {% if form.clave %}
+                            <h5 class="col-12 mb-2 mt-3">Información Acádemica</h5>
+                            <div class="m-form-input col-4">
+                                <label for="id_clave">{{form.clave.label}}</label>
+                                {{form.clave}}
+                            </div>
+                            {% endif %}
+                            
+                            {% if form.cuerpoAcademico %}
+                            <div class="m-form-input col-4">
+                                <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
+                                {{form.cuerpoAcademico}}
+                            </div> 
+                            {% endif %}
+
                             {% if form.contratacion %}
-                            <div class="m-form-input col-11">
+                            <div class="m-form-input col-4">
                                 <label for="id_contratacion">{{form.contratacion.label}}</label>
                                 <div class="col-12 pl-0 h-align-center">
                                     {{ form.contratacion }}
@@ -149,32 +171,19 @@
                                 </div>
                             </div>
                             {% endif %}
-                            {% if form.cuerpoAcademico %}
-                            <div class="m-form-input col-11">
-                                <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
-                                {{form.cuerpoAcademico}}
-                            </div> 
-                            {% endif %}
+                            
                             {% if form.grado %}
-                            <div class="m-form-input col-11">
+                            <div class="m-form-input col-4">
                                 <label for="id_grado">{{form.grado.label}}</label>
                                 {{form.grado}}
                             </div>
                             {% endif %}
-                            {% if form.publico %}
-                            <div class="m-form-input col-11 justify-content-center" style="height: 70px; padding-top: 35px;">
-                                <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="Si activas esta opción, cualquier usuario de la plataforma podra ver tu información de contacto y tus productos">
-                                    {{form.publico|addclass:'m-form-checkbox'}}
-                                    <span for="id_publico" class="mx-2">{{form.publico.label}}</span>
-                                    <i class="fas fa-question-circle mb-0"></i>
-                                </div>
-                            </div>
-                            {% endif %}
                         </div>
-                        <div class="col-4 pl-0 ">
+                        <!-- Start the pills squares -->
+                        <div class="row d-flex flex-row mt-3 ">
                             {% if form.foto %}
+                            <div class="m-file col-4">
                             <label>{{form.foto.label}}</label>
-                            <div class="m-file col-11 p-0">
                                 <label class="m-file_input h-text-overflow" for="id_foto">
                                     <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
                                     Sube una nueva foto de perfil
@@ -183,7 +192,8 @@
                             </div>
                             {% endif %}
                             {% if form.facultades %}
-                            <div class="m-form-input col-11 mb-2 p-0" id="pills_facultades">
+                            <!-- Start the pills  -->
+                            <div class="m-form-input col-4 mb-2 id="pills_facultades">
                                 <label for="id_investigaciones">{{form.facultades.label}}</label>
                                 <div class="col-12 p-0">
                                     <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -199,7 +209,7 @@
                             </div>
                             {% endif %}
                             {% if form.investigaciones %}
-                            <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                            <div class="m-form-input col-4 mb-2 " id="pills_lineas">
                                 <label for="id_investigaciones">{{form.investigaciones.label}}</label>
                                 <div class="col-12 p-0">
                                     <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -213,7 +223,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="m-form-input col-11 mb-2 p-0" id="pills_niveles">
+                            <div class="m-form-input col-4 mb-2" id="pills_niveles">
                                 <label for="id_investigaciones">{{form.niveles.label}}</label>
                                 <div class="col-12 p-0">
                                     <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -228,10 +238,19 @@
                                 </div>
                             </div>
                             {% endif %}
+                            {% if form.publico %}
+                            <div class="m-form-input col-4 justify-content-center h-100" style="padding-top: 35px;">
+                                <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="Si activas esta opción, cualquier usuario de la plataforma podra ver tu información de contacto y tus productos">
+                                    {{form.publico|addclass:'m-form-checkbox'}}
+                                    <span for="id_publico" class="mx-2">{{form.publico.label}}</span>
+                                    <i class="fas fa-question-circle mb-0"></i>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-4 d-flex align-items-end m-form-button">
+                                <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Agregar Usuario">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 pl-0 m-form-button">
-                        <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Agregar Usuario">
                     </div>
                 </form>
             </div>
