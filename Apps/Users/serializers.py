@@ -4,19 +4,19 @@ from rest_framework.serializers import ModelSerializer
 class LineasInvestigacion_Serializer(ModelSerializer):
     class Meta:
         model = LineaInvestigacion
-        exclude = ['id']
+        fields = '__all__'
 
 class Facultad_Serializer(ModelSerializer):
     class Meta:
         model = Facultad
-        exclude = ['id']
+        fields = '__all__'
 
 class Nivel_Serializer(ModelSerializer):
     class Meta:
         model = Nivel
-        exclude = ['id']
+        fields = '__all__'
 
 class PalabrasClave_Serializer(ModelSerializer):
     class Meta:
         model = PalabrasClave
-        exclude = ['id']
+        fields = '__all__'
