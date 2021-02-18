@@ -24,13 +24,10 @@ class Proxy(View):
 
             # El nombre que tiene el field de lineas de investigación depende cambia según el form al que se
             # va a mandar
-            if(pathname == '/profile'):
-                key = 'lineas'
+            if(pathname == '/add/profesor' or pathname == '/profile'):
+                key = 'investigaciones'
             else:
-                if(pathname == '/add/profesor'):
-                    key = 'investigaciones'
-                else:
-                    key = 'lineas_investigacion'
+                key = 'lineas_investigacion'
 
             request_body[key] = []
 
