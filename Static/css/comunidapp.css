@@ -115,13 +115,13 @@ a:hover{
     display: flex;
 }
 
-.l-form > div {
+/* .l-form > div {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     width: 100%;
     justify-content: flex-start;
-}
+} */
 
 .l-popup{
     min-height: calc(100% - 55px);
@@ -281,8 +281,14 @@ a:hover{
     width: 200px;
 }
 
+.m-user-info__text h5{
+    font-size: 18px;
+    margin: 10px 0;
+}
+
 .m-user-info__text > p {
-    margin-bottom: 0;
+    margin: 0 0 8px 0;
+    font-size: 14px;
 }
 
 .m-button{
@@ -291,7 +297,7 @@ a:hover{
     font-size: 15px;
     margin-top: 4px;
     min-width: 122px;
-    border-radius: 25px;
+    border-radius: 8px;
 }
 
 .m-button--comunidapp{
@@ -520,7 +526,7 @@ a:hover{
     color: var(--dark-grey);
     border-radius: .25rem;
     border: 1px solid var(--border-grey);
-    height: 120px;
+    height: 136px;
     background: #FFFFFF;
 }
 

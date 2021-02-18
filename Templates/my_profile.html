@@ -7,7 +7,7 @@
 <script defer src="{% static 'js/EditarPerfil.js' %}"></script>
 <script src="{% static 'js/PillsBox.js' %}"></script>
 
-<div class="container l-main">
+<div class="container l-main mt-5 pt-5">
     <div class="row" id="messages">
         <div class="col-12 p-0">
             {% if is_peticion %}
@@ -67,8 +67,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 m-title">
-            <h3>Editar Perfil</h3>
+        <div class="col-12 m-title p-0">
+            <h3 class="mb-1">Editar Perfil</h3>
             <small>Tus cambios deben ser aprobados antes de que se vean reflejados en tu perfil</small>
         </div>
     </div>
@@ -77,75 +77,83 @@
         <form class="col-12 p-0" method="POST" enctype="multipart/form-data" id="perfilForm">
             {% csrf_token %}
             {{form.user}}
-            <div class="l-form">
-                <div class="col-4 pl-0">
-                    <div class="m-form-input col-11">
+            <div class="l-form flex-column">
+            <!-- Starts the Academic information --->
+                <div class="row pl-0 d-flex flex-row">
+                     <h5 class="col-12 my-2">Información Personal</h5>
+                    <div class="m-form-input col-4">
                         <label for="id_first_name">{{form.first_name.label}}</label>
                         {{form.first_name}}
                     </div>
-                    <div class="m-form-input col-11">
+                    <div class="m-form-input col-4">
                         <label for="id_last_name">{{form.last_name.label}}</label>
                         {{form.last_name}}
                     </div>
-                    <div class="m-form-input col-11">
+                    <div class="m-form-input col-4">
                         <label for="id_email">{{form.email.label}}</label>
                         {{form.email}}
                     </div>
-                    <div class="m-form-input col-11">
-                        <label for="id_clave">{{form.clave.label}}</label>
-                        {{form.clave}}
-                    </div>
-                    <div class="m-form-input col-11">
+                    <div class="m-form-input col-4">
                         <label for="id_nacimiento">{{form.nacimiento.label}}</label>
                         {{form.nacimiento|addclass:'datepicker'}}
                     </div>
-                    <div class="m-form-input col-11">
+                    <div class="m-form-input col-4">
                         <label for="id_sexo">{{form.sexo.label}}</label>
                         {{form.sexo}}
                     </div>
                 </div>
-                <div class="col-4 pl-0">
-                    <div class="m-form-input col-11">
-                        <label for="id_contratacion">{{form.contratacion.label}}</label>
-                        {{ form.contratacion }}
+                <!-- Starts the Academic inputs -->
+                <div class="row pl-0 d-flex flex-row">
+                    <h5 class="col-12 mb-2 mt-3">Información Acádemica</h5>
+                    <div class="m-form-input col-4">
+                        <label for="id_clave">{{form.clave.label}}</label>
+                        {{form.clave}}
                     </div>
-                    <div class="m-form-input col-11">
+                    
+                    <div class="m-form-input col-4">
                         <label for="id_cuerpoAcademico">{{form.cuerpoAcademico.label}}</label>
                         {{form.cuerpoAcademico}}
                     </div> 
-                    <div class="m-form-input col-11">
+
+                    <div class="m-form-input col-4">
+                        <label for="id_contratacion">{{form.contratacion.label}}</label>
+                        {{ form.contratacion }}
+                    </div>
+
+                    <div class="m-form-input col-4">
                         <label for="id_grado">{{form.grado.label}}</label>
                         {{form.grado}}
                     </div>
-                    <div class="m-form-input col-11">
+                    <div class="m-form-input col-4">
                         <label for="id_publico">{{form.publico.label}}</label>
                         {{form.publico}}
                     </div>
-                    <div class="m-form-input col-11 mb-2 p-0" id="pills_facultades">
-                        <label for="id_investigaciones">{{form.facultades.label}}</label>
-                        <div class="col-12 p-0">
-                            <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                <div class="m-pill-input_selected-pills col-12">
-                                </div>
-                            </div>  
-                            <div class="m-form-input">
-                                <input class="m-pill-input_search" type="text" name="input_pill" placeholder="Escribe nuevas facultades aquí">
-                            </div>
-                            <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <div class="col-4 pl-0">
-                    <label>{{form.foto.label}}</label>
-                    <div class="m-file col-11 p-0">
+                <div class="row pl-0 d-flex flex-row">
+                <!-- Profile picture -->
+                <div class="m-file col-4">
+                        <label>{{form.foto.label}}</label>
                         <label class="m-file_input h-text-overflow" for="id_foto">
                             <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
                             Sube una nueva foto de perfil
                         </label>
                         <input type="file" name="foto" accept="image/*" class="h-display-none" id="id_foto">
                     </div>
-                    <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                <!-- Start de pills squares -->
+                    <div class="m-form-input col-4 mb-2" id="pills_facultades">
+                        <label for="id_investigaciones">{{form.facultades.label}}</label>
+                        <div class="col-12 p-0">
+                            <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                <div class="m-pill-input_selected-pills col-12"></div>
+                            </div>  
+                            <div class="m-form-input">
+                                <input class="m-pill-input_search" type="text" name="input_pill" placeholder="Escribe nuevas facultades aquí">
+                            </div>
+                            <div class="m-pill-input_searchbox h-display-none" id="searchbox"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="m-form-input col-4 mb-2" id="pills_lineas">
                         <label for="id_investigaciones">{{form.investigaciones.label}}</label>
                         <div class="col-12 p-0">
                             <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -159,7 +167,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="m-form-input col-11 mb-2 p-0" id="pills_niveles">
+                    <div class="m-form-input col-4 mb-2" id="pills_niveles">
                         <label for="id_investigaciones">{{form.niveles.label}}</label>
                         <div class="col-12 p-0">
                             <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -173,11 +181,12 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Bottom Buttons -->
+                    <div class="col-8 m-form-button">
+                        <input class="btn m-button mr-2" id="cancel" type="button" value="Descartar Cambios">
+                        <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Aplicar Cambios">
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 p-0 m-form-button">
-                <input class="btn m-button mr-2" id="cancel" type="button" value="Descartar Cambios">
-                <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Aplicar Cambios">
             </div>
         </form>
     </div>

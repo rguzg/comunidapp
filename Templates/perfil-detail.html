@@ -10,11 +10,11 @@
 
 
     <!-- Contenedor Principal -->
-    <div class="container l-main">
+    <div class="container l-main mt-5 pt-5">
         <div class="row">
             <div class="col-12 l-grid">
-                <div class="col-4">
-                    <div class="m-user-info col-12">
+                <div class="col-3">
+                    <div class="m-user-info col-12 d-flex flex-column p-0 pt-3">
                         <div class="m-profile-picture m-profile-picture--big"
                             style="
                             {% if user.foto %}
@@ -22,7 +22,7 @@
                             {% else %}
                                 background-image: url({% static 'img/person.jpg' %});
                             {% endif %}"></div>
-                        <div class="m-user-info__text">
+                        <div class="m-user-info__text col-12 p-0 mt-2">
                             <h5>{{user.get_full_name}}</h5>
                             {% if user.publico %}
                                 <p>{{user.email}}</p>
@@ -37,25 +37,25 @@
                         </div>
                     </div>
                     {% if user.publico %}
-                        <div class="col-12">
+                        <div class="col-12 mt-3">
                             <b>Clave de Empleado</b>
                             <p>{{user.clave}}</p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mt-3">
                             <b>Género</b>
                             <p>{{user.get_sexo_display}}</p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mt-3">
                             <b>Estudios</b>
                             <p>{{user.get_grado_display}}</p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mt-3">
                             <b>Niveles</b>
                             <p>
                                 {{user.niveles.all|join:' • '}}
                             </p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mt-3">
                             <b>Facultad</b>
                             <p>
                                 {{user.facultades.all|join:' • '}}
@@ -63,9 +63,9 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="col-8 m-publications">
+                <div class="col-9 m-publications pt-3">
                     <div class="row">
-                        <div class="col-12 m-publications__lineas">
+                        <div class="col-12 m-publications__lineas mb-3">
                             <b>Lineas de Investigación</b>
                             <div class="l-pill-container">
                                 {% for linea in user.investigaciones.all %}

@@ -45,8 +45,8 @@ ul.errorlist{
     box-sizing: border-box;
 }
 .form-container{
-     background: #fff;
-    opacity: .85;
+    background: #fff;
+    opacity: 1;
 }
 
 .bg-blue{

@@ -14,7 +14,7 @@
     {% block content %}
 
     <div class="container l-main">
-        <div class="row mt-4" id="messages">
+        <div class="row mt-5 pt-4" id="messages">
             <div class="col-12">
                 <!-- Mensaje de exito -->
                 {% if messages %}
@@ -65,7 +65,7 @@
         <!-- START THE CONTAINER OF THE FORM -->
         <div class="card">
         <!-- Start of title of card  | Row of tabs {Admin, Professor} -->
-            <div class="card-header pt-0 mt-5">
+            <div class="card-header pt-0">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
                         <a class="nav-link {% if producto == 'administrador' %}active{% endif %}"
