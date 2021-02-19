@@ -24,13 +24,20 @@
             {% endif %}
             
     
-            <!-- Mensaje de exito -->
+            <!-- Mensaje de exito e informacion-->
             {% if messages %}
-                <div class="alert alert-success">
-                    {% for message in messages %}
-                        <strong>{{message}} </strong>
-                    {% endfor %}
-                </div>
+                {% for message in messages %}
+                    {%if 'info' in message.tags%}
+                        <div class="alert alert-info">
+                                <strong>{{message}}</strong>
+                        </div>
+                    {% endif %}
+                    {% if 'success' in message.tags %}
+                        <div class="alert alert-success">
+                            <strong>{{message}}</strong>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
     
             <!-- Mensajes de error sin campo asociado -->
