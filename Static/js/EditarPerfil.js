@@ -2,7 +2,7 @@
     Esta función agrega o quita el atributo disabled de boton_submit dependiendo de si los valores del form han cambiado o no
 */
 
-const VerificarCambiosForm = (form, boton_submit) => {
+const VerificarCambiosForm = (form, boton_submit, pill_inputs) => {
     if(form instanceof HTMLFormElement){
         let original_values = {};
         let current_values = {};
@@ -28,15 +28,18 @@ const VerificarCambiosForm = (form, boton_submit) => {
                             boton_submit.setAttribute('disabled', '');
                         }
                     }
-
                 });
         
                 original_values[element.name] = element.value;
-            }
-
+            }    
         }
-
+        
         // Verificación que no hayan cambiado las pills que no agregó el usuario
+        pill_inputs.forEach((pill_input) => {
+            pill_input.addEventListener('pill_deleted', (() => {
+                boton_submit.removeAttribute('disabled');
+            }));
+        });
     } else {
         throw new TypeError("form debe ser un HTMLFormElement")
     }
@@ -54,7 +57,7 @@ PillsBox(facultades, 'facultades');
 const form = document.querySelector('#perfilForm');
 const boton_submit = form.querySelector('input[type="submit"]');
 
-VerificarCambiosForm(form, boton_submit)
+VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 /* Para poder enviar los datos que hay en los PillsBox.
 JavaScript se va a encargar de crear el formdata que se le va a enviar al servidor. */
