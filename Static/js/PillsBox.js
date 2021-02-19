@@ -26,6 +26,9 @@ async function PillsBox(contenedor, recurso){
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
 
+    // Por el momento, evento no se emite cuando se elimina una pill agregada por el usuario
+    let pill_deleted_event = new CustomEvent('pill_deleted');
+
     let new_pill = (pill_object) => {
         let pill = document.createElement('div');
         pill.classList.add('m-pills');
@@ -66,6 +69,7 @@ async function PillsBox(contenedor, recurso){
 
         delete_container.addEventListener('click', () => {
             delete_pill(pill);
+            contenedor.dispatchEvent(pill_deleted_event);
         });
 
         pill.appendChild(text);
