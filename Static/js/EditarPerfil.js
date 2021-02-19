@@ -34,9 +34,9 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs) => {
             }    
         }
         
-        // Verificación que no hayan cambiado las pills que no agregó el usuario
+        // Quitar el atributo disabled de boton_submit si se elimina una pill que no fue agregada por el usuario
         pill_inputs.forEach((pill_input) => {
-            pill_input.addEventListener('pill_deleted', (() => {
+            pill_input.addEventListener('pill_deleted', ((event) => {
                 boton_submit.removeAttribute('disabled');
             }));
         });

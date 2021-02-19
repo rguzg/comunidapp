@@ -26,10 +26,11 @@ async function PillsBox(contenedor, recurso){
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
 
-    // Por el momento, evento no se emite cuando se elimina una pill agregada por el usuario
-    let pill_deleted_event = new CustomEvent('pill_deleted');
-
+    
     let new_pill = (pill_object) => {
+        // Por el momento, evento no se emite cuando se elimina una pill agregada por el usuario
+        let pill_deleted_event = new CustomEvent('pill_deleted', {detail: pill_object});
+
         let pill = document.createElement('div');
         pill.classList.add('m-pills');
         pill.setAttribute('data-id', pill_object.id);
