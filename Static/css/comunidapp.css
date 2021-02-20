@@ -495,7 +495,7 @@ a:hover{
     justify-content: flex-end;
     margin-top: 20px;
     margin-bottom: 20px;
-    height: 145px;
+    /* height: 145px; */
 }
 
 .m-form-button > div{

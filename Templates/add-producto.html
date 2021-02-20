@@ -8,7 +8,7 @@
 <script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
 <script src="{% static 'js/PillsBox.js' %}"></script>"
 
-<div class="container l-main">
+<div class="container l-main mt-5 pt-4">
     <div class="row" id="messages">
         <div class="col-12 p-0">
             <!-- Mensaje de exito -->
@@ -64,7 +64,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if producto == 'libro' %}active{% endif %}" href="{% url 'AddCapituloLibro' %}">
-                        Libro/Capítulo
+                        Libro / Capítulo
                     </a>
                 </li>
 
@@ -106,25 +106,26 @@
 
                 {% if form.categoria %}
                 <!-- Form de Articulo -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row">
+                        <h5 class="col-12 mb-3 mt-3">Información General</h5>
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-1">
                             <label for="id_titulo">{{form.titulo.label}}</label>
                             {{form.titulo}}
                         </div>
                         <!-- Descripción -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-1">
                             <label for="id_descripcion">{{form.descripcion.label}}</label>
                             {{form.descripcion}}
                         </div>
                         <!-- Categoria -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-1">
                             <label for="id_categoria">{{form.categoria.label}}</label>
                             {{form.categoria}}
                         </div>
                         <!-- Primer Autor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
@@ -137,7 +138,7 @@
                             </div>
                         </div>
                         <!-- Primer Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
@@ -150,7 +151,7 @@
                             </div>
                         </div>
                         <!-- Segundo Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 <!-- {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}} -->
@@ -164,7 +165,7 @@
                             </div>
                         </div>
                         <!-- Tercer Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
@@ -177,7 +178,7 @@
                             </div>
                         </div>
                         <!-- Cuarto Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
@@ -190,129 +191,138 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 pl-0">
-                        <!-- Palabras Clave -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
-                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
-                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row">
+                         <h5 class="col-12 mb-3 mt-3">Información Especifíca</h5>
                         <!-- Estado -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4">
                             <label for="id_estado">{{form.estado.label}}</label>
                             {{form.estado}}
                         </div>
                         <!-- País -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_pais">{{form.pais.label}}</label>
                             <!-- {{form.pais|addclass:'custom-select custom-select-sm'}} -->
                             {{form.pais|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
                         <!-- Revista -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_revista">{{form.revista.label}}</label>
                             {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
                         <!-- Editorial -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_editorial">{{form.editorial.label}}</label>
                             {{form.editorial|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
-                        <!-- ISNN -->
-                        <div class="m-form-input col-11">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isnn.help_text}}">
-                                <label for="id_isnn">{{form.isnn.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            {{form.isnn}}
+                        <!-- Volumen -->
+                        <div class="m-form-input col-4">
+                            <label for="id_volumen">{{form.volumen.label}}</label>
+                            {{form.volumen}}
+                        </div>
+                        <!-- URL -->
+                        <div class="m-form-input col-4">
+                            <label for="id_url">{{form.url.label}}</label>
+                            {{form.url}}
                         </div>
                     </div>
-                    <div class="col-4 pl-0">
+                    <div class="row">
                         <!-- Fecha de Publicación -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
                                 <label for="id_publicacion">{{form.publicacion.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
                             {{form.publicacion|addclass:'datepicker'}}
                         </div>
-                        <!-- URL -->
-                        <div class="m-form-input col-11">
-                            <label for="id_url">{{form.url.label}}</label>
-                            {{form.url}}
-                        </div>
-                        <!-- Página de Inicio -->
-                        <div class="m-form-input col-11">
-                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}}</label>
-                            {{form.pagina_inicio}}
-                        </div>
-                        <!-- Página Final -->
-                        <div class="m-form-input col-11">
-                            <label for="id_pagina_fin">{{form.pagina_fin.label}}</label>
-                            {{form.pagina_fin}}
-                        </div>
-                        <!-- Volumen -->
-                        <div class="m-form-input col-11">
-                            <label for="id_volumen">{{form.volumen.label}}</label>
-                            {{form.volumen}}
+                        <!-- ISNN -->
+                        <div class="m-form-input col-4 mb-3">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isnn.help_text}}">
+                                <label for="id_isnn">{{form.isnn.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.isnn}}
                         </div>
                         <!-- DOI -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.doi.help_text}}">
                                 <label for="id_doi">{{form.doi.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
                             {{form.doi}}
-                        </div>
+                        </div>   
+                        
                         <!-- Indice de Revista -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.indice_revista.help_text}}">
                                 <label for="id_indice_revista">{{form.indice_revista.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
                             {{form.indice_revista}}
                         </div>
+                        <!-- Página de Inicio -->
+                        <div class="m-form-input col-2 mb-3">
+                            <label for="id_pagina_inicio">{{form.pagina_inicio.label}}</label>
+                            {{form.pagina_inicio}}
+                        </div>
+                        <!-- Página Final -->
+                        <div class="m-form-input col-2 mb-3">
+                            <label for="id_pagina_fin">{{form.pagina_fin.label}}</label>
+                            {{form.pagina_fin}}
+                        </div>
+                        <div class="col-12 d-flex flex-row p-0">
+                            <!-- Palabras Clave -->
+                           <div class="m-form-input col-4 mb-2" id="pills_palabras">
+                               <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Lineas de Investigación -->
+                           <div class="m-form-input col-4 mb-2" id="pills_lineas">
+                               <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                        </div>
                     </div>
                 </div>
                 {% endif %}
 
+
+                <!-- ENDS ARTICLE -->
+
+
                 {% if form.cuarto_coautor %}
                 <!-- Form de Libro/Cápitulo -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row pl-0">
+                        <h5 class="col-12 mb-3 mt-3">Información General</h5>
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_titulo">{{form.titulo.label}} 
                                 <small>({{form.titulo.help_text}})</small>
                             </label>
                             {{form.titulo}}
                         </div>
                         <!-- Primer Autor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor}}
@@ -325,7 +335,7 @@
                             </div>
                         </div>
                         <!-- Primer Coautor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_coautor">{{form.primer_coautor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_coautor}}
@@ -338,7 +348,7 @@
                             </div>
                         </div>
                         <!-- Segundo Coautor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_coautor">{{form.segundo_coautor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_coautor}}
@@ -351,7 +361,7 @@
                             </div>
                         </div>
                         <!-- Tercer Coautor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_coautor">{{form.tercer_coautor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_coautor}}
@@ -364,7 +374,7 @@
                             </div>
                         </div>
                         <!-- Cuarto Coautor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_coautor">{{form.cuarto_coautor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_coautor}}
@@ -376,55 +386,44 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Estado -->
-                        <div class="m-form-input col-11">
+                    </div>
+                    <div class="row pl-0">
+                        <h5 class="col-12 mb-3 mt-3">Información Especifíca</h5>
+                        <!-- Tipo -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_tipo">{{form.tipo.label}}</label>
+                            {{form.tipo}}
+                        </div>
+                         <!-- Estado -->
+                         <div class="m-form-input col-4 mb-3">
                             <label for="id_estado">{{form.estado.label}}</label>
                             {{form.estado}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- Palabras Clave -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
-                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
-                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
                         <!-- País -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_pais">{{form.pais.label}}</label>
                             {{form.pais}}
                         </div>
                         <!-- Editorial -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_editorial">{{form.editorial.label}}</label>
                             {{form.editorial}}
                         </div>
+                        <!-- Propósito -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_proposito">{{form.proposito.label}}</label>
+                            {{form.proposito}}
+                        </div>
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input col-4 mb-3">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                                <label for="id_publicacion">{{form.publicacion.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
                         <!-- ISBN -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isbn.help_text}}">
                                 <label for="id_isbn">{{form.isbn.label}}</label>
                                 <i class="fas fa-question-circle"></i>
@@ -432,59 +431,76 @@
                         {{form.isbn}}
                         </div>
                         <!-- Edicion -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_edicion">{{form.edicion.label}}</label>
                             {{form.edicion}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- Fecha de Publicación -->
-                        <div class="m-form-input col-11">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
-                                <label for="id_publicacion">{{form.publicacion.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            {{form.publicacion|addclass:'datepicker'}}
+                        <!-- Tiraje -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_tiraje">{{form.tiraje.label}}</label>
+                            {{form.tiraje}}
                         </div>
-                        <!-- Tipo -->
-                        <div class="m-form-input col-11">
-                            <label for="id_tipo">{{form.tipo.label}}</label>
-                            {{form.tipo}}
-                        </div>
-                        <!-- Página de Inicio -->
-                        <div class="m-form-input col-11">
+                        
+                        <div class="col-12 p-0 d-flex flex-row">
+                            <!-- Palabras Clave -->
+                            <div class="m-form-input col-4 mb-2" id="pills_palabras">
+                               <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Lineas de Investigación -->
+                           <div class="m-form-input col-4 mb-2" id="pills_lineas">
+                               <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Página de Inicio -->
+                        <div class="m-form-input col-2 mb-3">
                             <label for="id_pagina_inicio">{{form.pagina_inicio.label}} 
                                 <small>({{form.pagina_inicio.help_text}})</small>
                             </label>
                             {{form.pagina_inicio}}
                         </div>
                         <!-- Página Final -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-2 mb-3">
                             <label for="id_pagina_fin">{{form.pagina_fin.label}} 
                                 <small>({{form.pagina_fin.help_text}})</small>
                             </label>
                             {{form.pagina_fin}}
                         </div>
-                        <!-- Tiraje -->
-                        <div class="m-form-input col-11">
-                            <label for="id_tiraje">{{form.tiraje.label}}</label>
-                            {{form.tiraje}}
-                        </div>
-                        <!-- Propósito -->
-                        <div class="m-form-input col-11">
-                            <label for="id_proposito">{{form.proposito.label}}</label>
-                            {{form.proposito}}
                         </div>
                     </div>
                 </div>
                 {% endif %}
 
+                <!-- END OF BOOK -->
+
+
+                <!-- START PATENT -->
                 {% if form.uso %}
                 <!-- Form de Patente -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row pl-0">
                         <!-- Autores -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_autores">{{form.autores.label}} <small>({{form.autores.help_text}})</small></label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.autores|addclass:'m-input-multiselect'}}
@@ -497,24 +513,64 @@
                             </div>
                         </div>
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_titulo">{{form.titulo.label}}</label>
                             {{form.titulo}}
                         </div>
                         <!-- Descripción -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_descripcion">{{form.descripcion.label}}</label>
                             {{form.descripcion}}
                         </div>
+                        
+                    </div>
+                    <div class="row pl-0">
                         <!-- Uso -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_uso">{{form.uso.label}}</label>
                             {{form.uso}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
+                        <!-- Número de Patente -->
+                        <div class="m-form-input col-4 mb-3">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.registro.help_text}}">
+                                <label for="id_registro">{{form.registro.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.registro}}
+                        </div>
+                        <!-- País -->
+                        <div class="m-form-input col-4 mb-3">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.pais.help_text}}">
+                                <label for="id_pais">{{form.pais.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.pais}}
+                        </div>
+                        <!-- Fecha de Publicación -->
+                        <div class="m-form-input col-4 mb-3">
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
+                                <label for="id_publicacion">{{form.publicacion.label}}</label>
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            {{form.publicacion|addclass:'datepicker'}}
+                        </div>
+                        <!-- Proposito -->
+                        <div class="m-form-input col-4">
+                            <label for="id_proposito">{{form.proposito.label}}</label>
+                            {{form.proposito}}
+                        </div>
+                        <!-- Comprobante -->
+                        <div class="col-4">
+                            <label>{{form.comprobante.label}}</label>
+                            <div class="m-form-input col-12 custom-file">
+                                <br>
+                                <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
+                                {{ form.comprobante|addclass:'custom-file-input' }}
+                            </div>
+                        </div>
+                        
                         <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
+                        <div class="m-form-input col-4 mb-2" id="pills_lineas">
                             <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
                             <div class="col-12 p-0">
                                 <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
@@ -528,64 +584,31 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Número de Patente -->
-                        <div class="m-form-input col-11">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.registro.help_text}}">
-                                <label for="id_registro">{{form.registro.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            {{form.registro}}
-                        </div>
-                        <!-- País -->
-                        <div class="m-form-input col-11">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.pais.help_text}}">
-                                <label for="id_pais">{{form.pais.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            {{form.pais}}
-                        </div>
-                        <!-- Fecha de Publicación -->
-                        <div class="m-form-input col-11">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.publicacion.help_text}}">
-                                <label for="id_publicacion">{{form.publicacion.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            {{form.publicacion|addclass:'datepicker'}}
-                        </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- Comprobante -->
-                        <label>{{form.comprobante.label}}</label>
-                        <div class="m-form-input col-11 custom-file">
-                            <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
-                            {{ form.comprobante|addclass:'custom-file-input' }}
-                        </div>
-                        <!-- Proposito -->
-                        <div class="m-form-input col-11">
-                            <label for="id_proposito">{{form.proposito.label}}</label>
-                            {{form.proposito}}
-                        </div>
                     </div>
                 </div>
                 {% endif %}
 
+                <!-- END PATENT -->
+                
+
+                <!-- START CONGRESS -->
                 {% if form.ciudad %}
                 <!-- Form de Congreso -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row pl-0">
+                        <h5 class="col-12 mb-3 mt-3">Información General</h5>
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_titulo">{{form.titulo.label}}</label>
                             {{form.titulo}}
                         </div>
                         <!-- Descripción -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_descripcion">{{form.descripcion.label}}</label>
                             {{form.descripcion}}
                         </div>
                         <!-- Primer Autor -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor}}
@@ -598,7 +621,7 @@
                             </div>
                         </div>
                         <!-- Primer Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador}}
@@ -611,7 +634,7 @@
                             </div>
                         </div>
                         <!-- Segundo Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador}}
@@ -624,7 +647,7 @@
                             </div>
                         </div>
                         <!-- Tercer Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador}}
@@ -637,7 +660,7 @@
                             </div>
                         </div>
                         <!-- Cuarto Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador}}
@@ -650,56 +673,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4 pl-0">
-                        <!-- Palabras Clave -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
-                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
-                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row pl-0">
+                        <h5 class="col-12 mb-3 mt-3">Información Especifica</h5>
                         <!-- Estado Actual -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_estado">{{form.estado.label}}</label>
                             {{form.estado}}
                         </div>
                         <!-- Congreso -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_congreso">{{form.congreso.label}}</label>
                             {{form.congreso}}
                         </div>
                         <!-- País -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_pais">{{form.pais.label}}</label>
                             {{form.pais}}
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
                         <!-- Estado -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.estadoP.help_text}}">
                                 <label for="id_estadoP">{{form.estadoP.label}}</label>
                                 <i class="fas fa-question-circle"></i>
@@ -707,7 +699,7 @@
                             {{form.estadoP}}
                         </div>
                         <!-- Ciudad -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.ciudad.help_text}}">
                                 <label for="id_ciudad">{{form.ciudad.label}}</label>
                                 <i class="fas fa-question-circle"></i>
@@ -715,92 +707,108 @@
                             {{form.ciudad}}
                         </div>
                          <!-- Fecha de Publicación -->
-                         <div class="m-form-input col-11">
+                         <div class="m-form-input col-4 mb-3">
                             <label for="id_publicacion">{{form.publicacion.label}}</label>
                             {{form.publicacion|addclass:'datepicker'}}
                         </div>
                          <!-- Fecha de Presentacion -->
-                         <div class="m-form-input col-11">
+                         <div class="m-form-input col-4 mb-3">
                             <label for="id_presentacion">{{form.presentacion.label}}</label>
                             {{form.presentacion|addclass:'datepicker'}}
                         </div>
                         <!-- Proposito -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_proposito">{{form.proposito.label}}</label>
                             {{form.proposito}}
                         </div>
-                    </div>
+                        <div class="col-12 d-flex flex-row p-0">
+                            <!-- Palabras Clave -->
+                            <div class="m-form-input col-4 mb-2" id="pills_palabras">
+                                <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Lineas de Investigación -->
+                            <div class="m-form-input col-4 mb-2" id="pills_lineas">
+                                <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
                 </div>
                 {% endif %}
 
+                <!-- END CONGRESS -->
+
+                
+                
+                <!-- START RESEARCH -->
                 {% if form.financiamiento %}
                 <!-- Form de Investigación -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row pl-0">
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_titulo">{{form.titulo.label}}</label>
                             {{form.titulo}}
                         </div>
-                        <!-- Financiamiento -->
-                        <div class="m-form-input col-11">
-                            <label for="id_financiamiento">{{form.financiamiento.label}}</label>
-                            {{form.financiamiento|addclass:'m-form-checkbox'}}
+                       <!-- Responsable -->
+                       <div class="m-form-input col-4 mb-3">
+                        <label for="id_responsable">{{form.responsable.label}}</label>
+                        {{form.responsable}}
                         </div>
-                        <!-- Tipo de Financiamiento -->
-                        <div class="m-form-input col-11">
+
+                        <!-- Institución -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_institucion">{{form.institucion.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.institucion}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
+                                    onclick="return showAddPopup(this, 'id_institucion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Project type -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_tipo_proyecto">{{form.tipo_proyecto.label}}</label>
+                            {{form.tipo_proyecto}}
+                        </div>
+                         <!-- Tipo de Financiamiento -->
+                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tipo_financiamiento">{{form.tipo_financiamiento.label}}</label>
                             {{form.tipo_financiamiento}}
                         </div>
-                        <!-- Fecha de Inicio -->
-                        <div class="m-form-input col-11">
-                            <label for="id_inicio">{{form.inicio.label}}</label>
-                            {{form.inicio|addclass:'datepicker'}}
+                    
+                         <!-- Financiamiento -->
+                         <div class="col-4 mb-3 d-flex h-align-center">
+                            <label for="id_financiamiento" class="m-0">{{form.financiamiento.label}}</label>
+                            {{form.financiamiento|addclass:'m-form-checkbox'}}
                         </div>
-                         <!-- Fecha de Fin -->
-                         <div class="m-form-input col-11">
-                            <label for="id_fin">{{form.fin.label}}</label>
-                            {{form.fin|addclass:'datepicker'}}
-                        </div>
-                        <!-- Responsable -->
-                        <div class="m-form-input col-11">
-                            <label for="id_responsable">{{form.responsable.label}}</label>
-                            {{form.responsable}}
-                        </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- Palabras Clave -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
-                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
-                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
+                        
                         <!-- Primer Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador}}
@@ -813,7 +821,7 @@
                             </div>
                         </div>
                         <!-- Segundo Colaborador -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador}}
@@ -826,7 +834,7 @@
                                 </div>
                             </div>
                         <!-- Primer Alumno -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_alumno}}
@@ -838,10 +846,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
                         <!-- Segundo Alumno -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_alumno">{{form.segundo_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_alumno}}
@@ -854,7 +860,7 @@
                             </div>
                         </div>
                         <!-- Tercer Alumno -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_alumno">{{form.tercer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_alumno}}
@@ -865,54 +871,85 @@
                                 </a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="m-form-input col-11">
-                            <label for="id_tipo_proyecto">{{form.tipo_proyecto.label}}</label>
-                            {{form.tipo_proyecto}}
-                        </div>
-                        <!-- Resumen -->
-                        <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
-                            <label for="id_resumen">{{form.resumen.label}}</label>
-                            <i class="fas fa-question-circle"></i>
-                        </div>
-                        <div class="m-form-input col-11 custom-file">
-                            <br>
-                            <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
-                            {{ form.resumen|addclass:'custom-file-input' }}
-                        </div>
-                        <!-- Institución -->
-                        <div class="m-form-input col-11">
-                            <label for="id_institucion">{{form.institucion.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.institucion}}
-                                <div class="col-1">
-                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
-                                    onclick="return showAddPopup(this, 'id_institucion');">
-                                    <i class="fas fa-plus-circle"></i>
-                                </a>
-                                </div>
+                        </div>           
+                        
+                        <div class="m-form-input col-4 mb-3">
+                            <!-- Resumen -->
+                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
+                                <label for="id_resumen">{{form.resumen.label}}</label>
+                                <i class="fas fa-question-circle"></i>
                             </div>
+                            <div class="m-form-input custom-file">
+                                <br>
+                                <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
+                                {{ form.resumen|addclass:'custom-file-input' }}
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex flex-row p-0">
+                            <!-- Palabras Clave -->
+                           <div class="m-form-input col-4 mb-3" id="pills_palabras">
+                               <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Lineas de Investigación -->
+                           <div class="m-form-input col-4 mb-3" id="pills_lineas">
+                               <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                               <div class="col-12 p-0">
+                                   <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                       <div class="m-pill-input_selected-pills col-12">
+                                       </div>
+                                   </div>  
+                                   <div class="m-form-input">
+                                       <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                   </div>
+                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   </div>
+                               </div>
+                           </div>
+                           <!-- Fecha de Inicio -->
+                         <div class="m-form-input col-2 mb-3">
+                            <label for="id_inicio">{{form.inicio.label}}</label>
+                            {{form.inicio|addclass:'datepicker'}}
+                        </div>
+                         <!-- Fecha de Fin -->
+                         <div class="m-form-input col-2 mb-3">
+                            <label for="id_fin">{{form.fin.label}}</label>
+                            {{form.fin|addclass:'datepicker'}}
+                        </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
 
+                <!-- END RESEARCH -->
+
+                <!-- START TESIS -->
                 {% if form.profesor %}
                 <!-- Form de Tesis -->
-                <div class="l-form">
-                    <div class="col-4 pl-0">
+                <div class="l-form flex-column">
+                    <div class="row pl-0">
                         <!-- Titulo -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_titulo">{{form.titulo.label}}</label>
                             {{form.titulo}}
                         </div>
                         <!-- Grado -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_grado">{{form.grado.label}}</label>
                             {{form.grado}}
                         </div>
                         <!-- Alumno -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_alumno">{{form.alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.alumno}}
@@ -924,40 +961,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
-                        <!-- Palabras Clave -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_palabras">
-                            <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Lineas de Investigación -->
-                        <div class="m-form-input col-11 mb-2 p-0" id="pills_lineas">
-                            <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
-                            <div class="col-12 p-0">
-                                <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
-                                    <div class="m-pill-input_selected-pills col-12">
-                                    </div>
-                                </div>  
-                                <div class="m-form-input">
-                                    <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
-                                </div>
-                                <div class="m-pill-input_searchbox h-display-none" id="searchbox">
-                                </div>
-                            </div>
-                        </div>
+
                         <!-- Institución -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-4 mb-3">
                             <label for="id_institucion">{{form.institucion.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.institucion}}
@@ -969,18 +975,49 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4 pl-0">
                         <!-- Fecha de Inicio -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-2 mb-3">
                             <label for="id_inicio">{{form.inicio.label}}</label>
                             {{form.inicio|addclass:'datepicker'}}
                         </div>
                         <!-- Fecha de Fin -->
-                        <div class="m-form-input col-11">
+                        <div class="m-form-input col-2 mb-3">
                         <label for="id_fin">{{form.fin.label}}</label>
                         {{form.fin|addclass:'datepicker'}}
-                    </div>
+                        </div>
+                        
+                        <div class="col-12 d-flex flex-row p-0">
+                            <!-- Palabras Clave -->
+                            <div class="m-form-input col-4 mb-3" id="pills_palabras">
+                                <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Lineas de Investigación -->
+                            <div class="m-form-input col-4 mb-3" id="pills_lineas">
+                                <label for="id_investigaciones">{{form.lineas_investigacion.label}}</label>
+                                <div class="col-12 p-0">
+                                    <div class="col-12 pl-0 pr-0 h-align-center m-pill-input">
+                                        <div class="m-pill-input_selected-pills col-12">
+                                        </div>
+                                    </div>  
+                                    <div class="m-form-input">
+                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas lineas aquí">
+                                    </div>
+                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endif %}
