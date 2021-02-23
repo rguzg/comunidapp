@@ -9,7 +9,7 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs) => {
 
         // Verificación de los valores que son inputs
         for (let i = 0; i < form.elements.length; i++){
-            let element = form.elements[i]; console.log(element);
+            let element = form.elements[i];
         
             if( element.type != "submit" && element.type != "button" 
             && element.name != "csrfmiddlewaretoken" && element.name != "user"){
