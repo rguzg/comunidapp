@@ -244,23 +244,33 @@ class Profile(SuccessMessageMixin, FormView):
             form=UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            peticion_obj=form.save(commit=False)
-            peticion_obj.user=request.user
-            peticion_obj.estado='P'
-            peticion_obj.changed_fields={'fields': form.changed_data}
+            print(form.has_changed())
+            if form.has_changed():
+                peticion_obj=form.save(commit=False)
+                peticion_obj.user=request.user
+                peticion_obj.estado='P'
+                peticion_obj.changed_fields={'fields': form.changed_data}
 
 
-            peticion_obj.save()
+                peticion_obj.save()
 
-            form.save_m2m()
+                form.save_m2m()
 
-        messages.add_message(self.request, messages.SUCCESS,
-                             'Petición de actualización enviada correctamente')
-        return render(request, self.template_name, {
-            'form': form,
-            'title': "Actualización de mis datos",
-            'producto': 'actualizacion'
-        })
+                messages.add_message(self.request, messages.SUCCESS,
+                                    'Petición de actualización enviada correctamente')
+                return render(request, self.template_name, {
+                    'form': form,
+                    'title': "Actualización de mis datos",
+                    'producto': 'actualizacion'
+                })
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio a tu perfil antes de envíar una petición')
+                return render(request, self.template_name, {
+                    'form': form,
+                    'title': "Actualización de mis datos",
+                    'producto': 'actualizacion'
+                })
 
     def form_valid(self, form):
         """

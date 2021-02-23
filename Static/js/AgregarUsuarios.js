@@ -11,6 +11,9 @@ if(lineas_investigacion){
 }
 
 const form = document.querySelector('form');
+const boton_submit = form.querySelector('input[type="submit"]');
+
+VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
