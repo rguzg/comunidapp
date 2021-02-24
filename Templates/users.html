@@ -21,7 +21,7 @@
                 {% if messages %}
                 <div class="alert alert-success text-center">
                     {% for message in messages %}
-                    <strong>{{message}} </strong>
+                    <strong>{{message|safe}} </strong>
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -44,9 +44,9 @@
                     <strong>Corrigue los siguientes errores:</strong>
                     <ul>
                         {% for field in form %}
-                        {% if field.errors %}
+                        {% if field.errors and field.name != 'username' %}
                         <li>
-                            <p>{{field.errors|striptags}}</p>
+                            <p>En el campo {{field.name}}: {{field.errors|striptags}}</p>
                         </li>
                         {% endif %}
                         {% endfor %}
