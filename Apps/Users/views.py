@@ -584,7 +584,7 @@ class AddCongreso(CreateView):
         })
 
 
-class AddInvestigacion(SuccessMessageMixin, CreateView):
+class AddInvestigacion(CreateView):
     template_name='add-producto.html'
     form_class=InvestigacionForm
     success_url='/new/investigacion'
@@ -596,6 +596,27 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         context['producto']='investigacion'
         context['path']='productos'
         return context
+
+    def post(self, request):
+        form = InvestigacionForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un proyecto de investigación')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un proyecto de investigación',
+            'producto': 'investigacion',
+            'path': 'productos'
+        })
 
 
 class AddTesis(SuccessMessageMixin, CreateView):
