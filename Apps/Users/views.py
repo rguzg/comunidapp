@@ -619,7 +619,7 @@ class AddInvestigacion(CreateView):
         })
 
 
-class AddTesis(SuccessMessageMixin, CreateView):
+class AddTesis(CreateView):
     template_name='add-producto.html'
     form_class=TesisForm
     success_url='/new/tesis'
@@ -637,6 +637,27 @@ class AddTesis(SuccessMessageMixin, CreateView):
         context['producto']='productos'
         context['path']='productos'
         return context
+
+    def post(self, request):
+        form = TesisForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un articulo')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega una dirección de tesis',
+            'producto': 'productos',
+            'path': 'productos'
+        })
 
 
 """
