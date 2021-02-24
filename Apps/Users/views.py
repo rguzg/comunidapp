@@ -514,7 +514,7 @@ class AddCapituloLibro(CreateView):
         })
 
 
-class AddPatente(SuccessMessageMixin, CreateView):
+class AddPatente(CreateView):
     template_name='add-producto.html'
     form_class=PatenteForm
     success_url='/new/patente'
@@ -526,6 +526,27 @@ class AddPatente(SuccessMessageMixin, CreateView):
         context['producto']='patente'
         context['path']='productos'
         return context
+
+    def post(self, request):
+        form = PatenteForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar una patente')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega una patente',
+            'producto': 'patente',
+            'path': 'productos'
+        })
 
 
 class AddCongreso(SuccessMessageMixin, CreateView):
