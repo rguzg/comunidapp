@@ -19,6 +19,10 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     let data = CreateFormData(form);
+
+    if(!lineas_investigacion){
+        data.append("email", '');
+    }
     
     // La view de Agregar Usuarios tiene dos pestañas, una donde no hay input pills y otra donde están las tres, 
     // entonces si una está presente, no tiene caso checar las demás
