@@ -244,7 +244,6 @@ class Profile(SuccessMessageMixin, FormView):
             form=UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print(form.has_changed())
             if form.has_changed():
                 peticion_obj=form.save(commit=False)
                 peticion_obj.user=request.user
@@ -400,13 +399,11 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
         return context
 
 
-class AddProfesorUsers(SuccessMessageMixin, CreateView):
+class AddProfesorUsers(CreateView):
     template_name='users.html'
     form_class=ProfesorCreationForm
     success_url='/add/profesor'
     success_message='Profesor creado correctamente'
-
-    # Necesario poner el username y el email iguales
 
     def get_initial(self):
         initial=super(AddProfesorUsers, self).get_initial()
@@ -421,13 +418,26 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
         context['path']='usuarios'
         return context
 
-    # Necesario para guardar los campos M2M
-    def form_valid(self, form):
-        form_valid=super(AddProfesorUsers, self).form_valid(form)
-        form_val=form.save(commit=False)
-        form_val.save()
-        form.save_m2m()
-        return form_valid
+    def post(self, request, *args, **kwargs):
+        form=ProfesorCreationForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val=form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un usuario')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un usuario Profesor',
+            'producto': 'usuarios',
+            'path': 'usuarios'
+        })
 
 
 """
