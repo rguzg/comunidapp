@@ -60,7 +60,10 @@ form.addEventListener('submit', async (event) => {
             let html = await request.text();
 
             let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+            
+            if(messageDOM.querySelector('#messages'));{
+                document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+            }
 
         } catch (error) {
             console.error(`Error agregando producto ${error}`);
