@@ -1,3 +1,4 @@
+import uuid
 from django import forms
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
@@ -37,10 +38,11 @@ class UserCreationForm(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2', 'is_superuser', 'is_staff']:
             self.fields[fieldname].help_text = None
 
-    def save(self, commit=True):
-        if self.instance.email == '':
-            self.instance.email = None
-        return super().save(commit=commit)
+    # El modelo de usuarios administradores es el mismo que los profesores, así que es necesario pedir
+    # un email, pero el form no pide uno, así que aquí se genera un email como placeholder
+    def clean_email(self):
+        return f'{str(uuid.uuid4())}@{str(uuid.uuid4())}.net'
+
 
 class ProfesorCreationForm(UserCreationForm):
     nacimiento= forms.DateField(input_formats=['%d-%m-%Y'], required=False)
