@@ -549,7 +549,7 @@ class AddPatente(CreateView):
         })
 
 
-class AddCongreso(SuccessMessageMixin, CreateView):
+class AddCongreso(CreateView):
     template_name='add-producto.html'
     form_class=CongresoForm
     success_url='/new/congreso'
@@ -557,10 +557,31 @@ class AddCongreso(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context['title']='Agrega un partición en congreso'
+        context['title']='Agrega una participación en congreso'
         context['producto']='congreso'
         context['path']='productos'
         return context
+
+    def post(self, request):
+        form = CongresoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un congreso')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un participación en congreso',
+            'producto': 'congreso',
+            'path': 'productos'
+        })
 
 
 class AddInvestigacion(SuccessMessageMixin, CreateView):
