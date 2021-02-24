@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, ReadOnlyPasswordHashWidget
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponse, redirect, render
@@ -420,7 +420,7 @@ class AddProfesorUsers(CreateView):
 
     def post(self, request, *args, **kwargs):
         form=ProfesorCreationForm(request.POST, request.FILES)
-
+        
         if form.is_valid():
             if form.has_changed():
                 form_val=form.save(commit=False)
