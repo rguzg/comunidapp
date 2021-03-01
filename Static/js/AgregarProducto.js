@@ -8,6 +8,9 @@ const lineas_investigacion = document.querySelector('#pills_lineas');
 PillsBox(lineas_investigacion, 'lineas');
 
 const form = document.querySelector('form');
+const boton_submit = form.querySelector('input[type="submit"]');
+
+VerificarCambiosForm(form, boton_submit, [palabras_clave, lineas_investigacion]);
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -57,7 +60,10 @@ form.addEventListener('submit', async (event) => {
             let html = await request.text();
 
             let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+            
+            if(messageDOM.querySelector('#messages'));{
+                document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+            }
 
         } catch (error) {
             console.error(`Error agregando producto ${error}`);

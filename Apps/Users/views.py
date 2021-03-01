@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, ReadOnlyPasswordHashWidget
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import HttpResponse, redirect, render
@@ -244,23 +244,32 @@ class Profile(SuccessMessageMixin, FormView):
             form=UpdateRequestForm(request.POST, request.FILES)
 
         if form.is_valid():
-            peticion_obj=form.save(commit=False)
-            peticion_obj.user=request.user
-            peticion_obj.estado='P'
-            peticion_obj.changed_fields={'fields': form.changed_data}
+            if form.has_changed():
+                peticion_obj=form.save(commit=False)
+                peticion_obj.user=request.user
+                peticion_obj.estado='P'
+                peticion_obj.changed_fields={'fields': form.changed_data}
 
 
-            peticion_obj.save()
+                peticion_obj.save()
 
-            form.save_m2m()
+                form.save_m2m()
 
-        messages.add_message(self.request, messages.SUCCESS,
-                             'Petición de actualización enviada correctamente')
-        return render(request, self.template_name, {
-            'form': form,
-            'title': "Actualización de mis datos",
-            'producto': 'actualizacion'
-        })
+                messages.add_message(self.request, messages.SUCCESS,
+                                    'Petición de actualización enviada correctamente')
+                return render(request, self.template_name, {
+                    'form': form,
+                    'title': "Actualización de mis datos",
+                    'producto': 'actualizacion'
+                })
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio a tu perfil antes de envíar una petición')
+                return render(request, self.template_name, {
+                    'form': form,
+                    'title': "Actualización de mis datos",
+                    'producto': 'actualizacion'
+                })
 
     def form_valid(self, form):
         """
@@ -369,7 +378,7 @@ CBV para la creacion de usuarios administradores y profesores
 """
 
 
-class AddAdminUsers(SuccessMessageMixin, CreateView):
+class AddAdminUsers(CreateView):
     template_name='users.html'
     form_class=UserCreationForm
     success_url='/add/admin'
@@ -389,14 +398,32 @@ class AddAdminUsers(SuccessMessageMixin, CreateView):
         context['path']='usuarios'
         return context
 
+    def post(self, request, *args, **kwargs):
+        form= UserCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            if form.has_changed():
+                form_val=form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un usuario')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un usuario Administrador',
+            'producto': 'usuarios',
+            'path': 'usuarios'
+        })
 
-class AddProfesorUsers(SuccessMessageMixin, CreateView):
+
+class AddProfesorUsers(CreateView):
     template_name='users.html'
     form_class=ProfesorCreationForm
     success_url='/add/profesor'
     success_message='Profesor creado correctamente'
-
-    # Necesario poner el username y el email iguales
 
     def get_initial(self):
         initial=super(AddProfesorUsers, self).get_initial()
@@ -411,13 +438,26 @@ class AddProfesorUsers(SuccessMessageMixin, CreateView):
         context['path']='usuarios'
         return context
 
-    # Necesario para guardar los campos M2M
-    def form_valid(self, form):
-        form_valid=super(AddProfesorUsers, self).form_valid(form)
-        form_val=form.save(commit=False)
-        form_val.save()
-        form.save_m2m()
-        return form_valid
+    def post(self, request, *args, **kwargs):
+        form=ProfesorCreationForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            if form.has_changed():
+                form_val=form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un usuario')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un usuario Profesor',
+            'producto': 'usuarios',
+            'path': 'usuarios'
+        })
 
 
 """
@@ -425,7 +465,7 @@ Clases para agregar productos
 """
 
 
-class AddArticulo(SuccessMessageMixin, CreateView):
+class AddArticulo(CreateView):
     template_name='add-producto.html'
     form_class=ArticuloForm
     success_url='/new/articulo'
@@ -438,8 +478,28 @@ class AddArticulo(SuccessMessageMixin, CreateView):
         context['path']='productos'
         return context
 
+    def post(self, request):
+        form = ArticuloForm(request.POST, request.FILES)
 
-class AddCapituloLibro(SuccessMessageMixin, CreateView):
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un articulo')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un articulo',
+            'producto': 'articulo',
+            'path': 'productos'
+        })
+
+class AddCapituloLibro(CreateView):
     template_name='add-producto.html'
     form_class=CapituloLibroForm
     success_url='/new/libro'
@@ -452,8 +512,29 @@ class AddCapituloLibro(SuccessMessageMixin, CreateView):
         context['path']='productos'
         return context
 
+    def post(self, request):
+        form = CapituloLibroForm(request.POST, request.FILES)
 
-class AddPatente(SuccessMessageMixin, CreateView):
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un libro o capítulo')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un libro o capítulo',
+            'producto': 'libro',
+            'path': 'productos'
+        })
+
+
+class AddPatente(CreateView):
     template_name='add-producto.html'
     form_class=PatenteForm
     success_url='/new/patente'
@@ -466,8 +547,29 @@ class AddPatente(SuccessMessageMixin, CreateView):
         context['path']='productos'
         return context
 
+    def post(self, request):
+        form = PatenteForm(request.POST, request.FILES)
 
-class AddCongreso(SuccessMessageMixin, CreateView):
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar una patente')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega una patente',
+            'producto': 'patente',
+            'path': 'productos'
+        })
+
+
+class AddCongreso(CreateView):
     template_name='add-producto.html'
     form_class=CongresoForm
     success_url='/new/congreso'
@@ -475,13 +577,34 @@ class AddCongreso(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
-        context['title']='Agrega un partición en congreso'
+        context['title']='Agrega una participación en congreso'
         context['producto']='congreso'
         context['path']='productos'
         return context
 
+    def post(self, request):
+        form = CongresoForm(request.POST, request.FILES)
 
-class AddInvestigacion(SuccessMessageMixin, CreateView):
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un congreso')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un participación en congreso',
+            'producto': 'congreso',
+            'path': 'productos'
+        })
+
+
+class AddInvestigacion(CreateView):
     template_name='add-producto.html'
     form_class=InvestigacionForm
     success_url='/new/investigacion'
@@ -494,8 +617,29 @@ class AddInvestigacion(SuccessMessageMixin, CreateView):
         context['path']='productos'
         return context
 
+    def post(self, request):
+        form = InvestigacionForm(request.POST, request.FILES)
 
-class AddTesis(SuccessMessageMixin, CreateView):
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un proyecto de investigación')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega un proyecto de investigación',
+            'producto': 'investigacion',
+            'path': 'productos'
+        })
+
+
+class AddTesis(CreateView):
     template_name='add-producto.html'
     form_class=TesisForm
     success_url='/new/tesis'
@@ -513,6 +657,27 @@ class AddTesis(SuccessMessageMixin, CreateView):
         context['producto']='productos'
         context['path']='productos'
         return context
+
+    def post(self, request):
+        form = TesisForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            if form.has_changed():
+                form_val = form.save(commit=False)
+                form_val.save()
+                form.save_m2m()
+                messages.add_message(self.request, messages.SUCCESS,
+                                    self.success_message)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio antes de agregar un articulo')
+        
+        return render(request, self.template_name, {
+            'form': form,
+            'title': 'Agrega una dirección de tesis',
+            'producto': 'productos',
+            'path': 'productos'
+        })
 
 
 """

@@ -609,6 +609,11 @@ a:hover{
     color: var(--grey);
 }
 
+.btn:disabled:hover{
+    color: initial;
+    cursor: not-allowed;
+}
+
 .h-display{
     display: block;
 }

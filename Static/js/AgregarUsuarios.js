@@ -11,11 +11,18 @@ if(lineas_investigacion){
 }
 
 const form = document.querySelector('form');
+const boton_submit = form.querySelector('input[type="submit"]');
+
+VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     let data = CreateFormData(form);
+
+    if(!lineas_investigacion){
+        data.append("email", '');
+    }
     
     // La view de Agregar Usuarios tiene dos pestañas, una donde no hay input pills y otra donde están las tres, 
     // entonces si una está presente, no tiene caso checar las demás
@@ -79,7 +86,10 @@ form.addEventListener('submit', async (event) => {
         let html = await request.text();
 
         let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-        document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+        
+        if(messageDOM.querySelector('#messages')){
+            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+        }
 
     } catch (error) {
         console.log(`Error agregando usuario: ${error}`);

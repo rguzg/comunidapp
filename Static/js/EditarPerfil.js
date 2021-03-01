@@ -8,6 +8,9 @@ const facultades = document.querySelector('#pills_facultades');
 PillsBox(facultades, 'facultades');
 
 const form = document.querySelector('#perfilForm');
+const boton_submit = form.querySelector('input[type="submit"]');
+
+VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 /* Para poder enviar los datos que hay en los PillsBox.
 JavaScript se va a encargar de crear el formdata que se le va a enviar al servidor. */
@@ -70,7 +73,10 @@ form.addEventListener('submit', async (event) => {
         let html = await request.text();
         
         let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-        document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+
+        if(messageDOM.querySelector('#messages')){
+            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+        }
 
     } catch (error) {
         console.error(`Error mandando la actualización de perfil ${error}`);

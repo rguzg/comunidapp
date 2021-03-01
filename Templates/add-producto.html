@@ -5,15 +5,16 @@
 {% load static %}
 {% block content %}
 
-<script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
+<script src="{% static 'js/VerificarCambiosForm.js' %}"></script>"
 <script src="{% static 'js/PillsBox.js' %}"></script>"
+<script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
 
 <div class="container l-main mt-5 pt-4">
     <div class="row" id="messages">
         <div class="col-12 p-0">
             <!-- Mensaje de exito -->
             {% if messages %}
-            <div class="alert alert-success text-center">
+            <div class="alert alert-success">
                 {% for message in messages %}
                 <strong>{{message}} </strong>
                 {% endfor %}
@@ -1022,7 +1023,7 @@
                 </div>
                 {% endif %}
                 <div class="col-12 pl-0 mt-0 m-form-button">
-                    <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Agregar">
+                    <input class="btn m-button m-button--comunidapp" disabled type="submit" name="" id="" value="Agregar">
                 </div>
         </div>
     </div>

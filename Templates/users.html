@@ -6,6 +6,7 @@
 
 {% include 'head.html' %}
 
+<script src="{% static 'js/VerificarCambiosForm.js' %}"></script>
 <script defer src="{% static 'js/AgregarUsuarios.js' %}"></script>
 <script src="{% static 'js/PillsBox.js' %}"></script>
 
@@ -18,9 +19,9 @@
             <div class="col-12">
                 <!-- Mensaje de exito -->
                 {% if messages %}
-                <div class="alert alert-success text-center">
+                <div class="alert alert-success">
                     {% for message in messages %}
-                    <strong>{{message}} </strong>
+                    <strong>{{message|safe}} </strong>
                     {% endfor %}
                 </div>
                 {% endif %}
@@ -43,9 +44,9 @@
                     <strong>Corrigue los siguientes errores:</strong>
                     <ul>
                         {% for field in form %}
-                        {% if field.errors %}
+                        {% if field.errors and field.name != 'username' %}
                         <li>
-                            <p>{{field.errors|striptags}}</p>
+                            <p>En el campo {{field.name}}: {{field.errors|striptags}}</p>
                         </li>
                         {% endif %}
                         {% endfor %}
@@ -248,7 +249,7 @@
                             </div>
                             {% endif %}
                             <div class="col-4 d-flex align-items-end m-form-button">
-                                <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Agregar Usuario">
+                                <input class="btn m-button m-button--comunidapp" disabled type="submit" name="" id="" value="Agregar Usuario">
                             </div>
                         </div>
                     </div>
