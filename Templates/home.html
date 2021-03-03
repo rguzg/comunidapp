@@ -17,32 +17,31 @@
         </div>
         <div class="row">
             <!-- Grid de tarjetas -->
-            <div class="l-grid col-12">
-
+            <div class="l-grid col-12 p-0">
                 {% for user in object_list %}
-                <div class="m-user-info m-user-info--card col-3" onclick="location.href='{% url 'profile-detail' pk=user.id %}' ">
-                    <div class="m-profile-picture" style="
-                    {% if user.foto %}
-                        background-image: url({{user.foto.url}});
-                    {% else %}
-                        {% if user.sexo %}
-                            {% if user.sexo == 'H' %}
-                                background-image: url({% static 'img/profesor1.svg' %});
-                            {% else %}
-                                background-image: url({% static 'img/profesor2.svg' %});
-                            {% endif %}
+                <div class="col-4 mb-4">
+                    <div class="m-user-info m-user-info--card" onclick="location.href='{% url 'profile-detail' pk=user.id %}' ">
+                        <div class="m-profile-picture" style="
+                        {% if user.foto %}
+                            background-image: url({{user.foto.url}});
                         {% else %}
-                            background-image: url({% static 'img/profesor1.svg' %});
-                        {% endif %}
-                    {% endif %}"
-                    ></div>
-                    <div class="m-user-info__text">
-                        <b class="h-text-overflow">{{user.get_full_name}}</b>
-                        <p class="h-text-overflow">{{user.email}}</p>
+                            {% if user.sexo %}
+                                {% if user.sexo == 'H' %}
+                                    background-image: url({% static 'img/profesor1.svg' %});
+                                {% else %}
+                                    background-image: url({% static 'img/profesor2.svg' %});
+                                {% endif %}
+                            {% else %}
+                                background-image: url({% static 'img/profesor1.svg' %});
+                            {% endif %}
+                        {% endif %}"
+                        ></div>
+                        <div class="m-user-info__text">
+                            <b class="h-text-overflow">{{user.get_full_name}}</b>
+                            <p class="h-text-overflow m-0">{{user.email}}</p>
+                        </div>
                     </div>
-                </div>
-
-                
+                </div>    
                 {% endfor %}
 
             </div>
