@@ -31,8 +31,8 @@
                                 <div class="m-cambios__header">
                                     <b>{{actualizacion.user.get_full_name}}</b>
                                 </div>
-                                <div class="m-cambios__content col-12">
-                                    <div class="col-12 d-flex flex-wrap py-3 px-0">
+                                <div class="m-cambios__content col-12 ">
+                                    <div class="col-12 d-flex flex-wrap p-0">
                                         {% for key, value in actualizacion.changed_fields.items %}
                                             {% for v in value %}
                                                     <div class="col-4 p-0">
@@ -129,9 +129,9 @@
                                             {% endfor %}  
                                         {% endfor %}
                                     </div>
-                                    <div class="col-12 my-3 px-0">
+                                    <div class="col-12 p-0">
                                         <b>Comentarios</b>
-                                        <textarea class="form-control p-3 mt-2" name="comentario-{{actualizacion.id}}" id="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" cols="30" rows="3"></textarea>  
+                                        <textarea class="form-control mt-2" name="comentario-{{actualizacion.id}}" id="comentario-{{actualizacion.id}}" placeholder="Deja un comentario" cols="30" rows="3"></textarea>  
                                     </div>  
                                     </div>
                                     <div class="m-cambios__buttons col-12 px-4 py-3">

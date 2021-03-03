@@ -71,15 +71,14 @@
                             <div class="l-pill-container">
                                 {% for linea in user.investigaciones.all %}
                                     <div class="m-pills">{{linea}}</div>
-                                {% endfor %}
-                                
+                                {% endfor %}                          
                             </div>
                         </div>
                     </div>
+                    <hr class="mt-0">
                     <div class="row">
                         <div class="col-12">
                             <!-- Bootstrap's implementation of tabbed navigation -->
-
                             <!-- Tabs -->
                             <ul class="nav nav-tabs" id="products" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -107,7 +106,8 @@
                                 <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
                                     {% if articulos %}
                                         {% for articulo in articulos %}
-                                            <div class="m-product-card " data-tipoProducto="articulo" data-idProducto={{articulo.id}} >
+                                        <div class="col-4">
+                                            <div class="m-product-card" data-tipoProducto="articulo" data-idProducto={{articulo.id}} >
                                                 <b class="h-text-overflow">{{articulo.titulo}}</b>
                                                 {% if articulo.publicacion %}
                                                     <p class="h-text-overflow">{{articulo.publicacion}}</p>
@@ -115,14 +115,16 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                         </div>
                                         {% endfor %}
                                     {% else %}
-                                    <p class="mt-2">{{user.get_short_name}} no tiene Articulos aún.</p>
+                                    <p class="mt-4">{{user.get_short_name}} no tiene Articulos aún.</p>
                                     {% endif %}
                                 </div>
                                 <div class="tab-pane fade" id="libroscapitulos" role="tabpanel" aria-labelledby="libroscapitulos-tab">
                                     {% if capituloslibros %}
                                         {% for capitulolibro in capituloslibros %}
+                                        <div class="col-4">
                                             <div class="m-product-card" data-tipoProducto="capituloLibro" data-idProducto={{capitulolibro.id}} >
                                                 <b class="h-text-overflow">{{capitulolibro.titulo}}</b>
                                                 {% if capitulolibro.publicacion %}
@@ -131,14 +133,16 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                        </div>
                                         {% endfor %}
                                     {% else %}
-                                            <p class="mt-2">{{user.get_short_name}} no tiene Libros o Capitulos aún.</p>
+                                            <p class="mt-4">{{user.get_short_name}} no tiene Libros o Capitulos aún.</p>
                                     {% endif %}
                                 </div>
                                 <div class="tab-pane fade" id="patentes" role="tabpanel" aria-labelledby="patentes-tab">
                                     {% if patentes %}
                                         {% for patente in patentes %}
+                                        <div class="col-4">
                                             <div class="m-product-card" data-tipoProducto="patente" data-idProducto={{patente.id}} >
                                                 <b class="h-text-overflow">{{patente.titulo}}</b>
                                                 {% if patente.publicacion %}
@@ -147,14 +151,16 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                        </div>
                                         {% endfor %}
                                     {% else %}
-                                            <p class="mt-2">{{user.get_short_name}} no tiene Patentes aún.</p>
+                                            <p class="mt-4">{{user.get_short_name}} no tiene Patentes aún.</p>
                                     {% endif %}
                                 </div>
                                 <div class="tab-pane fade" id="congresos" role="tabpanel" aria-labelledby="congresos-tab">
                                     {% if congresos %}
                                         {% for congreso in congresos %}
+                                        <div class="col-4">
                                             <div class="m-product-card" data-tipoProducto="congreso" data-idProducto={{congreso.id}} >
                                                 <b class="h-text-overflow">{{congreso.titulo}}</b>
                                                 {% if congreso.publicacion %}
@@ -163,6 +169,7 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                        </div>
                                         {% endfor %}
                                     {% else %}
                                             <p class="mt-2">{{user.get_short_name}} no tiene Congresos aún.</p>
@@ -171,6 +178,7 @@
                                 <div class="tab-pane fade" id="investigaciones" role="tabpanel" aria-labelledby="investigaciones-tab">
                                     {% if investigaciones %}
                                         {% for investigacion in investigaciones %}
+                                        <div class="col-4">
                                             <div class="m-product-card" data-tipoProducto="investigacion" data-idProducto={{investigacion.id}} >
                                                 <b class="h-text-overflow">{{investigacion.titulo}}</b>
                                                 {% if investigacion.fin %}
@@ -179,14 +187,16 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                        </div>
                                         {% endfor %}
                                     {% else %}
-                                            <p class="mt-2">{{user.get_short_name}} no tiene Investigaciones aún.</p>
+                                            <p class="mt-4">{{user.get_short_name}} no tiene Investigaciones aún.</p>
                                     {% endif %}
                                 </div>
                                 <div class="tab-pane fade" id="tesis" role="tabpanel" aria-labelledby="tesis-tab">
                                     {% if tesis %}
                                         {% for tesi in tesis %}
+                                        <div class="col-4">
                                             <div class="m-product-card" data-tipoProducto="tesis" data-idProducto={{tesi.id}} >
                                                 <b class="h-text-overflow">{{tesi.titulo}}</b>
                                                 {% if tesi.fin %}
@@ -195,9 +205,10 @@
                                                     <p class="h-text-overflow">Publicacion en tramite</p>
                                                 {% endif %}
                                             </div>
+                                        </div>
                                         {% endfor %}
                                     {% else %}
-                                            <p class="mt-2">{{user.get_short_name}} no tiene Tesis aún.</p>
+                                            <p class="mt-4">{{user.get_short_name}} no tiene Tesis aún.</p>
                                     {% endif %}
                                 </div>
                             </div>
@@ -223,7 +234,6 @@
               <p class="modal-date">Fecha: </p>
               <p class="modal-colabs">Colaboradores: </p>
               <p class="modal-lines">Líneas de Investigación: </p>
-              
             </div>
           </div>
         </div>

@@ -233,7 +233,6 @@ a:hover{
 }
 
 /* Profile Picture Module */
-
 .m-profile-picture{
     /* background-image: url("../img/person.jpg"); */
     background-size: cover;
@@ -241,6 +240,14 @@ a:hover{
     width: 45px;
     height: 45px;
     cursor: pointer;
+}
+
+.m-user-info--card .m-profile-picture{
+    background-size: cover;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor:pointer;
 }
 
 /* Profile Picture Modifiers */
@@ -257,7 +264,6 @@ a:hover{
 }
 
 /* User Info Module */
-
 .m-user-info{
     display: flex;
     align-content: flex-start;
@@ -265,8 +271,8 @@ a:hover{
     justify-content: flex-start;
     flex-wrap: wrap;
     padding: 16px 12px;
-    margin-right: 40px;
-    margin-bottom: 24px;
+    /* margin-right: 40px; */
+    /* margin-bottom: 24px; */
     background: #ffffff;
     cursor: pointer;
 }
@@ -278,7 +284,7 @@ a:hover{
     flex-direction: column;
     margin-left: 16px;
     margin-bottom: 5px;
-    width: 200px;
+    width: auto;
 }
 
 .m-user-info__text h5{
@@ -309,14 +315,18 @@ a:hover{
 
 .m-user-info--card{
     height: 80px;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     border: 0.5px solid #DFDFDF;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     flex-direction: column;
     justify-content: center;
+    transition: transform .2s; /* Animation */
 }
 
+.m-user-info--card:hover{
+    transform: scale(1.1);
+}
 /* Facultad Module */
 
 .m-facultad{
@@ -371,16 +381,17 @@ a:hover{
     flex-direction: column;
     justify-content: center;
     margin-top: 16px;
-    margin-left: 20px;
     padding: 20px;
     height: 100px;
-    width: 200px;
     border: 1px solid #DFDFDF;
     box-sizing: border-box;
     border-radius: 4px;
     cursor: pointer;
+    transition: transform .2s; /* Animation */
 }
-
+.m-product-card:hover{
+    transform: scale(1.1); 
+}
 /* Nav Module */
 .nav-link{
     color: var(--dark-grey);
@@ -634,3 +645,4 @@ a:hover{
     display: flex;
     align-items: center;
 }
+
