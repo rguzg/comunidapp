@@ -1,7 +1,4 @@
-// Agrega el eventListener que muestra el modal a todos los productos de la 
-// categoria activa
-
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+const agregarEventListenerModales = () => {
     let activeTabpane = document.querySelector('.tab-pane.active');
     let products = activeTabpane.querySelectorAll('.m-product-card');
     
@@ -10,7 +7,7 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             showModal(element);
         });
     });
-});
+}
 
 async function showModal(elementoHTML){
     // console.log(elementoHTML);
@@ -35,7 +32,7 @@ async function showModal(elementoHTML){
     $('#detallesModal').modal('show');
 };
 
-getProducto = (elementoHTML) => {
+const getProducto = (elementoHTML) => {
     const csrftoken = getCookie('csrftoken');
     const tipoProducto = elementoHTML.dataset.tipoproducto;
     const idProducto = elementoHTML.dataset.idproducto;
@@ -66,3 +63,10 @@ getProducto = (elementoHTML) => {
             return err;
         });
 }
+
+// Agrega el eventListener que muestra el modal a todos los productos de la 
+// categoria activa
+
+// En el caso de que sea la pestaña que se muestra al entrar a PerfilDetail
+window.addEventListener('load', agregarEventListenerModales);
+$('a[data-toggle="tab"]').on('shown.bs.tab', agregarEventListenerModales);
