@@ -14,7 +14,7 @@ window.onload = async function () {
     const boton_cancelar = document.querySelector('#cancel');
     // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
-    dropdown_parent.addEventListener('click', toggleDropdown);
+    // dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
 
     // search_boxes.forEach(element => {
