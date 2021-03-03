@@ -7,7 +7,7 @@ $(function () {
 window.onload = async function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
-    const dropdown_parent = document.querySelector('#dropdown_parent');
+    // const dropdown_parent = document.querySelector('#dropdown_parent');
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
     const file = document.querySelector('.m-file_input');
@@ -242,10 +242,10 @@ async function showModal(elementoHTML){
     $('#detallesModal').modal('show');
 }
 
-function toggleDropdown() {
-    const dropdown = document.querySelector('#dropdown');
-    dropdown.classList.toggle('h-display');
-}
+// function toggleDropdown() {
+//     const dropdown = document.querySelector('#dropdown');
+//     dropdown.classList.toggle('h-display');
+// }
 
 function goHome() {
     window.location.href = "/home";
