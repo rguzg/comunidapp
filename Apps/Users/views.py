@@ -257,19 +257,15 @@ class Profile(SuccessMessageMixin, FormView):
 
                 messages.add_message(self.request, messages.SUCCESS,
                                     'Petición de actualización enviada correctamente')
-                return render(request, self.template_name, {
-                    'form': form,
-                    'title': "Actualización de mis datos",
-                    'producto': 'actualizacion'
-                })
             else:
                 messages.add_message(self.request, messages.INFO, 
                                     'Realiza algun cambio a tu perfil antes de envíar una petición')
-                return render(request, self.template_name, {
-                    'form': form,
-                    'title': "Actualización de mis datos",
-                    'producto': 'actualizacion'
-                })
+
+        return render(request, self.template_name, {
+            'form': form,
+            'title': "Actualización de mis datos",
+            'producto': 'actualizacion'
+        })
 
     def form_valid(self, form):
         """
