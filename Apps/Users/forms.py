@@ -113,7 +113,7 @@ class UpdateRequestForm(ModelForm):
             peticion = peticion.first()
             if peticion.estado == 'P' :
                 self.add_error(
-                    'first_name', 
+                    None, 
                     'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace'
                 )
                 return cleaned_data
