@@ -41,28 +41,29 @@
                 {% endfor %}
             {% endif %}
     
-            <!-- Mensajes de error sin campo asociado -->
-            {% if form.non_field_errors %}
-                <div class="non-field-errors">
-                    {% for error in form.non_field_errors %}
-                        <p class="form-error">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-            {% endif %}
     
             {% if form.errors %}
-                <div class="alert alert-danger">
-                    <strong>Corrigue los siguientes errores:</strong>
-                    <ul>
-                        {% for field in form %}
-                            {% if field.errors %}
-                                <p href="#id_{{field.name}}">{{field.label}}{{field.errors|striptags}}<p>
-                            {% endif %}
+                <!-- Mensajes de error sin campo asociado -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger non-field-errors">
+                        {% for error in form.non_field_errors %}
+                            <strong class="form-error">
+                                {{ error }}
+                            </strong>
                         {% endfor %}
-                    </ul>
-                </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                        <strong>Corrigue los siguientes errores:</strong>
+                        <ul>
+                        {% for field in form %}
+                        {% if field.errors %}
+                            <p href="#id_{{field.name}}">{{field.label}}: {{field.errors|striptags}}<p>
+                        {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             {% endif %}
     
             {% if field.errors %}
