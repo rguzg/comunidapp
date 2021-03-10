@@ -209,10 +209,9 @@ a:hover{
 .m-header__dropdown > li{
     font-size: 15px;
     width: 100%;
-    height: 36px;
     text-align: center;
     border-bottom: 1px solid var(--border-grey);
-    margin-top: 10px;
+    padding: 10px;
 }
 
 .m-header__dropdown > li > a{
