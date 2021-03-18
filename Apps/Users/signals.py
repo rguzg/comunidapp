@@ -12,3 +12,4 @@ def create_user_autor(sender, instance, created, **kwargs):
             user=instance,
             estado='A'
         )
+
