@@ -10,12 +10,20 @@
 {% include 'navbar-for-externo.html' %}
 <div class="container l-popup">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 m-title">
                 <h3>{{title}}</h3>
             </div>
         </div>
         <form class="col-8 p-0" method='POST' id="popup_form">
             {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <strong>{{ error }}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
     
             {% for field in form %}
             <div class="form-group mb-4">
@@ -44,7 +52,7 @@
                 
             </div>
             {% endfor %}
-            <input class="btn m-comunidapp-button" type="submit" name="" id="" value="Agregar">
+            <input class="btn m-button m-button--comunidapp" type="submit" name="" id="" value="Agregar">
         </form>
     
         <script>

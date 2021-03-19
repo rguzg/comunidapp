@@ -2,26 +2,27 @@
 {% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 {% include 'head.html' %}
 
 <body>
-    <div class="container-fluid h-100 d-flex flex-column justify-content-center align-items-center">
+    <div class="container-fluid h-100 d-flex flex-column justify-content-center align-items-center p-0" id="particles-js">
 
-        <!-- Contenedor de todo -->
-        <div class="col-8 col-md-4 d-flex flex-column justify-content-center align-items-center">
+        <!-- All Container -->
+        <div class="col-8 col-md-4 d-flex flex-column justify-content-center align-items-center" style="position: absolute;">
 
             <!-- Contenedor del logo -->
             <div class="row w-100">
                 <div class="col d-flex flex-row justify-content-start px-0 pb-2">
                     <img src="{% static 'img/logo.png' %}" class="main-logo" alt="Comunidapp logo">
-                    <p class="my-auto font-weight-bold font-logo mx-1" style="font-size: .9 rem;"">Comunidapp</p>
+                    <p class="my-auto font-weight-bold font-logo mx-1 pl-1" style="font-size:1 rem;"">Comunidapp</p>
                 </div>
             </div>
 
-            <!-- Contenedor del formulario -->
-            <div class=" container-fluid p-0 mb-3">
-                    <div class="container p-0">
-                        <p class="font-weight-bold" style="font-size:.9rem;">Inicio de sesión</p>
+            <!-- Form container-->
+            <div class="container-fluid p-0 mb-3 form-container">
+                    <div class="container pt-3 pl-0">
+                        <p style="font-size:1.2rem;">Inicio de sesión</p>
                     </div>
 
                     <form method="POST" class="container p-0 m-0">
@@ -36,10 +37,11 @@
 
                             {% for field in form.visible_fields %}
                             {{ field.errors }}
-                            {{ field|addclass:'form-line p-0 w-100 mt-2 mb-2 input-text-size' }}
+                            {{ field|addclass:'form-line p-1 pb-1 w-100 mt-2 mb-2 input-text-size' }}
                             {% endfor %}
-                            <div class="container m-0 p-0">
-                                <p class="text-left font-weight-light" style="font-size:.8rem;">¿No tienes
+                            <!-- Container register -->
+                            <div class="container m-0 pl-0 pt-3">
+                                <p class="text-left font-weight-light pr-2" style="font-size:.8rem;">¿No tienes
                                     cuenta? <a href="" style="font-size:.8rem;">Solicitala</a>
                                 </p>
                             </div>
@@ -51,7 +53,14 @@
                 </div>
             </div>
         </div>
-
 </body>
 
+<!-- Particles JS -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+/* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+particlesJS.load('particles-js', 'static/js/particles.json', function() {
+    console.log('callback - particles.js config loaded');
+  });
+</script>
 </html>

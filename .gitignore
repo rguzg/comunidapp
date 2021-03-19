@@ -10,6 +10,7 @@ Apps/comunidad/__pycache__/
 Apps/Users/__pycache__/
 
 comunidapp/__pycache__/
+comunidapp/settings.py
 
 *.code-workspace
 Media/comprobantes/
@@ -21,3 +22,5 @@ Apps/external-content.duckduckgo.com.png
 Apps/another.png
 
 .env
+
+comunidapp/settings.py

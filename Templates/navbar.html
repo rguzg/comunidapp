@@ -1,21 +1,23 @@
 {% load static %}
 
+<script defer src="{% static 'js/Header.js' %}"></script>
+
 <!-- Header -->
  <header class="col-12 l-fixed-top m-header">
     <div class="col-2 m-header__logo-container" id="logo">
         <img src="{% static 'img/logo.png' %}" class="m-header__image">
         <b class="m-header__title">Comunidapp</b>
     </div>
-    <div class="col-5">
-        <a href="{% url 'home' %}" class="m-header__button {% if path == 'home' %} m-header__button--active {% endif%}">Home</a>
+    <div class="col-4 offset-3 d-flex justify-content-end p-0">
+        <a href="{% url 'home' %}" class="m-header__button {% if path == 'home' %} m-header__button--active {% endif%}">Inicio</a>
         {% if user.is_staff or user.is_superuser %}
             <a href="{% url 'updates' %}" class="m-header__button {% if path == 'solicitudes' %} m-header__button--active {% endif%}">Solicitudes</a>
-            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar Usuarios</a>
+            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button mr-0 {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar usuarios</a>
         {% else %}
-            <a href="{% url 'AddArticulo' %}" class="m-header__button {% if path == 'productos' %} m-header__button--active {% endif%}">Agregar Productos</a>
+            <a href="{% url 'AddArticulo' %}" class="m-header__button {% if path == 'productos' %} m-header__button--active p-0{% endif%}">Agregar Productos</a>
         {% endif %}
     </div>
-    <div class="col-4 m-header__search-container">
+    <div class="col-3 m-header__search-container">
         <input class="m-search" type="text" name="search" id="search" placeholder="Buscar">
         <ul>
             <li class="m-profile-picture" 
@@ -37,14 +39,13 @@
             </li>
             <ul class="m-header__dropdown" id="dropdown">
                 {% if request.user.get_short_name %}
-                    <li>{{request.user.get_short_name}}</li>
+                    <li class="d-flex justify-content-center ">{{request.user.get_short_name}}</li>
                 {% endif %}
-
                 {% if not request.user.is_staff or not request.user.is_superuser %}
-                    <li><a href="{% url 'profile' %}">Mi Perfil</a></li>
+                    <li class="d-flex justify-content-center "><a href="/user/{{user.id}}">Mi Perfil</a></li>
                 {% endif %}
 
-                <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+                <li class="d-flex justify-content-center "><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
             </ul>
         </ul>
     </div>

@@ -4,54 +4,47 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-window.onload = function () {
+window.onload = async function () {
     // const divSearch = document.getElementsByClassName("bs-searchbox")[0];
     // const inputSearch = divSearch.getElementsByClassName("form-control")[0];
-    const dropdown_parent = document.querySelector('#dropdown_parent');
+    // const dropdown_parent = document.querySelector('#dropdown_parent');
     const logo = document.querySelector('#logo');
     const editar_button = document.querySelector('#editar_button');
-    const file = document.querySelector('.m-input-file');
-    const search_boxes = document.querySelectorAll('.m-pill-input_search');
+    const file = document.querySelector('.m-file_input');
+    const boton_cancelar = document.querySelector('#cancel');
+    // const search_boxes = document.querySelectorAll('.m-pill-input_search');
 
-    dropdown_parent.addEventListener('click', toggleDropdown);
+    // dropdown_parent.addEventListener('click', toggleDropdown);
     logo.addEventListener('click', goHome);
 
-    search_boxes.forEach(element => {
-        let parent = element.parentElement;
+    // search_boxes.forEach(element => {
+    //     let parent = element.parentElement;
         
-        let search_box = parent.querySelector('.m-pill-input_searchbox');
-        let search_input = parent.querySelector('.m-pill-input_search');
+    //     let search_box = parent.querySelector('.m-pill-input_searchbox');
+    //     let search_input = parent.querySelector('.m-pill-input_search');
 
-        search_input.addEventListener('focus', () => {
-            search_box.classList.toggle('h-display-none');
-        });
+    //     search_input.addEventListener('focus', () => {
+    //         search_box.classList.toggle('h-display-none');
+    //     });
 
-        search_input.addEventListener('blur', () => {
-            search_box.classList.toggle('h-display-none');
-        });
-    });
+    //     search_input.addEventListener('blur', () => {
+    //         search_box.classList.toggle('h-display-none');
+    //     });
+    // });
     
     // Agrega el eventListener que muestra el modal a todos los productos de la 
     // categoria activa
-    let activeTabpane = document.querySelector('.tab-pane.active');
-    let products = activeTabpane.querySelectorAll('.m-product-card');
-    
-    products.forEach(element => {
-        element.addEventListener('click', function(){
-            showModal(element);
-        });
-    });
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        let activeTabpane = document.querySelector('.tab-pane.active');
-        let products = activeTabpane.querySelectorAll('.m-product-card');
+    // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    //     let activeTabpane = document.querySelector('.tab-pane.active');
+    //     let products = activeTabpane.querySelectorAll('.m-product-card');
         
-        products.forEach(element => {
-            element.addEventListener('click', function(){
-                showModal(element);
-            });
-        });
-    })
+    //     products.forEach(element => {
+    //         element.addEventListener('click', function(){
+    //             showModal(element);
+    //         });
+    //     });
+    // })
 
     
 
@@ -63,12 +56,18 @@ window.onload = function () {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
         input_file.addEventListener('change', () => {
             let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
-            file.innerText = filename;
+            file.innerHTML = `<img src="/static/img/foto.svg" alt="" srcset=""> ${filename}`;
         });
     }
 
 
     // inputSearch.onkeyup = searchUsers(inputSearch);
+
+    if(boton_cancelar){
+        boton_cancelar.addEventListener('click', () => {
+            window.history.back();
+        });
+    }
 }
 
 function getCookie(name) {
@@ -87,37 +86,37 @@ function getCookie(name) {
     return cookieValue;
 }
 
-getProducto = (elementoHTML) => {
-    const csrftoken = getCookie('csrftoken');
-    const tipoProducto = elementoHTML.dataset.tipoproducto;
-    const idProducto = elementoHTML.dataset.idproducto;
+// getProducto = (elementoHTML) => {
+//     const csrftoken = getCookie('csrftoken');
+//     const tipoProducto = elementoHTML.dataset.tipoproducto;
+//     const idProducto = elementoHTML.dataset.idproducto;
 
-    return fetch(server + 'getProducto', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRFToken': csrftoken,
-        },
-        body: JSON.stringify({
-            'tipoProducto': tipoProducto,
-            'idProducto': idProducto
-        })
-    })
-        .then(res => {
-            return res.json();
-        })
-        .then(res => {
-            // console.log(res);
-            // res = res;
-            return res;
-        })
-        .catch(err => {
-            // console.log(err);
-            // res = err;
-            return err;
-        });
-}
+//     return fetch(server + 'getProducto', {
+//         method: 'POST',
+//         credentials: 'same-origin',
+//         headers: {
+//             'Accept': 'application/json',
+//             'X-CSRFToken': csrftoken,
+//         },
+//         body: JSON.stringify({
+//             'tipoProducto': tipoProducto,
+//             'idProducto': idProducto
+//         })
+//     })
+//         .then(res => {
+//             return res.json();
+//         })
+//         .then(res => {
+//             // console.log(res);
+//             // res = res;
+//             return res;
+//         })
+//         .catch(err => {
+//             // console.log(err);
+//             // res = err;
+//             return err;
+//         });
+// }
 
 // function showEditPopup(url) {
 //     var win = window.open(url, "Edit",
@@ -136,15 +135,23 @@ function showAddPopup(triggeringLink, resultContainer) {
 }
 
 function closePopup(win, newID, newRepr, id) {
+    console.log(newID);
     let select = document.getElementById(id);
     let option = document.createElement('option');
     option.appendChild(document.createTextNode(newRepr));
     option.value = newID;
     option.setAttribute('selected', 'selected');
+
     select.appendChild(option);
     win.close();
 
     localStorage.removeItem('id');
+
+
+    $('#'+id).val(parseInt(newID));
+    $('.selectpicker').selectpicker('refresh');
+    $('.selectpicker').selectpicker('refresh');
+    
 }
 
 // function searchUsers(text) {
@@ -211,35 +218,35 @@ function closePopup(win, newID, newRepr, id) {
 //         });
 // }
 
-async function showModal(elementoHTML){
-    // console.log(elementoHTML);
-    // const idProducto = elementoHTML.dataset.idproducto;
-    // console.log(idProducto);
-    const producto = await getProducto(elementoHTML);
-    // console.log(producto);
-
-    let lineas = [];
-    producto['lineas'].forEach(linea => {
-        // console.log(linea['nombre']);
-        lineas.push(linea['nombre']);
-    })
+// async function showModal(elementoHTML){
+//     // console.log(elementoHTML);
+//     // const idProducto = elementoHTML.dataset.idproducto;
+//     // console.log(idProducto);
+//     const producto = await getProducto(elementoHTML);
 
 
-    let titulo = producto['titulo'] ? producto['titulo'] : 'Sin titulo definido';
-    let publicacion = producto['publicacion'] ? producto['publicacion'] : 'Publicación en tramite';
+//     let lineas = [];
+//     producto['lineas'].forEach(linea => {
+//         // console.log(linea['nombre']);
+//         lineas.push(linea['nombre']);
+//     })
 
-    const modalProducto = document.getElementById('detallesModal');
-    modalProducto.getElementsByClassName('modal-title')[0].textContent = titulo;
-    modalProducto.getElementsByClassName('modal-date')[0].textContent = 'Publicacion: ' + publicacion;
-    modalProducto.getElementsByClassName('modal-colabs')[0].textContent = 'Colaboradores: ' + producto['contribuidores'].join(', ');
-    modalProducto.getElementsByClassName('modal-lines')[0].textContent = 'Líneas de Investigacion: ' + lineas.join(', ');
-    $('#detallesModal').modal('show');
-}
 
-function toggleDropdown() {
-    const dropdown = document.querySelector('#dropdown');
-    dropdown.classList.toggle('h-display');
-}
+//     let titulo = producto['titulo'] ? producto['titulo'] : 'Sin titulo definido';
+//     let publicacion = producto['publicacion'] ? producto['publicacion'] : 'Publicación en tramite';
+
+//     const modalProducto = document.getElementById('detallesModal');
+//     modalProducto.getElementsByClassName('modal-title')[0].textContent = titulo;
+//     modalProducto.getElementsByClassName('modal-date')[0].textContent = 'Publicacion: ' + publicacion;
+//     modalProducto.getElementsByClassName('modal-colabs')[0].textContent = 'Colaboradores: ' + producto['contribuidores'].join(', ');
+//     modalProducto.getElementsByClassName('modal-lines')[0].textContent = 'Líneas de Investigacion: ' + lineas.join(', ');
+//     $('#detallesModal').modal('show');
+// }
+
+// function toggleDropdown() {
+//     const dropdown = document.querySelector('#dropdown');
+//     dropdown.classList.toggle('h-display');
+// }
 
 function goHome() {
     window.location.href = "/home";
@@ -259,3 +266,4 @@ async function getLineasForm() {
     let modal = document.querySelector('.modal-body');
     modal.innerHTML = response;
 }
+

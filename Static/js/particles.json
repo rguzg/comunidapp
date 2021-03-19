@@ -1,0 +1,49 @@
+{
+    "particles": {
+        "number": {
+          "value": 150,
+          "density": {
+            "enable": true,
+            "value_area": 700
+          }
+
+        },
+        "shape": {
+            "type": "circle"
+        },
+        "color": {
+            "value": "#25D3A2"
+          },
+          "opacity": {
+            "value": 0.8,
+            "random": false,
+            "anim": {
+              "enable":true,
+              "speed": 3.5,
+              "opacity_min": 0.2,
+              "sync": false
+            }
+        },
+        "size": {
+            "value": 2.5,
+            "anim": {
+              "enable": true,
+              "speed": 3.5,
+              "size_min": 1,
+              "sync": false
+            }
+        },
+        "line_linked": {
+            "enable": true,
+            "distance": 50,
+            "color": "#25D3A2",
+            "opacity": 0.3,
+            "width": 0.5
+          },
+          "move": {
+            "enable": true,
+            "speed": 5,
+            "random": true
+          }
+        }
+}

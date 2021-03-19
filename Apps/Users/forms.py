@@ -1,3 +1,4 @@
+import uuid
 from django import forms
 from django.db.models import Q
 from django.contrib.auth.forms import AuthenticationForm
@@ -37,10 +38,11 @@ class UserCreationForm(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2', 'is_superuser', 'is_staff']:
             self.fields[fieldname].help_text = None
 
-    def save(self, commit=True):
-        if self.instance.email == '':
-            self.instance.email = None
-        return super().save(commit=commit)
+    # El modelo de usuarios administradores es el mismo que los profesores, así que es necesario pedir
+    # un email, pero el form no pide uno, así que aquí se genera un email como placeholder
+    def clean_email(self):
+        return f'{str(uuid.uuid4())}@{str(uuid.uuid4())}.net'
+
 
 class ProfesorCreationForm(UserCreationForm):
     nacimiento= forms.DateField(input_formats=['%d-%m-%Y'], required=False)
@@ -98,7 +100,7 @@ class UpdateRequestForm(ModelForm):
         }
         widgets = {
             'user': forms.HiddenInput(),
-            'motivo': forms.HiddenInput()
+            'motivo': forms.HiddenInput(),
         }
 
     def clean(self):
@@ -111,7 +113,7 @@ class UpdateRequestForm(ModelForm):
             peticion = peticion.first()
             if peticion.estado == 'P' :
                 self.add_error(
-                    'first_name', 
+                    None, 
                     'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace'
                 )
                 return cleaned_data
@@ -813,24 +815,27 @@ class AutorForm(ModelForm):
     class Meta:
         model = Autor
         fields = ['first_name', 'last_name']
+        labels = {
+            'first_name':'Nombre(s)',
+            'last_name':'Apellido(s)'
+        }
 
     def clean(self):
         cleaned_data = super(AutorForm, self).clean()
         first_name = cleaned_data.get('first_name')
         last_name = cleaned_data.get('last_name')
-        user = cleaned_data.get('user')
+        # user = cleaned_data.get('user')
         autor_existente = Autor.objects.filter(
             Q(first_name=first_name, last_name=last_name) |
             Q(user__first_name=first_name, user__last_name=last_name)
         ).count()
+
+        if first_name is None or last_name is None:
+                raise forms.ValidationError('Debe crear un autor con nombre(s) y apellido(s)')
+
         if autor_existente > 0:
             self.add_error(
                 'first_name', 'Un autor con los mismos datos ya existe. Elíjalo o verifique sus datos')
-
-        if user is None:
-            if first_name is None or last_name is None:
-                self.add_error(
-                    'user', 'Debe seleccionar un usuario o crear un autor externo con nombre(s) y apellido(s)')
 
         if len(first_name) <= LONGITUD_NOMBRE_AUTOR:
             self.add_error(

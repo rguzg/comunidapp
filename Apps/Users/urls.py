@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.views.decorators.csrf import csrf_exempt
-from . import views
+from . import views, views_busqueda, views_serializer, view_proxy
 
 urlpatterns = [
     # URLS para el uso de los usuarios normales
@@ -39,4 +39,20 @@ urlpatterns = [
     url(r'^facultad/create', login_required(views.FacultadCreatePopup.as_view()), name = "FacultadCreate"),
     url(r'^nivel/create', login_required(views.NivelesCreatePopup.as_view()), name = "NivelCreate"),
     url(r'^contrato/create', login_required(views.ContratoCreatePopup.as_view()), name = "ContratoCreate"),
+
+    #URLs para realizar busquedas
+    path('buscar/lineas', login_required(views_busqueda.BuscarLineas.as_view()), name="BuscarLineas"),
+    path('buscar/facultades', login_required(views_busqueda.BuscarFacultades.as_view()), name="BuscarFacultades"),
+    path('buscar/niveles', login_required(views_busqueda.BuscarNiveles.as_view()), name="BuscarNiveles"),
+    path('buscar/palabras', login_required(views_busqueda.BuscarPalabrasClave.as_view()), name="BuscarPalabrasClave"),
+
+    #URLs de Serializers
+    path('api/lineas', views_serializer.LineasInvestigacion_Serializer_View.as_view(), name="API_Lineas"),
+    path('api/facultades', views_serializer.Facultad_Serializer_View.as_view(), name="API_Facultades"),
+    path('api/niveles', views_serializer.Nivel_Serializer_View.as_view(), name="API_Niveles"),
+    path('api/palabras', views_serializer.PalabraClave_Serializer_View.as_view(), name="API_PalabrasClave"),
+
+    #URLs de preprocesamiento de forms
+    path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil")
+
 ]
