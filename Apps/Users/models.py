@@ -431,8 +431,8 @@ class Relaciones_Profesores(models.Model):
     class Meta:
         verbose_name = "Relaciones de Profesores"
 
-    origen = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor_origen')
-    destino = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor_destino')
+    profesor1 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor1')
+    profesor2 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor2')
     tipo_producto = models.CharField(max_length=50, null = False, blank = False)
     anio = models.CharField(max_length=4)
     lineas_investigacion = models.ManyToManyField(PalabrasClave)
