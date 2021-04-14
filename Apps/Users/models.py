@@ -423,3 +423,16 @@ class Tesis(models.Model):
     profesor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
+
+# Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
+# Dos profesores tienen una relación si han colaborado en algún producto juntos.
+
+class Relaciones_Profesores(models.Model):
+    class Meta:
+        verbose_name = "Relaciones de Profesores"
+
+    origen = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor_origen')
+    destino = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor_destino')
+    tipo_producto = models.CharField(max_length=50, null = False, blank = False)
+    anio = models.CharField(max_length=4)
+    lineas_investigacion = models.ManyToManyField(PalabrasClave)
