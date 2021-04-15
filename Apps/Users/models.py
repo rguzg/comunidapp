@@ -303,6 +303,10 @@ class Articulo(models.Model):
     def __str__(self):
         return 'Articulo: "{0}" '.format(self.titulo)
 
+    @property
+    def autores(self):
+        return (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)
+
 class CapituloLibro(models.Model):
     
     class Meta:
@@ -339,6 +343,10 @@ class CapituloLibro(models.Model):
         else:
             return 'Capitulo: {0}'.format(self.titulo)
 
+    @property
+    def autores(self):
+        return (self.primer_autor, self.primer_coautor, self.segundo_coautor, self.tercer_coautor, self.cuarto_coautor)
+
 class Patente(models.Model):
 
     class Meta:
@@ -367,7 +375,7 @@ class Congreso(models.Model):
     tercer_colaborador = models.ForeignKey(Autor, related_name='tercer_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
     cuarto_colaborador = models.ForeignKey(Autor, related_name='cuarto_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
     titulo = models.CharField(max_length=300, null=False, blank=False)
-    congreso = models.CharField(max_length=300, null=False, blank=False)
+    nombre_congreso = models.CharField(max_length=300, null=False, blank=False)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     estadoP = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True, blank=True)
@@ -377,6 +385,10 @@ class Congreso(models.Model):
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
+
+    @property
+    def autores(self):
+        return (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)
 
 class Investigacion(models.Model):
     class Meta:
@@ -408,6 +420,10 @@ class Investigacion(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
+    @property
+    def autores(self):
+        return (self.primer_colaborador, self.segundo_colaborador)
+
 class Tesis(models.Model):
     
     class Meta:
@@ -426,13 +442,32 @@ class Tesis(models.Model):
 
 # Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
 # Dos profesores tienen una relación si han colaborado en algún producto juntos.
-
 class Relaciones_Profesores(models.Model):
     class Meta:
-        verbose_name = "Relaciones de Profesores"
+        verbose_name = "Relación de Profesores",
+        verbose_name_plural = "Relaciones de Profesores",
+
+    TIPO_PRODUCTO_CHOICES = [
+        ('A', 'Articulo'),
+        ('CL', 'Capitulo/Libro'),
+        ('P', 'Patente'),
+        ('C', 'Congreso'),
+        ('I', 'Investigación'),
+        ('T', 'Tesis'),
+
+    ]
 
     profesor1 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor1')
     profesor2 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor2')
-    tipo_producto = models.CharField(max_length=50, null = False, blank = False)
-    anio = models.CharField(max_length=4)
-    lineas_investigacion = models.ManyToManyField(PalabrasClave)
+    
+    tipo_producto = models.CharField(max_length=2, verbose_name= 'Tipo de Producto', choices=TIPO_PRODUCTO_CHOICES, null = False, blank = False)
+
+    # Estos campos almacenan hacia que objeto hace referencia la relación. Cómo los objetos son de diferentes
+    # modelos, se requiere un campo para cada tipo de modelo. Como ya existian productos en el servidor de 
+    # producción no fue posible utilizar herencia de clases para implementar esta funcionalidad.
+    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE, related_name='articulo', null = True, blank = True)
+    capituloLibro = models.ForeignKey(CapituloLibro, on_delete=models.CASCADE, related_name='capituloLibro', null = True, blank = True)
+    patente = models.ForeignKey(Patente, on_delete=models.CASCADE, related_name='patente', null = True, blank = True)
+    congreso = models.ForeignKey(Congreso, on_delete=models.CASCADE, related_name='congreso', null = True, blank = True)
+    investigacion = models.ForeignKey(Investigacion, on_delete=models.CASCADE, related_name='investigacion', null = True, blank = True)
+    tesis = models.ForeignKey(Tesis, on_delete=models.CASCADE, related_name='tesis', null = True, blank = True)
