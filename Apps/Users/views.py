@@ -520,6 +520,9 @@ class AddCapituloLibro(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
+                AñadirRelacion(form_val)
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
