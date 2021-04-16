@@ -22,6 +22,7 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     NivelForm, ContratoForm)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UpdateRequest, Autor)
+from .AñadirRelacion import AñadirRelacion
 
 
 """
@@ -236,7 +237,7 @@ class Profile(SuccessMessageMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         peticion=UpdateRequest.objects.filter(user=request.user).first()
-
+    
         if peticion:
             form=UpdateRequestForm(
                 request.POST, request.FILES, instance=peticion)
@@ -482,6 +483,9 @@ class AddArticulo(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
+                AñadirRelacion(form_val)
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
