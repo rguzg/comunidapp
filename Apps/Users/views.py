@@ -560,6 +560,9 @@ class AddPatente(CreateView):
                 form.save_m2m()
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
+
+                AñadirRelacion(form_val)
+
             else:
                 messages.add_message(self.request, messages.INFO, 
                                     'Realiza algun cambio antes de agregar una patente')
