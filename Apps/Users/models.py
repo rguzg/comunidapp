@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
+from typing import List
 
 """
 Modelo del usuario
@@ -304,8 +305,13 @@ class Articulo(models.Model):
         return 'Articulo: "{0}" '.format(self.titulo)
 
     @property
-    def autores(self):
-        return (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)
+    def autores(self) -> List[Autor]:
+        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
+        return list(filter(None, (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
+
+    @property
+    def TipoProducto(self) -> str:
+        return "Articulo"
 
 class CapituloLibro(models.Model):
     
@@ -345,7 +351,12 @@ class CapituloLibro(models.Model):
 
     @property
     def autores(self):
-        return (self.primer_autor, self.primer_coautor, self.segundo_coautor, self.tercer_coautor, self.cuarto_coautor)
+        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
+        return list(filter(None, (self.primer_autor, self.primer_coautor, self.segundo_coautor, self.tercer_coautor, self.cuarto_coautor)))
+
+    @property
+    def TipoProducto(self) -> str:
+        return "Capitulo/Libro"
 
 class Patente(models.Model):
 
@@ -363,6 +374,10 @@ class Patente(models.Model):
     comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size]  )
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
+
+    @property
+    def TipoProducto(self) -> str:
+        return "Patente"
 
 class Congreso(models.Model):
     class Meta:
@@ -388,7 +403,12 @@ class Congreso(models.Model):
 
     @property
     def autores(self):
-        return (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)
+        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
+        return list(filter(None, (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
+
+    @property
+    def TipoProducto(self) -> str:
+        return "Congreso"
 
 class Investigacion(models.Model):
     class Meta:
@@ -422,7 +442,12 @@ class Investigacion(models.Model):
 
     @property
     def autores(self):
-        return (self.primer_colaborador, self.segundo_colaborador)
+        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
+        return list(filter(None, (self.primer_colaborador, self.segundo_colaborador)))
+
+    @property
+    def TipoProducto(self) -> str:
+        return "Investigacion"
 
 class Tesis(models.Model):
     
@@ -440,6 +465,10 @@ class Tesis(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
 
+    @property
+    def TipoProducto(self) -> str:
+        return "Tesis"
+
 # Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
 # Dos profesores tienen una relación si han colaborado en algún producto juntos.
 class Relaciones_Profesores(models.Model):
@@ -447,14 +476,20 @@ class Relaciones_Profesores(models.Model):
         verbose_name = "Relación de Profesores",
         verbose_name_plural = "Relaciones de Profesores",
 
-    TIPO_PRODUCTO_CHOICES = [
-        ('A', 'Articulo'),
-        ('CL', 'Capitulo/Libro'),
-        ('P', 'Patente'),
-        ('C', 'Congreso'),
-        ('I', 'Investigación'),
-        ('T', 'Tesis'),
+    ARTICULO = 'A'
+    CAPITULO_LIBRO = 'CL'
+    PATENTE = 'P'
+    CONGRESO = 'C'
+    INVESTIGACION = 'I'
+    TESIS = 'T'
 
+    TIPO_PRODUCTO_CHOICES = [
+        (ARTICULO, 'Articulo'),
+        (CAPITULO_LIBRO, 'Capitulo/Libro'),
+        (PATENTE, 'Patente'),
+        (CONGRESO, 'Congreso'),
+        (INVESTIGACION, 'Investigación'),
+        (TESIS, 'Tesis'),
     ]
 
     profesor1 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor1')
