@@ -15,22 +15,20 @@ def CrearRelacion(producto: Union[Articulo, CapituloLibro, Patente, Congreso, In
     switch_productos[producto.TipoProducto]()
 
 def AñadirRelacion(producto: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion]) -> None:
+    # A diferencia de los demas modelos, la propiedad autores es diferente en el modelo Patente
     autores = None
 
-    # A diferencia de los demas modelos, la propiedad autores es diferente en el modelo Patente
     if(not isinstance(producto, Patente)):
         autores = producto.autores
     else:
         autores = producto.autores.all()
 
-        if(len(autores) > 1):
-            while(autores):
-                for i in range(1,len(autores)):
-                    CrearRelacion(producto, autores[0], autores[i])
-                    print(f"Creada Relación ${autores[0]}-${autores[i]}")
-                autores.remove(autores[0])
-        else:
-            print("Solo hay un autor. No se crearon relaciones")
+    if(len(autores) > 1):
+        while(autores):
+            for i in range(1,len(autores)):
+                CrearRelacion(producto, autores[0], autores[i])
+            autores.remove(autores[0])
+
         
 
 
