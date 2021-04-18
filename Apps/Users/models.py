@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
-from typing import List
+from typing import List, Union
 
 """
 Modelo del usuario
@@ -301,6 +301,8 @@ class Articulo(models.Model):
     doi = models.URLField(max_length=100, null=True, blank=True)
     indice_revista = models.CharField(max_length=100,null=True, blank=True)
 
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
+
     def __str__(self):
         return 'Articulo: "{0}" '.format(self.titulo)
 
@@ -343,6 +345,8 @@ class CapituloLibro(models.Model):
     proposito = models.CharField(max_length=3, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
+
     def __str__(self):
         if self.tipo == 'L':
             return 'Libro: {0}'.format(self.titulo)
@@ -375,6 +379,8 @@ class Patente(models.Model):
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
 
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
+
     @property
     def TipoProducto(self) -> str:
         return "Patente"
@@ -400,6 +406,8 @@ class Congreso(models.Model):
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
+
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
 
     @property
     def autores(self):
@@ -440,6 +448,8 @@ class Investigacion(models.Model):
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
 
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
+
     @property
     def autores(self):
         # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
@@ -464,6 +474,8 @@ class Tesis(models.Model):
     profesor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     palabras_clave = models.ManyToManyField(PalabrasClave)
+
+    relaciones_creadas = models.BooleanField(null=False, blank=False, default = False)
 
     @property
     def TipoProducto(self) -> str:
