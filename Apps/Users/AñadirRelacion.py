@@ -2,6 +2,7 @@
 # Relaciones_Profesores
 from .models import Autor, Relaciones_Profesores, Articulo, CapituloLibro, Patente, Congreso, Investigacion
 from typing import Union
+from django.db.utils import IntegrityError
 
 def CrearRelacion(producto: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion], profesor1: Autor, profesor2: Autor):
     switch_productos = {
@@ -26,7 +27,10 @@ def AñadirRelacion(producto: Union[Articulo, CapituloLibro, Patente, Congreso, 
     if(len(autores) > 1):
         while(autores):
             for i in range(1,len(autores)):
-                CrearRelacion(producto, autores[0], autores[i])
+                try:
+                    CrearRelacion(producto, autores[0], autores[i])
+                except IntegrityError:
+                    print(f"La relación {autores[0]}-{autores[i]} del producto: {producto} ya existe")
             autores.remove(autores[0])
 
         
