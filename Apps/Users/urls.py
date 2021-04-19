@@ -53,6 +53,8 @@ urlpatterns = [
     path('api/palabras', views_serializer.PalabraClave_Serializer_View.as_view(), name="API_PalabrasClave"),
 
     #URLs de preprocesamiento de forms
-    path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil")
+    path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil"),
 
+    #URL para generar relaciones
+    path('generarRelaciones', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.GenerarRelaciones.as_view()), name = 'Generar_Relaciones')
 ]

@@ -886,14 +886,33 @@ class ContratoCreatePopup(View):
             'title': 'Agrega un tipo de Contrato'
         })
 
+# Originalmente no se tenía contemplado las relaciones entre productos, así que todos los productos que están agregados hasta el momento
+# no tienen ninguna relación generada. Si se implementa este proyecto desde cero, no hay necesidad de generar las relaciones utilizando 
+# esta vista. En caso de que por alguna razón se necesiten generar todas las relaciones desde cero, agrega una URL que apunte a esta vista
+# y realiza una petición POST
 class GenerarRelaciones(View):
     def get(self, request):
         articulos = Articulo.objects.all()
         capitulos = CapituloLibro.objects.all()
-        patente = Patente.objects.all()
-        congreso = Congreso.objects.all()
-        investigacion = Investigacion.objects.all()
+        patentes = Patente.objects.all()
+        congresos = Congreso.objects.all()
+        investigaciones = Investigacion.objects.all()
 
         for articulo in articulos:
-            if(Relaciones_Profesores.objects.get(articulo = articulo)):
-                print("Objeto")
+            AñadirRelacion(articulo)
+            
+        for capitulo in capitulos:
+            AñadirRelacion(capitulo)
+
+        for patente in patentes:
+            AñadirRelacion(patente)
+
+        for congreso in congresos:
+            AñadirRelacion(congreso)
+            
+        for investigacion in investigaciones:
+            AñadirRelacion(investigacion)
+
+        return HttpResponse("Relaciones creadas")
+
+                
