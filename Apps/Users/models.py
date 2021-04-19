@@ -475,6 +475,9 @@ class Relaciones_Profesores(models.Model):
     class Meta:
         verbose_name = "Relación de Profesores",
         verbose_name_plural = "Relaciones de Profesores",
+        constraints = [
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'articulo'], name = 'relacion_unica_articulo')
+        ]
 
     ARTICULO = 'A'
     CAPITULO_LIBRO = 'CL'
