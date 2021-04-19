@@ -506,3 +506,6 @@ class Relaciones_Profesores(models.Model):
     congreso = models.ForeignKey(Congreso, on_delete=models.CASCADE, related_name='congreso', null = True, blank = True)
     investigacion = models.ForeignKey(Investigacion, on_delete=models.CASCADE, related_name='investigacion', null = True, blank = True)
     tesis = models.ForeignKey(Tesis, on_delete=models.CASCADE, related_name='tesis', null = True, blank = True)
+
+    def __str__(self) -> str:
+        return f"Relación {self.profesor1}-{self.profesor2} en el producto: {self.tipo_producto}"
