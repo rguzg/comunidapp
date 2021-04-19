@@ -21,7 +21,7 @@ def AñadirRelacion(producto: Union[Articulo, CapituloLibro, Patente, Congreso, 
     if(not isinstance(producto, Patente)):
         autores = producto.autores
     else:
-        autores = producto.autores.all()
+        autores = list(producto.autores.all())
 
     if(len(autores) > 1):
         while(autores):
