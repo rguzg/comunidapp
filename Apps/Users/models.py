@@ -476,7 +476,12 @@ class Relaciones_Profesores(models.Model):
         verbose_name = "Relación de Profesores",
         verbose_name_plural = "Relaciones de Profesores",
         constraints = [
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'articulo'], name = 'relacion_unica_articulo')
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'articulo'], name = 'relacion_unica_articulo'),
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'capituloLibro'], name = 'relacion_unica_capituloLibro'),
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'patente'], name = 'relacion_unica_patente'),
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'congreso'], name = 'relacion_unica_congreso'),
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'investigacion'], name = 'relacion_unica_investigacion'),
+            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'tesis'], name = 'relacion_unica_tesis'),
         ]
 
     ARTICULO = 'A'
