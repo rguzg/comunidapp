@@ -21,7 +21,7 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
                     NivelForm, ContratoForm)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UpdateRequest, Autor)
+                     Pais, User, UpdateRequest, Autor, Relaciones_Profesores)
 from .AñadirRelacion import AñadirRelacion
 
 
@@ -484,8 +484,6 @@ class AddArticulo(CreateView):
                 form_val.save()
                 form.save_m2m()
 
-                AñadirRelacion(form_val)
-
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
@@ -520,8 +518,6 @@ class AddCapituloLibro(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
-
-                AñadirRelacion(form_val)
 
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
@@ -561,8 +557,6 @@ class AddPatente(CreateView):
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
 
-                AñadirRelacion(form_val)
-
             else:
                 messages.add_message(self.request, messages.INFO, 
                                     'Realiza algun cambio antes de agregar una patente')
@@ -596,8 +590,6 @@ class AddCongreso(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
-
-                AñadirRelacion(form_val)
 
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
@@ -634,8 +626,6 @@ class AddInvestigacion(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
-
-                AñadirRelacion(form_val)
 
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
@@ -895,3 +885,15 @@ class ContratoCreatePopup(View):
             "form": form,
             'title': 'Agrega un tipo de Contrato'
         })
+
+class GenerarRelaciones(View):
+    def get(self, request):
+        articulos = Articulo.objects.all()
+        capitulos = CapituloLibro.objects.all()
+        patente = Patente.objects.all()
+        congreso = Congreso.objects.all()
+        investigacion = Investigacion.objects.all()
+
+        for articulo in articulos:
+            if(Relaciones_Profesores.objects.get(articulo = articulo)):
+                print("Objeto")
