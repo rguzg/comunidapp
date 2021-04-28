@@ -32,10 +32,10 @@ class Relaciones(APIView):
             raise NotFound(f'{e} no es un producto valido', 404)
         
         for relacion in relaciones:
-            if((profesor1 := Users_Serializer(relacion.profesor1.user).data) not in resultado['nodes']):
-                resultado['nodes'].append(profesor1)
-            if((profesor2 := Users_Serializer(relacion.profesor2.user).data) not in resultado['nodes']):
-                resultado['nodes'].append(profesor2)
+            if(Users_Serializer(relacion.profesor1.user).data not in resultado['nodes']):
+                resultado['nodes'].append(Users_Serializer(relacion.profesor1.user).data)
+            if(Users_Serializer(relacion.profesor2.user).data not in resultado['nodes']):
+                resultado['nodes'].append(Users_Serializer(relacion.profesor2.user).data)
 
             resultado['edges'].append(Relaciones_Serializer(relacion).data)
         return Response(resultado)
