@@ -35,4 +35,4 @@ class Relaciones_Serializer(ModelSerializer):
     class Meta:
         model = Relaciones_Profesores
         fields = ['source', 'target']
-        read_only_fields = ['source', 'targer']
+        read_only_fields = ['source', 'target']
