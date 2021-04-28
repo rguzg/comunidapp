@@ -4,6 +4,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from .models import Relaciones_Profesores
 from .serializers import Users_Serializer, Relaciones_Serializer
+from django.views import View
+from django.shortcuts import HttpResponse, redirect, render
+
 
 class Relaciones(APIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -39,3 +42,7 @@ class Relaciones(APIView):
 
             resultado['edges'].append(Relaciones_Serializer(relacion).data)
         return Response(resultado)
+
+class Prueba(View):
+    def get(self, request):
+        return render(request, 'Network.html')

@@ -59,4 +59,5 @@ urlpatterns = [
     path('generarRelaciones', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.GenerarRelaciones.as_view()), name = 'Generar_Relaciones'),
     # Los productos que generan tienen relaciones son: articulos, capitulolibros, patentes, congresos, investigaciones
     path('relaciones/<str:producto>/', views_relaciones.Relaciones.as_view(), name='relaciones_investigaciones'),
+    path('prueba', views_relaciones.Prueba.as_view(), name='relaciones_investigaciones'),
 ]

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="description" content="D3byEX 11.1">
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>Tesis Network</h1>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+        let url = 'https://gist.githubusercontent.com/d3byex/5a8267f90a0d215fcb3e/raw/b53d20a8a6a82fd8bab2c03e0ec5a96262b5c8da/uni_network.json';
+        d3.json(url, function (error, data) {
+            let width = 600, height = 500;
+
+            let svg = d3.select('body').append('svg')
+                .attr({
+                    width: width,
+                    height: height
+                })
+                .classed("main-network", true);
+
+            let force = d3.layout.force()
+                .nodes(data.nodes)
+                .links(data.edges)
+                .size([width, height])
+                .linkDistance(1)
+                .charge(-5000)
+                .start();
+
+            let edges = svg.selectAll('line')
+                .data(data.edges)
+                .enter()
+                .append('line')
+                .style('stroke', '#ccc')
+                .style('stroke-width', 1);
+
+            let nodes = svg.selectAll('g')
+            .data(data.nodes)
+            .enter()
+            .append('g')
+            .call(force.drag);
+
+            let colors = d3.scale.category20();
+            nodes.append('circle')
+                .attr('r', 10)
+                .attr('fill', function (d, i) {
+                    return colors(i);
+                })
+                .call(force.drag);
+
+            nodes.append('text')
+                .attr({
+                        dx: 12,
+                        dy: '.35em',
+                        'pointer-events': 'none'
+                    })
+            .style('font', '10px sans-serif')
+                    .text(function (d) { return d.name });
+            
+            force.on('tick', () =>{
+                edges.each(function (d) {
+                    d3.select(this).attr({
+                        x1: d.source.x,
+                        y1: d.source.y,
+                        x2: d.target.x,
+                        y2: d.target.y
+                    });
+                });
+                nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+        });
+
+            // let colors = d3.scale.category20();
+            // let nodes = svg
+            //     .selectAll('circle')
+            //     .data(data.nodes)
+            //     .enter()
+            //     .append('circle')
+            //     .attr('r', 10)
+            //     .attr('fill', function (d, i) {
+            //         return colors(i);
+            //     })
+            //     .call(force.drag);
+
+            // force.on('tick', function () {
+            //     edges.attr({
+            //         x1: function (d) { return d.source.x; },
+            //         y1: function (d) { return d.source.y; },
+            //         x2: function (d) { return d.target.x; },
+            //         y2: function (d) { return d.target.y; }
+            //     });
+
+            //     nodes.attr('cx', function (d) { return d.x; })
+            //          .attr('cy', function (d) { return d.y; });
+            // });
+
+        });
+    </script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+    </style>
+</body>
+</html>
