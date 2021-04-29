@@ -501,7 +501,7 @@ class Relaciones_Profesores(models.Model):
     ]
 
     profesor1 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor1')
-    profesor2 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor2')
+    profesor2 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor2', null = True)
     
     tipo_producto = models.CharField(max_length=2, verbose_name= 'Tipo de Producto', choices=TIPO_PRODUCTO_CHOICES, null = False, blank = False)
 
