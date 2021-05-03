@@ -1,14 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="description" content="D3byEX 11.1">
     <meta charset="utf-8">
 </head>
+{% include 'head.html' %}
+<script defer src="{% static 'js/PerfilDetail.js' %}"></script>
+
 <body>
-    <h1>Tesis Network</h1>
+    {% include 'navbar.html' %}
+    <h1 class="mt-5a">Tesis Network</h1>
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script>
-        let url = 'https://gist.githubusercontent.com/d3byex/5a8267f90a0d215fcb3e/raw/b53d20a8a6a82fd8bab2c03e0ec5a96262b5c8da/uni_network.json';
+        let url = 'http://127.0.0.1:8000/relaciones/articulos/';
         d3.json(url, function (error, data) {
             let width = 600, height = 500;
 
@@ -18,17 +23,27 @@
                     height: height
                 })
                 .classed("main-network", true);
+                
+            let links = [];
+            data.edges.forEach((e) => { 
+                // Get the source and target nodes
+                let sourceNode = data.nodes.filter((n) => n.id === e.source)[0],
+                    targetNode = data.nodes.filter((n) => n.id === e.target)[0];
 
+                // Add the edge to the array
+                links.push({source: sourceNode, target: targetNode});
+            });
+            
             let force = d3.layout.force()
                 .nodes(data.nodes)
-                .links(data.edges)
+                .links(links)
                 .size([width, height])
                 .linkDistance(1)
-                .charge(-5000)
+                .charge(-3000)
                 .start();
 
             let edges = svg.selectAll('line')
-                .data(data.edges)
+                .data(links)
                 .enter()
                 .append('line')
                 .style('stroke', '#ccc')
@@ -42,11 +57,24 @@
 
             let colors = d3.scale.category20();
             nodes.append('circle')
-                .attr('r', 10)
-                .attr('fill', function (d, i) {
-                    return colors(i);
-                })
-                .call(force.drag);
+            .attr('r', 10)
+            .attr({
+            r: 10,
+            fill: function(d, i) {
+            return colors(i);
+            },
+            stroke: 'black',
+            'stroke-width': 0
+            })
+            .call(force.drag()
+            .on("dragstart", function(d) {
+            d.fixed = true;
+            d3.select(this).attr('stroke-width', 3);
+            }))
+            .on('dblclick', function(d) {
+            d.fixed = false;
+            d3.select(this).attr('stroke-width', 0);
+            });
 
             nodes.append('text')
                 .attr({
@@ -55,7 +83,7 @@
                         'pointer-events': 'none'
                     })
             .style('font', '10px sans-serif')
-                    .text(function (d) { return d.name });
+                    .text(function (d) { return d.first_name });
             
             force.on('tick', () =>{
                 edges.each(function (d) {
@@ -68,32 +96,7 @@
                 });
                 nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         });
-
-            // let colors = d3.scale.category20();
-            // let nodes = svg
-            //     .selectAll('circle')
-            //     .data(data.nodes)
-            //     .enter()
-            //     .append('circle')
-            //     .attr('r', 10)
-            //     .attr('fill', function (d, i) {
-            //         return colors(i);
-            //     })
-            //     .call(force.drag);
-
-            // force.on('tick', function () {
-            //     edges.attr({
-            //         x1: function (d) { return d.source.x; },
-            //         y1: function (d) { return d.source.y; },
-            //         x2: function (d) { return d.target.x; },
-            //         y2: function (d) { return d.target.y; }
-            //     });
-
-            //     nodes.attr('cx', function (d) { return d.x; })
-            //          .attr('cy', function (d) { return d.y; });
-            // });
-
-        });
+});
     </script>
     <style>
         body {
