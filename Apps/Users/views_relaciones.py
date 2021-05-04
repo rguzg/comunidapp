@@ -10,7 +10,6 @@ from django.shortcuts import HttpResponse, redirect, render
 
 class Relaciones(APIView):
     authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, producto):
         producto = producto.lower()
