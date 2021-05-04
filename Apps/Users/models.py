@@ -443,7 +443,7 @@ class Investigacion(models.Model):
     @property
     def autores(self):
         # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.primer_colaborador, self.segundo_colaborador)))
+        return list(filter(None, (self.responsable, self.primer_colaborador, self.segundo_colaborador)))
 
     @property
     def TipoProducto(self) -> str:
