@@ -473,6 +473,12 @@ class Tesis(models.Model):
     def TipoProducto(self) -> str:
         return "Tesis"
 
+    @property
+    def autores(self):
+        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
+        return list(filter(None, (self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
+
+
 # Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
 # Dos profesores tienen una relación si han colaborado en algún producto juntos.
 class Relaciones_Profesores(models.Model):
