@@ -5,9 +5,9 @@ const facultades = document.querySelector('#pills_facultades');
 // La view de Agregar Usuarios tiene dos pestañas, una donde no hay input pills y otra donde están las tres, 
 // entonces si una está presente, no tiene caso checar las demás
 if(lineas_investigacion){
-    PillsBox(lineas_investigacion, 'lineas');
-    PillsBox(niveles, 'niveles');
-    PillsBox(facultades, 'facultades');
+    PillsBox(lineas_investigacion, 'lineas', false);
+    PillsBox(niveles, 'niveles', false);
+    PillsBox(facultades, 'facultades', false);
 }
 
 const form = document.querySelector('form');
