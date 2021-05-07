@@ -21,6 +21,7 @@ class Relaciones(APIView):
             "patentes": lambda :  Relaciones_Profesores.objects.exclude(patente = None),
             "congresos": lambda :  Relaciones_Profesores.objects.exclude(congreso = None),
             "investigaciones": lambda :  Relaciones_Profesores.objects.exclude(investigacion = None),
+            "tesis": lambda :  Relaciones_Profesores.objects.exclude(tesis = None),
         }
 
         resultado = {
