@@ -897,6 +897,8 @@ class GenerarRelaciones(View):
         patentes = Patente.objects.all()
         congresos = Congreso.objects.all()
         investigaciones = Investigacion.objects.all()
+        # Supongamos que tesises es el plural de tesis 😉
+        tesises = Tesis.objects.all()
 
         for articulo in articulos:
             AñadirRelacion(articulo)
@@ -912,6 +914,9 @@ class GenerarRelaciones(View):
             
         for investigacion in investigaciones:
             AñadirRelacion(investigacion)
+
+        for tesis in tesises:
+            AñadirRelacion(tesis)
 
         return HttpResponse("Relaciones creadas")
 
