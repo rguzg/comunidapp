@@ -735,9 +735,6 @@ class TesisForm(ModelForm):
     class Meta:
         model = Tesis
         fields = '__all__'
-        widgets = {
-            'profesor': forms.HiddenInput()
-        }
         labels = {
             'tipo_proyecto': 'Tipo de proyecto',
             'institucion': 'Institución',
