@@ -738,7 +738,6 @@ class TesisForm(ModelForm):
         labels = {
             'tipo_proyecto': 'Tipo de proyecto',
             'institucion': 'Institución',
-            'profesor': None,
             'financiamiento': '¿Tuvó financiamiento?',
             'tipo_financiamiento': 'Tipo de financiamiento',
             'primer_autor': 'Autor',
@@ -761,6 +760,11 @@ class TesisForm(ModelForm):
             'isbn': 'ISBN',
             'proposito': 'Propósito',
             'registro': 'Número de patente',
+            'primer_colaborador': "Primer colaborador", 
+            'segundo_colaborador': "Segundo colaborador",
+            'tercer_colaborador': "Tercer colaborador",
+            'cuarto_colaborador': "Cuarto colaborador",
+            'profesor': 'Profesor'
         }
 
         help_texts = {
@@ -781,6 +785,8 @@ class TesisForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
+        autores = []
+        tipos_autores = ['primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador','profesor']
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
@@ -798,6 +804,15 @@ class TesisForm(ModelForm):
         if lineas_investigacion.count() == 0:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
+
+        for tipo_autor in tipos_autores:
+            autor = cleaned_data.get(tipo_autor)
+            
+            if autor in autores:
+                self.add_error(tipo_autor, f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipo_autor]}')
+                self.Meta.labels
+            else:
+                autores.append(autor)
 
         return cleaned_data
 
