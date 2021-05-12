@@ -475,8 +475,12 @@ class Tesis(models.Model):
 
     @property
     def autores(self):
+        # Esta propiedad retorna una lista de autores, pero el atributo profesor no es una instancia de autor, si no de usuario. ?  ¡Afortunadamente todos los usuarios también son autores! Así que solo se busca el autor que corresponda a self.profesor
+        # Todos los usarios están garantizados a ser autores según lo dictado por signals.py
+        profesor = Autor.objects.filter(user = self.profesor).first()
+
         # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
+        return list(filter(None, (profesor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
 
 
 # Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
