@@ -805,12 +805,15 @@ class TesisForm(ModelForm):
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
 
-        for tipo_autor in tipos_autores:
-            autor = cleaned_data.get(tipo_autor)
-            
+        for i in range(len(tipos_autores)):
+            autor = cleaned_data.get(tipos_autores[i])
+
+            # Si un alguno de los campos es None, todos los que le sigan también deben ser None
+            if(autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
+                self.add_error(tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
+
             if autor in autores:
-                self.add_error(tipo_autor, f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipo_autor]}')
-                self.Meta.labels
+                self.add_error(tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
             else:
                 autores.append(autor)
 
