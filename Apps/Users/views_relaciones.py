@@ -45,6 +45,6 @@ class Relaciones(APIView):
                 resultado['edges'].append(Relaciones_Serializer(relacion).data)
         return Response(resultado)
 
-class Prueba(View):
+class Visualization(View):
     def get(self, request):
-        return render(request, 'Network.html')
+        return render(request, 'visualization.html')

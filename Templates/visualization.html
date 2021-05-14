@@ -1,0 +1,182 @@
+{% load static %}
+{% include 'head.html' %}
+<!-- <script defer src="{% static 'js/PerfilDetail.js' %}"></script> -->
+<script defer src="{% static 'js/PerfilDetail.js' %}"></script>
+<script defer src="{% static 'js/visualization.js' %}"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<body>
+    {% include 'navbar.html' %}
+        <!-- Contenedor Principal -->
+        <div class="container l-main mt-5 pt-5">
+            <div class="row">
+                <div class="col-12 l-grid">
+                    <div class="col-12 m-publications pt-3">
+                        <div class="row">
+                            <div class="col-12 m-publications__lineas mb-3">
+                                <b>Visualización de colaboradores según líneas de investigación</b>
+                            </div>
+                        </div>
+                        <hr class="mt-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <!-- Bootstrap's implementation of tabbed navigation -->
+                                <!-- Tabs -->
+                                <ul class="nav nav-tabs" id="products" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link active" id="articulos-tab" data-toggle="tab" href="#articulos" role="tab" aria-controls="articulos" aria-selected="true" data-path="articulos">Articulos</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link" id="libroscapitulos-tab" data-toggle="tab" href="#libroscapitulos" role="tab" aria-controls="libroscapitulos" aria-selected="false" data-path="capitulolibros">Libros o Capítulos</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link" id="patentes-tab" data-toggle="tab" href="#patentes" role="tab" aria-controls="patentes" aria-selected="false" data-path="patentes">Patentes</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link" id="congresos-tab" data-toggle="tab" href="#congresos" role="tab" aria-controls="congresos" aria-selected="false" data-path="congresos">Congresos</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link" id="investigaciones-tab" data-toggle="tab" href="#investigaciones" role="tab" aria-controls="investigaciones" aria-selected="false" data-path="investigaciones">Investigaciones</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                      <a class="nav-link" id="tesis-tab" data-toggle="tab" href="#tesis" role="tab" aria-controls="tesis" aria-selected="false" data-path="tesis">Tesis</a>
+                                    </li>
+                                </ul>
+    
+                                <!-- Content -->    
+                                <div class="tab-content" id="productsContent">
+                                    <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
+                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                            <svg class="network-container"></svg>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="libroscapitulos" role="tabpanel" aria-labelledby="libroscapitulos-tab">
+                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                            <svg class="network-container"></svg>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="patentes" role="tabpanel" aria-labelledby="patentes-tab">
+                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                            <svg class="network-container"></svg>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="congresos" role="tabpanel" aria-labelledby="congresos-tab">
+                                       <div class="col-12 d-flex justify-content-center align-items-center">
+                                           <svg class="network-container"></svg>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="investigaciones" role="tabpanel" aria-labelledby="investigaciones-tab">
+                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                            <svg class="network-container"></svg>
+                                        </div>
+                                    <div class="tab-pane fade" id="tesis" role="tabpanel" aria-labelledby="tesis-tab">
+                                        <div class="col-12 d-flex justify-content-center align-items-center">
+                                            <svg class="network-container"></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- 
+    <script>
+        let url = 'http://127.0.0.1:8000/relaciones/articulos/';
+        d3.json(url, function (error, data) {
+            let width = 600, height = 500;
+
+            let svg = d3.select('body').append('svg')
+                .attr({
+                    width: width,
+                    height: height
+                })
+                .classed("main-network", true);
+                
+            let links = [];
+            data.edges.forEach((e) => { 
+                // Get the source and target nodes
+                let sourceNode = data.nodes.filter((n) => n.id === e.source)[0],
+                    targetNode = data.nodes.filter((n) => n.id === e.target)[0];
+
+                // Add the edge to the array
+                links.push({source: sourceNode, target: targetNode});
+            });
+            
+            let force = d3.layout.force()
+                .nodes(data.nodes)
+                .links(links)
+                .size([width, height])
+                .linkDistance(1)
+                .charge(-3000)
+                .start();
+
+            let edges = svg.selectAll('line')
+                .data(links)
+                .enter()
+                .append('line')
+                .style('stroke', '#ccc')
+                .style('stroke-width', 1);
+
+            let nodes = svg.selectAll('g')
+            .data(data.nodes)
+            .enter()
+            .append('g')
+            .call(force.drag);
+
+            let colors = d3.scale.category20();
+            nodes.append('circle')
+            .attr('r', 10)
+            .attr({
+            r: 10,
+            fill: function(d, i) {
+            return colors(i);
+            },
+            stroke: 'black',
+            'stroke-width': 0
+            })
+            .call(force.drag()
+            .on("dragstart", function(d) {
+            d.fixed = true;
+            d3.select(this).attr('stroke-width', 3);
+            }))
+            .on('dblclick', function(d) {
+            d.fixed = false;
+            d3.select(this).attr('stroke-width', 0);
+            });
+
+            nodes.append('text')
+                .attr({
+                        dx: 12,
+                        dy: '.35em',
+                        'pointer-events': 'none'
+                    })
+            .style('font', '10px sans-serif')
+                    .text(function (d) { return d.first_name });
+            
+            force.on('tick', () =>{
+                edges.each(function (d) {
+                    d3.select(this).attr({
+                        x1: d.source.x,
+                        y1: d.source.y,
+                        x2: d.target.x,
+                        y2: d.target.y
+                    });
+                });
+                nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+        });
+});
+    </script>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+    </style> -->
+</body>
+</html>
