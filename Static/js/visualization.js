@@ -7,7 +7,13 @@ function showGraph() {;
     networks.forEach(e => e.classList.remove('d-none'))
 }
 
-function createVisualization(endPath){
+const createVisualization = async (endPath) => {
+    const URL = `http://127.0.0.1:8000/relaciones/${endPath}/`;
+
+    const body =  await fetch(URL);
+    const data = await body.json();
+    showGraph();
+
     let width = 600, height = 500;
 
     let svg = d3.select('.network-container')
@@ -15,11 +21,7 @@ function createVisualization(endPath){
             width: width,
             height: height
         })
-
-    let url = `http://127.0.0.1:8000/relaciones/${endPath}/`;
-
-    d3.json(url, function (error, data) {
-           
+     
         let links = [];
         data.edges.forEach((e) => { 
             // Get the source and target nodes
@@ -92,7 +94,6 @@ function createVisualization(endPath){
             });
             nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
     });
-});
 }
 
 // Tabs is a collection of the elements with the class 'nav-link'.
@@ -102,4 +103,3 @@ for(let i = 0; i<tabs.length; i++){
     tabs[i].addEventListener('click', createVisualization(tabs[i].dataset.path));
 }
 
-setTimeout(showGraph, 7000)
