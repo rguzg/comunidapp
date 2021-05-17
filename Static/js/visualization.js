@@ -1,15 +1,22 @@
 "use strict"
 
+function showGraph() {;
+    const headers = document.querySelectorAll('.loading-header');
+    headers.forEach(e => e.classList.add('d-none'));
+    const networks = document.querySelectorAll('.network-container');
+    networks.forEach(e => e.classList.remove('d-none'))
+}
+
 function createVisualization(endPath){
+    let width = 600, height = 500;
+
+    let svg = d3.select('.network-container')
+        .attr({
+            width: width,
+            height: height
+        })
 
     let url = `http://127.0.0.1:8000/relaciones/${endPath}/`;
-
-    let width = 600, height = 500;
-    let svg = d3.select('.network-container')
-    .attr({
-        width: width,
-        height: height
-    })
 
     d3.json(url, function (error, data) {
            
@@ -94,3 +101,5 @@ const tabs = document.getElementsByClassName('nav-link');
 for(let i = 0; i<tabs.length; i++){
     tabs[i].addEventListener('click', createVisualization(tabs[i].dataset.path));
 }
+
+setTimeout(showGraph, 7000)
