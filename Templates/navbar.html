@@ -9,13 +9,13 @@
         <b class="m-header__title">Comunidapp</b>
     </div>
     <div class="col-4 offset-3 d-flex justify-content-end p-0">
-        <a href="{% url 'home' %}" class="m-header__button {% if path == 'home' %} m-header__button--active {% endif%}">Inicio</a>
+        <a href="{% url 'home' %}" class="m-header__button  d-flex justify-content-center align-items-center {% if path == 'home' %} m-header__button--active {% endif%}">Inicio</a>
         {% if user.is_staff or user.is_superuser %}
-            <a href="{% url 'updates' %}" class="m-header__button {% if path == 'solicitudes' %} m-header__button--active {% endif%}">Solicitudes</a>
-            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button mr-0 {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar usuarios</a>
-            <a href="{% url 'visualization' %}" class="m-header__button mr-0 ml-2 {% if path == 'visualization' %} m-header__button--active {% endif%}">Visualización</a>
+            <a href="{% url 'updates' %}" class="m-header__button d-flex justify-content-center align-items-center {% if path == 'solicitudes' %} m-header__button--active {% endif%}">Solicitudes</a>
+            <a href="{% url 'AddProfesorUsers' %}" class="m-header__button mr-0 d-flex justify-content-center align-items-center {% if path == 'usuarios' %} m-header__button--active {% endif%}">Agregar usuarios</a>
+            <a href="{% url 'visualization' %}" class="m-header__button mr-0 ml-2 d-flex justify-content-center align-items-center {% if path == 'visualization' %} m-header__button--active {% endif%}">Visualización</a>
         {% else %}
-            <a href="{% url 'AddArticulo' %}" class="m-header__button {% if path == 'productos' %} m-header__button--active p-0{% endif%}">Agregar Productos</a>
+            <a href="{% url 'AddArticulo' %}" class="m-header__button d-flex justify-content-center align-items-center {% if path == 'productos' %} m-header__button--active p-0{% endif%}">Agregar Productos</a>
         {% endif %}
     </div>
     <div class="col-3 m-header__search-container">
