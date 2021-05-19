@@ -18,7 +18,7 @@ const createVisualization = async (endPath) => {
     showGraph();
 
     // Create graph
-    const width = 600, height = 500;
+    const width = 1050, height = 490, radius = 10;
     const svg = d3.select(`#container-${endPath}`).append('svg')
     .attr({
         width: width,
@@ -56,7 +56,7 @@ const createVisualization = async (endPath) => {
         .append('line')
         .style('stroke', '#ccc')
         .style('stroke-width', 1);
-    console.log(edges);
+    
     let nodes = svg.selectAll('g')
     .data(data.nodes)
     .enter()
@@ -94,6 +94,10 @@ const createVisualization = async (endPath) => {
             .text(function (d) { return d.first_name });
     
     force.on('tick', () =>{
+        nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+        nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+
         edges.each(function (d) {
             d3.select(this).attr({
                 x1: d.source.x,
@@ -102,7 +106,6 @@ const createVisualization = async (endPath) => {
                 y2: d.target.y
             });
         });
-        nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
 });
 }
 
