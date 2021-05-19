@@ -17,7 +17,7 @@ class Relaciones(APIView):
 
         switch_productos = {
             "articulos": lambda : Relaciones_Profesores.objects.exclude(articulo = None),
-            "capitulolibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
+            "capituloslibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
             "patentes": lambda :  Relaciones_Profesores.objects.exclude(patente = None),
             "congresos": lambda :  Relaciones_Profesores.objects.exclude(congreso = None),
             "investigaciones": lambda :  Relaciones_Profesores.objects.exclude(investigacion = None),
@@ -44,10 +44,6 @@ class Relaciones(APIView):
                     resultado['nodes'].append(profesor2)
 
             relacion_serializada = Relaciones_Serializer(relacion).data
-
-            # Esto se podria hacer con defaults de serializers, pero por el momento, es más rápido así
-            if(relacion_serializada['target'] == None):
-                relacion_serializada['target'] = relacion_serializada['source']
 
             resultado['edges'].append(relacion_serializada)
         return Response(resultado)
