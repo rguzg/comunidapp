@@ -61,8 +61,12 @@ form.addEventListener('submit', async (event) => {
 
             let messageDOM = new DOMParser().parseFromString(html, 'text/html');
             
-            if(messageDOM.querySelector('#messages'));{
-                document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+            if(messageDOM.querySelector('#messages')){
+                let mensajes_error = messageDOM.querySelector('#messages');
+
+                if(mensajes_error){
+                    document.querySelector('#messages').replaceWith(mensajes_error);
+                }
             }
 
         } catch (error) {

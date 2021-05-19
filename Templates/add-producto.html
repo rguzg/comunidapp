@@ -99,9 +99,6 @@
             <!-- Formulario -->
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% if form.profesor %}
-                    {{form.profesor}}
-                {% endif %}
 
                 <!-- Se utiliza un campo exclusivo de cada form para condicionar que form va a aparecer -->
 
@@ -963,6 +960,41 @@
                             </div>
                         </div>
 
+                        <!-- Profesor -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_profesor">{{form.profesor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.profesor}}
+                            </div>
+                        </div>
+                        <!-- Primer Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Segundo Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Tercer Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Cuarto Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.cuarto_colaborador}}
+                            </div>
+                        </div>
                         <!-- Institución -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_institucion">{{form.institucion.label}}</label>

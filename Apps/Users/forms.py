@@ -735,13 +735,9 @@ class TesisForm(ModelForm):
     class Meta:
         model = Tesis
         fields = '__all__'
-        widgets = {
-            'profesor': forms.HiddenInput()
-        }
         labels = {
             'tipo_proyecto': 'Tipo de proyecto',
             'institucion': 'Institución',
-            'profesor': None,
             'financiamiento': '¿Tuvó financiamiento?',
             'tipo_financiamiento': 'Tipo de financiamiento',
             'primer_autor': 'Autor',
@@ -764,6 +760,11 @@ class TesisForm(ModelForm):
             'isbn': 'ISBN',
             'proposito': 'Propósito',
             'registro': 'Número de patente',
+            'primer_colaborador': "Primer colaborador", 
+            'segundo_colaborador': "Segundo colaborador",
+            'tercer_colaborador': "Tercer colaborador",
+            'cuarto_colaborador': "Cuarto colaborador",
+            'profesor': 'Profesor'
         }
 
         help_texts = {
@@ -784,6 +785,8 @@ class TesisForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
+        autores = []
+        tipos_autores = ['primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador','profesor']
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
@@ -801,6 +804,18 @@ class TesisForm(ModelForm):
         if lineas_investigacion.count() == 0:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
+
+        for i in range(len(tipos_autores)):
+            autor = cleaned_data.get(tipos_autores[i])
+
+            # Si un alguno de los campos es None, todos los que le sigan también deben ser None
+            if(autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
+                self.add_error(tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
+
+            if autor in autores:
+                self.add_error(tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
+            else:
+                autores.append(autor)
 
         return cleaned_data
 

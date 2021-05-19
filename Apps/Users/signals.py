@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from Apps.Users.models import User, Autor, UpdateRequest, Articulo, CapituloLibro, Patente, Congreso, Investigacion
+from Apps.Users.models import Tesis, User, Autor, UpdateRequest, Articulo, CapituloLibro, Patente, Congreso, Investigacion
 from .AñadirRelacion import AñadirRelacion
 from typing import Union
 
@@ -21,6 +21,7 @@ def create_user_autor(sender, instance, created, **kwargs):
 @receiver(post_save, sender = Patente)
 @receiver(post_save, sender = Congreso)
 @receiver(post_save, sender = Investigacion)
-def crear_relaciones(sender: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion], instance: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion], created: bool, **kwargs):
+@receiver(post_save, sender = Tesis)
+def crear_relaciones(sender: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis], instance: Union[Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis], created: bool, **kwargs):
     if created:
         AñadirRelacion(instance)
