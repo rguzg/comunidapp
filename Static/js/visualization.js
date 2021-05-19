@@ -4,8 +4,6 @@
 function showGraph() {;
     const headers = document.querySelectorAll('.loading-header');
     headers.forEach(e => e.classList.add('d-none'));
-    // const networks = document.querySelectorAll('.network-container');
-    // networks.forEach(e => e.classList.remove('d-none'))
 }
 
 
