@@ -17,7 +17,7 @@ class Relaciones(APIView):
 
         switch_productos = {
             "articulos": lambda : Relaciones_Profesores.objects.exclude(articulo = None),
-            "capitulolibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
+            "capituloslibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
             "patentes": lambda :  Relaciones_Profesores.objects.exclude(patente = None),
             "congresos": lambda :  Relaciones_Profesores.objects.exclude(congreso = None),
             "investigaciones": lambda :  Relaciones_Profesores.objects.exclude(investigacion = None),
