@@ -1,6 +1,6 @@
 from .models import Autor, Relaciones_Profesores, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, Field
+from rest_framework.serializers import ModelSerializer, Field, Serializer
 
 class LineasInvestigacion_Serializer(ModelSerializer):
     class Meta:
@@ -83,8 +83,23 @@ class Autor_Serializer(ModelSerializer):
         read_only_fields = ['id', 'first_name', 'last_name', 'user'] 
 
 class Relaciones_Serializer(ModelSerializer):
+
+    # A la API que genera los grafos en el front no le gusta que target sea null, entonces si en la instancia del modelo profesor2 es None, el 
+    # valor serializado se convierte en el valor de profesor1
+    class TargetField(Field):
+        # Esta función agrega a value la instancia del modelo que se esté serializando
+        def get_attribute(self, instance):
+            return instance
+
+        # Value almacena los atributos del modelo que esté serializando el serializer
+        def to_representation(self, value):
+            if(value.profesor2):
+                return value.profesor2.pk
+            else:
+                return value.profesor1.pk
+
     source = serializers.IntegerField(source = 'profesor1.pk')
-    target = serializers.IntegerField(source = 'profesor2.pk', allow_null = True)
+    target = TargetField()
     
     class Meta:
         model = Relaciones_Profesores
