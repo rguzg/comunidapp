@@ -21,7 +21,8 @@ from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
                     NivelForm, ContratoForm)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UpdateRequest, Autor)
+                     Pais, User, UpdateRequest, Autor, Relaciones_Profesores)
+from .AñadirRelacion import AñadirRelacion
 
 
 """
@@ -236,7 +237,7 @@ class Profile(SuccessMessageMixin, FormView):
 
     def post(self, request, *args, **kwargs):
         peticion=UpdateRequest.objects.filter(user=request.user).first()
-
+    
         if peticion:
             form=UpdateRequestForm(
                 request.POST, request.FILES, instance=peticion)
@@ -482,6 +483,7 @@ class AddArticulo(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
@@ -516,6 +518,7 @@ class AddCapituloLibro(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
@@ -553,6 +556,7 @@ class AddPatente(CreateView):
                 form.save_m2m()
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
+
             else:
                 messages.add_message(self.request, messages.INFO, 
                                     'Realiza algun cambio antes de agregar una patente')
@@ -586,6 +590,7 @@ class AddCongreso(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
@@ -621,6 +626,7 @@ class AddInvestigacion(CreateView):
                 form_val = form.save(commit=False)
                 form_val.save()
                 form.save_m2m()
+
                 messages.add_message(self.request, messages.SUCCESS,
                                     self.success_message)
             else:
@@ -879,3 +885,34 @@ class ContratoCreatePopup(View):
             "form": form,
             'title': 'Agrega un tipo de Contrato'
         })
+
+# Originalmente no se tenía contemplado las relaciones entre productos, así que todos los productos que están agregados hasta el momento
+# no tienen ninguna relación generada. Si se implementa este proyecto desde cero, no hay necesidad de generar las relaciones utilizando 
+# esta vista. En caso de que por alguna razón se necesiten generar todas las relaciones desde cero, agrega una URL que apunte a esta vista
+# y realiza una petición POST
+class GenerarRelaciones(View):
+    def get(self, request):
+        articulos = Articulo.objects.all()
+        capitulos = CapituloLibro.objects.all()
+        patentes = Patente.objects.all()
+        congresos = Congreso.objects.all()
+        investigaciones = Investigacion.objects.all()
+
+        for articulo in articulos:
+            AñadirRelacion(articulo)
+            
+        for capitulo in capitulos:
+            AñadirRelacion(capitulo)
+
+        for patente in patentes:
+            AñadirRelacion(patente)
+
+        for congreso in congresos:
+            AñadirRelacion(congreso)
+            
+        for investigacion in investigaciones:
+            AñadirRelacion(investigacion)
+
+        return HttpResponse("Relaciones creadas")
+
+                

@@ -645,3 +645,7 @@ a:hover{
     align-items: center;
 }
 
+/* Visualization */
+.h-max{
+    height: 500px;
+}

@@ -26,3 +26,5 @@ Apps/another.png
 .env
 
 comunidapp/settings.py
+
+data.json
