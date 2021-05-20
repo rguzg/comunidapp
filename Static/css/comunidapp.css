@@ -613,7 +613,6 @@ a:hover{
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 250px;
 }
 
 .btn:hover{
@@ -646,7 +645,3 @@ a:hover{
     align-items: center;
 }
 
-/* Visualization */
-.h-max{
-    height: 500px;
-}

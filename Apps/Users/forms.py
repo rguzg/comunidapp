@@ -270,10 +270,10 @@ class ArticuloForm(ModelForm):
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicación')
                     
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -432,9 +432,9 @@ class CapituloLibroForm(ModelForm):
                     'isbn', 'El ISBN debe tener entre 12 y 15 caracteres')
 
         palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
+        #                    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -564,10 +564,10 @@ class CongresoForm(ModelForm):
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicacion')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+            # self.add_error('palabras_clave',
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -707,10 +707,10 @@ class InvestigacionForm(ModelForm):
                 self.add_error('primer_alumno',
                                'Los alumnos no pueden ser la misma persona')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+            # self.add_error('palabras_clave',
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
@@ -735,9 +735,13 @@ class TesisForm(ModelForm):
     class Meta:
         model = Tesis
         fields = '__all__'
+        widgets = {
+            'profesor': forms.HiddenInput()
+        }
         labels = {
             'tipo_proyecto': 'Tipo de proyecto',
             'institucion': 'Institución',
+            'profesor': None,
             'financiamiento': '¿Tuvó financiamiento?',
             'tipo_financiamiento': 'Tipo de financiamiento',
             'primer_autor': 'Autor',
@@ -760,11 +764,6 @@ class TesisForm(ModelForm):
             'isbn': 'ISBN',
             'proposito': 'Propósito',
             'registro': 'Número de patente',
-            'primer_colaborador': "Primer colaborador", 
-            'segundo_colaborador': "Segundo colaborador",
-            'tercer_colaborador': "Tercer colaborador",
-            'cuarto_colaborador': "Cuarto colaborador",
-            'profesor': 'Profesor'
         }
 
         help_texts = {
@@ -785,8 +784,6 @@ class TesisForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
-        autores = []
-        tipos_autores = ['primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador','profesor']
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
@@ -795,27 +792,15 @@ class TesisForm(ModelForm):
                 self.add_error(
                     'inicio', 'La fecha de inicio no puede ser mayor a la fecha de fin')
 
-        palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
-            self.add_error('palabras_clave',
-                           'Debes escoger al menos 3 palabras clave')
+        # palabras_clave = cleaned_data.get('palabras_clave')
+        # if palabras_clave.count() < 3:
+        #     self.add_error('palabras_clave',
+                        #    'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
         if lineas_investigacion.count() == 0:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
-
-        for i in range(len(tipos_autores)):
-            autor = cleaned_data.get(tipos_autores[i])
-
-            # Si un alguno de los campos es None, todos los que le sigan también deben ser None
-            if(autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
-                self.add_error(tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
-
-            if autor in autores:
-                self.add_error(tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
-            else:
-                autores.append(autor)
 
         return cleaned_data
 

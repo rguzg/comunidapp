@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from .models import Relaciones_Profesores, User, Facultad, Nivel, Investigacion, Contrato, LineaInvestigacion, Alumno, Articulo, Autor, CapituloLibro, Ciudad, Congreso, Contrato, Editorial, Estado, Institucion, Pais, PalabrasClave, Patente, Revista, Tesis, UpdateRequest
+from .models import User, Facultad, Nivel, Investigacion, Contrato, LineaInvestigacion, Alumno, Articulo, Autor, CapituloLibro, Ciudad, Congreso, Contrato, Editorial, Estado, Institucion, Pais, PalabrasClave, Patente, Revista, Tesis, UpdateRequest
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 
@@ -34,4 +34,3 @@ admin.site.register(Revista)
 admin.site.register(Investigacion)
 admin.site.register(Tesis)
 admin.site.register(UpdateRequest)
-admin.site.register(Relaciones_Profesores)
