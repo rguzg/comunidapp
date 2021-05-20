@@ -20,9 +20,9 @@
     ]
 
 */
-async function PillsBox(contenedor, recurso){
+async function PillsBox(contenedor, recurso, useDefaultPills = true){
     let request = await fetch(`/api/${recurso}`);
-    let selected_pills = await request.json();
+    let selected_pills = useDefaultPills ? await request.json() : {};
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
     let pill_input = contenedor.querySelector('.m-pill-input_search');
 

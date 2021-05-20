@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib.auth.decorators import login_required, user_passes_test
 # from django.views.decorators.csrf import csrf_exempt
-from . import views, views_busqueda, views_serializer, view_proxy
+from . import views, views_busqueda, views_serializer, view_proxy, views_relaciones
 
 urlpatterns = [
     # URLS para el uso de los usuarios normales
@@ -53,6 +53,11 @@ urlpatterns = [
     path('api/palabras', views_serializer.PalabraClave_Serializer_View.as_view(), name="API_PalabrasClave"),
 
     #URLs de preprocesamiento de forms
-    path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil")
+    path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil"),
 
+    #URL de relaciones
+    path('generarRelaciones', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.GenerarRelaciones.as_view()), name = 'Generar_Relaciones'),
+    # Los productos que generan tienen relaciones son: articulos, capitulolibros, patentes, congresos, investigaciones
+    path('relaciones/<str:producto>/', views_relaciones.Relaciones.as_view(), name='relaciones_investigaciones'),
+    path('visualization', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views_relaciones.Visualization.as_view()), name='visualization'),
 ]
