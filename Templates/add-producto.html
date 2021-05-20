@@ -32,7 +32,7 @@
             </div>
             {% endif %}
 
-
+            
             <!-- Mostrando errores de todos los campos -->
             {% if form.errors %}
             <div class="alert alert-danger">
@@ -82,8 +82,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {% if producto == 'investigacion' %}active{% endif %}"
-                        href="{% url 'AddInvestigacion' %}">
+                    <a class="nav-link {% if producto == 'investigacion' %}active{% endif %}" href="{% url 'AddInvestigacion' %}">
                         Investigación
                     </a>
                 </li>
@@ -100,9 +99,6 @@
             <!-- Formulario -->
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% if form.profesor %}
-                {{form.profesor}}
-                {% endif %}
 
                 <!-- Se utiliza un campo exclusivo de cada form para condicionar que form va a aparecer -->
 
@@ -132,10 +128,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_primer_autor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -145,11 +141,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_primer_colaborador"
-                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -160,11 +155,10 @@
                                 <!-- {{form.segundo_colaborador|addclass:'custom-select custom-select-sm'}} -->
                                 {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_segundo_colaborador"
-                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -174,11 +168,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_tercer_colaborador"
-                                        onclick="return showAddPopup(this, 'id_tercer_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -188,11 +181,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_cuarto_colaborador"
-                                        onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
+                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -333,10 +325,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_primer_autor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -346,10 +338,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_coautor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_primer_coautor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -359,10 +351,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_coautor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_segundo_coautor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_segundo_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -372,10 +364,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_coautor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this,'id_tercer_coautor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this,'id_tercer_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -385,10 +377,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_coautor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_cuarto_coautor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_cuarto_coautor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -428,14 +420,13 @@
                             </div>
                             {{form.publicacion|addclass:'datepicker'}}
                         </div>
-
                         <!-- ISBN -->
                         <div class="m-form-input col-4 mb-3">
                             <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.isbn.help_text}}">
                                 <label for="id_isbn">{{form.isbn.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
-                            {{form.isbn}}
+                        {{form.isbn}}
                         </div>
                         <!-- Edicion -->
                         <div class="m-form-input col-4 mb-3">
@@ -512,10 +503,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.autores|addclass:'m-input-multiselect'}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autores"
-                                        onclick="return showAddPopup(this, 'id_autores');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autores"
+                                    onclick="return showAddPopup(this, 'id_autores');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -620,10 +611,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_autor}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
-                                        onclick="return showAddPopup(this, 'id_primer_autor');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
+                                    onclick="return showAddPopup(this, 'id_primer_autor');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -633,11 +624,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_primer_colaborador"
-                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -647,11 +637,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_segundo_colaborador"
-                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -661,11 +650,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_tercer_colaborador"
-                                        onclick="return showAddPopup(this, 'id_tercer_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_tercer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -675,11 +663,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.cuarto_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_cuarto_colaborador"
-                                        onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
+                                    onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -824,11 +811,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_primer_colaborador"
-                                        onclick="return showAddPopup(this, 'id_primer_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
+                                    onclick="return showAddPopup(this, 'id_primer_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -838,24 +824,23 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_colaborador}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}"
-                                        id="add_segundo_colaborador"
-                                        onclick="return showAddPopup(this, 'id_segundo_colaborador');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
+                                    onclick="return showAddPopup(this, 'id_segundo_colaborador');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
                                 </div>
                             </div>
-                        </div>
                         <!-- Primer Alumno -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.primer_alumno}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
-                                        id="add_primer_alumno" onclick="return showAddPopup(this, 'id_primer_alumno');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_primer_alumno"
+                                    onclick="return showAddPopup(this, 'id_primer_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -865,11 +850,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.segundo_alumno}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
-                                        id="add_segundo_alumno"
-                                        onclick="return showAddPopup(this, 'id_segundo_alumno');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_segundo_alumno"
+                                    onclick="return showAddPopup(this, 'id_segundo_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -879,10 +863,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.tercer_alumno}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}"
-                                        id="add_tercer_alumno" onclick="return showAddPopup(this, 'id_tercer_alumno');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_tercer_alumno"
+                                    onclick="return showAddPopup(this, 'id_tercer_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>           
@@ -968,11 +952,47 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.alumno}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
-                                        onclick="return showAddPopup(this, 'id_alumno');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
+                                    onclick="return showAddPopup(this, 'id_alumno');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Profesor -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_profesor">{{form.profesor.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.profesor}}
+                            </div>
+                        </div>
+                        <!-- Primer Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.primer_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Segundo Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.segundo_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Tercer Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.tercer_colaborador}}
+                            </div>
+                        </div>
+                        <!-- Cuarto Colaborador -->
+                        <div class="m-form-input col-4 mb-3">
+                            <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.cuarto_colaborador}}
                             </div>
                         </div>
                         <!-- Institución -->
@@ -981,10 +1001,10 @@
                             <div class="col-12 pl-0 h-align-center">
                                 {{form.institucion}}
                                 <div class="col-1">
-                                    <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}"
-                                        id="add_institucion" onclick="return showAddPopup(this, 'id_institucion');">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
+                                <a href="javascript:void(0);" data-url="{% url 'InstitucionCreate' %}" id="add_institucion"
+                                    onclick="return showAddPopup(this, 'id_institucion');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
                                 </div>
                             </div>
                         </div>
@@ -1039,9 +1059,6 @@
                 </div>
         </div>
     </div>
-
-
-</div>
 
 
 {% endblock %}

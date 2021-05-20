@@ -1,4 +1,6 @@
 
+Apps/Users/migrations/
+
 Pipfile
 
 Media/images_users/
@@ -24,3 +26,5 @@ Apps/another.png
 .env
 
 comunidapp/settings.py
+
+data.json
