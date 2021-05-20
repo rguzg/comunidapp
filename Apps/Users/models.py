@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import isalphavalidator, validate_file_size
 from django.core.validators import FileExtensionValidator
-from typing import List, Union
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 """
 Modelo del usuario
@@ -37,7 +37,7 @@ class User(AbstractUser):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=True, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=image_user, null=True, blank=True)
+    foto = models.ImageField(null=True, blank=True, upload_to=image_user, storage=MediaCloudinaryStorage())
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=50, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(default=False)
@@ -45,6 +45,13 @@ class User(AbstractUser):
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
+
+    def __unicode__(self):
+        try:
+            foto_id = self.foto.id
+        except AttributeError:
+            foto_id = ''
+        return "Foto <%s:%s>" % (self.email, foto_id)
 
 class UpdateRequest(models.Model):
     class Meta:
@@ -70,7 +77,7 @@ class UpdateRequest(models.Model):
         ])
     sexo = models.CharField(max_length=1, choices=generos, blank=False, null=True, verbose_name = 'Genero')
     nacimiento = models.DateField(auto_now=False, auto_now_add=False, blank=False, null=True, verbose_name = 'Fecha de nacimiento')
-    foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True)
+    foto = models.ImageField(upload_to=temp_image_user, null=True, blank=True, storage=MediaCloudinaryStorage())
     grado =  models.CharField(max_length=1, choices=grados, blank=False, null=True, verbose_name = 'Último grado de estudios')
     cuerpoAcademico = models.CharField(max_length=50, blank=False, null=True, verbose_name='Cuerpo Académico')
     publico = models.BooleanField(null=True, blank=False)
@@ -284,7 +291,7 @@ class Articulo(models.Model):
     segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
     tercer_colaborador = models.ForeignKey(Autor, related_name='tercer_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
     cuarto_colaborador = models.ForeignKey(Autor, related_name='cuarto_colaborador_articulo',on_delete=models.CASCADE, null=True, blank=True)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=True)
     titulo = models.CharField(max_length=300, null=False, blank=False)
     descripcion = models.CharField(max_length=350, null=False, blank=False)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
@@ -303,15 +310,6 @@ class Articulo(models.Model):
 
     def __str__(self):
         return 'Articulo: "{0}" '.format(self.titulo)
-
-    @property
-    def autores(self) -> List[Autor]:
-        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Articulo"
 
 class CapituloLibro(models.Model):
     
@@ -332,7 +330,7 @@ class CapituloLibro(models.Model):
     titulo = models.CharField(max_length=150)
     pagina_inicio = models.PositiveIntegerField(null=True, blank=True)
     pagina_fin = models.PositiveIntegerField(null=True, blank=True)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=True)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE, null=True, blank=True)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE, null=True, blank=True)
@@ -349,15 +347,6 @@ class CapituloLibro(models.Model):
         else:
             return 'Capitulo: {0}'.format(self.titulo)
 
-    @property
-    def autores(self):
-        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.primer_autor, self.primer_coautor, self.segundo_coautor, self.tercer_coautor, self.cuarto_coautor)))
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Capitulo/Libro"
-
 class Patente(models.Model):
 
     class Meta:
@@ -371,13 +360,9 @@ class Patente(models.Model):
     registro = models.CharField(max_length=25)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     publicacion = models.DateField(auto_now=False, auto_now_add=False)
-    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size]  )
+    comprobante = models.FileField(upload_to=comprobantes, validators=[FileExtensionValidator(allowed_extensions=['PDF']), validate_file_size])
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Patente"
 
 class Congreso(models.Model):
     class Meta:
@@ -390,7 +375,7 @@ class Congreso(models.Model):
     tercer_colaborador = models.ForeignKey(Autor, related_name='tercer_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
     cuarto_colaborador = models.ForeignKey(Autor, related_name='cuarto_colaborador_congreso',on_delete=models.CASCADE, null=True, blank=True)
     titulo = models.CharField(max_length=300, null=False, blank=False)
-    nombre_congreso = models.CharField(max_length=300, null=False, blank=False)
+    congreso = models.CharField(max_length=300, null=False, blank=False)
     estado = models.CharField(max_length=1, choices=estados, null=False, blank=False)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
     estadoP = models.ForeignKey(Estado, on_delete=models.CASCADE, null=True, blank=True)
@@ -399,16 +384,7 @@ class Congreso(models.Model):
     presentacion = models.DateField(auto_now=False, auto_now_add=False)
     proposito = models.CharField(max_length=2, choices=propositos)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
-
-    @property
-    def autores(self):
-        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.primer_autor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Congreso"
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=True)
 
 class Investigacion(models.Model):
     class Meta:
@@ -436,18 +412,9 @@ class Investigacion(models.Model):
     segundo_alumno = models.ForeignKey(Alumno, related_name='segundo_alumno_investigacion', on_delete=models.CASCADE, null=True, blank=True)
     tercer_alumno = models.ForeignKey(Alumno,related_name='tercer_alumno_investigacion', on_delete=models.CASCADE, null=True, blank=True)
     resumen = models.FileField(upload_to=resumenes, validators=[FileExtensionValidator(allowed_extensions=['PDF'])])
-    palabras_clave = models.ManyToManyField(PalabrasClave)
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
-
-    @property
-    def autores(self):
-        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (self.responsable, self.primer_colaborador, self.segundo_colaborador)))
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Investigacion"
 
 class Tesis(models.Model):
     
@@ -458,76 +425,9 @@ class Tesis(models.Model):
     titulo = models.CharField(max_length=300, null=False, blank=False)
     grado = models.CharField(max_length=1, choices=grados)
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE)
-    primer_colaborador = models.ForeignKey(Autor, related_name='primer_colaborador_tesis',on_delete=models.CASCADE, null=True, blank=True, default = None)
-    segundo_colaborador = models.ForeignKey(Autor, related_name='segundo_colaborador_tesis',on_delete=models.CASCADE, null=True, blank=True, default = None)
-    tercer_colaborador = models.ForeignKey(Autor, related_name='tercer_colaborador_tesis',on_delete=models.CASCADE, null=True, blank=True, default = None)
-    cuarto_colaborador = models.ForeignKey(Autor, related_name='cuarto_colaborador_tesis',on_delete=models.CASCADE, null=True, blank=True, default = None)
     institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE)
     inicio = models.DateField(auto_now=False, auto_now_add=False)
     fin = models.DateField(auto_now=False, auto_now_add=False)
     profesor = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     lineas_investigacion = models.ManyToManyField(LineaInvestigacion)
-    palabras_clave = models.ManyToManyField(PalabrasClave)
-
-    @property
-    def TipoProducto(self) -> str:
-        return "Tesis"
-
-    @property
-    def autores(self):
-        # Esta propiedad retorna una lista de autores, pero el atributo profesor no es una instancia de autor, si no de usuario. ?  ¡Afortunadamente todos los usuarios también son autores! Así que solo se busca el autor que corresponda a self.profesor
-        # Todos los usarios están garantizados a ser autores según lo dictado por signals.py
-        profesor = Autor.objects.filter(user = self.profesor).first()
-
-        # Al utilizar None como el primer argumento, se filtra según la falsedad de cada elemento del iterable
-        return list(filter(None, (profesor, self.primer_colaborador, self.segundo_colaborador, self.tercer_colaborador, self.cuarto_colaborador)))
-
-
-# Este modelo almacenará las diferentes relaciones que tengan los profesores miembros de la aplicación. 
-# Dos profesores tienen una relación si han colaborado en algún producto juntos.
-class Relaciones_Profesores(models.Model):
-    class Meta:
-        verbose_name = "Relación de Profesores",
-        verbose_name_plural = "Relaciones de Profesores",
-        constraints = [
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'articulo'], name = 'relacion_unica_articulo'),
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'capituloLibro'], name = 'relacion_unica_capituloLibro'),
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'patente'], name = 'relacion_unica_patente'),
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'congreso'], name = 'relacion_unica_congreso'),
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'investigacion'], name = 'relacion_unica_investigacion'),
-            models.UniqueConstraint(fields = ['profesor1', 'profesor2', 'tipo_producto', 'tesis'], name = 'relacion_unica_tesis'),
-        ]
-
-    ARTICULO = 'A'
-    CAPITULO_LIBRO = 'CL'
-    PATENTE = 'P'
-    CONGRESO = 'C'
-    INVESTIGACION = 'I'
-    TESIS = 'T'
-
-    TIPO_PRODUCTO_CHOICES = [
-        (ARTICULO, 'Articulo'),
-        (CAPITULO_LIBRO, 'Capitulo/Libro'),
-        (PATENTE, 'Patente'),
-        (CONGRESO, 'Congreso'),
-        (INVESTIGACION, 'Investigación'),
-        (TESIS, 'Tesis'),
-    ]
-
-    profesor1 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor1')
-    profesor2 = models.ForeignKey(Autor, on_delete=models.CASCADE, related_name='profesor2', null = True)
-    
-    tipo_producto = models.CharField(max_length=2, verbose_name= 'Tipo de Producto', choices=TIPO_PRODUCTO_CHOICES, null = False, blank = False)
-
-    # Estos campos almacenan hacia que objeto hace referencia la relación. Cómo los objetos son de diferentes
-    # modelos, se requiere un campo para cada tipo de modelo. Como ya existian productos en el servidor de 
-    # producción no fue posible utilizar herencia de clases para implementar esta funcionalidad.
-    articulo = models.ForeignKey(Articulo, on_delete=models.CASCADE, related_name='articulo', null = True, blank = True)
-    capituloLibro = models.ForeignKey(CapituloLibro, on_delete=models.CASCADE, related_name='capituloLibro', null = True, blank = True)
-    patente = models.ForeignKey(Patente, on_delete=models.CASCADE, related_name='patente', null = True, blank = True)
-    congreso = models.ForeignKey(Congreso, on_delete=models.CASCADE, related_name='congreso', null = True, blank = True)
-    investigacion = models.ForeignKey(Investigacion, on_delete=models.CASCADE, related_name='investigacion', null = True, blank = True)
-    tesis = models.ForeignKey(Tesis, on_delete=models.CASCADE, related_name='tesis', null = True, blank = True)
-
-    def __str__(self) -> str:
-        return f"Relación {self.profesor1}-{self.profesor2} en el producto: {self.tipo_producto}"
+    palabras_clave = models.ManyToManyField(PalabrasClave, blank=True)

@@ -1,4 +1,4 @@
-const server = 'http://127.0.0.1:8000/'
+const server = 'https://comuniuaq.herokuapp.com/'
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
@@ -223,6 +223,7 @@ function closePopup(win, newID, newRepr, id) {
 //     // const idProducto = elementoHTML.dataset.idproducto;
 //     // console.log(idProducto);
 //     const producto = await getProducto(elementoHTML);
+
 
 //     let lineas = [];
 //     producto['lineas'].forEach(linea => {

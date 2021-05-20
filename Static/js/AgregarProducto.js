@@ -1,11 +1,11 @@
 const palabras_clave = document.querySelector('#pills_palabras');
 
 if(palabras_clave){
-    PillsBox(palabras_clave, 'palabras', false);
+    PillsBox(palabras_clave, 'palabras');
 }
 
 const lineas_investigacion = document.querySelector('#pills_lineas');
-PillsBox(lineas_investigacion, 'lineas', false);
+PillsBox(lineas_investigacion, 'lineas');
 
 const form = document.querySelector('form');
 const boton_submit = form.querySelector('input[type="submit"]');
@@ -61,12 +61,8 @@ form.addEventListener('submit', async (event) => {
 
             let messageDOM = new DOMParser().parseFromString(html, 'text/html');
             
-            if(messageDOM.querySelector('#messages')){
-                let mensajes_error = messageDOM.querySelector('#messages');
-
-                if(mensajes_error){
-                    document.querySelector('#messages').replaceWith(mensajes_error);
-                }
+            if(messageDOM.querySelector('#messages'));{
+                document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
             }
 
         } catch (error) {
