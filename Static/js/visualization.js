@@ -8,7 +8,7 @@ function showGraph() {;
 
 
 const createVisualization = async (endPath) => {
-    const URL = `http://127.0.0.1:8000/relaciones/${endPath}/`;
+    const URL = `http://comuniuaq.herokuapp.com/relaciones/${endPath}/`;
 
     const body =  await fetch(URL);
     const data = await body.json();
