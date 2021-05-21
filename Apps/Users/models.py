@@ -45,6 +45,10 @@ class User(AbstractUser):
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
+    # Aunque ya existe un modelo para los alumnos, este no puede ser utilizado para como el autor de algún producto, además de eso ya existen
+    # varios alumnos que están registrados como usuarios y es más fácil agregar este atributo al modelo que cambiar la estructura de la BD,
+    # especialmente porque eso tendría como consecuencia la destrucción de datos que ya se encuentran en producción.
+    alumno = models.BooleanField(verbose_name = "Es alumno", default = False, null = False, blank = False)
 
 class UpdateRequest(models.Model):
     class Meta:
@@ -79,10 +83,6 @@ class UpdateRequest(models.Model):
     niveles = models.ManyToManyField('Nivel', blank=True, verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', blank=True, verbose_name= 'Lineas de investigación o áreas de interes')
     changed_fields = models.JSONField(null=True, blank=True)
-    # Aunque ya existe un modelo para los alumnos, este no puede ser utilizado para como el autor de algún producto, además de eso ya existen
-    # varios alumnos que están registrados como usuarios y es más fácil agregar este atributo al modelo que cambiar la estructura de la BD,
-    # especialmente porque eso tendría como consecuencia la destrucción de datos que ya se encuentran en producción.
-    alumno = models.BooleanField(verbose_name = "Es alumno", default = False, null = False, blank = False)
 
 """
 Modelos auxiliares o de llaves foraneas
