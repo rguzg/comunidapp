@@ -830,7 +830,7 @@ class AutorForm(ModelForm):
 
     class Meta:
         model = Autor
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'alumno']
         labels = {
             'first_name':'Nombre(s)',
             'last_name':'Apellido(s)'
