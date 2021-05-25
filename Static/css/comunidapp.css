@@ -616,6 +616,13 @@ a:hover{
     width: 250px;
 }
 
+div .m-product-card > .h-text-overflow{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 200px;
+}
+
 .btn:hover{
     color: var(--grey);
 }
