@@ -127,7 +127,7 @@ class NotificationController{
         notification_header.appendChild(close_button);
 
         // Definición del body
-        notification_body.classList.add('toast-body');
+        notification_body.classList.add('toast-body', 'bg-white');
         notification_body.innerText = body_text;
 
         // Definición del container
