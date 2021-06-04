@@ -57,7 +57,7 @@ class NotificationController{
      * 
      * Por defecto options.animation y options.autohide son true. 
      * 
-     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y danger
+     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: info, success, warning y danger
      * 
      * options.number determina el tiempo de delay antes de cerrar la notificación cuando autohide es true
      * 
@@ -116,6 +116,10 @@ class NotificationController{
                 icon.classList.add('bi','bi-x-circle-fill');
                 notification_header.classList.add('bg-danger');
                 break;
+            case 'info':
+                icon.classList.add('bi','bi-info-circle-fil');
+                notification_header.classList.add('bg-info');
+                break;
             default:
                 throw new Error("El tipo de notificación no es válido");
         }
@@ -155,7 +159,7 @@ class NotificationController{
      * 
      * Por defecto options.animation y options.autohide son true. 
      * 
-     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y danger
+     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: info, success, warning y danger
      * 
      * options.number determina el tiempo de delay antes de cerrar la notificación cuando autohide es true
      * 
