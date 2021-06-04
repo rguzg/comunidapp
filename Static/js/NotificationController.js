@@ -57,7 +57,7 @@ class NotificationController{
      * 
      * Por defecto options.animation y options.autohide son true. 
      * 
-     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y error
+     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y danger
      * 
      * options.number determina el tiempo de delay antes de cerrar la notificación cuando autohide es true
      * 
@@ -112,7 +112,7 @@ class NotificationController{
                 icon.classList.add('bi','bi-exclamation-triangle-fill');
                 notification_header.classList.add('bg-warning');
                 break;
-            case 'error':
+            case 'danger':
                 icon.classList.add('bi','bi-x-circle-fill');
                 notification_header.classList.add('bg-danger');
                 break;
@@ -155,7 +155,7 @@ class NotificationController{
      * 
      * Por defecto options.animation y options.autohide son true. 
      * 
-     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y error
+     * options.type determina el estilo de la notificación. Existen tres tipos de notificación: success, warning y danger
      * 
      * options.number determina el tiempo de delay antes de cerrar la notificación cuando autohide es true
      * 
