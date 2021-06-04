@@ -175,3 +175,21 @@ class NotificationController{
         notification.show();
     }
 }
+
+/**
+ * Extrae la body_text y type del DOM retornado por /proxy relacionada con mensajes para ser usado para mostrar una notificación. La función busca el mensaje en #messages
+ * @param {Document} DOM
+ * @returns {object} Objeto que contiene el body_text y type que es utilizado por NotificationController.ShowNotification()
+ */
+function ExtractMessageFromDOM(DOM){
+    let contenedor_mensaje = DOM.querySelector('#messages');
+
+    if(!contenedor_mensaje){
+        throw new Error("No hay ningún nodo en el documento proprcionado con el ID messages");
+    }
+
+    let body_text = contenedor_mensaje.querySelector('strong').innerText || "";
+    let type = contenedor_mensaje.querySelector('.alert').classList[1].split('alert-')[1] || "";
+
+    return {body_text, type}
+}
