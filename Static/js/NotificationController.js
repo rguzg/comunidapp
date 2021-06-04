@@ -188,7 +188,7 @@ function ExtractMessageFromDOM(DOM){
         throw new Error("No hay ningún nodo en el documento proprcionado con el ID messages");
     }
 
-    let body_text = contenedor_mensaje.querySelector('strong').innerText || "";
+    let body_text = contenedor_mensaje.querySelector('strong').innerText.trim() || "";
     let type = contenedor_mensaje.querySelector('.alert').classList[1].split('alert-')[1] || "";
 
     return {body_text, type}
