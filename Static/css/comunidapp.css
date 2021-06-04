@@ -657,3 +657,22 @@ div .m-product-card > .h-text-overflow{
 .h-max{
     height: 500px;
 }
+
+/* Fixed Position Helpers */
+/* Como estamos utilizando Bootstrap 4.0, nosotros tenemos que crear estos estilos */
+/* Estos estilos son utilizados por NotificationController.js */
+.top-0{
+    top: 0;
+}
+
+.start-0{
+    left: 0;
+}
+
+.bottom-0{
+    bottom: 0;
+}
+
+.end-0{
+    right: 0;
+}
