@@ -52,7 +52,7 @@ class NotificationController{
     /** 
      * 
      * @param {string} header_text Texto a mostrar en el header de la notificación
-     * @param {string} body_text Texto a mostrar en el body de la notifiación
+     * @param {string} body_content Contenido a mostrar en el body de la notifiación. El contenido es interpretado como HTML.
      * @param {object} options JSON con opciones sobre la notificacion. 
      * 
      * Por defecto options.animation y options.autohide son true. 
@@ -68,7 +68,7 @@ class NotificationController{
      * @returns {object} Retorna un objeto boostrap.Toast
      */
 
-    #CreateNotification(header_text, body_text, options){
+    #CreateNotification(header_text, body_content, options){
         // Creación de los elementos que componene a la notificación
         let notification_container = document.createElement('div');
         let notification_header = document.createElement('div');
@@ -132,7 +132,7 @@ class NotificationController{
 
         // Definición del body
         notification_body.classList.add('toast-body', 'bg-white');
-        notification_body.innerText = body_text;
+        notification_body.innerHTML = body_content;
 
         // Definición del container
         notification_container.classList.add('toast');
@@ -154,7 +154,7 @@ class NotificationController{
      * Muestra una notificación llenada con los argumentos que se le hayan pasado al método. La notificación se elimina automaticamente del DOM cuando se deja de mostrar la notificación
      * 
      * @param {string} header_text Texto a mostrar en el header de la notificación
-     * @param {string} body_text Texto a mostrar en el body de la notifiación
+     * @param {string} body_content Contenido a mostrar en el body de la notifiación. El contenido es interpretado como HTML.
      * @param {object} options JSON con opciones sobre la notificacion. 
      * 
      * Por defecto options.animation y options.autohide son true. 
@@ -169,21 +169,21 @@ class NotificationController{
      * @param {string} options.type
      */
 
-    ShowNotification(header_text, body_text, options){
+    ShowNotification(header_text, body_content, options){
         // Poner los valores por defecto. Si en options las keys de los valores por defecto existen, los valores por defecto serán remplazados por los que recibió como argumento la función
         options = {animation: true, autohide: true, delay: 5000, ...options};
 
         // Creación de los elementos que componene a la notificación
-        let notification = this.#CreateNotification(header_text, body_text, options);
+        let notification = this.#CreateNotification(header_text, body_content, options);
 
         notification.show();
     }
 }
 
 /**
- * Extrae la body_text y type del DOM retornado por /proxy relacionada con mensajes para ser usado para mostrar una notificación. La función busca el mensaje en #messages
+ * Extrae la body_content y type del DOM retornado por /proxy relacionada con mensajes para ser usado para mostrar una notificación. La función busca el mensaje en #messages
  * @param {Document} DOM
- * @returns {object} Objeto que contiene el body_text y type que es utilizado por NotificationController.ShowNotification()
+ * @returns {object} Objeto que contiene el body_content y type que es utilizado por NotificationController.ShowNotification()
  */
 function ExtractMessageFromDOM(DOM){
     let contenedor_mensaje = DOM.querySelector('#messages');
@@ -192,7 +192,7 @@ function ExtractMessageFromDOM(DOM){
         throw new Error("No hay ningún nodo en el documento proprcionado con el ID messages");
     }
 
-    let body_text = contenedor_mensaje.querySelector('strong').innerText.trim() || "";
+    let body_text = contenedor_mensaje.querySelector('.alert').innerHTML || "";
     let type = contenedor_mensaje.querySelector('.alert').classList[1].split('alert-')[1] || "";
 
     return {body_text, type}
