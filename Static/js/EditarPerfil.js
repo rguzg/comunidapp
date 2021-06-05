@@ -78,7 +78,7 @@ form.addEventListener('submit', async (event) => {
         let message = ExtractMessageFromDOM(messageDOM);
 
         try {
-            notification_controller.ShowNotification("", message.body_text, {type: message.type, delay: 10000})
+            notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
         } catch (error) {
             console.error(error);
         }
