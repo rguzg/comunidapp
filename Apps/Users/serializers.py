@@ -74,13 +74,56 @@ class Autor_Serializer(ModelSerializer):
                     if(value.user.last_name):
                        return value.user.last_name
 
+    class FacultadField(Field):
+        # Esta función agrega a value la instancia del modelo que se esté serializando
+        def get_attribute(self, instance):
+            return instance
+
+        # Value almacena los atributos del modelo que esté serializando el serializer
+        def to_representation(self, value):
+                facultades = []
+                if(value.user):
+                    for facultad in value.user.facultades.all():
+                        facultades.append(Facultad_Serializer(facultad).data)
+
+                return facultades
+
+    class ClaveField(Field):
+        # Esta función agrega a value la instancia del modelo que se esté serializando
+        def get_attribute(self, instance):
+            return instance
+
+        # Value almacena los atributos del modelo que esté serializando el serializer
+        def to_representation(self, value):
+                if(value.user):
+                    return value.user.clave
+                else:
+                    return None
+   
+    class LineasInvestigacionField(Field):
+        # Esta función agrega a value la instancia del modelo que se esté serializando
+        def get_attribute(self, instance):
+            return instance
+
+        # Value almacena los atributos del modelo que esté serializando el serializer
+        def to_representation(self, value):
+                investigaciones = []
+                if(value.user):
+                    for investigacion in value.user.investigaciones.all():
+                        investigaciones.append(LineasInvestigacion_Serializer(investigacion).data)
+
+                return investigaciones
+
     first_name = FirstNameField()
     last_name = LastNameField()
+    facultad = FacultadField()
+    clave = ClaveField()
+    lineas_investigacion = LineasInvestigacionField()
 
     class Meta:
         model = Autor
-        fields = ['id', 'first_name', 'last_name', 'user'] 
-        read_only_fields = ['id', 'first_name', 'last_name', 'user'] 
+        fields = ['id', 'first_name', 'last_name', 'facultad', 'clave', 'lineas_investigacion', 'user'] 
+        read_only_fields = ['id', 'first_name', 'last_name', 'facultad', 'clave', 'lineas_investigacion', 'user'] 
 
 class Relaciones_Serializer(ModelSerializer):
 
