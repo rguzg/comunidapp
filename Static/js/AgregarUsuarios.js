@@ -13,6 +13,8 @@ if(lineas_investigacion){
 const form = document.querySelector('form');
 const boton_submit = form.querySelector('input[type="submit"]');
 
+const notification_controller = new NotificationController('bottom-right');
+
 VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 form.addEventListener('submit', async (event) => {
@@ -86,9 +88,12 @@ form.addEventListener('submit', async (event) => {
         let html = await request.text();
 
         let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-        
-        if(messageDOM.querySelector('#messages')){
-            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+        let message = ExtractMessageFromDOM(messageDOM);
+
+        try {
+            notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
+        } catch (error) {
+            console.error(error);
         }
 
     } catch (error) {

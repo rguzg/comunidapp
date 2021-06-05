@@ -201,7 +201,9 @@ async function PillsBox(contenedor, recurso, useDefaultPills = true){
         contenedor.querySelector("#searchbox").classList.add("h-display-none");
     })
 
-    generate_pills(selected_pills, pill_container);
+    if(useDefaultPills){
+        generate_pills(selected_pills, pill_container);
+    }
 
 }
 

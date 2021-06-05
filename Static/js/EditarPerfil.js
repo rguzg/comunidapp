@@ -10,6 +10,8 @@ PillsBox(facultades, 'facultades');
 const form = document.querySelector('#perfilForm');
 const boton_submit = form.querySelector('input[type="submit"]');
 
+const notification_controller = new NotificationController('bottom-right');
+
 VerificarCambiosForm(form, boton_submit, [lineas_investigacion, niveles, facultades]);
 
 /* Para poder enviar los datos que hay en los PillsBox.
@@ -73,9 +75,12 @@ form.addEventListener('submit', async (event) => {
         let html = await request.text();
         
         let messageDOM = new DOMParser().parseFromString(html, 'text/html');
+        let message = ExtractMessageFromDOM(messageDOM);
 
-        if(messageDOM.querySelector('#messages')){
-            document.querySelector('#messages').replaceWith(messageDOM.querySelector('#messages'));
+        try {
+            notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
+        } catch (error) {
+            console.error(error);
         }
 
     } catch (error) {

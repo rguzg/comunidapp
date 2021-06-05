@@ -669,3 +669,21 @@ div.tooltip {
     border-radius: 8px;			
     pointer-events: none;	
 }
+/* Fixed Position Helpers */
+/* Como estamos utilizando Bootstrap 4.0, nosotros tenemos que crear estos estilos */
+/* Estos estilos son utilizados por NotificationController.js */
+.top-0{
+    top: 0;
+}
+
+.start-0{
+    left: 0;
+}
+
+.bottom-0{
+    bottom: 0;
+}
+
+.end-0{
+    right: 0;
+}
