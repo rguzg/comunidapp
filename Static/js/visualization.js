@@ -40,6 +40,11 @@ const createVisualization = async (endPath) => {
         links.push({source: sourceNode, target: targetNode});
     });
     
+    let tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
+
+
     let force = d3.layout.force()
         .nodes(data.nodes)
         .links(links)
@@ -63,34 +68,55 @@ const createVisualization = async (endPath) => {
 
     let colors = d3.scale.category20();
     nodes.append('circle')
-    .attr('r', 10)
-    .attr({
-    r: 10,
-    fill: function(d, i) {
-    return colors(i);
-    },
-    stroke: 'black',
-    'stroke-width': 0
-    })
+        .attr('r', 10)
+        .attr({
+        r: 10,
+        fill: function(d, i) {
+        return colors(i);
+        },
+        stroke: 'black',
+        'stroke-width': 0
+        })
     .call(force.drag()
-    .on("dragstart", function(d) {
-    d.fixed = true;
-    d3.select(this).attr('stroke-width', 3);
-    }))
+        .on("dragstart", function(d) {
+        d.fixed = true;
+        d3.select(this).attr('stroke-width', 3);
+        }))
     .on('dblclick', function(d) {
     d.fixed = false;
     d3.select(this).attr('stroke-width', 0);
+    })
+    .on("mouseover", function(d) {		
+        tooltip.transition()		
+            .duration(200)		
+            .style("opacity", 1);		
+        tooltip	.html(`<strong>Datos:<strong> <br>
+                        Nombre: ${d.first_name}`)	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY-100) + "px");	
+        })					
+    .on("mouseout", function(d) {		
+        tooltip.transition()		
+            .duration(500)		
+            .style("opacity", 0);	
     });
 
     nodes.append('text')
-        .attr({
-                dx: 12,
-                dy: '.35em',
-                'pointer-events': 'none'
-            })
+    .attr({
+        dx: 12,
+        dy: '.35em',
+    }) 
+    .append('a')
+    .attr("xlink:href", function (d) {
+        if(d.user === null){
+            return 'blank' 
+        }else{
+            return `http://127.0.0.1:8000/user/${d.user}`;
+        }
+    })   
     .style('font', '10px sans-serif')
             .text(function (d) { return d.first_name });
-    
+     
     force.on('tick', () =>{
         nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
@@ -105,6 +131,7 @@ const createVisualization = async (endPath) => {
             });
         });
 });
+
 }
 
 // Tabs is a collection of the elements with the class 'nav-link'.
