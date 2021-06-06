@@ -787,7 +787,7 @@ class TesisForm(ModelForm):
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
         autores = []
-        tipos_autores = ['primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador','profesor']
+        tipos_autores = ['profesor', 'primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador']
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
@@ -809,11 +809,11 @@ class TesisForm(ModelForm):
         for i in range(len(tipos_autores)):
             autor = cleaned_data.get(tipos_autores[i])
 
-            # Si un alguno de los campos es None, todos los que le sigan también deben ser None
-            if(autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
+            # Si un alguno de los campos es None, todos los que le sigan también deben ser None. Si i es el último tipo de autor entonces no se realiza esta verificación 
+            if(i < len(tipos_autores) - 1 and autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
                 self.add_error(tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
 
-            if autor in autores:
+            if (autor in autores and autor != None):
                 self.add_error(tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
             else:
                 autores.append(autor)
