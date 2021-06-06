@@ -249,6 +249,14 @@
                                 </div>
                             </div>
                             {% endif %}
+                            {% if form.alumno %}
+                            <div class="m-form-input col-4 justify-content-center h-100" style="padding-top: 35px;">
+                                <div class="h-align-center">
+                                    {{form.alumno|addclass:'m-form-checkbox'}}
+                                    <span for="id_alumno" class="mx-2">{{form.alumno.label}}</span>
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="col-4 d-flex align-items-end m-form-button">
                                 <input class="btn m-button m-button--comunidapp" disabled type="submit" name="" id="" value="Agregar Usuario">
                             </div>
