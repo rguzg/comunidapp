@@ -10,6 +10,8 @@ PillsBox(lineas_investigacion, 'lineas', false);
 const form = document.querySelector('form');
 const boton_submit = form.querySelector('input[type="submit"]');
 
+const notification_controller = new NotificationController('bottom-right');
+
 VerificarCambiosForm(form, boton_submit, [palabras_clave, lineas_investigacion]);
 
 form.addEventListener('submit', async (event) => {
@@ -60,13 +62,12 @@ form.addEventListener('submit', async (event) => {
             let html = await request.text();
 
             let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-            
-            if(messageDOM.querySelector('#messages')){
-                let mensajes_error = messageDOM.querySelector('#messages');
+            let message = ExtractMessageFromDOM(messageDOM);
 
-                if(mensajes_error){
-                    document.querySelector('#messages').replaceWith(mensajes_error);
-                }
+            try {
+                notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
+            } catch (error) {
+                console.error(error);
             }
 
         } catch (error) {

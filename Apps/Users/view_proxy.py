@@ -2,6 +2,8 @@
 # patrón muy especifico. Estas views procesan la petición que incluye las cosas que se pusieron en el input_pill 
 # y después crea otra petición que sea compatible con la que utilizan las forms
 
+HOST = "http://localhost:8000"
+
 from typing import Any
 from django.http.response import HttpResponse
 from django.views import View
@@ -17,6 +19,7 @@ class Proxy(View):
         files = []
 
         # Este header se utiliza para saber a que URL mandar la petición que se está procesando
+        # Pathname debe venir con una diagonal al principio
         pathname = request.headers['PROXY']
 
         if('lineas' in request.POST):
@@ -72,10 +75,10 @@ class Proxy(View):
         for key in request.FILES:
             files.append((key, (request.FILES[key].name, request.FILES[key].read(), request.FILES[key].content_type)))
 
-        csrf_token = requests.get(f'http://localhost:8000{pathname}').cookies['csrftoken']
+        csrf_token = requests.get(f'{HOST}{pathname}').cookies['csrftoken']
         request_body['csrfmiddlewaretoken'] = csrf_token
 
-        r = requests.post(f'http://localhost:8000{pathname}', request_body, cookies = {
+        r = requests.post(f'{HOST}{pathname}', request_body, cookies = {
             'csrftoken': csrf_token,
             'sessionid': request.COOKIES['sessionid'],
         }, files = files)

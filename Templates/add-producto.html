@@ -7,6 +7,7 @@
 
 <script src="{% static 'js/VerificarCambiosForm.js' %}"></script>"
 <script src="{% static 'js/PillsBox.js' %}"></script>"
+<script src="{% static 'js/NotificationController.js' %}"></script>
 <script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
 
 <div class="container l-main mt-5 pt-4">
@@ -36,7 +37,7 @@
             <!-- Mostrando errores de todos los campos -->
             {% if form.errors %}
             <div class="alert alert-danger">
-                <strong>Corrigue los siguientes errores:</strong>
+                <strong>Corrige los siguientes errores:</strong>
                 <ul>
                     {% for field in form %}
                     {% if field.errors %}

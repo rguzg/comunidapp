@@ -657,3 +657,38 @@ div .m-product-card > .h-text-overflow{
 .h-max{
     height: 500px;
 }
+div.tooltip {
+    position: absolute;			
+    text-align:start;			
+    min-width: 60px;					
+    min-height: 20px;	
+    max-width: 200px;				
+    padding: 10px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;	
+}
+
+div.tooltip p{
+    font-weight: bold;
+}
+/* Fixed Position Helpers */
+/* Como estamos utilizando Bootstrap 4.0, nosotros tenemos que crear estos estilos */
+/* Estos estilos son utilizados por NotificationController.js */
+.top-0{
+    top: 0;
+}
+
+.start-0{
+    left: 0;
+}
+
+.bottom-0{
+    bottom: 0;
+}
+
+.end-0{
+    right: 0;
+}
