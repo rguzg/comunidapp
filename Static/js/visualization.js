@@ -40,6 +40,11 @@ const createVisualization = async (endPath) => {
         links.push({source: sourceNode, target: targetNode});
     });
     
+    let tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
+
+
     let force = d3.layout.force()
         .nodes(data.nodes)
         .links(links)
@@ -63,34 +68,76 @@ const createVisualization = async (endPath) => {
 
     let colors = d3.scale.category20();
     nodes.append('circle')
-    .attr('r', 10)
-    .attr({
-    r: 10,
-    fill: function(d, i) {
-    return colors(i);
-    },
-    stroke: 'black',
-    'stroke-width': 0
-    })
+        .attr('r', 10)
+        .attr({
+        r: 10,
+        fill: function(d, i) {
+        return colors(i);
+        },
+        stroke: 'black',
+        'stroke-width': 0
+        })
     .call(force.drag()
-    .on("dragstart", function(d) {
-    d.fixed = true;
-    d3.select(this).attr('stroke-width', 3);
-    }))
+        .on("dragstart", function(d) {
+        d.fixed = true;
+        d3.select(this).attr('stroke-width', 3);
+        }))
     .on('dblclick', function(d) {
     d.fixed = false;
     d3.select(this).attr('stroke-width', 0);
+    })
+    .on("mouseover", function(d) {		
+        tooltip.transition()		
+            .duration(400)		
+            .style("opacity", 1);		
+        tooltip.append('p').text(() => {if(d.last_name === null){return `Nombre: ${d.first_name}`}else{return `Nombre: ${d.first_name}  ${d.last_name}`} } );
+        tooltip.append('p').text(() => {if(d.clave === null){return `Clave: N/A`}else{return `Clave: ${d.clave}`} } );
+        tooltip.append('p').text(() => {if(d.facultad.length === 0 ){
+            return `Facultad: N/A`
+            }else{
+                let facultys = [];
+                for(let i = 0; i <d.facultad.length;i++){
+                    facultys.push(d.facultad[i].nombre);
+                }
+                return `Facultades: ${facultys.join(', ')}`
+            }});
+        tooltip.append('p').text(() => {if(d.lineas_investigacion.length === 0){
+            return `Líneas de Investigación: N/A`
+            }else{
+                let researchAreas = [];
+                for(let i = 0; i <d.lineas_investigacion.length;i++){
+                    researchAreas.push(d.lineas_investigacion[i].nombre);
+                }
+                return `Lineas de Investigación: ${researchAreas.join(', ')}`
+            }});
+        	
+        tooltip.style("left", (d3.event.pageX) + "px")		
+        .style("top", (d3.event.pageY-160) + "px");	
+        })				
+    .on("mouseout", function(d) {		
+        tooltip.transition()		
+            .duration(100)		
+            .style("opacity", 0)
+        .selectAll('p').remove();
     });
 
     nodes.append('text')
-        .attr({
-                dx: 12,
-                dy: '.35em',
-                'pointer-events': 'none'
-            })
+    .attr({
+        dx: 12,
+        dy: '.35em',
+    }) 
+    .append('a')
+    .attr("xlink:href", function (d) {
+        if(d.user === null){
+            return '#' 
+        }else{
+            return `https://comuniuaq.herokuapp.com/user/${d.user}`;
+        }
+    })
+    .attr('target', '_blank')
     .style('font', '10px sans-serif')
-            .text(function (d) { return d.first_name });
-    
+    .text(function (d) { return d.first_name });
+     
     force.on('tick', () =>{
         nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
         nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
@@ -105,6 +152,7 @@ const createVisualization = async (endPath) => {
             });
         });
 });
+
 }
 
 // Tabs is a collection of the elements with the class 'nav-link'.

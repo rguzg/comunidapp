@@ -51,7 +51,7 @@ class ProfesorCreationForm(UserCreationForm):
         model = User
         fields = ['email', 'username', 'password1', 'password2', 'first_name', 'last_name',
                   'clave', 'sexo', 'nacimiento', 'foto', 'facultades', 'contratacion', 'grado', 
-                  'investigaciones', 'niveles', 'cuerpoAcademico', 'is_superuser', 'is_staff', 'publico']
+                  'investigaciones', 'niveles', 'cuerpoAcademico', 'is_superuser', 'is_staff', 'publico', 'alumno']
         widgets = {
             'is_superuser': forms.HiddenInput(),
             'is_staff': forms.HiddenInput(),
@@ -64,7 +64,8 @@ class ProfesorCreationForm(UserCreationForm):
             'username': 'Correo electrónico',
             'sexo': 'Género',
             'investigaciones': 'Líneas de investigación',
-            'publico': '¿Perfil público?'
+            'publico': '¿Perfil público?',
+            'alumno': '¿Es alumno?'
         }
         help_texts = {
             'username': None,
@@ -829,7 +830,7 @@ class AutorForm(ModelForm):
 
     class Meta:
         model = Autor
-        fields = ['first_name', 'last_name']
+        fields = ['first_name', 'last_name', 'alumno']
         labels = {
             'first_name':'Nombre(s)',
             'last_name':'Apellido(s)'

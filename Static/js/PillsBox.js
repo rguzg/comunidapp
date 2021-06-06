@@ -201,7 +201,9 @@ async function PillsBox(contenedor, recurso, useDefaultPills = true){
         contenedor.querySelector("#searchbox").classList.add("h-display-none");
     })
 
-    generate_pills(selected_pills, pill_container);
+    if(useDefaultPills){
+        generate_pills(selected_pills, pill_container);
+    }
 
 }
 
@@ -213,10 +215,16 @@ function CreateFormData(form){
         let element = form.elements[i];
 
         if(element.type != "submit" && element.type != "button" && element.name != "input_pill"){
-            if(element.type == "file"){
-                data.append(element.name, element.files[0]);
-            } else {
-                data.append(element.name, element.value);
+            switch (element.type) {
+                case "file":
+                    data.append(element.name, element.files[0]);
+                    break;
+                case "checkbox":
+                    data.append(element.name, element.checked);
+                    break;
+                default:
+                    data.append(element.name, element.value);
+                    break;
             }
         }
     }

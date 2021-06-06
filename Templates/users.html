@@ -7,8 +7,9 @@
 {% include 'head.html' %}
 
 <script src="{% static 'js/VerificarCambiosForm.js' %}"></script>
-<script defer src="{% static 'js/AgregarUsuarios.js' %}"></script>
 <script src="{% static 'js/PillsBox.js' %}"></script>
+<script src="{% static 'js/NotificationController.js' %}"></script>
+<script defer src="{% static 'js/AgregarUsuarios.js' %}"></script>
 
 <body>
     {% include 'navbar.html' %}
@@ -41,7 +42,7 @@
                 <!-- Mostrando errores de todos los campos -->
                 {% if form.errors %}
                 <div class="alert alert-danger">
-                    <strong>Corrigue los siguientes errores:</strong>
+                    <strong>Corrige los siguientes errores:</strong>
                     <ul>
                         {% for field in form %}
                         {% if field.errors and field.name != 'username' %}
@@ -245,6 +246,14 @@
                                     {{form.publico|addclass:'m-form-checkbox'}}
                                     <span for="id_publico" class="mx-2">{{form.publico.label}}</span>
                                     <i class="fas fa-question-circle mb-0"></i>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if form.alumno %}
+                            <div class="m-form-input col-4 justify-content-center h-100" style="padding-top: 35px;">
+                                <div class="h-align-center">
+                                    {{form.alumno|addclass:'m-form-checkbox'}}
+                                    <span for="id_alumno" class="mx-2">{{form.alumno.label}}</span>
                                 </div>
                             </div>
                             {% endif %}

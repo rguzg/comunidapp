@@ -62,7 +62,7 @@ class BuscarPalabrasClave(View):
             }
 
             for palabra in queryResult:
-                json['mensaje'].append(palabra.nombre)
+                json['mensaje'].append({'id': palabra.id, 'nombre': palabra.nombre})
 
             return JsonResponse(json)
         except:
