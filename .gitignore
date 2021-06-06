@@ -1,5 +1,7 @@
 
-Apps/Users/migrations/
+# Apps/Users/migrations/
+Apps/Users/migrations/0003_auto_20210521_1450.py
+Apps/Users/migrations/0002_auto_20210521_1442.py
 
 Pipfile
 
