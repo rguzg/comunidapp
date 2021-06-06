@@ -88,17 +88,37 @@ const createVisualization = async (endPath) => {
     })
     .on("mouseover", function(d) {		
         tooltip.transition()		
-            .duration(200)		
+            .duration(400)		
             .style("opacity", 1);		
-        tooltip	.html(`<strong>Datos:<strong> <br>
-                        Nombre: ${d.first_name}`)	
-            .style("left", (d3.event.pageX) + "px")		
-            .style("top", (d3.event.pageY-100) + "px");	
-        })					
+        tooltip.append('p').text(() => {if(d.last_name === null){return `Nombre: ${d.first_name}`}else{return `Nombre: ${d.first_name}  ${d.last_name}`} } );
+        tooltip.append('p').text(() => {if(d.clave === null){return `Clave: N/A`}else{return `Clave: ${d.clave}`} } );
+        tooltip.append('p').text(() => {if(d.facultad.length === 0 ){
+            return `Facultad: N/A`
+            }else{
+                let facultys = [];
+                for(let i = 0; i <d.facultad.length;i++){
+                    facultys.push(d.facultad[i].nombre);
+                }
+                return `Facultades: ${facultys.join(', ')}`
+            }});
+        tooltip.append('p').text(() => {if(d.lineas_investigacion.length === 0){
+            return `Líneas de Investigación: N/A`
+            }else{
+                let researchAreas = [];
+                for(let i = 0; i <d.lineas_investigacion.length;i++){
+                    researchAreas.push(d.lineas_investigacion[i].nombre);
+                }
+                return `Lineas de Investigación: ${researchAreas.join(', ')}`
+            }});
+        	
+        tooltip.style("left", (d3.event.pageX) + "px")		
+        .style("top", (d3.event.pageY-160) + "px");	
+        })				
     .on("mouseout", function(d) {		
         tooltip.transition()		
-            .duration(500)		
-            .style("opacity", 0);	
+            .duration(100)		
+            .style("opacity", 0)
+        .selectAll('p').remove();
     });
 
     nodes.append('text')
@@ -109,13 +129,14 @@ const createVisualization = async (endPath) => {
     .append('a')
     .attr("xlink:href", function (d) {
         if(d.user === null){
-            return 'blank' 
+            return '#' 
         }else{
             return `http://127.0.0.1:8000/user/${d.user}`;
         }
-    })   
+    })
+    .attr('target', '_blank')
     .style('font', '10px sans-serif')
-            .text(function (d) { return d.first_name });
+    .text(function (d) { return d.first_name });
      
     force.on('tick', () =>{
         nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });

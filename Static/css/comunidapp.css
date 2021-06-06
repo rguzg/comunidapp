@@ -661,13 +661,18 @@ div.tooltip {
     position: absolute;			
     text-align:start;			
     min-width: 60px;					
-    min-height: 20px;					
+    min-height: 20px;	
+    max-width: 200px;				
     padding: 10px;				
     font: 12px sans-serif;		
     background: lightsteelblue;	
     border: 0px;		
     border-radius: 8px;			
     pointer-events: none;	
+}
+
+div.tooltip p{
+    font-weight: bold;
 }
 /* Fixed Position Helpers */
 /* Como estamos utilizando Bootstrap 4.0, nosotros tenemos que crear estos estilos */
