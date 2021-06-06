@@ -75,13 +75,13 @@ class Proxy(View):
         for key in request.FILES:
             files.append((key, (request.FILES[key].name, request.FILES[key].read(), request.FILES[key].content_type)))
 
-        csrf_token = requests.get(f'{HOST}{pathname}').cookies['csrftoken']
+        csrf_token = requests.get(f'{HOST}{pathname}', headers = {'Referer': f'{HOST}/proxy'}).cookies['csrftoken']
         request_body['csrfmiddlewaretoken'] = csrf_token
 
         r = requests.post(f'{HOST}{pathname}', request_body, cookies = {
             'csrftoken': csrf_token,
-            'sessionid': request.COOKIES['sessionid'],
-        }, files = files)
+            'sessionid': request.COOKIES['sessionid'],    
+        }, files = files, headers = {'Referer': f'{HOST}/proxy'})
 
         return HttpResponse(r.text)
 
