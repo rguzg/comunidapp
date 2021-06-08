@@ -45,6 +45,10 @@ class User(AbstractUser):
     facultades = models.ManyToManyField('Facultad', verbose_name = 'Facultades donde imparte clases')
     niveles = models.ManyToManyField('Nivel', verbose_name= 'Niveles donde imparte clases')
     investigaciones = models.ManyToManyField('LineaInvestigacion', verbose_name= 'Lineas de investigación o áreas de interes')
+    # Aunque ya existe un modelo para los alumnos, este no puede ser utilizado para como el autor de algún producto, además de eso ya existen
+    # varios alumnos que están registrados como usuarios y es más fácil agregar este atributo al modelo que cambiar la estructura de la BD,
+    # especialmente porque eso tendría como consecuencia la destrucción de datos que ya se encuentran en producción.
+    alumno = models.BooleanField(verbose_name = "Es alumno", default = False, null = False, blank = False)
 
 class UpdateRequest(models.Model):
     class Meta:
@@ -162,8 +166,10 @@ class Autor(models.Model):
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-
-    
+    # Todos los usuarios tienen autores pero no todos los autores tienen usuario. Como los forms están muy atados a los modelos, es necesario
+    # poner este atributo en los usuarios y en los autores, para que en los forms para crear usuario y para crear autores se pueda declarar
+    # si el autor/usuario es un alumno o no.
+    alumno = models.BooleanField(verbose_name = "Es alumno", default = False, null = False, blank = False)
 
     def __str__(self):
         if self.user is not None:
