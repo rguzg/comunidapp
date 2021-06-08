@@ -48,9 +48,16 @@ window.onload = async function () {
 
     if (file) {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
+        let original_content = file.querySelector('#filename').textContent;
+
         input_file.addEventListener('change', () => {
             let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
-            file.innerHTML = `<img src="/static/img/foto.svg" alt="" srcset=""> ${filename}`;
+            
+            if(filename){
+                file.querySelector('#filename').textContent = filename;
+            } else {
+                file.querySelector('#filename').textContent = original_content;
+            }
         });
     }
 
