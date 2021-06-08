@@ -1,0 +1,117 @@
+{% include 'head.html' %}
+{% include 'navbar.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+
+<script src="{% static 'js/VerificarCambiosForm.js' %}"></script>
+<script src="{% static 'js/PillsBox.js' %}"></script>
+<script src="{% static 'js/NotificationController.js' %}"></script>
+<script defer src="{% static 'js/EditarPerfilAdmin.js' %}"></script>
+
+<div class="container l-main mt-5 pt-5">
+    <div class="row" id="messages">
+        <div class="col-12 p-0">
+            {% if is_peticion %}
+                <div class="alert alert-warning">
+                    <strong>Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace</strong>
+                </div>
+            {% endif %}
+            
+            {% if peticion %}
+                <div class="alert alert-danger">
+                    <strong>Tu petición de actualizacion ha sido rechazada: {{peticion.motivo}}</strong>
+                </div>
+                
+            {% endif %}
+            
+    
+            <!-- Mensaje de exito e informacion-->
+            {% if messages %}
+                {% for message in messages %}
+                    {%if 'info' in message.tags%}
+                        <div class="alert alert-info">
+                                <strong>{{message}}</strong>
+                        </div>
+                    {% endif %}
+                    {% if 'success' in message.tags %}
+                        <div class="alert alert-success">
+                            <strong>{{message}}</strong>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+    
+    
+            {% if form.errors %}
+                <!-- Mensajes de error sin campo asociado -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger non-field-errors">
+                        {% for error in form.non_field_errors %}
+                            <strong class="form-error">
+                                {{ error }}
+                            </strong>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                        <strong>Corrige los siguientes errores:</strong>
+                        <ul>
+                        {% for field in form %}
+                        {% if field.errors %}
+                            <p href="#id_{{field.name}}">{{field.label}}: {{field.errors|striptags}}<p>
+                        {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endif %}
+    
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    {% for error in field.errors %}
+                    <strong>{{error}}</strong>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 m-title p-0">
+            <h3 class="mb-1">Editar Perfil</h3>
+        </div>
+    </div>
+    <div class="row">
+            <!-- Formulario de actualización de datos -->
+        <form class="col-12 p-0" method="POST" enctype="multipart/form-data" id="perfilForm">
+            {% csrf_token %}
+            {{form.user}}
+            <div class="l-form flex-column">
+                <!-- Starts the Academic information --->
+                <div class="row pl-0 d-flex flex-row">
+                    <h5 class="col-12 my-2">Información Personal</h5>
+                    <div class="m-form-input col-4">
+                        <label for="id_first_name">{{form.username.label}}</label>
+                        {{form.username}}
+                    </div>
+                    <!-- Profile picture -->
+                    <div class="m-file col-4">
+                        <label>{{form.foto.label}}</label>
+                        <label class="m-file_input h-text-overflow" for="id_foto">
+                            <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
+                            Sube una nueva foto de perfil
+                        </label>
+                        <input type="file" name="foto" accept="image/*" class="h-display-none" id="id_foto">
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Buttons -->
+            <div class="col-12 m-form-button">
+                <input class="btn m-button mr-2" id="cancel" type="button" value="Descartar Cambios">
+                <input class="btn m-button m-button--comunidapp" disabled type="submit" value="Aplicar Cambios">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

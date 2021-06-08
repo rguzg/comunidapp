@@ -46,12 +46,6 @@ window.onload = async function () {
     //     });
     // })
 
-    
-
-    if (editar_button) {
-        editar_button.addEventListener('click', goToEditar);
-    }
-
     if (file) {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
         input_file.addEventListener('change', () => {
@@ -250,11 +244,6 @@ function closePopup(win, newID, newRepr, id) {
 function goHome() {
     window.location.href = "/home";
 }
-
-function goToEditar() {
-    window.location.href = "/profile";
-}
-
 
 async function getLineasForm() {
     // showAddPopup('investigacion');

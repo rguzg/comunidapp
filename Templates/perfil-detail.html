@@ -38,9 +38,12 @@
                                     <p>Email privado</p>
                                 {% endif %}
                             {% endif %}
-
                             {% if request.user == user %}
-                                <button class="btn m-button m-button--comunidapp" id="editar_button">Editar Perfil</button>
+                                {% if not user.is_staff %}
+                                    <a class="btn m-button m-button--comunidapp" id="editar_button" href="/profile">Editar Perfil</a>
+                                    {% else %}
+                                    <a class="btn m-button m-button--comunidapp" id="editar_button" href="/profileAdmin">Editar Perfil</a>
+                                {% endif %}
                             {% endif %}
                             
                         </div>

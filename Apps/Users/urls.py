@@ -19,6 +19,7 @@ urlpatterns = [
     path('updates', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.UpdatedUsers.as_view()), name='updates'),
     path('add/admin', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.AddAdminUsers.as_view()), name='AddAdminUsers'),
     path('add/profesor', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.AddProfesorUsers.as_view()), name='AddProfesorUsers'),
+    path('profileAdmin', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views.Profile_Admin.as_view()), name='profileAdmin'),
     
     #URLS para agregar nuevos productos
     path('new/articulo', login_required(views.AddArticulo.as_view()), name="AddArticulo"),

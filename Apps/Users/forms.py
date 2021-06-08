@@ -130,6 +130,17 @@ class UpdateRequestForm(ModelForm):
         cleaned_data['changed'] = data
         return cleaned_data
 
+class AdminUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'foto']
+
+    # def is_valid(self) -> bool:
+    # #     print(self.changed_data)
+
+    #     return True
+        
+        
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
