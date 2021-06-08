@@ -559,13 +559,13 @@
                             {{form.proposito}}
                         </div>
                         <!-- Comprobante -->
-                        <div class="col-4">
+                        <div class="m-file col-4">
                             <label>{{form.comprobante.label}}</label>
-                            <div class="m-form-input col-12 custom-file">
-                                <br>
-                                <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_comprobante">Sube un comprobante</label>
-                                {{ form.comprobante|addclass:'custom-file-input' }}
-                            </div>
+                            <label class="m-file_input h-text-overflow" for="id_comprobante">
+                                <img src="{% static 'img/archivo.svg' %}" alt="" srcset="" style="height: 50px;">
+                                <span id="filename">Sube un comprobante</span>
+                            </label>
+                            {{ form.comprobante|addclass:'custom-file-input' }}
                         </div>
                         
                         <!-- Lineas de Investigación -->
@@ -866,20 +866,17 @@
                                 </div>
                             </div>
                         </div>           
-                        
-                        <div class="m-form-input col-4 mb-3">
-                            <!-- Resumen -->
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.resumen.help_text}}">
-                                <label for="id_resumen">{{form.resumen.label}}</label>
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            <div class="m-form-input custom-file">
-                                <br>
-                                <label class="custom-file-label m-input-file h-text-overflow m-input-file" for="id_resumen">Sube un resumen</label>
-                                {{ form.resumen|addclass:'custom-file-input' }}
-                            </div>
+                        <!-- Fecha de Inicio -->
+                        <div class="m-form-input col-2 mb-3">
+                            <label for="id_inicio">{{form.inicio.label}}</label>
+                            {{form.inicio|addclass:'datepicker'}}
                         </div>
-                        <div class="col-12 d-flex flex-row p-0">
+                            <!-- Fecha de Fin -->
+                            <div class="m-form-input col-2 mb-3">
+                            <label for="id_fin">{{form.fin.label}}</label>
+                            {{form.fin|addclass:'datepicker'}}
+                        </div>
+                        <div class="col-12 d-flex flex-row p-0 mt-3">
                             <!-- Palabras Clave -->
                            <div class="m-form-input col-4 mb-3" id="pills_palabras">
                                <label for="id_investigaciones">{{form.palabras_clave.label}}</label>
@@ -910,16 +907,15 @@
                                    </div>
                                </div>
                            </div>
-                           <!-- Fecha de Inicio -->
-                         <div class="m-form-input col-2 mb-3">
-                            <label for="id_inicio">{{form.inicio.label}}</label>
-                            {{form.inicio|addclass:'datepicker'}}
-                        </div>
-                         <!-- Fecha de Fin -->
-                         <div class="m-form-input col-2 mb-3">
-                            <label for="id_fin">{{form.fin.label}}</label>
-                            {{form.fin|addclass:'datepicker'}}
-                        </div>
+                            <!-- Resumen -->
+                            <div class="m-file col-4 mb-5">
+                                <label>{{form.resumen.label}}</label>
+                                <label class="m-file_input h-text-overflow" for="id_resumen">
+                                    <img src="{% static 'img/archivo.svg' %}" alt="" srcset="" style="height: 50px;">
+                                    <span id="filename">Sube un resumen</span>
+                                </label>
+                                {{ form.resumen|addclass:'custom-file-input' }}
+                            </div>
                         </div>
                     </div>
                 </div>
