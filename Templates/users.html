@@ -188,7 +188,7 @@
                             <label>{{form.foto.label}}</label>
                                 <label class="m-file_input h-text-overflow" for="id_foto">
                                     <img src="{% static 'img/foto.svg' %}" alt="" srcset="">
-                                    Sube una nueva foto de perfil
+                                    <span id="filename">Sube una nueva foto de perfil</span>
                                 </label>
                                 {{ form.foto|addclass:'h-display-none' }}
                             </div>

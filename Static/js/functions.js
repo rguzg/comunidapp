@@ -46,17 +46,18 @@ window.onload = async function () {
     //     });
     // })
 
-    
-
-    if (editar_button) {
-        editar_button.addEventListener('click', goToEditar);
-    }
-
     if (file) {
         let input_file = document.querySelector(`#${file.attributes["for"].value}`);
+        let original_content = file.querySelector('#filename').textContent;
+
         input_file.addEventListener('change', () => {
             let filename = input_file.value.replace(/^C:\\fakepath\\/, "");
-            file.innerHTML = `<img src="/static/img/foto.svg" alt="" srcset=""> ${filename}`;
+            
+            if(filename){
+                file.querySelector('#filename').textContent = filename;
+            } else {
+                file.querySelector('#filename').textContent = original_content;
+            }
         });
     }
 
@@ -251,11 +252,6 @@ function closePopup(win, newID, newRepr, id) {
 function goHome() {
     window.location.href = "/home";
 }
-
-function goToEditar() {
-    window.location.href = "/profile";
-}
-
 
 async function getLineasForm() {
     // showAddPopup('investigacion');

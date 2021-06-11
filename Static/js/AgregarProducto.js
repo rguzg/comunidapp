@@ -17,6 +17,14 @@ VerificarCambiosForm(form, boton_submit, [palabras_clave, lineas_investigacion])
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    // Después de hacer click, se deshabilitará el boton de submit por 5 segundos (o hasta que se complete la petición) para evitar peticiones repetidas
+    boton_submit.setAttribute('disabled', '');
+
+    setTimeout(() => {
+        boton_submit.removeAttribute('disabled', '');
+        console.log("A");
+    }, 50000);
+
     let data = CreateFormData(form);
 
         // Añadir los valores de los PillsBox
@@ -69,6 +77,9 @@ form.addEventListener('submit', async (event) => {
             } catch (error) {
                 console.error(error);
             }
+
+            // Como esto está después de varios awaits, no se ejecutará hasta que todas esas promesas se cumplan
+            boton_submit.removeAttribute('disabled', '');
 
         } catch (error) {
             console.error(`Error agregando producto ${error}`);

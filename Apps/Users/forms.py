@@ -21,7 +21,7 @@ class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2',
-                  'is_superuser', 'is_staff', 'email']
+                  'is_superuser', 'is_staff', 'email','foto']
         widgets = {
             'is_superuser': forms.HiddenInput(),
             'is_staff': forms.HiddenInput(),
@@ -131,6 +131,17 @@ class UpdateRequestForm(ModelForm):
         cleaned_data['changed'] = data
         return cleaned_data
 
+class AdminUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'foto']
+
+    # def is_valid(self) -> bool:
+    # #     print(self.changed_data)
+
+    #     return True
+        
+        
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User

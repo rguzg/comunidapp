@@ -2,7 +2,7 @@
     Esta función agrega o quita el atributo disabled de boton_submit dependiendo de si los valores del form han cambiado o no
 */
 
-const VerificarCambiosForm = (form, boton_submit, pill_inputs) => {
+const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
     if(form instanceof HTMLFormElement){
         let original_values = {};
         let current_values = {};
@@ -43,13 +43,15 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs) => {
         }
         
         // Quitar el atributo disabled de boton_submit si se elimina una pill que no fue agregada por el usuario
-        pill_inputs.forEach((pill_input) => {
-            if(pill_input != null){
-                pill_input.addEventListener('pill_deleted', ((event) => {
-                    boton_submit.removeAttribute('disabled');
-                }));
-            }
-        });
+        if(pill_inputs){
+            pill_inputs.forEach((pill_input) => {
+                if(pill_input != null){
+                    pill_input.addEventListener('pill_deleted', ((event) => {
+                        boton_submit.removeAttribute('disabled');
+                    }));
+                }
+            });
+        }
     } else {
         throw new TypeError("form debe ser un HTMLFormElement")
     }

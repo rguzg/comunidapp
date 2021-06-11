@@ -14,7 +14,7 @@ from django.forms.models import model_to_dict
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.db.models import Q
-from .forms import (AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
+from .forms import (AdminUpdateForm, AlumnoForm, ArticuloForm, AuthenticationForm, AutorForm,
                     CapituloLibroForm, CongresoForm, EditorialForm,
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
@@ -282,6 +282,47 @@ class Profile(SuccessMessageMixin, FormView):
         peticion.save()
         return super().form_valid(form)
 
+class Profile_Admin(SuccessMessageMixin, FormView):
+    form_class=AdminUpdateForm
+    template_name='my_profile_admin.html'
+    success_url='/profile'
+    success_message='Perfil Actualizado Correctamente'
+
+    def get_context_data(self, **kwargs):
+        context=super(Profile_Admin, self).get_context_data(**kwargs)
+        context['title']="Actualización de mis datos"
+
+        return context
+
+    def get_initial(self):
+        """
+        Regresando la informacion del usuario al formulario,
+        ya que no es un ModelForm
+        """
+        initial=super().get_initial()
+        initial['username']=self.request.user.username
+        initial['foto'] = self.request.user.foto
+        return initial
+
+    def post(self, request, *args, **kwargs):    
+        user = User.objects.get(pk=self.request.user.pk)
+        form=AdminUpdateForm(request.POST, request.FILES, instance = user)
+
+        if form.is_valid():
+            if form.has_changed():
+                print(form.changed_data)
+                messages.add_message(self.request, messages.SUCCESS,
+                                    'Perfil actualizado correctamente')
+                form.save(commit = True)
+            else:
+                messages.add_message(self.request, messages.INFO, 
+                                    'Realiza algun cambio a tu perfil antes de envíar una petición')
+
+        return render(request, self.template_name, {
+            'form': form,
+            'title': "Actualización de mis datos",
+            'producto': 'actualizacion'
+        })
 
 class CustomLogout(LogoutView):
     next_page='login'
