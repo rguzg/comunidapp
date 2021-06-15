@@ -744,6 +744,8 @@ class TesisForm(ModelForm):
     fin = forms.DateField(label='Fecha de fin', input_formats=[
                           '%d-%m-%Y'], required=True)
 
+    profesor = forms.ModelChoiceField(User.objects.exclude(is_superuser = True), empty_label = '---------')
+
     class Meta:
         model = Tesis
         fields = '__all__'
