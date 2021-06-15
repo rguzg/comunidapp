@@ -159,28 +159,33 @@ class Perfil(DetailView):
     def get_context_data(self, **kwargs):
         context=super(Perfil, self).get_context_data(**kwargs)
         user=super().get_object()
-        context['title']="Perfil de {0}".format(user.get_full_name())
         userId=self.kwargs['pk']
 
-        autor=Autor.objects.get(user_id=userId)
+        if(not user.is_superuser):
+            context['title']="Perfil de {0}".format(user.get_full_name())
 
-        articulos=Articulo.objects.filter(Q(primer_autor=autor) | Q(
-            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
-        capituloslibros=CapituloLibro.objects.filter(
-            Q(primer_autor=autor) | Q(primer_coautor=autor) | Q(segundo_coautor=autor) | Q(tercer_coautor=autor) | Q(cuarto_coautor=autor))
-        patentes=Patente.objects.filter(autores=autor)
-        congresos=Congreso.objects.filter(Q(primer_autor=autor) | Q(
-            primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
-        investigaciones=Investigacion.objects.filter(
-            Q(primer_colaborador=autor) | Q(segundo_colaborador=autor))
-        tesis=Tesis.objects.filter(profesor=user)
+            autor=Autor.objects.get(user_id=userId)
 
-        context['articulos']=articulos
-        context['capituloslibros']=capituloslibros
-        context['patentes']=patentes
-        context['congresos']=congresos
-        context['investigaciones']=investigaciones
-        context['tesis']=tesis
+            articulos=Articulo.objects.filter(Q(primer_autor=autor) | Q(
+                primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
+            capituloslibros=CapituloLibro.objects.filter(
+                Q(primer_autor=autor) | Q(primer_coautor=autor) | Q(segundo_coautor=autor) | Q(tercer_coautor=autor) | Q(cuarto_coautor=autor))
+            patentes=Patente.objects.filter(autores=autor)
+            congresos=Congreso.objects.filter(Q(primer_autor=autor) | Q(
+                primer_colaborador=autor) | Q(segundo_colaborador=autor) | Q(tercer_colaborador=autor) | Q(cuarto_colaborador=autor))
+            investigaciones=Investigacion.objects.filter(
+                Q(primer_colaborador=autor) | Q(segundo_colaborador=autor))
+            tesis=Tesis.objects.filter(profesor=user)
+
+            context['articulos']=articulos
+            context['capituloslibros']=capituloslibros
+            context['patentes']=patentes
+            context['congresos']=congresos
+            context['investigaciones']=investigaciones
+            context['tesis']=tesis
+        else:
+            context['title']="Perfil de {0}".format(user.username)
+
 
         return context
 
