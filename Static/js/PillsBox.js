@@ -182,7 +182,7 @@ async function PillsBox(contenedor, recurso, useDefaultPills = true){
         }
     }
 
-    pill_input.addEventListener('keyup', () => {
+    pill_input.addEventListener('input', () => {
         // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
         if(pill_input.value == ""){
             contenedor.querySelector("#searchbox").classList.add("h-display-none");
