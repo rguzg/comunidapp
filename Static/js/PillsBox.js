@@ -20,7 +20,383 @@
     ]
 
 */
-async function PillsBox(contenedor, recurso, useDefaultPills = true){
+
+
+class PillsBox{
+    /**
+     * El objeto PillsBox es el encargado de manejar el comportamiento de los PillsBox
+     * @param {HTMLDivElement} container - Contenedor donde se encuentra el PillsBox
+     * @param {string} resource - Recurso que utilizará el PillsBox para obtener default pills y para obtener el contenido del autocompletar
+     * @param {boolean} [useDefaultPills] - Indica si se cargaran algunas pills por defecto cuando se genere el PillsBox.
+     */
+    constructor(container, resource, useDefaultPills = true){
+        this.container = container;
+        this.resource = resource;
+        this.useDefaultPills = useDefaultPills;
+
+        // El número máximo de espacios en blanco separados por coma que aceptara el PillsBox antes de lanzar un error
+        this.maxBlankSpaces = 1;
+
+        // Este es el estado del PillsBox, las pills que se muestran se sacan de aquí. Cuando se escribe algo en el input, se actualiza el 
+        // estado; lo mismo también ocurre cuando se da click en algún objeto del autocompletar.
+        this.pills = {default: [], user_added: []};
+
+        // El estado de pill_input que almacena las palabras añadidas por el usuario. Durante la actualización del DOM, el contenido de este 
+        // arreglo se hace consistente con this.pills
+        this.input = [];
+
+        // Arreglo que almacena los errores que pueda tener el PillsBox. Durante la actualización del DOM, los contenidos de este arreglo
+        // se muestran debajo de PillsBox
+        this.errors = [];
+
+        if(this.useDefaultPills){
+            this.#AddDefaultPills();
+        }
+
+        this.#AddInputEventListeners();
+    }
+
+    /**
+     * Añadel al estado de la PillBox una pill
+     * 
+     * @param {Pill} pill 
+     * @param {string} type 
+     * @param {Number} id
+     */
+    #AddPill(name, type, id = 0){
+        let new_pill = new Pill(name.trim(), id);
+
+        switch(type){
+            case "default":
+                this.pills.default.push(new_pill);
+                break;
+            case "user_added":
+                this.pills.user_added.push(new_pill);
+                break;
+            default:
+                throw new Error("El tipo de pill es incorrecto");
+        }
+
+        let current_user_pill_count = this.input.length - 1;
+
+        new_pill.DOMRepresentation.addEventListener('deleted_pill', () => {
+            this.#DeletePill(new_pill, type);
+
+            if(type == 'user_added'){
+                this.input.splice(current_user_pill_count, 1);
+            }
+
+            this.#UpdateDOM();
+        });
+    }
+
+    /**
+     * Quita del estado de la PillBox una pill y actualiza el DOM
+     * 
+     * @param {Pill} pill_to_delete
+     * @param {string} type
+     */
+    #DeletePill(pill_to_delete, type){
+        switch(type){
+            case "default":
+                this.pills.default = this.pills.default.filter((pill) => pill != pill_to_delete);
+                break;
+            case "user_added":
+                this.pills.user_added = this.pills.user_added.filter((pill) => pill != pill_to_delete);
+                break;
+            default:
+                throw new Error("El tipo de pill es incorrecto");
+        }
+    }
+
+    /**
+     * Reemplaza old_pill por new_pill en el estado
+     * @param {Pill} old_pill 
+     * @param {Pill} new_pill 
+     */
+    #ReplaceUserAddedPill(old_pill, new_pill){
+        let old_pill_index = this.pills.user_added.findIndex((pill) => pill == old_pill);
+
+        this.pills.user_added[old_pill_index] = new_pill;
+        new_pill.DOMRepresentation.addEventListener('deleted_pill', () => {
+            this.#DeletePill(new_pill, 'user_added');
+            this.#UpdateDOM();
+        });
+    }
+
+    /**
+     * Vuelve a hacer consistente el estado con el DOM. 
+     * Quita todas las pills y agregar las DOMRepresentations de this.pills.default y después this.pills.user_added. 
+     * Actualiza pill_input según el valor de this.input
+     * Quita todos los errores presentes e inserta los errores que se encuentren en this.errors
+     */
+    #UpdateDOM(){
+        let selected_pill_container = this.container.querySelector('.m-pill-input_selected-pills');
+        let pill_input = this.container.querySelector('.m-pill-input_search');
+        let error_container = this.container.querySelector('#errors');
+
+        // childNodes se actualiza cuando cambia algo en el DOM, por eso se almacena aparte el valor
+        let selected_pill_children_count = selected_pill_container.childElementCount;
+
+        for (let i = 0; i < selected_pill_children_count; i++) {
+            const pill =  selected_pill_container.children[selected_pill_container.childElementCount - 1];
+            
+            pill.remove();
+        }
+
+        // childNodes se actualiza cuando cambia algo en el DOM, por eso se almacena aparte el valor
+        let error_children_count = error_container.childElementCount;
+
+        for (let i = 0; i < error_children_count; i++) {
+            const error =  error_container.children[error_container.childElementCount - 1];
+            
+            error.remove();
+        }
+
+        this.pills.default.forEach((pill) => {
+            selected_pill_container.appendChild(pill.DOMRepresentation);
+        });
+
+        this.pills.user_added.forEach((pill) => {
+            selected_pill_container.appendChild(pill.DOMRepresentation);
+        });
+
+        for (let i = 0; i < this.errors.length; i++) {
+            // Al final del for loop, this.errors quedará vacio. 
+            // Es la responsabilidad de las funciones que modifican el estado de siempre verificar errores
+            const error_string = this.errors.pop();
+            
+            let error = document.createElement('small');
+            error.innerText = error_string;
+            error.classList.add('text-danger');
+    
+            error_container.appendChild(error);
+        }
+
+        let new_pill_input_value = "";
+                
+        this.input.map((pill_name, i) => {
+            new_pill_input_value += pill_name;
+
+            if(i != this.input.length - 1){
+                new_pill_input_value += ",";
+            }
+        });
+
+        pill_input.value = new_pill_input_value;
+    }
+
+    /**
+     * Añade los event listeners de pill_input que ocupa el pill_box. Los primeros tres event listeners se encargan de mostrar y quitar 
+     * el autocompletar cuando pill_input obtiene/pierde el focus. El cuarto event listener compara lo que está en el 
+     * pill_input con el estado, haciendo consistente lo que está en el pill_input con el estado y 
+     * muestra el autocompletar para el ultimo elemento de pill_input.
+     */
+    #AddInputEventListeners(){
+        let pill_input = this.container.querySelector('.m-pill-input_search');
+
+        pill_input.addEventListener('focusin', () => {
+            let last_input = this.input[this.input.length - 1];
+
+            if(last_input){
+                this.#GenerateAutocomplete(last_input.trim());
+            }
+        });
+
+        pill_input.addEventListener('keydown', (event) => {
+            if(event.key === "Tab"){
+                this.container.querySelector("#searchbox").classList.add("h-display-none");
+            }
+        });
+
+        document.body.addEventListener('click', (event) => {
+            if(event.target != pill_input){
+                this.container.querySelector("#searchbox").classList.add("h-display-none");
+            }
+        });
+
+        pill_input.addEventListener('input', () => {
+            let blank_pills = 0;
+
+            this.input = pill_input.value.split(',');
+
+            this.#GenerateAutocomplete(this.input[this.input.length - 1].trim());
+
+            this.input.forEach((pill_name, i) => {
+                if(pill_name.trim() != ""){
+                    let pill = this.pills.user_added[i];
+
+                    if(pill && pill.name != pill_name){
+                        this.#ReplaceUserAddedPill(pill, new Pill(pill_name.trim()));
+                    }
+
+                    if(!pill){
+                        this.#AddPill(pill_name, 'user_added');
+                    }
+                } else {
+                    blank_pills++;
+                }
+            });
+
+            if(blank_pills > this.maxBlankSpaces){
+                this.errors.push("Elimina los espacios en blanco");
+            }
+
+            // Quitar las pills que no están representadas en el pill_input, comparando lo que está en pills.user_added con el input
+            let pills_to_remove = []
+            
+            this.pills.user_added.forEach((pill, i) => {
+                if(!this.input[i] || !(pill.name == this.input[i].trim())){
+                    pills_to_remove.push(pill);
+                }
+            });
+
+            pills_to_remove.forEach((pill) => {
+                this.#DeletePill(pill, 'user_added');
+            });
+
+            this.#UpdateDOM();
+        });
+    }
+
+    /**
+     * Realiza una petición a /buscar/this.recurso?q=name y agrega a un contenedor los que retorne la petición. Al hacer click en uno
+     * de los resultados, se reemplazará el ultimo pill con el resultado
+     * @param {string} name 
+     */
+    async #GenerateAutocomplete(name){ 
+        let autocomplete_container = this.container.querySelector('#searchbox');
+
+        // Si name está vacio, desaparecer el autocomplete_container (en caso de que se encuentre) y retornar
+        if(!name){
+            autocomplete_container.classList.add('h-display-none');
+            return;
+        }
+
+        autocomplete_container.classList.remove('h-display-none');
+
+        autocomplete_container.innerHTML = "";
+
+        let request = await fetch(`/buscar/${this.resource}?q=${name}`);
+        let resources = await request.json();
+
+        resources['mensaje'].forEach((resource) => {
+            let result = new AutocompleteResult(resource.nombre);
+
+            result.DOMRepresentation.addEventListener('click', () => {
+                let last_pill = this.pills.user_added[this.pills.user_added.length - 1];
+                let pill_input = this.container.querySelector('.m-pill-input_search');
+
+                this.input[this.input.length - 1] = resource.nombre;
+
+                this.#ReplaceUserAddedPill(last_pill, new Pill(resource.nombre));
+
+                autocomplete_container.classList.add('h-display-none');
+                pill_input.focus();
+
+                this.#UpdateDOM();
+            });
+
+            autocomplete_container.appendChild(result.DOMRepresentation);
+        });
+    }
+
+    /**
+     * Añade a la PillsBox las pills proporcionados por defecto por resource. Resource debe retornar un arreglo con las default pills en
+     * el siguiente formato: {id, nombre}
+     */
+     async #AddDefaultPills(){
+        let request = await fetch(`/api/${this.resource}`);
+        let default_pills = await request.json();
+
+        default_pills.forEach((pill) => {
+            this.#AddPill(pill['nombre'], 'default', pill['id']);
+        });
+
+        this.#UpdateDOM();
+    }
+
+    /**
+     * El PillsBox solo es valido si no tiene ningun error
+     * @returns {Boolean}
+     */
+    IsValid(){
+        return this.container.querySelector('#errors').childElementCount == 0;
+    }
+}
+
+class Pill{
+    /**
+     * Crea un objeto pill. Los objetos pill almacenan un nombre y un id
+     * 
+     * @param {string} name 
+     * @param {number} [id]
+     */
+    constructor(name, id = 0){
+        this.name = name;
+        this.id = id;
+        this.DOMRepresentation = this.#CreateDOMRepresentation();
+    }
+
+    #CreateDOMRepresentation(){
+        // Definición del contenedor del pill
+        let pill = document.createElement('div');
+        pill.classList.add('m-pills');
+        pill.setAttribute('data-id', this.id);
+
+        // Definición del texto de la pill
+        let text = document.createElement('span');
+        text.classList.add("h-text-overflow");
+        text.style.maxWidth = "100px";
+        text.textContent = this.name;
+        
+        // Definición del botón eliminar
+        let delete_icon = document.createElement('i');
+        delete_icon.classList.add("fas", "fa-times", "mb-0");
+        delete_icon.setAttribute("style", "color: white; font-size: 12px;  cursor: pointer;");
+
+        let delete_container = document.createElement('div');
+        delete_container.appendChild(delete_icon);
+
+        delete_container.addEventListener('click', () => {
+            this.DeletePill();
+        });
+
+        pill.appendChild(text);
+        pill.appendChild(delete_container);
+
+        return pill;
+    }
+
+    DeletePill(){
+        this.DOMRepresentation.dispatchEvent(new Event('deleted_pill'));
+    }
+}
+
+class AutocompleteResult{
+    /**
+     * Objeto AutocompleteResult que emite eventos cuando se da click
+     * @param {string} name 
+     */
+    constructor(name){
+        this.name = name;
+        this.DOMRepresentation = this.#CreateDOMRepresentation();
+    }
+
+    #CreateDOMRepresentation(){
+        let span = document.createElement('span');
+        span.classList.add('p-2', 'col-12', 'm-search-result', 'd-flex')
+        span.innerText = this.name;
+
+        span.addEventListener('click', () => {
+            span.dispatchEvent(new Event('autocomplete_click'));
+        });
+
+        return span;
+    }
+}
+
+async function PcillsBox(contenedor, recurso, useDefaultPills = true){
     let request = await fetch(`/api/${recurso}`);
     let selected_pills = useDefaultPills ? await request.json() : {};
     let pill_container = contenedor.querySelector('.m-pill-input_selected-pills');
@@ -182,18 +558,47 @@ async function PillsBox(contenedor, recurso, useDefaultPills = true){
         }
     }
 
+    let show_error = (error_text) => {
+        let error = document.createElement('span');
+        error.classList.add('text-danger');
+        error.id = "error";
+        error.innerText = error_text;
+        
+        contenedor.appendChild(error);
+    }
+
+    let delete_error = () => {
+        let error = contenedor.querySelector('#error');
+        
+        if(error){
+            error.remove();
+        }
+    }
+
     pill_input.addEventListener('input', () => {
-        // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar desaparece
-        if(pill_input.value == ""){
+        delete_error();
+
+        let split_input = [];
+        // Si no hay nada escrito en m-pill-input_searchbox, el contenedor de autocompletar no se muestra
+        // y no se realiza el split de pill_input
+        if(pill_input.value.trim() == ""){
             contenedor.querySelector("#searchbox").classList.add("h-display-none");
         } else {
             contenedor.querySelector("#searchbox").classList.remove("h-display-none");
-        }
+            split_input = pill_input.value.split(',');
 
-        let split_input = pill_input.value.split(',');
-        let query = split_input[split_input.length - 1].trimEnd().trimStart()
+            for (let i = 0; i < split_input.length; i++) {
+                if(split_input[i].trim() == ""){
+                    show_error("Elimina los espacios en blanco antes de continuar");
+                    break;
+                }
+            }
+
+            // Solo se va a hacer el query para mostrar en el autocompletar en el ultimo elemento
+            let query = split_input[split_input.length - 1].trim();
+            generate_autocomplete(query);
+        }
         
-        generate_autocomplete(query);
         generate_new_pills(split_input);
     });
 
