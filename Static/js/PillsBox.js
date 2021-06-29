@@ -184,6 +184,8 @@ class PillsBox{
         });
 
         pill_input.value = new_pill_input_value;
+
+        this.#DispatchChangeEvent();
     }
 
     /**
@@ -257,6 +259,13 @@ class PillsBox{
 
             this.#UpdateDOM();
         });
+    }
+
+    /**
+     * Realiza el envío de un evento 'change'
+     */
+    #DispatchChangeEvent(){
+        this.container.dispatchEvent('change');
     }
 
     /**
