@@ -345,7 +345,7 @@ class PillsBox{
      * El PillsBox solo es valido si no tiene ningun error
      * @returns {Boolean}
      */
-    IsValid(){
+    isValid(){
         return this.container.querySelector('#errors').childElementCount == 0;
     }
 
