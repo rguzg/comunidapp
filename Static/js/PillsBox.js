@@ -23,15 +23,20 @@
 
 
 class PillsBox{
+    #resource;
+    #useDefaultPills;
+    #pills_initialized;
+    #maxBlankSpaces;
+    #pills;
+    #input;
+    #errors;
+
     /**
      * El objeto PillsBox es el encargado de manejar el comportamiento de los PillsBox
      * @param {HTMLDivElement} container - Contenedor donde se encuentra el PillsBox
      * @param {string} resource - Recurso que utilizará el PillsBox para obtener default pills y para obtener el contenido del autocompletar
      * @param {boolean} [useDefaultPills] - Indica si se cargaran algunas pills por defecto cuando se genere el PillsBox.
      */
-
-    #pills;
-
     constructor(container, resource, useDefaultPills = true){
         this.container = container;
         this.#resource = resource;
@@ -53,7 +58,7 @@ class PillsBox{
         // se muestran debajo de PillsBox
         this.#errors = [];
 
-        if(this.useDefaultPills){
+        if(this.#useDefaultPills){
             this.#AddDefaultPills();
         } else {
             this.#pills_initialized = true;
