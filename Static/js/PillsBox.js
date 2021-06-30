@@ -35,7 +35,7 @@ class PillsBox{
     constructor(container, resource, useDefaultPills = true){
         this.container = container;
         this.#resource = resource;
-        this.useDefaultPills = useDefaultPills;
+        this.#useDefaultPills = useDefaultPills;
         this.pills_initialized = false;
 
         // El número máximo de espacios en blanco separados por coma que aceptara el PillsBox antes de lanzar un error
