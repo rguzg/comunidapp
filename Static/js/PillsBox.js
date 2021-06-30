@@ -47,7 +47,7 @@ class PillsBox{
 
         // El estado de pill_input que almacena las palabras añadidas por el usuario. Durante la actualización del DOM, el contenido de este 
         // arreglo se hace consistente con this.pills
-        this.input = [];
+        this.#input = [];
 
         // Arreglo que almacena los errores que pueda tener el PillsBox. Durante la actualización del DOM, los contenidos de este arreglo
         // se muestran debajo de PillsBox
@@ -83,13 +83,13 @@ class PillsBox{
                 throw new Error("El tipo de pill es incorrecto");
         }
 
-        let current_user_pill_count = this.input.length - 1;
+        let current_user_pill_count = this.#input.length - 1;
 
         new_pill.DOMRepresentation.addEventListener('deleted_pill', () => {
             this.#DeletePill(new_pill, type);
 
             if(type == 'user_added'){
-                this.input.splice(current_user_pill_count, 1);
+                this.#input.splice(current_user_pill_count, 1);
             }
 
             this.#UpdateDOM();
@@ -181,10 +181,10 @@ class PillsBox{
 
         let new_pill_input_value = "";
                 
-        this.input.map((pill_name, i) => {
+        this.#input.map((pill_name, i) => {
             new_pill_input_value += pill_name;
 
-            if(i != this.input.length - 1){
+            if(i != this.#input.length - 1){
                 new_pill_input_value += ",";
             }
         });
@@ -204,7 +204,7 @@ class PillsBox{
         let pill_input = this.container.querySelector('.m-pill-input_search');
 
         pill_input.addEventListener('focusin', () => {
-            let last_input = this.input[this.input.length - 1];
+            let last_input = this.#input[this.#input.length - 1];
 
             if(last_input){
                 this.#GenerateAutocomplete(last_input.trim());
@@ -226,11 +226,11 @@ class PillsBox{
         pill_input.addEventListener('input', () => {
             let blank_pills = 0;
 
-            this.input = pill_input.value.split(',');
+            this.#input = pill_input.value.split(',');
 
-            this.#GenerateAutocomplete(this.input[this.input.length - 1].trim());
+            this.#GenerateAutocomplete(this.#input[this.#input.length - 1].trim());
 
-            this.input.forEach((pill_name, i) => {
+            this.#input.forEach((pill_name, i) => {
                 if(pill_name.trim() != ""){
                     let pill = this.#pills.user_added[i];
 
@@ -254,7 +254,7 @@ class PillsBox{
             let pills_to_remove = []
             
             this.#pills.user_added.forEach((pill, i) => {
-                if(!this.input[i] || !(pill.name == this.input[i].trim())){
+                if(!this.#input[i] || !(pill.name == this.#input[i].trim())){
                     pills_to_remove.push(pill);
                 }
             });
@@ -302,7 +302,7 @@ class PillsBox{
                 let last_pill = this.#pills.user_added[this.#pills.user_added.length - 1];
                 let pill_input = this.container.querySelector('.m-pill-input_search');
 
-                this.input[this.input.length - 1] = resource.nombre;
+                this.#input[this.#input.length - 1] = resource.nombre;
 
                 this.#ReplaceUserAddedPill(last_pill, new Pill(resource.nombre));
 
