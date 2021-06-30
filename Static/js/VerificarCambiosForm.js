@@ -42,13 +42,42 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
             }    
         }
         
-        // Quitar el atributo disabled de boton_submit si se elimina una pill que no fue agregada por el usuario
-        if(pill_inputs){
-            pill_inputs.forEach((pill_input) => {
+        if(pill_inputs){            
+            pill_inputs.forEach(async (pill_input) => {
                 if(pill_input != null){
-                    pill_input.addEventListener('pill_deleted', ((event) => {
-                        boton_submit.removeAttribute('disabled');
-                    }));
+                    let original_pills = await pill_input.pills;
+
+                    pill_input.container.addEventListener('change', async () => {
+                        let shouldDisableButton = true;
+                        let current_pills = await pill_input.pills;
+
+                        if(current_pills.length != original_pills.length){
+                            shouldDisableButton = false;
+                        } else {
+                            // Los arreglos de pills se ordenan alfabeticamente para comprobar que no estén insertadas las mismas pills, 
+                            // aunque esten en diferente orden. Solo es necesario realizar esta comprobación cuando 
+                            // current_pills.length != original_pills.length
+                            current_pills.sort();
+                            original_pills.sort();
+
+                            for (let i = 0; i < current_pills.length; i++) {
+                                if(current_pills[i].name != original_pills[i].name){
+                                    shouldDisableButton = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(!pill_input.isValid()){
+                            shouldDisableButton = true;
+                        }
+
+                        if(shouldDisableButton){
+                            boton_submit.setAttribute('disabled', '');
+                        } else {
+                            boton_submit.removeAttribute('disabled');
+                        }
+                    });
                 }
             });
         }
