@@ -39,7 +39,7 @@ class PillsBox{
         this.#pills_initialized = false;
 
         // El número máximo de espacios en blanco separados por coma que aceptara el PillsBox antes de lanzar un error
-        this.maxBlankSpaces = 1;
+        this.#maxBlankSpaces = 1;
 
         // Este es el estado del PillsBox, las pills que se muestran se sacan de aquí. Cuando se escribe algo en el input, se actualiza el 
         // estado; lo mismo también ocurre cuando se da click en algún objeto del autocompletar.
@@ -246,7 +246,7 @@ class PillsBox{
                 }
             });
 
-            if(blank_pills > this.maxBlankSpaces){
+            if(blank_pills > this.#maxBlankSpaces){
                 this.#errors.push("Elimina los espacios en blanco");
             }
 
