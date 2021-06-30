@@ -34,7 +34,7 @@ class PillsBox{
 
     constructor(container, resource, useDefaultPills = true){
         this.container = container;
-        this.resource = resource;
+        this.#resource = resource;
         this.useDefaultPills = useDefaultPills;
         this.pills_initialized = false;
 
@@ -292,7 +292,7 @@ class PillsBox{
 
         autocomplete_container.innerHTML = "";
 
-        let request = await fetch(`/buscar/${this.resource}?q=${name}`);
+        let request = await fetch(`/buscar/${this.#resource}?q=${name}`);
         let resources = await request.json();
 
         resources['mensaje'].forEach((resource) => {
@@ -321,7 +321,7 @@ class PillsBox{
      * el siguiente formato: {id, nombre}
      */
      async #AddDefaultPills(){
-        let request = await fetch(`/api/${this.resource}`);
+        let request = await fetch(`/api/${this.#resource}`);
         let default_pills = await request.json();
 
         default_pills.forEach((pill) => {
