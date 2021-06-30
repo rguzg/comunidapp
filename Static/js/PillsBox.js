@@ -29,17 +29,21 @@ class PillsBox{
      * @param {string} resource - Recurso que utilizará el PillsBox para obtener default pills y para obtener el contenido del autocompletar
      * @param {boolean} [useDefaultPills] - Indica si se cargaran algunas pills por defecto cuando se genere el PillsBox.
      */
+
+    #pills;
+
     constructor(container, resource, useDefaultPills = true){
         this.container = container;
         this.resource = resource;
         this.useDefaultPills = useDefaultPills;
+        this.pills_initialized = false;
 
         // El número máximo de espacios en blanco separados por coma que aceptara el PillsBox antes de lanzar un error
         this.maxBlankSpaces = 1;
 
         // Este es el estado del PillsBox, las pills que se muestran se sacan de aquí. Cuando se escribe algo en el input, se actualiza el 
         // estado; lo mismo también ocurre cuando se da click en algún objeto del autocompletar.
-        this.pills = {default: [], user_added: []};
+        this.#pills = {default: [], user_added: []};
 
         // El estado de pill_input que almacena las palabras añadidas por el usuario. Durante la actualización del DOM, el contenido de este 
         // arreglo se hace consistente con this.pills
@@ -51,6 +55,8 @@ class PillsBox{
 
         if(this.useDefaultPills){
             this.#AddDefaultPills();
+        } else {
+            this.pills_initialized = true;
         }
 
         this.#AddInputEventListeners();
@@ -68,10 +74,10 @@ class PillsBox{
 
         switch(type){
             case "default":
-                this.pills.default.push(new_pill);
+                this.#pills.default.push(new_pill);
                 break;
             case "user_added":
-                this.pills.user_added.push(new_pill);
+                this.#pills.user_added.push(new_pill);
                 break;
             default:
                 throw new Error("El tipo de pill es incorrecto");
@@ -99,10 +105,10 @@ class PillsBox{
     #DeletePill(pill_to_delete, type){
         switch(type){
             case "default":
-                this.pills.default = this.pills.default.filter((pill) => pill != pill_to_delete);
+                this.#pills.default = this.#pills.default.filter((pill) => pill != pill_to_delete);
                 break;
             case "user_added":
-                this.pills.user_added = this.pills.user_added.filter((pill) => pill != pill_to_delete);
+                this.#pills.user_added = this.#pills.user_added.filter((pill) => pill != pill_to_delete);
                 break;
             default:
                 throw new Error("El tipo de pill es incorrecto");
@@ -115,9 +121,9 @@ class PillsBox{
      * @param {Pill} new_pill 
      */
     #ReplaceUserAddedPill(old_pill, new_pill){
-        let old_pill_index = this.pills.user_added.findIndex((pill) => pill == old_pill);
+        let old_pill_index = this.#pills.user_added.findIndex((pill) => pill == old_pill);
 
-        this.pills.user_added[old_pill_index] = new_pill;
+        this.#pills.user_added[old_pill_index] = new_pill;
         new_pill.DOMRepresentation.addEventListener('deleted_pill', () => {
             this.#DeletePill(new_pill, 'user_added');
             this.#UpdateDOM();
@@ -153,11 +159,11 @@ class PillsBox{
             error.remove();
         }
 
-        this.pills.default.forEach((pill) => {
+        this.#pills.default.forEach((pill) => {
             selected_pill_container.appendChild(pill.DOMRepresentation);
         });
 
-        this.pills.user_added.forEach((pill) => {
+        this.#pills.user_added.forEach((pill) => {
             selected_pill_container.appendChild(pill.DOMRepresentation);
         });
 
@@ -226,7 +232,7 @@ class PillsBox{
 
             this.input.forEach((pill_name, i) => {
                 if(pill_name.trim() != ""){
-                    let pill = this.pills.user_added[i];
+                    let pill = this.#pills.user_added[i];
 
                     if(pill && pill.name != pill_name){
                         this.#ReplaceUserAddedPill(pill, new Pill(pill_name.trim()));
@@ -247,7 +253,7 @@ class PillsBox{
             // Quitar las pills que no están representadas en el pill_input, comparando lo que está en pills.user_added con el input
             let pills_to_remove = []
             
-            this.pills.user_added.forEach((pill, i) => {
+            this.#pills.user_added.forEach((pill, i) => {
                 if(!this.input[i] || !(pill.name == this.input[i].trim())){
                     pills_to_remove.push(pill);
                 }
@@ -265,7 +271,7 @@ class PillsBox{
      * Realiza el envío de un evento 'change'
      */
     #DispatchChangeEvent(){
-        this.container.dispatchEvent('change');
+        this.container.dispatchEvent(new Event('change'));
     }
 
     /**
@@ -293,7 +299,7 @@ class PillsBox{
             let result = new AutocompleteResult(resource.nombre);
 
             result.DOMRepresentation.addEventListener('click', () => {
-                let last_pill = this.pills.user_added[this.pills.user_added.length - 1];
+                let last_pill = this.#pills.user_added[this.#pills.user_added.length - 1];
                 let pill_input = this.container.querySelector('.m-pill-input_search');
 
                 this.input[this.input.length - 1] = resource.nombre;
@@ -323,6 +329,8 @@ class PillsBox{
         });
 
         this.#UpdateDOM();
+        this.container.dispatchEvent(new Event('pills_loaded'));
+        this.pills_initialized = true;
     }
 
     /**
@@ -331,6 +339,18 @@ class PillsBox{
      */
     IsValid(){
         return this.container.querySelector('#errors').childElementCount == 0;
+    }
+
+    get pills(){
+        return new Promise((resolve, reject) => {
+            if(this.pills_initialized){
+                resolve(this.#pills);
+            } else {
+                this.container.addEventListener('pills_loaded', () => {
+                    resolve(this.#pills);
+                });
+            }
+        });
     }
 }
 
