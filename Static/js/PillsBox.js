@@ -36,7 +36,7 @@ class PillsBox{
         this.container = container;
         this.#resource = resource;
         this.#useDefaultPills = useDefaultPills;
-        this.pills_initialized = false;
+        this.#pills_initialized = false;
 
         // El número máximo de espacios en blanco separados por coma que aceptara el PillsBox antes de lanzar un error
         this.maxBlankSpaces = 1;
@@ -56,7 +56,7 @@ class PillsBox{
         if(this.useDefaultPills){
             this.#AddDefaultPills();
         } else {
-            this.pills_initialized = true;
+            this.#pills_initialized = true;
         }
 
         this.#AddInputEventListeners();
@@ -330,7 +330,7 @@ class PillsBox{
 
         this.#UpdateDOM();
         this.container.dispatchEvent(new Event('pills_loaded'));
-        this.pills_initialized = true;
+        this.#pills_initialized = true;
     }
 
     /**
@@ -347,7 +347,7 @@ class PillsBox{
     get pills(){
         // Las pills por defecto son llenadas por un método asíncrono, así que es necesario que el getter de pills retorne una promesa
         return new Promise((resolve, reject) => {
-            if(this.pills_initialized){
+            if(this.#pills_initialized){
                 resolve(this.#pills);
             } else {
                 this.container.addEventListener('pills_loaded', () => {
