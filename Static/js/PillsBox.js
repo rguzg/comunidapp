@@ -51,7 +51,7 @@ class PillsBox{
 
         // Arreglo que almacena los errores que pueda tener el PillsBox. Durante la actualización del DOM, los contenidos de este arreglo
         // se muestran debajo de PillsBox
-        this.errors = [];
+        this.#errors = [];
 
         if(this.useDefaultPills){
             this.#AddDefaultPills();
@@ -167,10 +167,10 @@ class PillsBox{
             selected_pill_container.appendChild(pill.DOMRepresentation);
         });
 
-        for (let i = 0; i < this.errors.length; i++) {
+        for (let i = 0; i < this.#errors.length; i++) {
             // Al final del for loop, this.errors quedará vacio. 
             // Es la responsabilidad de las funciones que modifican el estado de siempre verificar errores
-            const error_string = this.errors.pop();
+            const error_string = this.#errors.pop();
             
             let error = document.createElement('small');
             error.innerText = error_string;
@@ -247,7 +247,7 @@ class PillsBox{
             });
 
             if(blank_pills > this.maxBlankSpaces){
-                this.errors.push("Elimina los espacios en blanco");
+                this.#errors.push("Elimina los espacios en blanco");
             }
 
             // Quitar las pills que no están representadas en el pill_input, comparando lo que está en pills.user_added con el input
