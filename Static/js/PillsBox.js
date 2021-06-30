@@ -131,6 +131,9 @@ class PillsBox{
         this.#pills.user_added[old_pill_index] = new_pill;
         new_pill.DOMRepresentation.addEventListener('deleted_pill', () => {
             this.#DeletePill(new_pill, 'user_added');
+
+            this.#input.splice(old_pill_index, 1);
+
             this.#UpdateDOM();
         });
     }
