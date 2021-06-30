@@ -347,16 +347,17 @@ class PillsBox{
     }
 
     /**
+     * Retorna las pills que esten seleccionadas en el pills_box
      * @returns {Promise}
      */
     get pills(){
         // Las pills por defecto son llenadas por un método asíncrono, así que es necesario que el getter de pills retorne una promesa
         return new Promise((resolve, reject) => {
             if(this.#pills_initialized){
-                resolve(this.#pills);
+                resolve([...this.#pills.default.map((pill) => pill.name), ...this.#pills.user_added.map((pill) => pill.name)]);
             } else {
                 this.container.addEventListener('pills_loaded', () => {
-                    resolve(this.#pills);
+                    resolve([...this.#pills.default.map((pill) => pill.name), ...this.#pills.user_added.map((pill) => pill.name)]);
                 });
             }
         });
