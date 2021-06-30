@@ -341,7 +341,11 @@ class PillsBox{
         return this.container.querySelector('#errors').childElementCount == 0;
     }
 
+    /**
+     * @returns {Promise}
+     */
     get pills(){
+        // Las pills por defecto son llenadas por un método asíncrono, así que es necesario que el getter de pills retorne una promesa
         return new Promise((resolve, reject) => {
             if(this.pills_initialized){
                 resolve(this.#pills);
