@@ -1,27 +1,3 @@
-/* 
-    Encargado de la funcionalidad del input que contiene pills 
-
-    Parametros de la función:
-    - Contenedor: Contenedor donde se colocara la PillsBox
-    - Recurso: Nombre del recurso de donde se obtendrá la información de autocompletar y las pills seleccionadas
-
-    Los recursos tendrán el siguiente formato:
-    [ 
-        {
-            id: 0,
-            nombre: "pill"
-        },
-
-        {
-            id: 0,
-            nombre: "pill"
-        }
-        ...
-    ]
-
-*/
-
-
 class PillsBox{
     #resource;
     #useDefaultPills;
