@@ -1,46 +1,38 @@
 /*
-    Esta función agrega o quita el atributo disabled de boton_submit dependiendo de si los valores del form han cambiado o no
+    Esta función agrega o quita el atributo disabled de boton_submit dependiendo de si los valores del form han cambiado o no y de que si la form es valida o no.
 */
 
-const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
+const VerificarForm = (form, boton_submit, pill_inputs = null) => {
     if(form instanceof HTMLFormElement){
         let original_values = {};
-        let current_values = {};
 
         // Verificación de los valores que son inputs
         for (let i = 0; i < form.elements.length; i++){
             let element = form.elements[i];
-        
+
             if( element.type != "submit" && element.type != "button" 
             && element.name != "csrfmiddlewaretoken" && element.name != "user" && element.name != "input_pill"){
-                element.addEventListener('input', () => {
-                    if(element.type == "checkbox"){
-                        current_values[element.name] = element.checked;
-                    } else {
-                        current_values[element.name] = element.value;
-                    }
-                    
-                    for (const key in original_values) {
-                        if(original_values[key] != current_values[key]){
-                            // Como el valor del input se agrega a current_values cuando su valor cambia, current_value[key] puede ser
-                            // igual a undefined si el valor todavía no ha cambiado
-                            if(!(current_values[key] == undefined)){
-                                boton_submit.removeAttribute('disabled');
-                                break;
-                            }
-                        } else {
-                            boton_submit.setAttribute('disabled', '');
-                        }
-                    }
-                });
-                
                 if(element.type == "checkbox"){
                     original_values[element.name] = element.checked;
                 } else {
                     original_values[element.name] = element.value;
                 }
-            }    
+            }
+
+            element.addEventListener('input', () => {
+                let current_values = {};
+
+                if(element.type == "checkbox"){
+                    current_values[element.name] = element.checked;
+                } else {
+                    current_values[element.name] = element.value;
+                }
+
+                let isInputValid = VerificarInputs(original_values, current_values);
+            });
         }
+        
+   
         
         if(pill_inputs){            
             let original_pills = [];
@@ -114,4 +106,25 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
     } else {
         throw new TypeError("form debe ser un HTMLFormElement")
     }
+}
+
+const VerificarInputs = (original_values, current_values) => {
+    let hasInputChangedMatrix = [];
+    let hasChanged = false;
+
+    for (const key in original_values) {
+        // Si al menos un input cambió, entonces se considera que los inputs han cambiado
+        if(current_values[key] && original_values[key] != current_values[key]){
+            hasInputChangedMatrix.push(true);
+            break;
+        } else {
+            hasInputChangedMatrix.push(false);
+        }
+    }
+
+    hasInputChangedMatrix.forEach((hasInputChanged) => {
+        hasChanged |= hasInputChanged;
+    });
+
+    return hasChanged;
 }
