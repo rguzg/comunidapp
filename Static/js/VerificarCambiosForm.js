@@ -12,7 +12,7 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
             let element = form.elements[i];
         
             if( element.type != "submit" && element.type != "button" 
-            && element.name != "csrfmiddlewaretoken" && element.name != "user"){
+            && element.name != "csrfmiddlewaretoken" && element.name != "user" && element.name != "input_pill"){
                 element.addEventListener('input', () => {
                     if(element.type == "checkbox"){
                         current_values[element.name] = element.checked;
@@ -43,36 +43,66 @@ const VerificarCambiosForm = (form, boton_submit, pill_inputs = null) => {
         }
         
         if(pill_inputs){            
+            let original_pills = [];
+            
             pill_inputs.forEach(async (pill_input) => {
                 if(pill_input != null){
-                    let original_pills = await pill_input.pills;
+                    original_pills.push(await pill_input.pills);
+                    original_pills.sort();
 
                     pill_input.container.addEventListener('change', async () => {
-                        let shouldDisableButton = true;
-                        let current_pills = await pill_input.pills;
+                        let current_pills = [];
 
-                        if(current_pills.length != original_pills.length){
-                            shouldDisableButton = false;
-                        } else {
-                            // Los arreglos de pills se ordenan alfabeticamente para comprobar que no estén insertadas las mismas pills, 
-                            // aunque esten en diferente orden. Solo es necesario realizar esta comprobación cuando 
-                            // current_pills.length != original_pills.length
-                            current_pills.sort();
-                            original_pills.sort();
+                        // Se almacenan todos los valores de si los pill_inputs son validos y si no tienen los mismos contenidos que al principio. 
 
-                            for (let i = 0; i < current_pills.length; i++) {
-                                if(current_pills[i].name != original_pills[i].name){
-                                    shouldDisableButton = false;
-                                    break;
+                        // Al final si al menos uno de estos valores es falso, boton_submit se deshabilita
+                        let isValidMatrix = [];
+                        // Al final si nada ha cambiado, boton_submit se deshabilita
+                        let hasChangedMatrix = [];
+
+                        pill_inputs.forEach((pill_input) => {
+                            current_pills.push(pill_input.pills);
+                        });
+
+                        for (let i = 0; i < current_pills.length; i++) {
+                            current_pills[i] = await current_pills[i];
+                            let hasChanged = false;
+
+                            if(current_pills[i].length != original_pills[i].length){
+                                hasChanged = true;
+                            } else {
+                                // Los arreglos de pills se ordenan alfabeticamente para comprobar que no estén insertadas las mismas pills, 
+                                // aunque esten en diferente orden. Solo es necesario realizar esta comprobación cuando 
+                                // current_pills.length != original_pills.length
+                                current_pills[i].sort();
+    
+                                for (let j = 0; j < current_pills[i].length; j++) {
+                                    if(current_pills[i][j] != original_pills[i][j]){
+                                        hasChanged = true;
+                                        break;
+                                    }
                                 }
                             }
+
+                            hasChangedMatrix.push(hasChanged);
+                            isValidMatrix.push(pill_input.isValid());
                         }
 
-                        if(!pill_input.isValid()){
-                            shouldDisableButton = true;
+                        let shouldDisable = false;
+
+                        if(isValidMatrix.includes(false)){
+                            shouldDisable = true;
+                        } else {
+                            let haveInputsChanged = false;
+
+                            hasChangedMatrix.forEach((hasChanged) => {
+                                haveInputsChanged |= hasChanged;
+                            });
+
+                            shouldDisable = !haveInputsChanged;
                         }
 
-                        if(shouldDisableButton){
+                        if(shouldDisable){
                             boton_submit.setAttribute('disabled', '');
                         } else {
                             boton_submit.removeAttribute('disabled');
