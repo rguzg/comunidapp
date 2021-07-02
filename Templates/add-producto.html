@@ -951,7 +951,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_alumno">{{form.alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.alumno}}
+                                {{form.alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
                                     onclick="return showAddPopup(this, 'id_alumno');">
@@ -965,35 +965,35 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_profesor">{{form.profesor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.profesor}}
+                                {{form.profesor|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Primer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Segundo Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Tercer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_colaborador}}
+                                {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Cuarto Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_colaborador}}
+                                {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Institución -->
