@@ -333,10 +333,10 @@ class PillsBox{
         // Las pills por defecto son llenadas por un método asíncrono, así que es necesario que el getter de pills retorne una promesa
         return new Promise((resolve, reject) => {
             if(this.#pills_initialized){
-                resolve([...this.#pills.default.map((pill) => pill.name), ...this.#pills.user_added.map((pill) => pill.name)]);
+                resolve([...this.#pills.default.map((pill) => ({"id": pill.id, "name": pill.name})), ...this.#pills.user_added.map((pill) => ({"id": pill.id, "name": pill.name}))]);
             } else {
                 this.container.addEventListener('pills_loaded', () => {
-                    resolve([...this.#pills.default.map((pill) => pill.name), ...this.#pills.user_added.map((pill) => pill.name)]);
+                    resolve([...this.#pills.default.map((pill) => ({"id": pill.id, "name": pill.name})), ...this.#pills.user_added.map((pill) => ({"id": pill.id, "name": pill.name}))]);
                 });
             }
         });

@@ -54,8 +54,15 @@ const VerificarForm = (form, boton_submit, pill_inputs = null) => {
         if(pill_inputs){
             pill_inputs.forEach(async (pill_input) => {
                 if(pill_input != null){
-                    original_pills.push(await pill_input.pills);
-                    original_pills.sort();
+                    let pill_names = [];
+                    let pills = await pill_input.pills;
+            
+                    pills.forEach((pill) => {
+                        pill_names.push(pill.name);
+                    });
+                    
+                    pill_names.sort();
+                    original_pills.push(pill_names);
 
                     pill_input.container.addEventListener('change', async () => {
                         let current_values = {};
@@ -121,11 +128,20 @@ const VerificarInputPills = async (original_pills, pill_inputs) => {
     }
 
     let current_pills = [];
-        
-    pill_inputs.forEach((pill_input) => {
-        current_pills.push(pill_input.pills);
-    });
 
+    for (let i = 0; i < pill_inputs.length; i++) {
+        const pill_input = pill_inputs[i];
+        
+        let pill_names = [];
+        let pills = await pill_input.pills;
+
+        pills.forEach((pill) => {
+            pill_names.push(pill.name);
+        });
+        
+        current_pills.push(pill_names);
+    }
+        
     // Se almacenan todos los valores de si los pill_inputs son validos y si no tienen los mismos contenidos que al principio. 
 
     // Al final si al menos uno de estos valores es falso, boton_submit se deshabilita
