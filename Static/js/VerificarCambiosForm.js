@@ -131,15 +131,17 @@ const VerificarInputPills = async (original_pills, pill_inputs) => {
 
     for (let i = 0; i < pill_inputs.length; i++) {
         const pill_input = pill_inputs[i];
-        
-        let pill_names = [];
-        let pills = await pill_input.pills;
-
-        pills.forEach((pill) => {
-            pill_names.push(pill.name);
-        });
-        
-        current_pills.push(pill_names);
+ 
+        if(pill_input){
+            let pill_names = [];
+            let pills = await pill_input.pills;
+    
+            pills.forEach((pill) => {
+                pill_names.push(pill.name);
+            });
+            
+            current_pills.push(pill_names);
+        }
     }
         
     // Se almacenan todos los valores de si los pill_inputs son validos y si no tienen los mismos contenidos que al principio. 
@@ -170,7 +172,9 @@ const VerificarInputPills = async (original_pills, pill_inputs) => {
         }
 
         hasChangedMatrix.push(hasChanged);
-        errorsMatrix.push(pill_inputs[i].isValid());
+        if(pill_inputs[i]){
+            errorsMatrix.push(pill_inputs[i].isValid());
+        }
     }
 
     let haveInputsChanged = false;
