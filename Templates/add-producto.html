@@ -325,8 +325,8 @@
                         <!-- Primer Autor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_autor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_autor');">
@@ -338,8 +338,8 @@
                         <!-- Primer Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_coautor">{{form.primer_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_coautor');">
@@ -351,8 +351,8 @@
                         <!-- Segundo Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_coautor">{{form.segundo_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.segundo_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_segundo_coautor');">
@@ -364,8 +364,8 @@
                         <!-- Tercer Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_coautor">{{form.tercer_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.tercer_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this,'id_tercer_coautor');">
@@ -377,8 +377,8 @@
                         <!-- Cuarto Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_coautor">{{form.cuarto_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.cuarto_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_cuarto_coautor');">
