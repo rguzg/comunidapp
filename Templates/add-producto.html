@@ -775,7 +775,7 @@
                        <!-- Responsable -->
                        <div class="m-form-input col-4 mb-3">
                         <label for="id_responsable">{{form.responsable.label}}</label>
-                        {{form.responsable}}
+                        {{form.responsable|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
 
                         <!-- Institución -->
@@ -812,7 +812,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
                                     onclick="return showAddPopup(this, 'id_primer_colaborador');">
@@ -825,7 +825,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
                                     onclick="return showAddPopup(this, 'id_segundo_colaborador');">
@@ -838,7 +838,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_alumno}}
+                                {{form.primer_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_primer_alumno"
                                     onclick="return showAddPopup(this, 'id_primer_alumno');">
@@ -851,7 +851,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_alumno">{{form.segundo_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_alumno}}
+                                {{form.segundo_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_segundo_alumno"
                                     onclick="return showAddPopup(this, 'id_segundo_alumno');">
@@ -864,7 +864,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_alumno">{{form.tercer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_alumno}}
+                                {{form.tercer_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_tercer_alumno"
                                     onclick="return showAddPopup(this, 'id_tercer_alumno');">
