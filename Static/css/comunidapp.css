@@ -692,3 +692,7 @@ div.tooltip p{
 .end-0{
     right: 0;
 }
+
+.bootstrap-select .dropdown-menu {
+    margin: 0 !important;
+}
