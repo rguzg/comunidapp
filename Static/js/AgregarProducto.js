@@ -35,30 +35,30 @@ form.addEventListener('submit', async (event) => {
             data.append("palabras", JSON.stringify(await palabras_clave.pills));
         }
 
+    try {
+        let request = await fetch('/proxy', {
+            method: 'POST',
+            headers: {
+                'PROXY': document.location.pathname
+            },
+            body: data
+        });
+
+        let html = await request.text();
+
+        let messageDOM = new DOMParser().parseFromString(html, 'text/html');
+        let message = ExtractMessageFromDOM(messageDOM);
+
         try {
-            let request = await fetch('/proxy', {
-                method: 'POST',
-                headers: {
-                    'PROXY': document.location.pathname
-                },
-                body: data
-            });
-
-            let html = await request.text();
-
-            let messageDOM = new DOMParser().parseFromString(html, 'text/html');
-            let message = ExtractMessageFromDOM(messageDOM);
-
-            try {
-                notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
-            } catch (error) {
-                console.error(error);
-            }
-
-            // Como esto está después de varios awaits, no se ejecutará hasta que todas esas promesas se cumplan
-            boton_submit.removeAttribute('disabled', '');
-
+            notification_controller.ShowNotification("", message.body_text, {type: message.type, autohide: false})
         } catch (error) {
-            console.error(`Error agregando producto ${error}`);
+            console.error(error);
         }
+
+        // Como esto está después de varios awaits, no se ejecutará hasta que todas esas promesas se cumplan
+        boton_submit.removeAttribute('disabled', '');
+
+    } catch (error) {
+        console.error(`Error agregando producto ${error}`);
+    }
 })
