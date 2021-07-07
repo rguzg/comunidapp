@@ -16,11 +16,14 @@ const createVisualization = async (endPath) => {
     showGraph();
 
     // Create graph
-    const width = 1050, height = 490, radius = 10;
+    const radius = 10;
+    const WIDTH = document.getElementById(`container-${endPath}`).offsetWidth, HEIGHT = document.getElementById(`container-${endPath}`).offsetHeight;
+    // console.log(WIDTH);
+    // console.log(HEIGHT);
     const svg = d3.select(`#container-${endPath}`).append('svg')
     .attr({
-        width: width,
-        height: height
+        width: WIDTH,
+        height: HEIGHT
     })
     .attr('id', `network-${endPath}`)
     .classed("animate__animated animate__fadeIn", true);
@@ -48,7 +51,7 @@ const createVisualization = async (endPath) => {
     let force = d3.layout.force()
         .nodes(data.nodes)
         .links(links)
-        .size([width, height])
+        .size([WIDTH, HEIGHT])
         .linkDistance(20)
         .charge(-2000)
         .start();
@@ -140,8 +143,8 @@ const createVisualization = async (endPath) => {
      
     force.on('tick', () =>{
         nodes.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-        nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+        nodes.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(WIDTH - radius, d.x)); })
+        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(HEIGHT - radius, d.y)); });
 
         edges.each(function (d) {
             d3.select(this).attr({
@@ -155,6 +158,7 @@ const createVisualization = async (endPath) => {
 
 }
 
+const renderVisualization = () =>{
 // Tabs is a collection of the elements with the class 'nav-link'.
 const tabs = document.getElementsByClassName('nav-link');
 
@@ -163,4 +167,7 @@ tabs[0].onload = createVisualization(tabs[0].dataset.path);
 for(let i = 1; i<tabs.length; i++){
     tabs[i].addEventListener('click', () => createVisualization(tabs[i].dataset.path), {once:true});
 }
+}
+renderVisualization();
+
 
