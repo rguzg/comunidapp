@@ -9,6 +9,7 @@ from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
                      Contrato, Editorial, Facultad, Institucion, Investigacion,
                      LineaInvestigacion, Nivel, PalabrasClave, Patente,
                      Revista, Tesis, User, UpdateRequest)
+from .fields import CiudadSelect, EstadoSelect
 
 LONGITUD_NOMBRE_AUTOR = 1
 LONGITUD_APELLIDO_AUTOR = 1
@@ -549,6 +550,7 @@ class CongresoForm(ModelForm):
             'estadoP': 'Estados del pais. Solo disponibles para México',
             'ciudad': 'Ciudades de estados. Solo disponibles para México',
         }
+        widgets = {'estadoP': EstadoSelect, 'ciudad': CiudadSelect}
 
     def clean(self):
 
@@ -743,6 +745,8 @@ class TesisForm(ModelForm):
                              '%d-%m-%Y'], required=True)
     fin = forms.DateField(label='Fecha de fin', input_formats=[
                           '%d-%m-%Y'], required=True)
+
+    profesor = forms.ModelChoiceField(User.objects.exclude(is_superuser = True), empty_label = '---------')
 
     class Meta:
         model = Tesis

@@ -50,6 +50,12 @@ class User(AbstractUser):
     # especialmente porque eso tendría como consecuencia la destrucción de datos que ya se encuentran en producción.
     alumno = models.BooleanField(verbose_name = "Es alumno", default = False, null = False, blank = False)
 
+    def __str__(self):
+        if(self.first_name):
+            return f"{self.first_name} {self.last_name}"
+        
+        return self.username
+
 class UpdateRequest(models.Model):
     class Meta:
         ordering=['-fecha']

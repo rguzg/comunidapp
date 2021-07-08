@@ -61,3 +61,7 @@ class Relaciones(APIView):
 class Visualization(View):
     def get(self, request):
         return render(request, 'visualization.html')
+
+class VisualizationFull(View):
+    def get(self, request):
+        return render(request, 'visualization-full.html')
