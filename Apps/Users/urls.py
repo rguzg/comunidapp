@@ -61,4 +61,5 @@ urlpatterns = [
     # Los productos que generan tienen relaciones son: articulos, capitulolibros, patentes, congresos, investigaciones
     path('relaciones/<str:producto>/', views_relaciones.Relaciones.as_view(), name='relaciones_investigaciones'),
     path('visualization', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views_relaciones.Visualization.as_view()), name='visualization'),
+    path('visualization-full', user_passes_test(lambda u: u.is_superuser, redirect_field_name='home')(views_relaciones.VisualizationFull.as_view()), name='visualization-full'),
 ]

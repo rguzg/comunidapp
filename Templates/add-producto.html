@@ -280,8 +280,9 @@
                                    <div class="m-form-input">
                                        <input class="m-pill-input_search" type="text" name="" placeholder="Escribe nuevas palabras clave aquí">
                                    </div>
-                                   <div class="m-pill-input_searchbox h-display-none" id="searchbox">
+                                   <div class="m-pill-input_searchbox" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                            <!-- Lineas de Investigación -->
@@ -297,6 +298,7 @@
                                    </div>
                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                         </div>
@@ -323,8 +325,8 @@
                         <!-- Primer Autor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_autor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_autor');">
@@ -336,8 +338,8 @@
                         <!-- Primer Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_coautor">{{form.primer_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_coautor');">
@@ -349,8 +351,8 @@
                         <!-- Segundo Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_coautor">{{form.segundo_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.segundo_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_segundo_coautor');">
@@ -362,8 +364,8 @@
                         <!-- Tercer Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_coautor">{{form.tercer_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.tercer_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this,'id_tercer_coautor');">
@@ -375,8 +377,8 @@
                         <!-- Cuarto Coautor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_coautor">{{form.cuarto_coautor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_coautor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.cuarto_coautor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_cuarto_coautor');">
@@ -454,6 +456,7 @@
                                    </div>
                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                            <!-- Lineas de Investigación -->
@@ -469,6 +472,7 @@
                                    </div>
                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                            <!-- Página de Inicio -->
@@ -581,6 +585,7 @@
                                 </div>
                                 <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                 </div>
+                                <div id="errors"></div>
                             </div>
                         </div>
                     </div>
@@ -604,8 +609,8 @@
                         <!-- Primer Autor -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_autor">{{form.primer_autor.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_autor}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_autor|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_autor"
                                     onclick="return showAddPopup(this, 'id_primer_autor');">
@@ -617,8 +622,8 @@
                         <!-- Primer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
                                     onclick="return showAddPopup(this, 'id_primer_colaborador');">
@@ -630,8 +635,8 @@
                         <!-- Segundo Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
                                     onclick="return showAddPopup(this, 'id_segundo_colaborador');">
@@ -643,8 +648,8 @@
                         <!-- Tercer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_colaborador}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_tercer_colaborador"
                                     onclick="return showAddPopup(this, 'id_tercer_colaborador');">
@@ -656,8 +661,8 @@
                         <!-- Cuarto Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
-                            <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_colaborador}}
+                            <div class="col-12 pl-0 h-align-center mb-2">
+                                {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_cuarto_colaborador"
                                     onclick="return showAddPopup(this, 'id_cuarto_colaborador');">
@@ -729,6 +734,7 @@
                                     </div>
                                     <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
+                                    <div id="errors"></div>
                                 </div>
                             </div>
                             <!-- Lineas de Investigación -->
@@ -744,6 +750,7 @@
                                     </div>
                                     <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
+                                    <div id="errors"></div>
                                 </div>
                             </div>
                         </div>
@@ -768,7 +775,7 @@
                        <!-- Responsable -->
                        <div class="m-form-input col-4 mb-3">
                         <label for="id_responsable">{{form.responsable.label}}</label>
-                        {{form.responsable}}
+                        {{form.responsable|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                         </div>
 
                         <!-- Institución -->
@@ -805,7 +812,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_primer_colaborador"
                                     onclick="return showAddPopup(this, 'id_primer_colaborador');">
@@ -818,7 +825,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AuthorCreate' %}" id="add_segundo_colaborador"
                                     onclick="return showAddPopup(this, 'id_segundo_colaborador');">
@@ -831,7 +838,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_alumno">{{form.primer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_alumno}}
+                                {{form.primer_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_primer_alumno"
                                     onclick="return showAddPopup(this, 'id_primer_alumno');">
@@ -844,7 +851,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_alumno">{{form.segundo_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_alumno}}
+                                {{form.segundo_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_segundo_alumno"
                                     onclick="return showAddPopup(this, 'id_segundo_alumno');">
@@ -857,7 +864,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_alumno">{{form.tercer_alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_alumno}}
+                                {{form.tercer_alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_tercer_alumno"
                                     onclick="return showAddPopup(this, 'id_tercer_alumno');">
@@ -890,6 +897,7 @@
                                    </div>
                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                            <!-- Lineas de Investigación -->
@@ -905,6 +913,7 @@
                                    </div>
                                    <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                    </div>
+                                   <div id="errors"></div>
                                </div>
                            </div>
                             <!-- Resumen -->
@@ -942,7 +951,7 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_alumno">{{form.alumno.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.alumno}}
+                                {{form.alumno|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                                 <div class="col-1">
                                 <a href="javascript:void(0);" data-url="{% url 'AlumnoCreate' %}" id="add_alumno"
                                     onclick="return showAddPopup(this, 'id_alumno');">
@@ -956,35 +965,35 @@
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_profesor">{{form.profesor.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.profesor}}
+                                {{form.profesor|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Primer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_primer_colaborador">{{form.primer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.primer_colaborador}}
+                                {{form.primer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Segundo Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_segundo_colaborador">{{form.segundo_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.segundo_colaborador}}
+                                {{form.segundo_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Tercer Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_tercer_colaborador">{{form.tercer_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.tercer_colaborador}}
+                                {{form.tercer_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Cuarto Colaborador -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_cuarto_colaborador">{{form.cuarto_colaborador.label}}</label>
                             <div class="col-12 pl-0 h-align-center">
-                                {{form.cuarto_colaborador}}
+                                {{form.cuarto_colaborador|attr:"data-live-search:true"|addclass:'form-control selectpicker mb-2'}}
                             </div>
                         </div>
                         <!-- Institución -->
@@ -1025,6 +1034,7 @@
                                     </div>
                                     <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
+                                    <div id="errors"></div>
                                 </div>
                             </div>
                             <!-- Lineas de Investigación -->
@@ -1040,6 +1050,7 @@
                                     </div>
                                     <div class="m-pill-input_searchbox h-display-none" id="searchbox">
                                     </div>
+                                    <div id="errors"></div>
                                 </div>
                             </div>
                         </div>

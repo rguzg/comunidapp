@@ -9,11 +9,12 @@ from typing import Union
 @receiver(post_save, sender=get_user_model())
 def create_user_autor(sender, instance, created, **kwargs):
     if created:
-        Autor.objects.create(user=instance, alumno = instance.alumno)
-        UpdateRequest.objects.create(
-            user=instance,
-            estado='A'
-        )
+        if not instance.is_superuser:
+            Autor.objects.create(user=instance, alumno = instance.alumno)
+            UpdateRequest.objects.create(
+                user=instance,
+                estado='A'
+            )
 
 # Señal que crea las relaciones de un producto de manera automática cada vez que se crea un producto
 @receiver(post_save, sender = Articulo)

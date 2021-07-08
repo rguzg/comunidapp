@@ -37,7 +37,7 @@ class Proxy(View):
             lineas = ast.literal_eval(request.POST['lineas'])
             if(type(lineas) == dict):
                 request_body[key].append(self.ObtenerIDObjeto(LineaInvestigacion, lineas['nombre']))
-            elif(type(lineas) == tuple):
+            elif(type(lineas) == tuple or type(lineas) == list):
                 for linea in lineas:
                     request_body[key].append(self.ObtenerIDObjeto(LineaInvestigacion, linea['nombre']))
         if('niveles' in request.POST):
@@ -46,7 +46,7 @@ class Proxy(View):
             niveles = ast.literal_eval(request.POST['niveles'])
             if(type(niveles) == dict):
                 request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, niveles['nombre']))
-            elif(type(niveles) == tuple):
+            elif(type(niveles) == tuple or type(niveles) == list):
                 for nivel in niveles:
                     request_body['niveles'].append(self.ObtenerIDObjeto(Nivel, nivel['nombre']))
         if('facultades' in request.POST):
@@ -55,7 +55,7 @@ class Proxy(View):
             facultades = ast.literal_eval(request.POST['facultades'])
             if(type(facultades) == dict):
                 request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultades['nombre']))
-            elif(type(facultades) == tuple):
+            elif(type(facultades) == tuple or type(facultades) == list):
                 for facultad in facultades:
                     request_body['facultades'].append(self.ObtenerIDObjeto(Facultad, facultad['nombre']))
         if('palabras' in request.POST):
@@ -64,7 +64,7 @@ class Proxy(View):
             palabras = ast.literal_eval(request.POST['palabras'])
             if(type(palabras) == dict):
                 request_body['palabras_clave'].append(self.ObtenerIDObjeto(PalabrasClave, palabras['nombre']))
-            elif(type(palabras) == tuple):
+            elif(type(palabras) == tuple or type(palabras) == list):
                 for palabra in palabras:
                     request_body['palabras_clave'].append(self.ObtenerIDObjeto(PalabrasClave, palabra['nombre']))
                     
