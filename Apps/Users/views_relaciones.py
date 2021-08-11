@@ -22,14 +22,14 @@ class Relaciones(APIView):
         except KeyError:
             show_alumnos = False
 
-            switch_productos = {
-                "articulos": lambda : Relaciones_Profesores.objects.exclude(articulo = None),
-                "capituloslibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
-                "patentes": lambda :  Relaciones_Profesores.objects.exclude(patente = None),
-                "congresos": lambda :  Relaciones_Profesores.objects.exclude(congreso = None),
-                "investigaciones": lambda :  Relaciones_Profesores.objects.exclude(investigacion = None),
-                "tesis": lambda :  Relaciones_Profesores.objects.exclude(tesis = None),
-            }
+        switch_productos = {
+            "articulos": lambda : Relaciones_Profesores.objects.exclude(articulo = None),
+            "capituloslibros": lambda : Relaciones_Profesores.objects.exclude(capituloLibro = None),
+            "patentes": lambda :  Relaciones_Profesores.objects.exclude(patente = None),
+            "congresos": lambda :  Relaciones_Profesores.objects.exclude(congreso = None),
+            "investigaciones": lambda :  Relaciones_Profesores.objects.exclude(investigacion = None),
+            "tesis": lambda :  Relaciones_Profesores.objects.exclude(tesis = None),
+        }
 
         resultado = {
             'nodes': [],
