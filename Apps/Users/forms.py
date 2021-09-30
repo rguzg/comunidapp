@@ -289,7 +289,7 @@ class ArticuloForm(ModelForm):
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
-        if lineas_investigacion.count() == 0:
+        if not lineas_investigacion:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
 
@@ -450,7 +450,7 @@ class CapituloLibroForm(ModelForm):
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
-        if lineas_investigacion.count() == 0:
+        if not lineas_investigacion:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 línea de investigación')
 
@@ -584,7 +584,7 @@ class CongresoForm(ModelForm):
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
-        if lineas_investigacion.count() == 0:
+        if not lineas_investigacion:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
 
@@ -727,7 +727,7 @@ class InvestigacionForm(ModelForm):
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
-        if lineas_investigacion.count() == 0:
+        if not lineas_investigacion:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
 
@@ -817,7 +817,7 @@ class TesisForm(ModelForm):
                            'Debes escoger al menos 3 palabras clave')
 
         lineas_investigacion = cleaned_data.get('lineas_investigacion')
-        if lineas_investigacion.count() == 0:
+        if not lineas_investigacion:
             self.add_error('lineas_investigacion',
                            'Debes escoger al menos 1 linea de investigacion')
 
