@@ -731,7 +731,7 @@ class InvestigacionForm(ModelForm):
                                'Los alumnos no pueden ser la misma persona')
 
         palabras_clave = cleaned_data.get('palabras_clave')
-        if palabras_clave.count() < 3:
+        if not palabras_clave or palabras_clave.count() < 3:
             self.add_error('palabras_clave',
                            'Debes escoger al menos 3 palabras clave')
 
