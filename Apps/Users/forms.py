@@ -18,11 +18,13 @@ LONGITUD_APELLIDO_AUTOR = 1
 Formularios para creacion de usuarios: Profesores y Administradores
 Son necesarios 2 diferentes formularios debido a los distintos permisos de cada usuario
 """
+
+
 class UserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2',
-                  'is_superuser', 'is_staff', 'email','foto']
+                  'is_superuser', 'is_staff', 'email', 'foto']
         widgets = {
             'is_superuser': forms.HiddenInput(),
             'is_staff': forms.HiddenInput(),
@@ -46,20 +48,20 @@ class UserCreationForm(UserCreationForm):
 
 
 class ProfesorCreationForm(UserCreationForm):
-    nacimiento= forms.DateField(input_formats=['%d-%m-%Y'], required=False)
-    
+    nacimiento = forms.DateField(input_formats=['%d-%m-%Y'], required=False)
+
     class Meta:
         model = User
         fields = ['email', 'username', 'password1', 'password2', 'first_name', 'last_name',
-                  'clave', 'sexo', 'nacimiento', 'foto', 'facultades', 'contratacion', 'grado', 
+                  'clave', 'sexo', 'nacimiento', 'foto', 'facultades', 'contratacion', 'grado',
                   'investigaciones', 'niveles', 'cuerpoAcademico', 'is_superuser', 'is_staff', 'publico', 'alumno']
         widgets = {
             'is_superuser': forms.HiddenInput(),
             'is_staff': forms.HiddenInput(),
             'email': forms.HiddenInput(),
-            'first_name': forms.TextInput(attrs={'required':'True'}),
-            'last_name': forms.TextInput(attrs={'required':'True'}),
-            'username': forms.EmailInput(attrs={'required':'True'})
+            'first_name': forms.TextInput(attrs={'required': 'True'}),
+            'last_name': forms.TextInput(attrs={'required': 'True'}),
+            'username': forms.EmailInput(attrs={'required': 'True'})
         }
         labels = {
             'username': 'Correo electrónico',
@@ -87,8 +89,12 @@ class ProfesorCreationForm(UserCreationForm):
 """
 CBV para los formularios de inicio de sesion y actualizacion de datos
 """
+
+
 class UpdateRequestForm(ModelForm):
-    nacimiento = forms.DateField(label="Nacimiento", input_formats=['%d-%m-%Y'], required=True)
+    nacimiento = forms.DateField(label="Nacimiento", input_formats=[
+                                 '%d-%m-%Y'], required=True)
+
     class Meta:
         model = UpdateRequest
         fields = '__all__'
@@ -111,11 +117,11 @@ class UpdateRequestForm(ModelForm):
         user = cleaned_data.get('user')
 
         peticion = UpdateRequest.objects.filter(user=user)
-        if peticion.count()>0:
+        if peticion.count() > 0:
             peticion = peticion.first()
-            if peticion.estado == 'P' :
+            if peticion.estado == 'P':
                 self.add_error(
-                    None, 
+                    None,
                     'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace'
                 )
                 return cleaned_data
@@ -132,6 +138,7 @@ class UpdateRequestForm(ModelForm):
         cleaned_data['changed'] = data
         return cleaned_data
 
+
 class AdminUpdateForm(ModelForm):
     class Meta:
         model = User
@@ -141,8 +148,8 @@ class AdminUpdateForm(ModelForm):
     # #     print(self.changed_data)
 
     #     return True
-        
-        
+
+
 class AuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
@@ -161,6 +168,8 @@ class AuthenticationForm(AuthenticationForm):
 """
 CBV para los formularios estaticos
 """
+
+
 class ArticuloForm(ModelForm):
     error_css_class = 'error'
     publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
@@ -197,7 +206,7 @@ class ArticuloForm(ModelForm):
 
     def clean(self):
         cleaned_data = super(ArticuloForm, self).clean()
-        
+
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
@@ -209,7 +218,7 @@ class ArticuloForm(ModelForm):
         if primer_coautor:
             if primer_autor == primer_coautor:
                 self.add_error(
-                'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
+                    'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
 
             if segundo_coautor:
                 if primer_coautor == segundo_coautor:
@@ -225,19 +234,18 @@ class ArticuloForm(ModelForm):
                     self.add_error(
                         'segundo_coautor', 'El autor y los coautores no pueden ser la misma persona')
 
-
         pagina_inicio = cleaned_data.get('pagina_inicio')
         pagina_fin = cleaned_data.get('pagina_fin')
         if pagina_inicio:
             if not pagina_fin:
                 self.add_error(
-                'pagina_fin', 'Debes seleccionar una pagina de fin')
+                    'pagina_fin', 'Debes seleccionar una pagina de fin')
 
         if pagina_fin:
             if not pagina_inicio:
                 self.add_error(
-                'pagina_fin', 'Debes seleccionar una pagina de fin')
-        
+                    'pagina_fin', 'Debes seleccionar una pagina de fin')
+
         if pagina_inicio and pagina_fin:
             if pagina_fin < pagina_inicio:
                 self.add_error(
@@ -282,7 +290,7 @@ class ArticuloForm(ModelForm):
             if not publicacion:
                 self.add_error(
                     'publicacion', 'Debes agregar una fecha de publicación')
-                    
+
         palabras_clave = cleaned_data.get('palabras_clave')
         if palabras_clave.count() < 3:
             self.add_error('palabras_clave',
@@ -301,6 +309,7 @@ class ArticuloForm(ModelForm):
                     'indice_revista', 'Los articulos INDIZADOS o JCR deben tener un indice de revista')
 
         return cleaned_data
+
 
 class CapituloLibroForm(ModelForm):
     publicacion = forms.DateField(label="Fecha de publicación", help_text='Solo si se encuentra Publicado', input_formats=[
@@ -344,8 +353,6 @@ class CapituloLibroForm(ModelForm):
 
         cleaned_data = super(CapituloLibroForm, self).clean()
 
-        
-
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
@@ -357,7 +364,7 @@ class CapituloLibroForm(ModelForm):
         if primer_coautor:
             if primer_autor == primer_coautor:
                 self.add_error(
-                'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
+                    'primer_coautor', 'El autor y los coautores no pueden ser la misma persona')
 
             if segundo_coautor:
                 if primer_coautor == segundo_coautor:
@@ -396,7 +403,6 @@ class CapituloLibroForm(ModelForm):
         edicion = cleaned_data.get('edicion')
         tiraje = cleaned_data.get('tiraje')
         isbn = cleaned_data.get('isbn')
-        
 
         if estado == 'A':
             if pais:
@@ -463,6 +469,7 @@ class CapituloLibroForm(ModelForm):
 
         return cleaned_data
 
+
 class PatenteForm(ModelForm):
     publicacion = forms.DateField(label="Fecha de publicación", input_formats=[
                                   '%d-%m-%Y'], required=False)
@@ -503,6 +510,7 @@ class PatenteForm(ModelForm):
             'registro': 'Numero de registro según el país',
             'pais': 'País donde se registro la patente'
         }
+
 
 class CongresoForm(ModelForm):
     publicacion = forms.DateField(label='Fecha de publicación', input_formats=[
@@ -601,6 +609,7 @@ class CongresoForm(ModelForm):
                 self.add_error('estadoP', 'Necesitas seleccionar un estado')
 
         return cleaned_data
+
 
 class InvestigacionForm(ModelForm):
     inicio = forms.DateField(label='Fecha de inicio', input_formats=[
@@ -740,13 +749,15 @@ class InvestigacionForm(ModelForm):
 
         return cleaned_data
 
+
 class TesisForm(ModelForm):
     inicio = forms.DateField(label='Fecha de inicio', input_formats=[
                              '%d-%m-%Y'], required=True)
     fin = forms.DateField(label='Fecha de fin', input_formats=[
                           '%d-%m-%Y'], required=True)
 
-    profesor = forms.ModelChoiceField(User.objects.exclude(is_superuser = True), empty_label = '---------')
+    profesor = forms.ModelChoiceField(User.objects.exclude(
+        is_superuser=True), empty_label='---------')
 
     class Meta:
         model = Tesis
@@ -776,7 +787,7 @@ class TesisForm(ModelForm):
             'isbn': 'ISBN',
             'proposito': 'Propósito',
             'registro': 'Número de patente',
-            'primer_colaborador': "Primer colaborador", 
+            'primer_colaborador': "Primer colaborador",
             'segundo_colaborador': "Segundo colaborador",
             'tercer_colaborador': "Tercer colaborador",
             'cuarto_colaborador': "Cuarto colaborador",
@@ -802,7 +813,8 @@ class TesisForm(ModelForm):
     def clean(self):
         cleaned_data = super(TesisForm, self).clean()
         autores = []
-        tipos_autores = ['profesor', 'primer_colaborador', 'segundo_colaborador','tercer_colaborador','cuarto_colaborador']
+        tipos_autores = ['profesor', 'primer_colaborador',
+                         'segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador']
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
@@ -824,12 +836,14 @@ class TesisForm(ModelForm):
         for i in range(len(tipos_autores)):
             autor = cleaned_data.get(tipos_autores[i])
 
-            # Si un alguno de los campos es None, todos los que le sigan también deben ser None. Si i es el último tipo de autor entonces no se realiza esta verificación 
+            # Si un alguno de los campos es None, todos los que le sigan también deben ser None. Si i es el último tipo de autor entonces no se realiza esta verificación
             if(i < len(tipos_autores) - 1 and autor == None and cleaned_data.get(tipos_autores[i+1]) != None):
-                self.add_error(tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
+                self.add_error(
+                    tipos_autores[i], f'No puede haber un {self.Meta.labels[tipos_autores[i+1]]} sin un {self.Meta.labels[tipos_autores[i]]}')
 
             if (autor in autores and autor != None):
-                self.add_error(tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
+                self.add_error(
+                    tipos_autores[i], f'Los autores no se pueden repetir. Cambia el autor del campo: {self.Meta.labels[tipos_autores[i]]}')
             else:
                 autores.append(autor)
 
@@ -839,6 +853,8 @@ class TesisForm(ModelForm):
 """
 CBV para los formularios Popup
 """
+
+
 class AutorForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -847,8 +863,8 @@ class AutorForm(ModelForm):
         model = Autor
         fields = ['first_name', 'last_name', 'alumno']
         labels = {
-            'first_name':'Nombre(s)',
-            'last_name':'Apellido(s)'
+            'first_name': 'Nombre(s)',
+            'last_name': 'Apellido(s)'
         }
 
     def clean(self):
@@ -862,7 +878,8 @@ class AutorForm(ModelForm):
         ).count()
 
         if first_name is None or last_name is None:
-                raise forms.ValidationError('Debe crear un autor con nombre(s) y apellido(s)')
+            raise forms.ValidationError(
+                'Debe crear un autor con nombre(s) y apellido(s)')
 
         if autor_existente > 0:
             self.add_error(
@@ -875,6 +892,7 @@ class AutorForm(ModelForm):
         if len(last_name) <= LONGITUD_APELLIDO_AUTOR:
             self.add_error(
                 'last_name', 'El apellido debe ser mayor a 1 carácter')
+
 
 class RevistaForm(ModelForm):
     id_field = forms.CharField(
@@ -889,6 +907,7 @@ class RevistaForm(ModelForm):
             }
         }
 
+
 class EditorialForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -901,6 +920,7 @@ class EditorialForm(ModelForm):
                 'unique': 'Una editorial con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
+
 
 class PalabrasForm(ModelForm):
     id_field = forms.CharField(
@@ -915,6 +935,7 @@ class PalabrasForm(ModelForm):
             }
         }
 
+
 class LineasForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -928,6 +949,7 @@ class LineasForm(ModelForm):
             }
         }
 
+
 class AlumnoForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -935,6 +957,7 @@ class AlumnoForm(ModelForm):
     class Meta:
         model = Alumno
         fields = '__all__'
+
 
 class InstitucionForm(ModelForm):
     id_field = forms.CharField(
@@ -949,6 +972,7 @@ class InstitucionForm(ModelForm):
             }
         }
 
+
 class FacultadForm(ModelForm):
     id_field = forms.CharField(
         max_length=30, required=True, widget=forms.HiddenInput)
@@ -961,6 +985,7 @@ class FacultadForm(ModelForm):
                 'unique': 'Una facultad con este nombre ya existe. Elíjala o verifique sus datos'
             }
         }
+
 
 class NivelForm(ModelForm):
     id_field = forms.CharField(
