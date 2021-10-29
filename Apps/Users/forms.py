@@ -119,7 +119,7 @@ class UpdateRequestForm(ModelForm):
         peticion = UpdateRequest.objects.filter(user=user)
         if peticion.count() > 0:
             peticion = peticion.first()
-            if peticion.estado == 'P':
+            if isinstance(peticion, UpdateRequest) and peticion.estado == 'P':
                 self.add_error(
                     None,
                     'Ya cuentas con una peticion de actualización. Espera a que se apruebe o rechace'
