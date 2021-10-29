@@ -410,7 +410,7 @@ class CapituloLibroForm(ModelForm):
                     'pais', 'No puedes agregar un pais si no se encuentra publicado')
             if editorial:
                 self.add_error(
-                    'editoria', 'No puedes agregar una editorial si no se encuentra publicado')
+                    'editorial', 'No puedes agregar una editorial si no se encuentra publicado')
             if edicion:
                 self.add_error(
                     'edicion', 'No puedes agregar una edicion si no se encuentra publicado')
