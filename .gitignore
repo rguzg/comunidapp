@@ -30,3 +30,5 @@ Apps/another.png
 comunidapp/settings.py
 
 data.json
+
+*.pyc
