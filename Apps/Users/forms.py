@@ -690,6 +690,15 @@ class InvestigacionForm(ModelForm):
         cleaned_data = super(InvestigacionForm, self).clean()
         financiamiento = cleaned_data.get('financiamiento')
         tipo_financiamiento = cleaned_data.get('tipo_financiamiento')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+        titulo = cleaned_data.get('titulo')
+
+        if Investigacion.objects.filter(primer_colaborador=primer_colaborador, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe una investigación con ese autor y título'
+            )
+
         if financiamiento:
             if not tipo_financiamiento:
                 self.add_error('tipo_financiamiento',
