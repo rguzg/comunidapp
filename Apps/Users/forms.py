@@ -210,6 +210,14 @@ class ArticuloForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
+        titulo = cleaned_data.get('titulo')
+
+        if Articulo.objects.get(primer_autor=primer_autor, titulo=titulo):
+            self.add_error(
+                None,
+                'Ya existe un artículo con ese autor y título'
+            )
+
         if segundo_coautor:
             if not primer_coautor:
                 self.add_error(
