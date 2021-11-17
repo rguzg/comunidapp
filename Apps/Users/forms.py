@@ -210,6 +210,14 @@ class ArticuloForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
+        titulo = cleaned_data.get('titulo')
+
+        if Articulo.objects.filter(primer_autor=primer_autor, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe un artículo con ese autor y título'
+            )
+
         if segundo_coautor:
             if not primer_coautor:
                 self.add_error(
@@ -356,6 +364,14 @@ class CapituloLibroForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
+        titulo = cleaned_data.get('titulo')
+
+        if CapituloLibro.objects.filter(primer_autor=primer_autor, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe un libro con ese autor y título'
+            )
+
         if segundo_coautor:
             if not primer_coautor:
                 self.add_error(
@@ -566,6 +582,14 @@ class CongresoForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_colaborador = cleaned_data.get('primer_colaborador')
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
+        titulo = cleaned_data.get('titulo')
+
+        if Congreso.objects.filter(primer_autor=primer_autor, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe un congreso con ese autor y título'
+            )
+
         if segundo_colaborador:
             if not primer_colaborador:
                 self.add_error(
@@ -666,6 +690,15 @@ class InvestigacionForm(ModelForm):
         cleaned_data = super(InvestigacionForm, self).clean()
         financiamiento = cleaned_data.get('financiamiento')
         tipo_financiamiento = cleaned_data.get('tipo_financiamiento')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+        titulo = cleaned_data.get('titulo')
+
+        if Investigacion.objects.filter(primer_colaborador=primer_colaborador, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe una investigación con ese autor y título'
+            )
+
         if financiamiento:
             if not tipo_financiamiento:
                 self.add_error('tipo_financiamiento',
@@ -815,6 +848,14 @@ class TesisForm(ModelForm):
         autores = []
         tipos_autores = ['profesor', 'primer_colaborador',
                          'segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador']
+        titulo = cleaned_data.get('titulo')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+
+        if Tesis.objects.filter(primer_colaborador=primer_colaborador, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe una tesis con ese autor y título'
+            )
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
