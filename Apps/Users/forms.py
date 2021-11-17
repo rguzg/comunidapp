@@ -582,6 +582,14 @@ class CongresoForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_colaborador = cleaned_data.get('primer_colaborador')
         segundo_colaborador = cleaned_data.get('segundo_colaborador')
+        titulo = cleaned_data.get('titulo')
+
+        if Congreso.objects.filter(primer_autor=primer_autor, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe un congreso con ese autor y título'
+            )
+
         if segundo_colaborador:
             if not primer_colaborador:
                 self.add_error(
