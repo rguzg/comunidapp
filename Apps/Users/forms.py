@@ -364,6 +364,14 @@ class CapituloLibroForm(ModelForm):
         primer_autor = cleaned_data.get('primer_autor')
         primer_coautor = cleaned_data.get('primer_coautor')
         segundo_coautor = cleaned_data.get('segundo_coautor')
+        titulo = cleaned_data.get('titulo')
+
+        if CapituloLibro.objects.filter(primer_autor=primer_autor, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe un libro con ese autor y título'
+            )
+
         if segundo_coautor:
             if not primer_coautor:
                 self.add_error(
