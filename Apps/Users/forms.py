@@ -848,6 +848,14 @@ class TesisForm(ModelForm):
         autores = []
         tipos_autores = ['profesor', 'primer_colaborador',
                          'segundo_colaborador', 'tercer_colaborador', 'cuarto_colaborador']
+        titulo = cleaned_data.get('titulo')
+        primer_colaborador = cleaned_data.get('primer_colaborador')
+
+        if Tesis.objects.filter(primer_colaborador=primer_colaborador, titulo=titulo).count() > 0:
+            self.add_error(
+                'titulo',
+                'Ya existe una tesis con ese autor y título'
+            )
 
         inicio = cleaned_data.get('inicio')
         fin = cleaned_data.get('fin')
