@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import (Alumno, Articulo, Autor, CapituloLibro, Congreso,
                      Contrato, Editorial, Facultad, Institucion, Investigacion,
                      LineaInvestigacion, Nivel, PalabrasClave, Patente,
-                     Revista, Tesis, User, UpdateRequest, Estado, Ciudad, Revista)
+                     Revista, Tesis, User, UpdateRequest, Estado, Ciudad, Revista, Editorial)
 from .fields import CiudadSelect, EstadoSelect
 
 LONGITUD_NOMBRE_AUTOR = 1
@@ -1053,5 +1053,19 @@ class RevistaForm(ModelForm):
         error_messages = {
             'nombre': {
                 'unique': 'Una revista con este nombre ya existe. Elíjalo o verifique sus datos'
+            }
+        }
+
+
+class EditorialForm(ModelForm):
+    id_field = forms.CharField(
+        max_length=30, required=True, widget=forms.HiddenInput)
+
+    class Meta:
+        model = Editorial
+        fields = '__all__'
+        error_messages = {
+            'nombre': {
+                'unique': 'Una editorial con este nombre ya existe. Elíjalo o verifique sus datos'
             }
         }
