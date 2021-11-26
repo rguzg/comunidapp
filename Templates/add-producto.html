@@ -691,11 +691,16 @@
                         </div>
                         <!-- Estado -->
                         <div class="m-form-input col-4 mb-3">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.estadoP.help_text}}">
-                                <label for="id_estadoP">{{form.estadoP.label}}</label>
-                                <i class="fas fa-question-circle"></i>
+                            <label for="id_estado">{{form.estadoP.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.estadoP}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'EstadoPCreate' %}" id="add_estadoP"
+                                    onclick="return showAddPopup(this, 'id_estadoP');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
                             </div>
-                            {{form.estadoP}}
                         </div>
                         <!-- Ciudad -->
                         <div class="m-form-input col-4 mb-3">
