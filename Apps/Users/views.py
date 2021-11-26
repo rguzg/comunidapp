@@ -19,7 +19,7 @@ from .forms import (AdminUpdateForm, AlumnoForm, ArticuloForm, AuthenticationFor
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
-                    NivelForm, ContratoForm, EstadoPForm, CiudadForm, RevistaForm,)
+                    NivelForm, ContratoForm, EstadoPForm, CiudadForm, RevistaForm, EditorialForm)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UpdateRequest, Autor, Relaciones_Profesores, Estado)
 from .AñadirRelacion import AñadirRelacion
@@ -985,6 +985,24 @@ class RevistaCreatePopup(View):
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un tipo de Revista'
+        })
+class EditorialCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=EditorialForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Editorial'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=EditorialForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Editorial'
         })
 
 # Originalmente no se tenía contemplado las relaciones entre productos, así que todos los productos que están agregados hasta el momento
