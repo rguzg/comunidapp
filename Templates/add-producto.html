@@ -708,7 +708,15 @@
                                 <label for="id_ciudad">{{form.ciudad.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
-                            {{form.ciudad}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.ciudad}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'CiudadCreate' %}" id="add_ciudad"
+                                    onclick="return showAddPopup(this, 'id_ciudad');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                          <!-- Fecha de Publicación -->
                          <div class="m-form-input col-4 mb-3">
