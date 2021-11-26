@@ -19,7 +19,7 @@ from .forms import (AdminUpdateForm, AlumnoForm, ArticuloForm, AuthenticationFor
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
-                    NivelForm, ContratoForm, EstadoPForm, CiudadForm)
+                    NivelForm, ContratoForm, EstadoPForm, CiudadForm, RevistaForm,)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
                      Pais, User, UpdateRequest, Autor, Relaciones_Profesores, Estado)
 from .AñadirRelacion import AñadirRelacion
@@ -967,6 +967,24 @@ class CiudadCreatePopup(View):
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un tipo de Ciudad'
+        })
+class RevistaCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=RevistaForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Revista'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=RevistaForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Revista'
         })
 
 # Originalmente no se tenía contemplado las relaciones entre productos, así que todos los productos que están agregados hasta el momento
