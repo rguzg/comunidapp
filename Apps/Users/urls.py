@@ -42,6 +42,8 @@ urlpatterns = [
     url(r'^contrato/create', login_required(views.ContratoCreatePopup.as_view()), name = "ContratoCreate"),
     url(r'^estadoP/create', login_required(views.EstadoPCreatePopup.as_view()),
         name="EstadoPCreate"),
+    url(r'^ciudad/create', login_required(views.CiudadCreatePopup.as_view()),
+        name="CiudadCreate"),
 
     #URLs para realizar busquedas
     path('buscar/lineas', login_required(views_busqueda.BuscarLineas.as_view()), name="BuscarLineas"),
