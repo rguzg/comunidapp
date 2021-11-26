@@ -206,7 +206,15 @@
                         <!-- Revista -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_revista">{{form.revista.label}}</label>
-                            {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'RevistaCreate' %}" id="add_revista"
+                                    onclick="return showAddPopup(this, 'id_revista');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- Editorial -->
                         <div class="m-form-input col-4 mb-3">
