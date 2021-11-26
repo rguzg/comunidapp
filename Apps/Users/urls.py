@@ -44,6 +44,8 @@ urlpatterns = [
         name="EstadoPCreate"),
     url(r'^ciudad/create', login_required(views.CiudadCreatePopup.as_view()),
         name="CiudadCreate"),
+    url(r'^revista/create', login_required(views.RevistaCreatePopup.as_view()),
+        name="RevistaCreate"),
 
     #URLs para realizar busquedas
     path('buscar/lineas', login_required(views_busqueda.BuscarLineas.as_view()), name="BuscarLineas"),
