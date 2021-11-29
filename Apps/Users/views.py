@@ -1034,7 +1034,13 @@ class EditorialCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un tipo de Editorial'
