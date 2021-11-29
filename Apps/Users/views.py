@@ -746,7 +746,13 @@ class AutorCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": str(instance),
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Autor/Colaborador externo'
@@ -924,8 +930,9 @@ class ContratoCreatePopup(View):
 
             data = {
                 "key": instance.pk,
-                "name": instance.tipo,
+                "name": instance.nombre,
                 "targetID": id_field,
+
             }
 
             return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
