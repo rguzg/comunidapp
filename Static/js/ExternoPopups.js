@@ -1,14 +1,19 @@
 /**
  * Show the add-externo popup
  * @param {HTMLAnchorElement} triggeringLink DOM Element that triggered the popup
+ * @param {String} containerID DOM ID of the element where the new item will be added
  */
 
-function showAddPopup(triggeringLink) {
+function showAddPopup(triggeringLink, containerID) {
   window.open(
     triggeringLink.getAttribute('data-url'),
     'add-externo_popup',
     'height=500,width=800,resizable=yes,scrollbars=yes'
   );
+
+  // The ID of the element where the new item will be added needs to be saved in localStorage because 
+  // closePopup will be called from the another window context and the triggeringLink will be lost
+  localStorage.setItem('id_field', containerID);
   window.focus();
 }
 
@@ -46,6 +51,7 @@ function closePopup(win, newItem) {
 
   select.appendChild(option);
   win.close();
+  localStorage.removeItem('id');
 
   // Used to select the new item on select elements that use bootstrap-select
   $('#' + newItem.targetID).val(newItem.key);
