@@ -1,15 +1,15 @@
-function showAddPopup(triggeringLink, resultContainer) {
-  const id = triggeringLink;
-  const name = triggeringLink.id.replace(/^add_/, '');
-  const href = triggeringLink.getAttribute('data-url');
-  const win = window.open(
-    href,
-    name,
+/**
+ * Show the add-externo popup
+ * @param {HTMLAnchorElement} triggeringLink DOM Element that triggered the popup
+ */
+
+function showAddPopup(triggeringLink) {
+  window.open(
+    triggeringLink.getAttribute('data-url'),
+    'add-externo_popup',
     'height=500,width=800,resizable=yes,scrollbars=yes'
   );
-  localStorage.setItem('id_field', resultContainer);
-  win.focus();
-  return false;
+  window.focus();
 }
 
 /**
