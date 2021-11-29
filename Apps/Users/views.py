@@ -792,27 +792,6 @@ class RevistaCreatePopup(View):
             'title': 'Agrega una Revista'
         })
 
-
-class EditorialCreatePopup(View):
-    def get(self, request, *args, **kwargs):
-        form=EditorialForm()
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Editorial'
-        })
-
-    def post(self, request, *args, **kwargs):
-        form=EditorialForm(request.POST)
-        if form.is_valid():
-            id_field=form.cleaned_data.get('id_field')
-            instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Editorial'
-        })
-
-
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
         form=PalabrasForm()
