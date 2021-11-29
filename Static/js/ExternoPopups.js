@@ -31,6 +31,17 @@ function closePopup(win, newItem) {
   option.value = newItem.key;
   option.setAttribute('selected', 'selected');
 
+  switch (newItem.extraData.type) {
+    case 'estado':
+      option.setAttribute('data-pais', newItem.extraData.data);
+      break;
+    case 'ciudad':
+      option.setAttribute('data-estado', newItem.extraData.data);
+      break;
+    default:
+      break;
+  }
+
   select.appendChild(option);
   win.close();
 
