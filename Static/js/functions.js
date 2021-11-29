@@ -125,36 +125,6 @@ function getCookie(name) {
 //     return false;
 // }
 
-function showAddPopup(triggeringLink, resultContainer) {
-    const id = triggeringLink;
-    const name = triggeringLink.id.replace(/^add_/, '');
-    const href = triggeringLink.getAttribute('data-url');
-    const win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
-    localStorage.setItem('id_field', resultContainer);
-    win.focus();
-    return false;
-}
-
-function closePopup(win, newID, newRepr, id) {
-    console.log(newID);
-    let select = document.getElementById(id);
-    let option = document.createElement('option');
-    option.appendChild(document.createTextNode(newRepr));
-    option.value = newID;
-    option.setAttribute('selected', 'selected');
-
-    select.appendChild(option);
-    win.close();
-
-    localStorage.removeItem('id');
-
-
-    $('#'+id).val(parseInt(newID));
-    $('.selectpicker').selectpicker('refresh');
-    $('.selectpicker').selectpicker('refresh');
-    
-}
-
 // function searchUsers(text) {
 //     // console.log(text.value);
 //     const csrftoken = getCookie('csrftoken');
