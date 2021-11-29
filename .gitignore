@@ -32,3 +32,4 @@ comunidapp/settings.py
 data.json
 
 *.pyc
+.vscode
