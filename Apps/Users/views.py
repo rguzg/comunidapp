@@ -930,7 +930,7 @@ class ContratoCreatePopup(View):
 
             data = {
                 "key": instance.pk,
-                "name": instance.nombre,
+                "name": instance.tipo,
                 "targetID": id_field,
 
             }
