@@ -34,8 +34,6 @@ function closePopup(win, newItem) {
   select.appendChild(option);
   win.close();
 
-  localStorage.removeItem('id');
-
   $('#' + newItem.targetID).val(newItem.key);
   $('.selectpicker').selectpicker('refresh');
   $('.selectpicker').selectpicker('refresh');
