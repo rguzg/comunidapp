@@ -9,6 +9,7 @@
 <script src="{% static 'js/PillsBox.js' %}"></script>"
 <script src="{% static 'js/NotificationController.js' %}"></script>
 <script defer src="{% static 'js/AgregarProducto.js' %}"></script>"
+<script defer src="{% static 'js/ExternoPopups.js' %}"></script>"
 
 <div class="container l-main mt-5 pt-4">
     <div class="row" id="messages">
@@ -206,12 +207,28 @@
                         <!-- Revista -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_revista">{{form.revista.label}}</label>
-                            {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.revista|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'RevistaCreate' %}" id="add_revista"
+                                    onclick="return showAddPopup(this, 'id_revista');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- Editorial -->
                         <div class="m-form-input col-4 mb-3">
                             <label for="id_editorial">{{form.editorial.label}}</label>
-                            {{form.editorial|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.editorial|attr:"data-live-search:true"|addclass:'form-control selectpicker'}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'EditorialCreate' %}" id="add_editorial"
+                                    onclick="return showAddPopup(this, 'id_editorial');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                         <!-- Volumen -->
                         <div class="m-form-input col-4">
@@ -691,11 +708,16 @@
                         </div>
                         <!-- Estado -->
                         <div class="m-form-input col-4 mb-3">
-                            <div class="h-align-center" data-toggle="tooltip" data-placement="top" title="{{form.estadoP.help_text}}">
-                                <label for="id_estadoP">{{form.estadoP.label}}</label>
-                                <i class="fas fa-question-circle"></i>
+                            <label for="id_estado">{{form.estadoP.label}}</label>
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.estadoP}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'EstadoPCreate' %}" id="add_estadoP"
+                                    onclick="return showAddPopup(this, 'id_estadoP');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
                             </div>
-                            {{form.estadoP}}
                         </div>
                         <!-- Ciudad -->
                         <div class="m-form-input col-4 mb-3">
@@ -703,7 +725,15 @@
                                 <label for="id_ciudad">{{form.ciudad.label}}</label>
                                 <i class="fas fa-question-circle"></i>
                             </div>
-                            {{form.ciudad}}
+                            <div class="col-12 pl-0 h-align-center">
+                                {{form.ciudad}}
+                                <div class="col-1">
+                                <a href="javascript:void(0);" data-url="{% url 'CiudadCreate' %}" id="add_ciudad"
+                                    onclick="return showAddPopup(this, 'id_ciudad');">
+                                    <i class="fas fa-plus-circle"></i>
+                                </a>
+                                </div>
+                            </div>
                         </div>
                          <!-- Fecha de Publicación -->
                          <div class="m-form-input col-4 mb-3">

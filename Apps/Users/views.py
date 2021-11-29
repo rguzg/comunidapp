@@ -19,9 +19,9 @@ from .forms import (AdminUpdateForm, AlumnoForm, ArticuloForm, AuthenticationFor
                     InstitucionForm, InvestigacionForm, LineasForm,
                     PalabrasForm, PatenteForm, RevistaForm, TesisForm,
                     UserCreationForm, ProfesorCreationForm, UpdateRequestForm, FacultadForm,
-                    NivelForm, ContratoForm)
+                    NivelForm, ContratoForm, EstadoPForm, CiudadForm, RevistaForm, EditorialForm)
 from .models import (Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis,  Contrato, Facultad, LineaInvestigacion, Nivel,
-                     Pais, User, UpdateRequest, Autor, Relaciones_Profesores)
+                     Pais, User, UpdateRequest, Autor, Relaciones_Profesores, Estado)
 from .AñadirRelacion import AñadirRelacion
 
 
@@ -746,7 +746,13 @@ class AutorCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": str(instance),
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Autor/Colaborador externo'
@@ -766,52 +772,17 @@ class AlumnoCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.expediente,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, 'add-externo.html', {
             'form': form,
             'title': 'Agrega un Alumno'
         })
-
-
-class RevistaCreatePopup(View):
-    def get(self, request, *args, **kwargs):
-        form=RevistaForm()
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Revista'
-        })
-
-    def post(self, request, *args, **kwargs):
-        form=RevistaForm(request.POST)
-        if form.is_valid():
-            id_field=form.cleaned_data.get('id_field')
-            instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Revista'
-        })
-
-
-class EditorialCreatePopup(View):
-    def get(self, request, *args, **kwargs):
-        form=EditorialForm()
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Editorial'
-        })
-
-    def post(self, request, *args, **kwargs):
-        form=EditorialForm(request.POST)
-        if form.is_valid():
-            id_field=form.cleaned_data.get('id_field')
-            instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
-        return render(request, "add-externo.html", {
-            "form": form,
-            'title': 'Agrega una Editorial'
-        })
-
 
 class PalabrasCreatePopup(View):
     def get(self, request, *args, **kwargs):
@@ -826,7 +797,13 @@ class PalabrasCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una palabra clave'
@@ -846,7 +823,13 @@ class LineasCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Linea de Investigacion'
@@ -866,7 +849,13 @@ class InstitucionCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Institucion'
@@ -886,7 +875,13 @@ class FacultadCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega una Facultad'
@@ -906,7 +901,13 @@ class NivelesCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un Nivel'
@@ -926,10 +927,123 @@ class ContratoCreatePopup(View):
         if form.is_valid():
             id_field=form.cleaned_data.get('id_field')
             instance=form.save()
-            return HttpResponse('<script>opener.closePopup(window, "%s", "%s", "%s");</script>' % (instance.pk, instance, id_field))
+
+            data = {
+                "key": instance.pk,
+                "name": instance.tipo,
+                "targetID": id_field,
+
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
         return render(request, "add-externo.html", {
             "form": form,
             'title': 'Agrega un tipo de Contrato'
+        })
+class EstadoPCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=EstadoPForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Estado'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=EstadoPForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+                "extraData": {
+                    "type": "estado",
+                    "data": instance.pais.nombre
+                }
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Estado'
+        })
+
+class CiudadCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=CiudadForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Ciudad'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=CiudadForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+                "extraData": {
+                    "type": "ciudad",
+                    "data": instance.estado.nombre
+                }
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Ciudad'
+        })
+class RevistaCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=RevistaForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Revista'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=RevistaForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Revista'
+        })
+class EditorialCreatePopup(View):
+    def get(self, request, *args, **kwargs):
+        form=EditorialForm()
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Editorial'
+        })
+
+    def post(self, request, *args, **kwargs):
+        form=EditorialForm(request.POST)
+        if form.is_valid():
+            id_field=form.cleaned_data.get('id_field')
+            instance=form.save()
+            data = {
+                "key": instance.pk,
+                "name": instance.nombre,
+                "targetID": id_field,
+            }
+
+            return HttpResponse(f"<script>opener.closePopup(window, JSON.parse('{json.dumps(data)}'));</script>")
+        return render(request, "add-externo.html", {
+            "form": form,
+            'title': 'Agrega un tipo de Editorial'
         })
 
 # Originalmente no se tenía contemplado las relaciones entre productos, así que todos los productos que están agregados hasta el momento
