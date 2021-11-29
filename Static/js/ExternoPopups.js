@@ -34,6 +34,7 @@ function closePopup(win, newItem) {
   select.appendChild(option);
   win.close();
 
+  // Used to select the new item on select elements that use bootstrap-select
   $('#' + newItem.targetID).val(newItem.key);
   $('.selectpicker').selectpicker('refresh');
   $('.selectpicker').selectpicker('refresh');
