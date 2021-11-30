@@ -186,6 +186,12 @@ class Institucion_Serializer(ModelSerializer):
     class Meta:
         model = Institucion
         fields = '__all__'
+
+
+class User_Serializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 class Articulo_Serializer(ModelSerializer):
 
     primer_colaborador = Autor_Serializer(read_only=True)
