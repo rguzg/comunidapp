@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'Apps.comunidad',
     'Apps.Users',
-    'rest_framework'
+    'rest_framework',
+    'drf_multiple_model'
 ]
 
 MIDDLEWARE = [
