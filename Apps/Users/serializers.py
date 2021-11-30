@@ -187,11 +187,6 @@ class Institucion_Serializer(ModelSerializer):
         model = Institucion
         fields = '__all__'
 
-
-class User_Serializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
 class Articulo_Serializer(ModelSerializer):
 
     primer_colaborador = Autor_Serializer(read_only=True)
@@ -283,8 +278,8 @@ class Tesis_Serializer(ModelSerializer):
     palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
     lineas_investigacion = LineasInvestigacion_Serializer(
         read_only=True, many=True)
-    institucion = Institucion_Serializer(read_only=True, many=True)
-    profesor = User_Serializer(read_only=True)
+    institucion = Institucion_Serializer(read_only=True)
+    profesor = Users_Serializer(read_only=True)
 
     class Meta:
         model = Tesis
