@@ -228,6 +228,18 @@ class Congreso_Serializer(ModelSerializer):
         fields = '__all__'
 
 class Investigacion_Serializer(ModelSerializer):
+
+    responsable = Autor_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    primer_alumno = Alumno_Serializer(read_only=True)
+    segundo_alumno = Alumno_Serializer(read_only=True)
+    tercer_alumno = Alumno_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    institucion = Institucion_Serializer(read_only=True, many=True)
+
     class Meta:
         model = Investigacion
         fields = '__all__'
