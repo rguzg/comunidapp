@@ -246,6 +246,18 @@ class Investigacion_Serializer(ModelSerializer):
 
 
 class Tesis_Serializer(ModelSerializer):
+
+    alumno = Alumno_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    institucion = Institucion_Serializer(read_only=True, many=True)
+    profesor = User_Serializer(read_only=True)
+
     class Meta:
         model = Tesis
         fields = '__all__'
