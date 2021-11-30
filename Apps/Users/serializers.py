@@ -1,4 +1,4 @@
-from .models import Autor, Relaciones_Profesores, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
+from .models import Autor, Pais, Relaciones_Profesores, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, Field, Serializer
 
@@ -149,6 +149,10 @@ class Relaciones_Serializer(ModelSerializer):
         fields = ['source', 'target']
         read_only_fields = ['source', 'target']
 
+class Pais_Serializer(ModelSerializer):
+    class Meta:
+        model = Pais
+        fields = '__all__'
 
 class Articulo_Serializer(ModelSerializer):
 
