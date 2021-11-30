@@ -151,6 +151,15 @@ class Relaciones_Serializer(ModelSerializer):
 
 
 class Articulo_Serializer(ModelSerializer):
+
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    revista = Revista_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
     class Meta:
         model = Articulo
         fields = '__all__'
