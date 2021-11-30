@@ -199,6 +199,9 @@ class CapituloLibro_Serializer(ModelSerializer):
 
 
 class Patente_Serializer(ModelSerializer):
+    pais = Pais_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
     class Meta:
         model = Patente
         fields = '__all__'
