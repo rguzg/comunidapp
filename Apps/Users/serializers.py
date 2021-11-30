@@ -208,6 +208,21 @@ class Patente_Serializer(ModelSerializer):
 
 
 class Congreso_Serializer(ModelSerializer):
+    primer_autor = Autor_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    estadoP = Estado_Serializer(read_only=True)
+    ciudad = Ciudad_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    palabras_clave = PalabrasClave_Serializer(
+        read_only=True, many=True)
+
     class Meta:
         model = Congreso
         fields = '__all__'
