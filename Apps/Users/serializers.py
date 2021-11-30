@@ -174,6 +174,8 @@ class Articulo_Serializer(ModelSerializer):
     pais = Pais_Serializer(read_only=True)
     revista = Revista_Serializer(read_only=True)
     editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
     class Meta:
         model = Articulo
         fields = '__all__'
