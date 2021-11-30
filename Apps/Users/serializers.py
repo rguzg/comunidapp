@@ -182,6 +182,17 @@ class Articulo_Serializer(ModelSerializer):
 
 
 class CapituloLibro_Serializer(ModelSerializer):
+    primer_autor = Autor_Serializer(read_only=True)
+    primer_coautor = Autor_Serializer(read_only=True)
+    segundo_coautor = Autor_Serializer(read_only=True)
+    tercer_coautor = Autor_Serializer(read_only=True)
+    cuarto_coautor = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+
     class Meta:
         model = CapituloLibro
         fields = '__all__'
