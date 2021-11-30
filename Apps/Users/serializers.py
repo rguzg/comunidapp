@@ -1,4 +1,4 @@
-from .models import Autor, Editorial, Pais, Relaciones_Profesores, Revista, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
+from .models import Autor, Editorial, Estado, Pais, Relaciones_Profesores, Revista, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, Field, Serializer
 
@@ -163,6 +163,10 @@ class Revista_Serializer(ModelSerializer):
 class Editorial_Serializer(ModelSerializer):
     class Meta:
         model = Editorial
+        fields = '__all__'
+class Estado_Serializer(ModelSerializer):
+    class Meta:
+        model = Estado
         fields = '__all__'
 class Articulo_Serializer(ModelSerializer):
 
