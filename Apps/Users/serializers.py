@@ -1,4 +1,4 @@
-from .models import Autor, Relaciones_Profesores, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave
+from .models import Alumno, Autor, Ciudad, Editorial, Estado, Institucion, Pais, Relaciones_Profesores, Revista, User, LineaInvestigacion, Facultad, Nivel, PalabrasClave, Articulo, CapituloLibro, Patente, Congreso, Investigacion, Tesis
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, Field, Serializer
 
@@ -148,3 +148,139 @@ class Relaciones_Serializer(ModelSerializer):
         model = Relaciones_Profesores
         fields = ['source', 'target']
         read_only_fields = ['source', 'target']
+
+class Pais_Serializer(ModelSerializer):
+    class Meta:
+        model = Pais
+        fields = '__all__'
+
+class Revista_Serializer(ModelSerializer):
+    class Meta:
+        model = Revista
+        fields = '__all__'
+
+
+class Editorial_Serializer(ModelSerializer):
+    class Meta:
+        model = Editorial
+        fields = '__all__'
+class Estado_Serializer(ModelSerializer):
+    class Meta:
+        model = Estado
+        fields = '__all__'
+
+
+class Ciudad_Serializer(ModelSerializer):
+    class Meta:
+        model = Ciudad
+        fields = '__all__'
+
+
+class Alumno_Serializer(ModelSerializer):
+    class Meta:
+        model = Alumno
+        fields = '__all__'
+
+
+class Institucion_Serializer(ModelSerializer):
+    class Meta:
+        model = Institucion
+        fields = '__all__'
+
+class Articulo_Serializer(ModelSerializer):
+
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    revista = Revista_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    class Meta:
+        model = Articulo
+        fields = '__all__'
+
+
+class CapituloLibro_Serializer(ModelSerializer):
+    primer_autor = Autor_Serializer(read_only=True)
+    primer_coautor = Autor_Serializer(read_only=True)
+    segundo_coautor = Autor_Serializer(read_only=True)
+    tercer_coautor = Autor_Serializer(read_only=True)
+    cuarto_coautor = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+
+    class Meta:
+        model = CapituloLibro
+        fields = '__all__'
+
+
+class Patente_Serializer(ModelSerializer):
+    pais = Pais_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    class Meta:
+        model = Patente
+        fields = '__all__'
+
+
+class Congreso_Serializer(ModelSerializer):
+    primer_autor = Autor_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    pais = Pais_Serializer(read_only=True)
+    estadoP = Estado_Serializer(read_only=True)
+    ciudad = Ciudad_Serializer(read_only=True)
+    editorial = Editorial_Serializer(read_only=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    palabras_clave = PalabrasClave_Serializer(
+        read_only=True, many=True)
+
+    class Meta:
+        model = Congreso
+        fields = '__all__'
+
+class Investigacion_Serializer(ModelSerializer):
+
+    responsable = Autor_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    primer_alumno = Alumno_Serializer(read_only=True)
+    segundo_alumno = Alumno_Serializer(read_only=True)
+    tercer_alumno = Alumno_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    institucion = Institucion_Serializer(read_only=True, many=True)
+
+    class Meta:
+        model = Investigacion
+        fields = '__all__'
+
+
+class Tesis_Serializer(ModelSerializer):
+
+    alumno = Alumno_Serializer(read_only=True)
+    primer_colaborador = Autor_Serializer(read_only=True)
+    segundo_colaborador = Autor_Serializer(read_only=True)
+    tercer_colaborador = Autor_Serializer(read_only=True)
+    cuarto_colaborador = Autor_Serializer(read_only=True)
+    palabras_clave = PalabrasClave_Serializer(read_only=True, many=True)
+    lineas_investigacion = LineasInvestigacion_Serializer(
+        read_only=True, many=True)
+    institucion = Institucion_Serializer(read_only=True)
+    profesor = Users_Serializer(read_only=True)
+
+    class Meta:
+        model = Tesis
+        fields = '__all__'

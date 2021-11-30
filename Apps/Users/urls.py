@@ -60,6 +60,8 @@ urlpatterns = [
     path('api/facultades', views_serializer.Facultad_Serializer_View.as_view(), name="API_Facultades"),
     path('api/niveles', views_serializer.Nivel_Serializer_View.as_view(), name="API_Niveles"),
     path('api/palabras', views_serializer.PalabraClave_Serializer_View.as_view(), name="API_PalabrasClave"),
+    path('api/productos', views_serializer.Productos_Serializer_View.as_view(),
+         name="API_Productos"),
 
     #URLs de preprocesamiento de forms
     path('proxy', view_proxy.Proxy.as_view(), name="FormPerfil"),
